@@ -1,0 +1,10 @@
+[Project]
+keywords = ["swift", "rust", "about", "blog", "diary"]
+
+[Folders]
+# The file and folders that should be copied over from within the public folder
+publicCopyFolders = ["css", "img", "js", "content"]
+
+# [RSS]
+title = "Benedikt Terhechte"
+absoluteFeedAddress = "https://terhech.de/feed.rss"

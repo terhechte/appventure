@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hello Bulma!</title>
+  <link rel="stylesheet" href="/css/bulma.min.css">
+  <link rel="stylesheet" href="/css/style.css">
+  <link href="https://fonts.googleapis.com/css?family=Lato:400,700,900" rel="stylesheet"> 
+  <script defer src="/js/fontawesome-all.min.js"></script>
+ </head>
+ <body>
+  <section class="section" id="head">
+   <div class="container" id="container">
+    <div>
+
+     <div class="columns">
+      <div class="column is-3">
+       <span id="brand">appventure.me</span>
+      </div>
+      <div class="column is-9">
+       <span id="subbrand">
+        just this guy that writes and talks largely about swift</span>
+      </div>
+     </div>
+    </div>
+   </div>
+  </section>
+
+
+  <section class="section" id="main">
+   <div class="container" id="container">
+    <div class="columns">
+     <div class="column">
+      <div class="columns">
+       <div class="column">
+        <div class="tabs">
+         <ul>
+          <li class="is-active">
+           <a><i class="fas fa-anchor"></i>&nbsp; Blog</a></li>
+          <li>
+           <a><i class="fas fa-couch"></i>&nbsp; About</a></li>
+          <li>
+           <a><i class="fas fa-coffee"></i>&nbsp; Projects</a></li>
+         </ul>
+        </div>
+       </div>
+       <div class="column is-narrow">
+        <div class="buttons has-addons is-hidden-mobile">
+         <span class="button is-success is-selected">
+          <i class="fas fa-th-large"></i>
+         </span>
+         <span class="button">
+          <i class="fas fa-list"></i>
+         </span>
+        </div>
+       </div>
+      </div>
+
+      <div class="columns is-mobile is-hidden-tablet">
+      <div class="column">
+       <div class="field">
+        <div class="control is-small">
+         <input class="input is-rounded is-small" type="text" placeholder="search">
+        </div>
+       </div>
+      </div>
+      <div class="column is-narrow">
+       <div class="buttons has-addons">
+        <span class="button is-success is-selected">
+         <i class="fas fa-th-large"></i>
+        </span>
+        <span class="button">
+         <i class="fas fa-list"></i>
+        </span>
+       </div>
+      </div>
+      </div>
+
+      <div class="tile is-ancestor">
+       <div class="tile is-6 is-vertical is-parent">
+        <div class="tile is-child article-box">
+         
+         <figure class="image">
+          <img src="/content/2015-11-30-reduce-all-the-things-feature-image.jpg">
+         </figure>
+         <p class="subtitle is-7 article-tile-meta-box">
+          22/11/2017
+          <span><a>#cocoa</a>, <a>#ios</a>, ...</span>
+         </p>
+         <h4 class="title is-4">Force optionals in multi-unwrapped "guard let" or "if let" </h4>
+         <p class="subtitle is-6">
+          Mixing optional and non-optional functions in a 
+         </p>
+        </div>
+        <div class="tile is-child article-box">
+         
+         <figure class="image">
+          <img src="/content/doom.png">
+         </figure>
+         <h5 class="title is-5">Force optionals in multi-unwrapped "guard let" or "if let"
+         </h5>
+         <p class="subtitle is-6">
+          Mixing optional and non-optional functions in a guard is impossible and requires breaking up the lines. Here's a neat solution on how to circumvent this.
+          Mixing optional and non-optional functions in a guard is impossible and requires breaking up the lines. Here's a neat solution on how to circumvent this.
+         </p>
+        </div>
+       </div>
+       <div class="tile is-6 is-vertical is-parent">
+        <div class="tile is-child article-box">
+         
+         <figure class="image">
+          <img src="/content/2015-10-17-advanced-practical-enum-examples-feature-image.jpg">
+         </figure>
+         <h5 class="title is-5">Force optionals in multi-unwrapped "guard let" or "if let"
+         </h5>
+         <p class="subtitle is-6">
+          Mixing optional and non-optional functions in a guard is impossible and requires breaking up the lines. Here's a neat solution on how to circumvent this.
+          Mixing optional and non-optional functions in a guard is impossible and requires breaking up the lines. Here's a neat solution on how to circumvent this.
+         </p>
+        </div>
+        <div class="tile is-child article-box">
+         
+         <figure class="image">
+          <img src="/content/2015-11-30-reduce-all-the-things-feature-image.jpg">
+         </figure>
+         <h5 class="title is-5">Force optionals in multi-unwrapped "guard let" or "if let"
+         </h5>
+         <p class="subtitle is-6">
+          Mixing optional and non-optional functions in a guard is 
+         </p>
+        </div>
+       </div>
+      </div>
+
+      <nav class="pagination is-centered" role="navigation" aria-label="pagination">
+       <a class="pagination-previous is-success">Previous</a>
+       <a class="pagination-next is-success">Next page</a>
+       <ul class="pagination-list">
+        <li><a class="pagination-link" aria-label="Goto page 1">1</a></li>
+        <li><span class="pagination-ellipsis">&hellip;</span></li>
+        <li><a class="pagination-link" aria-label="Goto page 45">45</a></li>
+        <li><a class="pagination-link is-current" aria-label="Page 46" aria-current="page">46</a></li>
+        <li><a class="pagination-link" aria-label="Goto page 47">47</a></li>
+        <li><span class="pagination-ellipsis">&hellip;</span></li>
+        <li><a class="pagination-link" aria-label="Goto page 86">86</a></li>
+       </ul>
+      </nav>
+
+     </div>
+
+     <div class="column is-narrow">
+
+      <div class="field">
+       <div class="control is-small">
+        <input class="input is-rounded is-small" type="text" placeholder="search">
+       </div>
+      </div>
+
+      <div class="card">
+       <div class="card-image">
+        <figure class="image image-is-150 author">
+         <img src="/img/benedikt.jpg" alt="Placeholder image">
+        </figure>
+       </div>
+       <div class="card-content">
+        <div class="media">
+         <div class="media-content">
+          <p class="title is-4">Benedikt<br/>
+           Terhechte </p>
+          <p class="subtitle is-6">
+           <i class="fab fa-twitter"></i>
+           <i class="fab fa-xing"></i>
+           <i class="fab fa-github"></i>
+           <i class="fab fa-hacker-news"></i>
+           </p>
+         </div>
+        </div>
+       </div>
+      </div>
+
+
+      <aside class="menu">
+       <br/>
+       <ul class="menu-list">
+
+        <li>
+         <p class="menu-label">
+          <a>
+           <i class="fas fa-briefcase"></i>
+           Archive
+          </a>
+         </p>
+        </li>
+        <li>
+         <p class="menu-label">
+          <a>
+           <i class="fas fa-dove"></i>
+           Swift Topics
+          </a>
+         </p>
+         <ul>
+          <li><a>All</a></li>
+          <li><a>Language Features</a></li>
+          <li><a>Tooling Tips</a></li>
+          <li><a>Examples</a></li>
+          <li><a>Community</a></li>
+          <li><a>Linux</a></li>
+          <li><a>macOS</a></li>
+         </ul>
+        </li>
+        <li>
+         <p class="menu-label">
+          <a>
+           <i class="fas fa-tags"></i>
+           Tags
+          </a>
+         </p>
+         <ul>
+          <li><a><span class="tag is-info is-rounded">#blog</span></a></li>
+          <li><a class="tags has-addons"><span class="tag is-info is-rounded">cocoa</span><span class="tag is-primary is-rounded">12</span></a></li>
+          <li><a>#clojure</a></li>
+          <li><a>#cocoa</a></li>
+          <li><a>#emacs</a></li>
+          <li><a>#git</a></li>
+          <li><a>#ios</a></li>
+          <li><a>#objetive-c</a></li>
+          <li><a>#swift</a></li>
+         </ul>
+        </li>
+       </ul>
+      </aside> 
+
+     </div>
+    </div>
+   </div>
+  </section>
+
+  <div class="footer">
+   <article class="media" id="followme">
+    <figure class="media-left">
+     <p class="image is-64x64">
+      <img src="/img/ez.png">
+     </p>
+    </figure>
+    <div class="media-content">
+     <div class="content">
+      <p>
+       <strong>Benedikt Terhechte</strong> <small>@terhechte</small> 
+       <br>
+       If you read this far, you should <a href="https://twitter.com/terhechte">follow Benedikt on Twitter</a>.<br/>
+       Benedikt writes about Swift, macOS, iOS &amp; Linux development, and sometimes about other modern programming languages.
+      </p>
+      <p>
+       <strong>2011 - 2018 Benedikt Terhechte</strong>
+      </p>
+     </div>
+    </div>
+    <div class="media-right">
+     <a class="button is-info is-rounded">
+      <i class="fab fa-twitter"></i>
+      Follow Me</a>
+    </div>
+   </article>
+  </div>
+
+
+ </body>
+</html>
