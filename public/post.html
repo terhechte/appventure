@@ -1,236 +1,93 @@
-<!DOCTYPE html>
-<html>
- <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Hello Bulma!</title>
-  <link rel="stylesheet" href="/css/bulma.min.css">
-  <link rel="stylesheet" href="/css/style.css">
-  <!--    <script defer src="https://use.fontawesome.com/releases/v5.0.7/js/all.js"></script>-->
-  <!-- <link href="https://fonts.googleapis.com/css?family=Bitter:700|Lato" rel="stylesheet">  -->
-  <link href="https://fonts.googleapis.com/css?family=Lato:400,700,900" rel="stylesheet"> 
- </head>
- <body>
-  <section class="section" id="main">
-   <div class="container" id="container">
-    <div>
+<article class="article-post">
 
-     <div class="columns">
-      <div class="column is-2">
-       <span id="brand">appventure.me</span>
-      </div>
-      <div class="column is-2">
-       <p>Musings about Swift</p>
-      </div>
-     </div>
-    </div>
-    <div class="columns">
-     <div class="column">
-      <div class="tabs">
-       <ul>
-        <li class="is-active"><a>Back</a></li>
-       </ul>
-      </div>
+	<div class="field is-grouped is-grouped-multiline" id="article-meta">
+		<div class="control">
+			<div class="tags has-addons">
+				<span class="tag is-dark">released</span>
+				<span class="tag is-info">{{ content.info.created }}</span>
+			</div>
+		</div>
 
+		<!--
+		<div class="control">
+			<div class="tags has-addons">
+				<span class="tag is-dark">updated</span>
+				<span class="tag is-success">11/11/2017</span>
+			</div>
+		</div>
+		-->
 
-      <article class="article-post">
+		<div class="control">
+			<div class="tags">
+				{% for tag in content.info.tags %}
+				<span class="tag is-link is-rounded"><a>#{{tag}}</a></span>
+				{% endfor %}
+			</div>
+		</div>
 
-       <div class="field is-grouped is-grouped-multiline" id="article-meta">
-        <div class="control">
-         <div class="tags has-addons">
-          <span class="tag is-dark">released</span>
-          <span class="tag is-info">11/11/2017</span>
-         </div>
-        </div>
+	</div>
 
-        <div class="control">
-         <div class="tags has-addons">
-          <span class="tag is-dark">updated</span>
-          <span class="tag is-success">11/11/2017</span>
-         </div>
-        </div>
+	<h2 class="title is-2">{{ content.info.title }}</h2>
+	<h4 class="subtitle is-4">{{ content.info.description_html }}</h4>
 
-        <div class="control">
-         <div class="tags">
-          <span class="tag is-link is-rounded"><a>#cocoa</a></span>
-          <span class="tag is-link is-rounded">#macos</span>
-          <span class="tag is-link is-rounded">#ios</span>
-         </div>
-        </div>
+	<div class="content is-medium">
+		{{ content.content }}
+	</div>
 
-       </div>
-
-       <h2 class="title is-2">Force optionals in multi-unwrapped <span class="syntax">guard let</span> or <span class="syntax">if let</span></h2>
-       <h4 class="subtitle is-4">Mixing optional and non-optional functions in a guard is impossible and requires breaking up the lines. Here's a neat solution on how to circumvent this</h4>
-       
-       <!-- - this is where the content is at -->
-       <div class="content is-medium">
-        
-        <p>The coin with a simple <a href="">premise to be ultra rare</a> and make only 42 coins available was put live on Cryptsy this morning and went as far as forcing Cryptsy to have to re-write their code to support the massive up-tick in allowable Bitcoins per transaction (last I saw, one "42" coin <i>was going for 1500 BTC</i>, the current limit being set to 4000 BTC). Although only a fraction of a coin has been mined so far, people are apparently going nuts over the rarity to get that illusive first complete coin.</p>
-
-        <blockquote><p>
-
-         What makes the iPad 2 and keyboard combo so effective for my writing is the “one app at a time” nature of the tablet. The running app takes up the entire screen, and thus my focus. There are no distractions presented while writing, just inputting words on the screen.
-
-         <a href="">This is liberating for a writer</a>, and I find I can write more, and better, on the tablet system than on a “real” computer. There are no menu options competing for my attention, no updates needing to be run, just an app on the screen.
-
-         <cite>James Kendrick </cite>
-        </p></blockquote>
-        
-        <p>Now THIS is what makes trading cryptocurrencies fun! :-)</p>
-        <p>More information on the coin can be found at the bitcointalk page here. Subreddit here: /r/42coin</p>
-        <p>I started mining the coin myself on the launch date and had to give up mining it this morning after the announcement sent the difficulty sky-high. Too much for my piddly 660 GTX. I have a feeling that thanks to the rarity, this will be one of the few coins that people will have a hard time giving away. Just in case though...</p>
-
-        <ul>
-         <li>More information on the coin can be found at the bitcointalk page here. Subreddit here: /r/42coin</li> 
-         <li>More information on the coin can be found at the bitcointalk page here. Subreddit here: /r/42coin</li> 
-         <li>More information on the coin can be found at the bitcointalk page here. Subreddit here: /r/42coin</li> 
-        </ul>
-
-        
-        <p>I started mining the coin myself on the launch date and had to give up mining it this morning after the announcement sent the difficulty sky-high. Too much for my piddly 660 GTX. I have a feeling that thanks to the rarity, this will be one of the few coins that people will have a hard time giving away. Just in case though...</p>
-
-        <div class="sourceCode" id="cb2"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw">function</span> <span class="at">test</span>() <span class="op">{</span></a>
-         <a class="sourceLine" id="cb2-2" data-line-number="2"> <span class="cf">if</span> (abc <span class="op">==</span> <span class="st">&quot;ss&quot;</span>)<span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></a>
-         <a class="sourceLine" id="cb2-3" data-line-number="3"><span class="op">}</span></a>
-         <a class="sourceLine" id="cb2-4" data-line-number="4"></a>
-         <a class="sourceLine" id="cb2-5" data-line-number="5">extension Optional <span class="op">{</span></a>
-         <a class="sourceLine" id="cb2-6" data-line-number="6">    <span class="co">/// Returns true if the optional is empty</span></a>
-         <a class="sourceLine" id="cb2-7" data-line-number="7">    <span class="kw">var</span> <span class="dt">isNone</span><span class="op">:</span> Bool <span class="op">{</span></a>
-         <a class="sourceLine" id="cb2-8" data-line-number="8">        <span class="cf">return</span> self <span class="op">==</span> .<span class="at">none</span></a>
-         <a class="sourceLine" id="cb2-9" data-line-number="9">    <span class="op">}</span></a>
-         <a class="sourceLine" id="cb2-10" data-line-number="10"></a>
-         <a class="sourceLine" id="cb2-11" data-line-number="11">    <span class="co">/// Returns true if the optional is not empty</span></a>
-         <a class="sourceLine" id="cb2-12" data-line-number="12">    <span class="kw">var</span> <span class="dt">isSome</span><span class="op">:</span> Bool <span class="op">{</span></a>
-         <a class="sourceLine" id="cb2-13" data-line-number="13">        <span class="cf">return</span> self <span class="op">!=</span> .<span class="at">none</span></a>
-         <a class="sourceLine" id="cb2-14" data-line-number="14">    <span class="op">}</span></a>
-         <a class="sourceLine" id="cb2-15" data-line-number="15"><span class="op">}</span></a></code></pre></div>
-
-        <p>I started mining the coin myself on the launch date and had to give up mining it this morning after the announcement sent the difficulty sky-high. Too much for my piddly 660 GTX. I have a feeling that thanks to the rarity, this will be one of the few coins that people will have a hard time giving away. Just in case though...</p>
-
-       </div>
-
-       <!-- this is where the content ends -->
-
-       <article class="media box" id="followme">
-        <figure class="media-left">
-         <p class="image is-64x64">
-          <img src="/img/ez.png">
-         </p>
-        </figure>
-        <div class="media-content">
-         <div class="content">
-          <p>
-           <strong>Benedikt Terhechte</strong> <small>@terhechte</small> 
-           <br>
-           If you read this far, you should <a href="https://twitter.com/terhechte">follow Benedikt on Twitter</a>.<br/>
-           Benedikt writes about Swift, macOS, iOS &amp; Linux development, and sometimes about other modern programming languages.
-          </p>
-         </div>
-        </div>
-        <div class="media-right">
-         <a class="button is-info is-rounded">
-          <i class="fab fa-twitter"></i>
-          Follow Me</a>
-        </div>
-       </article>
-
-       <div class="footnotes box">
-        <table class="table">
-         <thead>
-          <tr>
-           <th><abbr title="Position">Pos</abbr></th>
-           <th>Footnote</th>
-          </tr>
-         </thead>
-         <tbody>
-          <tr>
-           <th>1</th>
-           <td>
-            <p>In many cases they use a Bluetooth keyboard though. I guess it is hard to argue that the on-screen keyboard, though very nice, can replace a hardware keyboard for serious writing.<a href="#fnref:foot2" rev="footnote">↩</a></p>
-           </td>
-          </tr>
-          <tr>
-           <th>2</th>
-           <td>
-            <p><a href="http://mac.appstorm.net/roundups/productivity-roundups/6-minimal-full-screen-writing-apps-for-mac/">More on mac.appstorm.net</a><a href="#fnref:foot1" rev="footnote">↩</a></p>
-           </td>
-          </tr>
-          <tr>
-           <th>3</th>
-           <td>
-            <p>First, of course you need to know and remember it<a href="#fnref:foot3" rev="footnote">↩</a></p>
-           </td>
-          </tr>
-         </tbody>
-        </table>
-       </div>
-
-      </article>
+	<article class="media box" id="followme">
+		<figure class="media-left">
+			<p class="image is-64x64">
+			<img src="/img/ez.png">
+			</p>
+		</figure>
+		<div class="media-content">
+			<div class="content">
+				<p>
+				<strong>Benedikt Terhechte</strong> <small>@terhechte</small> 
+				<br>
+				If you read this far, you should <a href="https://twitter.com/terhechte">follow Benedikt on Twitter</a>.<br/>
+				Benedikt writes about Swift, macOS, iOS &amp; Linux development, and sometimes about other modern programming languages.
+				</p>
+			</div>
+		</div>
+		<div class="media-right">
+			<a class="button is-info is-rounded">
+				<i class="fab fa-twitter"></i>
+				Follow Me</a>
+		</div>
+	</article>
 
 
-     </div>
+	<div class="footnotes box">
+		<table class="table">
+			<thead>
+				<tr>
+					<th><abbr title="Position">Pos</abbr></th>
+					<th>Footnote</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<th>1</th>
+					<td>
+						<p>In many cases they use a Bluetooth keyboard though. I guess it is hard to argue that the on-screen keyboard, though very nice, can replace a hardware keyboard for serious writing.<a href="#fnref:foot2" rev="footnote">↩</a></p>
+					</td>
+				</tr>
+				<tr>
+					<th>2</th>
+					<td>
+						<p><a href="http://mac.appstorm.net/roundups/productivity-roundups/6-minimal-full-screen-writing-apps-for-mac/">More on mac.appstorm.net</a><a href="#fnref:foot1" rev="footnote">↩</a></p>
+					</td>
+				</tr>
+				<tr>
+					<th>3</th>
+					<td>
+						<p>First, of course you need to know and remember it<a href="#fnref:foot3" rev="footnote">↩</a></p>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
 
-     <div class="column is-narrow">
+</article>
 
-      <div class="card">
-       <div class="card-image">
-        <figure class="image is-128x128">
-         <img src="/img/benedikt.jpg" alt="Placeholder image">
-        </figure>
-       </div>
-       <div class="card-content">
-        <div class="media">
-         <div class="media-content">
-          <p class="subtitle is-6">@terhechte</p>
-          <p class="subtitle is-6">@johnsmith</p>
-          <p class="subtitle is-6">@johnsmith</p>
-          <p class="subtitle is-6">@johnsmith</p>
-         </div>
-        </div>
-        <div class="content">
-
-        </div>
-       </div>
-      </div>
-
-      <aside class="menu">
-       <p class="menu-label">
-        General
-       </p>
-       <ul class="menu-list">
-        <li><a>Dashboard</a></li>
-        <li><a>Customers</a></li>
-       </ul>
-       <p class="menu-label">
-        Administration
-       </p>
-       <ul class="menu-list">
-        <li><a>Team Settings</a></li>
-        <li>
-         <a class="is-active">Manage Your Team</a>
-         <ul>
-          <li><a>Members</a></li>
-          <li><a>Plugins</a></li>
-          <li><a>Add a member</a></li>
-         </ul>
-        </li>
-        <li><a>Invitations</a></li>
-        <li><a>Cloud Storage</a></li>
-        <li><a>Authentication</a></li>
-       </ul>
-       <p class="menu-label">
-        Transactions
-       </p>
-       <ul class="menu-list">
-        <li><a>Payments</a></li>
-        <li><a>Transfers</a></li>
-        <li><a>Balance</a></li>
-       </ul>
-      </aside> 
-     </div>
-    </div>
-   </div>
-  </section>
- </body>
-</html>
