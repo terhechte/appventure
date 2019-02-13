@@ -36,7 +36,7 @@ under `Objective-C Bridging Header`.
 
 Then, add the following code to your header:
 
-``` {.c org-language="C"}
+``` C
 #if __cplusplus
 extern "C" {
 #endif
@@ -57,7 +57,7 @@ realm.](http://www.russbishop.net/swift-don-t-do-this)
 Using the `@asmname` keyword, the code looks like this (and you can
 remove the bridging header):
 
-``` {.Swift}
+``` Swift
 @asmname("MGCopyAnswer")
 func MGCopyAnswer(_: CFStringRef) -> Optional<Unmanaged<CFPropertyListRef>>;
 ```
@@ -70,7 +70,7 @@ telling it specifically what it requires and what it will return.
 Next up, we want to write the Swift code to call this function, so
 let\'s do it:
 
-``` {.Swift}
+``` Swift
 chipInfo = MGCopyAnswer("HardwarePlatform")
 ```
 
@@ -80,7 +80,7 @@ an `Optional` here, since the key in question (\"HardwarePlatform\")
 might not even exist. We first have to get the value out. To do that,
 we\'ll use the new Swift 2 `guard` statement.
 
-``` {.Swift}
+``` Swift
 guard let chipInfo = MGCopyAnswer("HardwarePlatform")
     else { fatalError("Could not read hardware") }
 ```
@@ -105,7 +105,7 @@ currently not managed. [NSHipster](http://nshipster.com/unmanaged/), and
 have more documentation for this. What we\'ll do is call the
 `takeRetainedValue` method:
 
-``` {.Swift}
+``` Swift
 guard let chipInfo = MGCopyAnswer("HardwarePlatform")
     else { fatalError("Could not read hardware") }
 chipInfo.takeRetainedValue()
@@ -132,7 +132,7 @@ reference are, say, a `CFDate` or a `CFBoolean`. This is particularly
 easy with [Swift\'s Pattern Matching
 syntax](http://appventure.me/2015/08/20/swift-pattern-matching-in-detail/):
 
-``` {#feature-image .Swift exports="code" export-image="true" export-template="template5"}
+``` Swift
 guard let chipInfo = MGCopyAnswer("HardwarePlatform")
     else { fatalError("Could not read hardware") }
 

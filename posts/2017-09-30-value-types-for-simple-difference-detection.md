@@ -22,7 +22,7 @@ as `Array`, `Set`, or `Dictionary` as value types. One of the best
 properties of value types is that they can easily be compared given that
 they\'re values:
 
-``` {.swift}
+``` Swift
 let one = [1, 2, 3]
 let two = [1, 2, 3]
 print(one == two) // returns true
@@ -38,7 +38,7 @@ there\'re no changes. If your data is defined as a `struct` and you
 implement the `Equatable` protocol, then you can simply use the equality
 operator to see if the table view needs to be reloaded:
 
-``` {.swift}
+``` Swift
 struct Data: Equatable {
   let username: String
   let userid: Int
@@ -72,7 +72,7 @@ implemented `Equatable`. Then you have three different options:
 The idea here is to store just the absolutely necessary information in a
 seperate difference detection cache. Imagine the following data model:
 
-``` {.swift}
+``` Swift
 final class Story {
   let story_id: Int
   let views: Int
@@ -87,7 +87,7 @@ absolutely need to determine a change and store them in tuples. Tuples
 with up to 6 elements will automatically generate `Equatable`
 conformance:
 
-``` {.swift}
+``` Swift
 let a = (1, 2, 3)
 let b = (1, 2, 3)
 print(a == b)
@@ -95,7 +95,7 @@ print(a == b)
 
 With this in mind, we can generate our tuples:
 
-``` {.swift}
+``` Swift
 let newInformation: [(Int, Int, TimeInterval)] = 
   stories.map({ ($0.story_id, $0.views, $0.last_updated) })
 

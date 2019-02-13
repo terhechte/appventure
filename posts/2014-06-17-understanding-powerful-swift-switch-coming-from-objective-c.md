@@ -1,4 +1,5 @@
 [frontMatter]
+description = "FIXME FIXME FIXME"
 title = "Understanding the powerful Switch statement in Swift"
 created = "2014-06-17"
 published = false
@@ -28,7 +29,7 @@ you\'ll already have seen how the Switch statement can easily be used to
 unwrap an Optional. If you haven\'t, you should. Nevertheless, let me
 start this post with a small reminder of how this works:
 
-``` {.Javascript}
+``` Swift
 var result: String? = secretMethod()
 switch result {
 case .None:
@@ -71,7 +72,7 @@ consumers have to deal with:
 -   age may be a string, in which case it is the date when the user was
     born, or a number, in which case it is the current age[^1].
 
-``` {.Objective-C}
+``` Objective-C
 // Example:
 // may return: {type: @"system", department: ..., age: ..., name: [username, firstname, middlename, lastname]}
 NSArray *user = [api userWithId:4]; 
@@ -81,7 +82,7 @@ Let\'s try parsing such a dictionary in the traditional way. I\'m using
 Objective-C examples as this will better display just how much more
 concise the Swift / Switch way is.
 
-``` {.Objective-C}
+``` Objective-C
 // Example:
 // may return: {type: @"system", department: ..., age: ..., name: [username, firstname, middlename, lastname]}
 NSArray *user = [api userWithId:4]; 

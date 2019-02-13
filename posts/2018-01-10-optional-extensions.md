@@ -19,7 +19,7 @@ couple](https://developer.apple.com/documentation/swift/optional#topics)
 of methods / properties on `Optional` - if we ignore `customMirror` and
 `debugDescription`:
 
-``` {.swift}
+``` Swift
 var unsafelyUnwrapped: Wrapped { get } 
 func map<U>(_ transform: (Wrapped) throws -> U) rethrows -> U? 
 func flatMap<U>(_ transform: (Wrapped) throws -> U?) rethrows -> U? 
@@ -45,7 +45,7 @@ example that uses several extensions at once.
 
 # Emptiness
 
-``` {.swift}
+``` Swift
 extension Optional {
     /// Returns true if the optional is empty
     var isNone: Bool {
@@ -67,7 +67,7 @@ code. This might just as well be an implementation detail. Using
 `optional.isSome` feels much cleaner and less noisy than
 `if optional == nil`:
 
-``` {.swift}
+``` Swift
 // Compare
 guard leftButton != nil, rightButton != nil else { fatalError("Missing Interface Builder connections") }
 
@@ -78,7 +78,7 @@ guard leftButton.isSome, rightButton.isSome else { fatalError("Missing Interface
 Or
 ==
 
-``` {.swift}
+``` Swift
 extension Optional {
     /// Return the value of the Optional or the `default` parameter
     /// - param: The value to return if the optional is empty
@@ -132,7 +132,7 @@ functions.
 The first one returns the wrapped value of the optional or a default
 value:
 
-``` {.swift}
+``` Swift
 let optional: Int? = nil
 print(optional.or(10)) // Prints 10
 ```
@@ -142,7 +142,7 @@ print(optional.or(10)) // Prints 10
 The second one is very similar to the first one, however it allows to
 return a default value from a closure instead.
 
-``` {.swift}
+``` Swift
 let optional: Int? = nil
 optional.or(else: secretValue * 32) 
 ```
@@ -153,7 +153,7 @@ automatically be converted into a closure returning the value. However,
 I prefer having two separate implementations as that allows users to
 also write closures with more complex logic.
 
-``` {.swift}
+``` Swift
 let cachedUserCount: Int? = nil
 ...
 return cachedUserCount.or(else: {
@@ -167,7 +167,7 @@ return cachedUserCount.or(else: {
 A really nice use case for `or` is code where you only want to set a
 value on an optional if it is empty:
 
-``` {.swift}
+``` Swift
 if databaseController == nil {
   databaseController = DatabaseController(config: config)
 }
@@ -175,7 +175,7 @@ if databaseController == nil {
 
 This can be replaced with the much nicer:
 
-``` {.swift}
+``` Swift
 databaseController = databaseController.or(DatabaseController(config: config)
 ```
 
@@ -188,7 +188,7 @@ returning an empty optional (imagine accessing a non-existing key in a
 `Dictionary`) or by throwing an `Error`. Combining these two oftentimes
 leads to a lot of unnecessary line noise:
 
-``` {.swift}
+``` Swift
 func buildCar() throws -> Car {
   let tires = try machine1.createTires()
   let windows = try machine2.createWindows()
@@ -210,7 +210,7 @@ choose to use optionals instead of error handling. This makes the code
 unnecessary complicated. Our `or(throw:)` function makes this much more
 readable:
 
-``` {.swift}
+``` Swift
 func build_car() throws -> Car {
   let tires = try machine1.createTires()
   let windows = try machine2.createWindows()
@@ -227,7 +227,7 @@ useful when you include the following free function that was proposed by
 [Stijn Willems on Github](https://github.com/doozMen). Thanks for the
 suggestion!
 
-``` {.swift}
+``` Swift
 func should(_ do: () throws -> Void) -> Error? {
     do {
         try `do`()
@@ -243,7 +243,7 @@ optional) will perform a `do {} catch {}` block and return an error if
 and only if the closure \`do\` resulted in an error. Take, the following
 Swift code as an example:
 
-``` {.swift}
+``` Swift
 do {
   try throwingFunction()
 } catch let error {
@@ -255,7 +255,7 @@ This is one of the basic tennets of error handling in Swift, and it
 introduces quite a lot of line noise. With the free function above, you
 can reduce it to this simple on-liner:
 
-``` {.swift}
+``` Swift
 should { try throwingFunction) }.or(print($0))
 ```
 
@@ -270,7 +270,7 @@ more versatile in many situations. There\'re two additional variations
 on `map` that allow defining a default value similar to how the `or`
 variants above are implemented:
 
-``` {.swift}
+``` Swift
 extension Optional {
     /// Maps the output *or* returns the default value if the optional is nil
     /// - parameter fn: The function to map over the value
@@ -292,7 +292,7 @@ The first one will allow you to `map` the contents of an optional to a
 new type `T`. If the optional is empty, you can define a `default` value
 that should be used instead:
 
-``` {.swift}
+``` Swift
 let optional1: String? = "appventure"
 let optional2: String? = nil
 
@@ -313,7 +313,7 @@ The second variant is very similar. The main difference is that it
 accepts (again) a closure returning value `T` instead of value `T`.
 Here\'s a brief example:
 
-``` {.swift}
+``` Swift
 let optional: String? = nil
 print(optional.map({ $0.count }, else: { "default".count })
 ```
@@ -323,7 +323,7 @@ print(optional.map({ $0.count }, else: { "default".count })
 This category contains four functions that allow you to define relations
 between multiple optionals.
 
-``` {#feature-image .swift export-image="true" export-template="template5"}
+``` Swift
 extension Optional {
     /// Tries to unwrap `self` and if that succeeds continues to unwrap the parameter `optional`
     /// and returns the result of that.
@@ -366,7 +366,7 @@ quite different in what they achieve.
 `and<B>(_ optional)` is useful if the unpacking of an optional is only
 required as a invariant for unpacking another optional:
 
-``` {.swift}
+``` Swift
 // Compare
 if user != nil, let account = userAccount() ...
 
@@ -386,7 +386,7 @@ is kinda codified in the `user != nil` line, I personally feel that the
 optionals together so that the output of unpacking optional `A` becomes
 the input of producing optional `B`. Lets start with a simple example:
 
-``` {.swift}
+``` Swift
 protocol UserDatabase {
   func current() -> User?
   func spouse(of user: User) -> User?
@@ -444,7 +444,7 @@ together or not at all. I\'ve just provided implementations for `zip2`
 and `zip3` but nothing prevents you from going up to `zip22` (Well,
 maybe sanity and compiler speed).
 
-``` {.swift}
+``` Swift
 // Lets start again with a normal Swift example
 func buildProduct() -> Product? {
   if let var1 = machine1.makeSomething(),
@@ -471,7 +471,7 @@ this code is also more involved. The reader has to know and understand
 On
 --
 
-``` {.swift}
+``` Swift
 extension Optional {
     /// Executes the closure `some` if and only if the optional has a value
     func on(some: () throws -> Void) rethrows {
@@ -491,7 +491,7 @@ these ignore the contents of the optional. So `on(some:)` will only
 execute the closure `some` if the optional is not empty but the closure
 `some` will not get the unwrapped contents of the optional.
 
-``` {.swift}
+``` Swift
 /// Logout if there is no user anymore
 self.user.on(none: { AppCoordinator.shared.logout() })
 
@@ -501,7 +501,7 @@ self.user.on(some: { AppCoordinator.shared.unlock() })
 
 ## Various
 
-``` {.swift}
+``` Swift
 extension Optional {
     /// Returns the unwrapped value of the optional only if
     /// - The optional has a value
@@ -527,7 +527,7 @@ unwrap the optional if it satisfies a predictate. Here\'s an example.
 Imagine we want to upgrade all our old users to a premium account for
 sticking with us for a long time:
 
-``` {.swift}
+``` Swift
 // Only affect old users with id < 1000
 // Normal Swift
 if let aUser = user, user.id < 1000 { aUser.upgradeToPremium() }
@@ -548,7 +548,7 @@ Similar for implicitly unwrapped optionals.
 However, this is tricky when working with interface builder outlets. A
 common pattern that I observed can be seen in the following function:
 
-``` {.swift}
+``` Swift
 func updateLabel() {
   guard let label = valueLabel else {
     fatalError("valueLabel not connected in IB")
@@ -563,7 +563,7 @@ have to insert `!` though, also it wouldn\'t give me a nice succinct
 description of what actually is wrong. The better alternative here is to
 use `expect` as implemented above:
 
-``` {.swift}
+``` Swift
 func updateLabel() {
   valueLabel.expect("valueLabel not connected in IB").text = state.title
 }
@@ -586,7 +586,7 @@ there\'s Swift to love but also XML to hate?). Your software system has
 an XML parser and a database (both written in 6502 ASM of course) that
 implement the following protocols:
 
-``` {.swift}
+``` Swift
 protocol XMLImportNode {
     func firstChild(with tag: String) -> XMLImportNode?
     func children(with tag: String) -> [XMLImportNode]
@@ -605,7 +605,7 @@ protocol Database {
 
 A typical file looks like this (behold the almighty XML):
 
-``` {.xml}
+``` XML
 <users>
  <user name="" id="158">
   <software>
@@ -619,7 +619,7 @@ A typical file looks like this (behold the almighty XML):
 
 Our original Swift code to parse the XML looks like this:
 
-``` {.swift}
+``` Swift
 enum ParseError: Error {
     case msg(String)
 }
@@ -657,7 +657,7 @@ func parseGamesFromXML(from root: XMLImportNode, into database: Database) throws
 
 Lets apply what we learned above:
 
-``` {.swift}
+``` Swift
 func parseGamesFromXML(from root: XMLImportNode, into database: Database) throws {
     for user in try root.firstChild(with: "users")
                     .or(throw: ParseError.msg("No Users")).children(with: "user") {

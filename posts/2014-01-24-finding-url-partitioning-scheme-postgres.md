@@ -1,4 +1,5 @@
 [frontMatter]
+description = "FIXME FIXME FIXME"
 title = "Finding a good URL Partitioning Scheme for PostgreSQL"
 created = "2014-01-24"
 published = true
@@ -21,7 +22,7 @@ instead.
 Let\'s imagine a `cities` table as explained above, with one field, the
 city\'s name[^1].
 
-``` {.SQL}
+``` SQL
 INSERT INTO cities (name) VALUES ('San Francisco');
 INSERT INTO cities (name) VALUES ('Los Angeles');
 INSERT INTO cities (name) VALUES ('Berlin');
@@ -90,7 +91,7 @@ script is the following `defn` which uses
 [Enlive](https://github.com/cgrand/enlive) to select the desired content
 from the URL data and return it as a string:
 
-``` {.Clojure}
+``` Clojure
 (defn urls-for-page
   "returns all urls in one particular page"
   [url]
@@ -108,7 +109,7 @@ to find a good partitioning algorithm.
 is a beautiful Clojure function which takes a collection and groups it
 into a map of results based on a grouping function:
 
-``` {.Clojure}
+``` Clojure
    (group-by odd? (range 10))
 => {false [0 2 4 6 8], true [1 3 5 7 9]}
 ```
@@ -118,7 +119,7 @@ return a useful grouping indicator for it. Since I wanted to compare
 several grouping functions, I implemented a function (based on Incanter)
 that would display the resulting partitioning:
 
-``` {.Clojure}
+``` Clojure
 (defn chart-results
 
   "chart the results of the grouping"
@@ -144,7 +145,7 @@ need to be explained.
 -   `get-tld-value` Returns the tld (i.e. .de, .org, .com)
 -   `cleanse-url` Removes regularities like http, www, m., etc.
 
-``` {.Clojure}
+``` Clojure
 (defn- group-function
   "the function we use to group the results"
   [value]
@@ -164,7 +165,7 @@ Once we generated a groupting dataset, we can simply display it right
 from within Emacs (my Clojure working environment) with a call to view
 from the REPL:
 
-``` {.Clojure}
+``` Clojure
 
 => (view (chart-results (group-domains :domain)))
 
@@ -226,7 +227,7 @@ In this code, the line `(re-find #"[bl]" c 1)` means if the variable c
 (which is the first character of our input string) is either **b** or
 **l**, return 1.
 
-``` {.Clojure}
+``` Clojure
 (defn- first-bucket
   "a bucketing where some letters land in group one, some in group 2, etc"
   [string]
@@ -262,7 +263,7 @@ implement it in PostgreSQL. Table partitions are always based on a
 **master** table from which the partitions will inherit. For our
 example, the master table looks simple[^4]:
 
-``` {.SQL}
+``` SQL
 CREATE TABLE urls (
   url_id bigserial NOT NULL,
   url character varying,
@@ -273,7 +274,7 @@ CREATE TABLE urls (
 After that, we want to create our partitioning tables for each of our
 url first letter sets:
 
-``` {.SQL}
+``` SQL
 CREATE TABLE urls_s ( ) INHERITS (urls);
 CREATE TABLE urls_ak ( ) INHERITS (urls);
 ...
@@ -307,7 +308,7 @@ url.
 
 So we can do:
 
-``` {.SQL}
+``` SQL
 
 select ascii('a') => 97
 
@@ -326,7 +327,7 @@ our case this means having a table for every possible character that is
 allowed in a url. Otherwise, PostgreSQL would not know where to store
 them.[^5]
 
-``` {.SQL}
+``` SQL
 CREATE TABLE urls_s (
     CHECK (ascii(url) in (115))
 ) INHERITS (urls);
@@ -348,7 +349,7 @@ by PostgreSQL automatically if certain events happen and allow us to
 modify or change the event in question. In our case we want to modify
 the table which the data will be inserted in.
 
-``` {.SQL}
+``` SQL
 CREATE OR REPLACE FUNCTION url_insert_trigger()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -372,7 +373,7 @@ Lastly, we need to tell PostgreSQL explicitly to utilize the
 `url_insert_trigger` function on every insert call on the `urls` master
 table:
 
-``` {.SQL}
+``` SQL
 CREATE TRIGGER url_trigger
     BEFORE INSERT ON urls
     FOR EACH ROW EXECUTE PROCEDURE url_insert_trigger();
@@ -391,7 +392,7 @@ We will just generate a list of 8000 insert queries and test the result
 against our grouping. This is quickly done with a simple Clojure
 function:
 
-``` {.Clojure}
+``` Clojure
 
 (defn write-insert-calls
   "write the insert calls for table into a file"

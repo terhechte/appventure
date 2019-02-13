@@ -1,8 +1,10 @@
----
-title: Blogstrapped.
-tags: entrepeneurship blog
-keywords: entrepeneurship videro fear unknown stylemac
-alias: ["/2011/12/index.html"]
+[frontMatter]
+description = "Welcome. Why I am starting this blog."
+title = "Blogstrapped"
+created = "2011-12-01"
+published = true
+keywords = ["entrepeneurship", "videro", "fear", "unknown", "stylemac"]
+tags = ["blog"]
 ---
 Finally. I started the adventure. As of this month I am an entrepeneur trying to work hard on bringing my ideas to life. I left a good paying job and the omnipresent feeling of security for uncertainty, adventure, and an unknown future. On top of that, I am unsure whether I am truly an entrepeneur by heart or if I accidentally fell for the unrealistic hope that founding, nurturing, and succeeding in a startup is easy. Nevertheless, here I am.
 

@@ -21,7 +21,7 @@ types](https://github.com/antitypical/Result) as they can be found in
 [programming](http://www.scala-lang.org/api/2.9.3/scala/Either.html)
 languages:
 
-``` {.swift}
+``` Swift
 let success = Result<String, NSError>.Success("success")
 ```
 
@@ -40,8 +40,7 @@ handling potentially unknown states: optionals. Here\'s a particular
 ugly piece of code. Observe how we\'re nesting `if let` with `let` with
 `do` with `let` [^2].
 
-``` {.swift noweb="yes"}
-<<fns>>
+``` Swift
 
 if let uid = loggedInUser() {
     do {
@@ -84,8 +83,7 @@ This makes it possible to retrieve the value of a potential throwing
 operation as an optional. If we apply this to our code above, we can
 simplify it quite a bit:
 
-``` {#feature-image .swift noweb="strip-export" export-image="true"}
-<<fns>>
+``` Swift
 
 if let uid = loggedInUser(),
    username = try? getUserName(uid),

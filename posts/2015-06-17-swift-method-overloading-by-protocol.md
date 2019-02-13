@@ -1,4 +1,5 @@
 [frontMatter]
+description = "FIXME FIXME FIXME"
 title = "Generic method overloading by protocol in Swift"
 created = "2015-06-17"
 published = true
@@ -18,7 +19,7 @@ blog post has a pretty good
 overview](http://sketchytech.blogspot.de/2014/09/swift-overriding-vs-overloading-xcode-6.html).
 One of the possible overloading mechanisms is by type:
 
-``` {.Javascript}
+``` Swift
 class Example
 {
     func method(a : String) -> NSString {
@@ -42,7 +43,7 @@ Int.
 This is certainly nice, but what if your setup is more complex, and you
 don\'t know which kind of type you\'re getting in a generic function:
 
-``` {.Javascript}
+``` Swift
 
 class DBStore<T>
 {
@@ -94,7 +95,7 @@ in order to better structure our types.
 
 Here\'re some examples:
 
-``` {.Javascript}
+``` Swift
 
 /// Call for all Storeable types which are also equatable
 func store<T: Storeable where T:Equatable>(a : T) {
@@ -115,7 +116,7 @@ You can also extend your Structs and Classes from a different file, to
 add additional functionality based on a value or object which is local
 to that class
 
-``` {.Javascript}
+``` Swift
 // Objects which are stored in the cloud
 protocol CloudStorable {
 }

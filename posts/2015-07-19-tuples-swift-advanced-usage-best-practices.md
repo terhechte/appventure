@@ -35,7 +35,7 @@ primer on how to create and use tuples.
 
 ## Creating and Accessing Tuples
 
-``` {.Swift}
+``` Swift
 // Constructing a simple tuple
 let tp1 = (2, 3)
 let tp2 = (2, 3, 4)
@@ -65,7 +65,7 @@ way to define complex conditionals without cluttering up the source
 code. You can then match for the type, existence, and value of multiple
 variables in one statement:
 
-``` {.Swift}
+``` Swift
 
 // Contrived example
 // These would be return values from various functions.
@@ -81,7 +81,7 @@ Objective-C world, it could be a Dictionary or an Array or a Number,
 awful code somebody else wrote years ago, and you have to interact with
 it now.
 
-``` {.Swift}
+``` Swift
 
 typealias AnyDictionary = Dictionary<AnyHashable, Any>
 
@@ -104,7 +104,7 @@ Probably the next-best tuple use case. Since tuples can be constructed
 on the fly, they\'re a great way to easily return multiple values from a
 function.
 
-``` {.Swift}
+``` Swift
 func abc() -> (Int, Int, String) {
     return (3, 5, "Carl")
 }
@@ -118,20 +118,20 @@ previous examples mostly showed how to easily get something into a
 tuple, destructuring is a swifty way of getting something out of a
 tuple, and in line with the `abc` example above, it looks like this:
 
-``` {.Swift}
+``` Swift
 let (a, b, c) = abc()
 print(a)
 ```
 
 Another example is getting several function calls into one line:
 
-``` {.Swift}
+``` Swift
 let (a, b, c) = (a(), b(), c())
 ```
 
 Or, an easy way to swap two values:
 
-``` {.Swift}
+``` Swift
 var v1: Int
 var v2: Int
 (v1, v2) = (5, 4)
@@ -148,7 +148,7 @@ var v2: Int
 Tuples as well as structs allow you to combine different types into one
 type:
 
-``` {.Swift}
+``` Swift
 let user1 = (name: "Carl", age: 40)
 // vs.
 struct User {
@@ -172,7 +172,7 @@ As an example of this, consider the following situation where the return
 values from several functions first need to be uniquely collected and
 then inserted:
 
-``` {.Swift}
+``` Swift
 func zipForUser(userid: String) -> String { return "12124" }
 func streetForUser(userid: String) -> String { return "Charles Street" }
 let users = [user1]
@@ -203,7 +203,7 @@ you\'re moving a temporary result from one method to the next one.
 Defining an extra struct for something only used once (in between two or
 three methods) may not be required.
 
-``` {.Swift}
+``` Swift
 // Made up algorithm
 func calculateInterim(values: [Int]) -> (r: Int, alpha: CGFloat, chi: (CGFloat, CGFloat)) {
     return (values[0], 2, (4, 8))
@@ -234,7 +234,7 @@ structure that displays various information from a user profile and
 contains the key path to the actual value as well as a flag noting
 whether the value can be edited when tapping on the cell.
 
-``` {.Swift}
+``` Swift
 let tableViewValues = [
     (title: "Age", value: "user.age", editable: true),
     ("Name",           "user.name.combinedName",  true),
@@ -249,7 +249,7 @@ A better example is when you define an object and want to add the
 ability to add multiple change listeners to your object. Each listener
 consists of a name and the closure to be called upon any change:
 
-``` {.Swift}
+``` Swift
 typealias Action = (_ change: Any?) -> Void
 func addListener(name: String, action: @escaping Action) { }
 func removeListener(name: String) { }
@@ -261,7 +261,7 @@ struct will only be internal, and it will be used in only three cases.
 Here, using a tuple may even be the better solution, as the
 destructuring makes things simpler:
 
-``` {.Swift}
+``` Swift
 
 class ListenerStuff {
 
@@ -304,7 +304,7 @@ various statistics for each month in a year. You need to store a certain
 Integer value for each month separately. The solution that comes to mind
 first would of course be:
 
-``` {.Swift}
+``` Swift
 var monthValuesArray: [Int]
 ```
 
@@ -314,7 +314,7 @@ values, or 11. We can\'t tell the type checker that this is a fixed size
 array of 12 items[^1]. With a tuple, this specific constraint can easily
 be put into place:
 
-``` {.Swift}
+``` Swift
 var monthValues: (Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int)
 ```
 
@@ -328,7 +328,7 @@ won\'t even compile if you try to give 11 months to your object.
 Varargs i.e. variable function arguments are a very useful technique for
 situations where the number of function parameters is unknown.
 
-``` {.Swift}
+``` Swift
 // classic example
 func sum(of numbers: Int...) -> Int {
     // add up all numbers with the + operator
@@ -342,7 +342,7 @@ A tuple can be useful here if your requirement goes beyond simple
 integers. Take this function, which does a batch update of `n` entities
 in a database:
 
-``` {.Swift}
+``` Swift
 func batchUpdate(updates: (String, Int)...) {
     self.db.begin()
     for (key, value) in updates {
@@ -370,7 +370,7 @@ the type checker has no way to figure out what the type of each element
 is, and thus everything is typed as `Any`. It is your job then to cast
 and match this against your possible types to figure out what to do.
 
-``` {.Swift}
+``` Swift
 let t = (a: 5, b: "String", c: Date())
 
 let mirror = Mirror(reflecting: t)
@@ -398,7 +398,7 @@ the types within it. So instead of defining a generic tuple requirement,
 you define the specific but generic incarnation of the tuple you intend
 to use:
 
-``` {.Swift}
+``` Swift
 func wantsTuple<T1, T2>(_ tuple: (T1, T2)) -> T1 {
     return tuple.0
 }
@@ -412,7 +412,7 @@ fill out your types with details. This looks fairly useless and
 complicated, but I\'ve already had a use case where I need to do exactly
 this.
 
-``` {.Swift}
+``` Swift
 class BaseClass<A,B> {
     typealias Element = (A, B)
     func add(_ elm: Element) {
@@ -432,7 +432,7 @@ In many of the earlier examples, we rewrote a certain tuple type like
 `(Int, Int, String)` multiple times. This, of course, is not necessary,
 as we could define a `typealias` for it:
 
-``` {.Swift}
+``` Swift
 typealias Example = (Int, Int, String)
 func add(elm: Example) { }
 ```
@@ -466,7 +466,7 @@ achieve with tuples.
 
 If you\'d like to do the following:
 
-``` {.Swift}
+``` Swift
 let p: [(Int, Int): String]
 ```
 
@@ -481,7 +481,7 @@ via [twitter](http://twitter.com/terhechte).
 
 Given the following protocol:
 
-``` {.Swift}
+``` Swift
 protocol PointProtocol {
     var x: Int { get }
     var y: Int { get }
@@ -491,7 +491,7 @@ protocol PointProtocol {
 You can\'t get the type checker to accept the tuple `(x: 10, y: 20)` as
 implementing that protocol.
 
-``` {.Swift}
+``` Swift
 func addPoint(point: PointProtocol)
 addPoint(point: (x: 10, y: 20) as PointProtocol) // doesn't work.
 ```
@@ -508,7 +508,7 @@ forgot, feel free to [contact me](http://twitter.com/terhechte).
 
 # The code, suitable for use in a playground
 
-``` {.Swift}
+``` Swift
 import AppKit
 
 // * Creating and Accessing Tuples

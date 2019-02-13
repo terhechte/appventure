@@ -1,4 +1,5 @@
 [frontMatter]
+description = "FIXME FIXME FIXME"
 title = "Using try / catch in Swift with asynchronous closures"
 created = "2015-06-19"
 published = true
@@ -12,7 +13,7 @@ With Swift 2.0, Apple introduced a new error handling model with the
 handling in Swift 1.0, this was a welcome addition. It works basically
 as follows (simplified example):
 
-``` {.Javascript}
+``` Swift
 // We define a struct conforming to the new ErrorType
 enum Error : ErrorType {
     case DivisionError
@@ -43,7 +44,7 @@ a computation and the result of the computation. In Objective-C land,
 this is solved with delegates, blocks or (though rarely) NSInvocation,
 in Swift the typical solution is a closure.
 
-``` {.Javascript}
+``` Swift
 
 func asynchronousWork(completion: (r: NSDictionary?) -> Void) -> Void {
   // do work
@@ -58,7 +59,7 @@ the `asynchronousWork` function most error handling will be via
 try/catch. So one possible solution that comes to mind is handling the
 errors in there, and only forwarding the result, if there is one:
 
-``` {.Javascript}
+``` Swift
 func asynchronousWork(completion: (r: NSDictionary?) -> Void) -> Void {
     NSURLConnection.sendAsynchronousRequest(request, queue: queue) { 
       (response, data, error) -> Void in
@@ -87,7 +88,7 @@ about the error in question. In Swift 1.0, when such a structure
 presented itself, people usually implemented a Result type which can be
 either the result of the computation, or the error [^1]:
 
-``` {.Javascript}
+``` Swift
 enum ResultType {
     case Success(r: NSDictionary)
     case Error(e: ErrorType)
@@ -96,7 +97,7 @@ enum ResultType {
 
 Given this enum, we can then change the code as follows:
 
-``` {.Javascript}
+``` Swift
 func asynchronousWork(completion: (r: ResultType) -> Void) -> Void {
     NSURLConnection.sendAsynchronousRequest(request, queue: queue) { 
        (response, data, error) -> Void in
@@ -129,7 +130,7 @@ Instead, we do have try / catch, a construct which is incompatible with
 the task at hand because you can\'t catch something that happens at some
 point in the future. I.e:
 
-``` {.Javascrip}
+``` Swift
 
 func asynchronousWork(completion: (r: ResultType) -> Void) throws -> Void {
 }
@@ -143,7 +144,7 @@ has even begun.
 However, a nice way to solve this is by encapsulating the error into a
 throwable closure. See for yourself:
 
-``` {.Javascript}
+``` Swift
 
 func asynchronousWork(completion: (inner: () throws -> NSDictionary) -> Void) -> Void {
     NSURLConnection.sendAsynchronousRequest(request, queue: queue) { 

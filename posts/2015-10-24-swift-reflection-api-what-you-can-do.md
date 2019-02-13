@@ -38,7 +38,7 @@ mirror will then let you query it.
 Before we do that, let\'s define a simple data structure that we can use
 as our subject.
 
-``` {.swift noweb-ref="subjects1"}
+``` Swift
 import Foundation.NSURL
 
 public class Store {
@@ -68,14 +68,13 @@ let aBookmark = Bookmark(title: "Appventure", url: NSURL(string: "appventure.me"
 
 The easiest way of creating a mirror is the `reflecting` initializer:
 
-``` {.swift}
+``` Swift
 public init(reflecting subject: Any)
 ```
 
 Lets use it with our `aBookmark` `struct`:
 
-``` {.swift noweb="strip-export" noweb-ref="subject1"}
-<<subjects1>>
+``` Swift
 let aMirror = Mirror(reflecting: aBookmark)
 print(aMirror)
 // prints : Mirror for Bookmark
@@ -100,7 +99,7 @@ information you\'d like to query.
 The first one is the `DisplayStyle` `enum` which tells you the type of
 the subject:
 
-``` {.swift}
+``` Swift
 public enum DisplayStyle {
     case Struct
     case Class
@@ -119,7 +118,7 @@ Swift standard library that are of type `Any` but aren\'t listed in the
 `DisplayStyle` enum above. What happens when you try to reflect over one
 of those, say a closure?
 
-``` {.swift}
+``` Swift
 let closure = { (a: Int) -> Int in return a * 2 }
 let aMirror = Mirror(reflecting: closure)
 ```
@@ -129,7 +128,7 @@ In this case, you\'d get a mirror, but the `DisplayStyle` would be nil
 
 There\'s also a `typealias` for the child elements of a `Mirror`:
 
-``` {.swift}
+``` Swift
 public typealias Child = (label: String?, value: Any)
 ```
 
@@ -144,7 +143,7 @@ tuple will have labels \".0\", \".1\" and so on.
 
 Next up is the `AncestorRepresentation` `enum` [^3]:
 
-``` {.swift}
+``` Swift
 public enum AncestorRepresentation {
     /// Generate a default mirror for all ancestor classes.  This is the
     /// default behavior.
@@ -188,8 +187,7 @@ This is easy. It will just return a case of the `DisplayStyle` `enum`.
 If you\'re trying to reflect over an unsupported type, you\'ll get an
 empty `Optional` back (as explained above).
 
-``` {.swift noweb="strip-export"}
-<<subject1>>
+``` Swift
 print (aMirror.displayStyle)
 // prints: Optional(Swift.Mirror.DisplayStyle.Struct)
 ```
@@ -203,8 +201,7 @@ are also children returned by this property. The protocol
 `AnyForwardCollection` means that this is a collection type with indices
 that support forward traversal.
 
-``` {.swift noweb="strip-export"}
-<<subject1>>
+``` Swift
 for case let (label?, value) in aMirror.children {
     print (label, value)
 }
@@ -220,8 +217,7 @@ for case let (label?, value) in aMirror.children {
 
 This is the type of the subject:
 
-``` {.swift noweb="strip-export"}
-<<subject1>>
+``` Swift
 print(aMirror.subjectType)
 //prints : Bookmark
 print(Mirror(reflecting: 5).subjectType)
@@ -243,8 +239,7 @@ This is the mirror of the superclass of our subject. If the subject is
 not a class, this will be an empty `Optional`. If this is a class-based
 type, you\'ll get a new `Mirror`:
 
-``` {.swift noweb="strip-export"}
-<<subject1>>
+``` Swift
 // try our struct
 print(Mirror(reflecting: aBookmark).superclassMirror())
 // prints: nil
@@ -293,7 +288,7 @@ offer?
 
 Our `protocol` could look something like this:
 
-``` {.swift}
+``` Swift
 protocol StructDecoder {
     // The name of our Core Data Entity
     static var EntityName: String { get }
@@ -306,7 +301,7 @@ The `toCoreData` method uses the new Swift 2.0 exception handling to
 throw an error, if the conversion fails. There\'re several possible
 error cases, which are outlined in the `ErrorType` `enum` below:
 
-``` {.swift}
+``` Swift
 enum SerializationError: ErrorType {
     // We only support structs
     case StructRequired
@@ -328,7 +323,7 @@ Let\'s create a struct and add protocol conformance:
 
 ## Bookmark struct
 
-``` {.swift}
+``` Swift
 struct Bookmark {
    let title: String
    let url: NSURL
@@ -346,7 +341,7 @@ lot of work. Structs do not support inheritance, so we can\'t use a base
 class. However, we can use a `protocol extension` to extend to all
 conforming `structs`:
 
-``` {.swift}
+``` Swift
 extension StructDecoder {
     func toCoreData(context: NSManagedObjectContext) throws -> NSManagedObject {
     }
@@ -373,7 +368,7 @@ following steps:
 
 When we implement this, we have:
 
-``` {.swift}
+``` Swift
 // Get the name of the Core Data Entity
 let entityName = self.dynamicType.EntityName
 
@@ -392,7 +387,7 @@ let managedObject = NSManagedObject(entity: desc, insertIntoManagedObjectContext
 Next up, we\'d like to use the Reflection API to read our bookmarks
 properties and write it into our `NSManagedObject` instance.
 
-``` {.swift}
+``` Swift
 // Create a Mirror
 let mirror = Mirror(reflecting: self)
 
@@ -408,7 +403,7 @@ a `NSManagedObject` which we can set properties on. As the mirror offers
 a way to read all children, we can iterate over them and set the values.
 So let\'s do that.
 
-``` {.swift}
+``` Swift
 for case let (label?, value) in mirror.children {
     managedObject.setValue(value, forKey: label)
 }
@@ -422,7 +417,7 @@ this, we have to test the value for `AnyObject` conformance. This also
 means that we can throw an error if we receive a property with a type
 that does not conform to `AnyObject` (such as an `enum`, for example).
 
-``` {#feature-image .swift noweb="strip-export" export-image="true" export-template="template5"}
+``` Swift
 let mirror = Mirror(reflecting: self)
 
 guard mirror.displayStyle == .Struct 
@@ -443,7 +438,7 @@ child is of type `AnyObject`.
 Now, the only thing left to do is return our `NSManagedObject`. The
 complete code looks like this:
 
-``` {.swift}
+``` Swift
 extension StructDecoder {
     func toCoreData(context: NSManagedObjectContext) throws -> NSManagedObject {
         let entityName = self.dynamicType.EntityName
@@ -543,7 +538,7 @@ has additional initializers for this.
 
 The first special `init` is tailor-made for collections:
 
-``` {.swift}
+``` Swift
 public init<T, C : CollectionType where C.Generator.Element == Child>
   (_ subject: T, children: C, 
    displayStyle: Mirror.DisplayStyle? = default, 
@@ -561,7 +556,7 @@ us to define much more details about the reflection process.
 
 The second can be used for a `class` or a `struct`.
 
-``` {.swift}
+``` Swift
 public init<T>(_ subject: T, 
   children: DictionaryLiteral<String, Any>, 
   displayStyle: Mirror.DisplayStyle? = default, 
@@ -573,7 +568,7 @@ properties) of your subject as a `DictionaryLiteral` which is a bit like
 a dictionary only that it can be used directly as function parameters.
 If we implement this for our `Bookmark struct`, it looks like this:
 
-``` {.swift}
+``` Swift
 extension Bookmark: CustomReflectable {
     func customMirror() -> Mirror {
         let children = DictionaryLiteral<String, Any>(dictionaryLiteral: 

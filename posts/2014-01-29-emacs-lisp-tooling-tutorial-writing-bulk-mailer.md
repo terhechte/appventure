@@ -1,12 +1,10 @@
 [frontMatter]
+description = "FIXME FIXME FIXME"
 title = "An Emacs Lisp tooling tutorial, writing a bulk mailer"
 created = "2014-01-29"
 published = true
 keywords = ["emacs", "lisp", "bulk", "mailer", "tutorial", "email", "vim", "vimscript", "evil"]
-slug = "2014-01-29-emacs-lisp-tooling-tutorial-writing-bulk-mailer.html"
 tags = ["emacs"]
-[meta]
-alias = "["/2014/why-emacs-lisp-is-awesome-for-coding-extensions.html"]"
 ---
 
 ---
@@ -65,7 +63,7 @@ You don\'t even have to save the code in order to use it.
 The following line of code binds the shortcut `ctrl-x + 8` to a function
 that inserts the string \"test\" at the current cursor position
 
-``` {.Lisp}
+``` Lisp
 (global-set-key (kbd "C-x 8") (lambda () (interactive) (insert "test")))
 ```
 
@@ -79,7 +77,7 @@ repeat a certain set of characters n times, i.e.
 characters as well as how often you want them repeated[^4]. The required
 code for that is quite simple:
 
-``` {.Lisp}
+``` Lisp
 (defun repeat-the-chars (chars repeat)
   (interactive "MEnter Characters: \nnEnter Repetitions: ")
   (mapcar (lambda (x) (insert chars)) (number-sequence 0 repeat)))
@@ -109,7 +107,7 @@ the [Slick framework](http://slick.typesafe.com). The models had a lot
 of fields, but the definitions all looked rather similar. The syntax was
 as follows:
 
-``` {.Scala}
+``` Swift
 def name = column[String] ("bo_name")
 def location = column[String] ("bo_location")
 def opens = column[Int] ("bo_opens")
@@ -119,7 +117,7 @@ def closes = column[Int] ("bo_closes")
 Since I had to write a lot of fields in this a syntax, I sought a way to
 automate it. I wrote the following Emacs Lisp Snippet:
 
-``` {.Lisp}
+``` Lisp
 (defun create-column (name type)
   (interactive "Mname: \nMtype: ")
   (setq tp (split-string name "_"))
@@ -218,7 +216,7 @@ fine using the `compose-mail` function.
 
     Our file will have the format:
 
-    ``` {.CSV}
+    ``` CSV
     "Carl" "Hogan" "VentureBeat" "hogan@venturebeat.com"
     "Claus" "Cafka" "StartupStartup" "claus@startupstartup.com"
     ```
@@ -262,7 +260,7 @@ fine using the `compose-mail` function.
     just read this template from an open file in Emacs (buffer). Just as
     with the list of addresses.
 
-    ``` {.Lisp}
+    ``` Lisp
     (defun get-template-data (from-template-buffer)
       "Return the mail template from the template buffer as a string"
       (with-current-buffer (get-buffer from-template-buffer) (buffer-string)))
@@ -278,7 +276,7 @@ fine using the `compose-mail` function.
     Finally, we need a function that reads one line after the other, and
     composes and sends a mail.
 
-    ``` {.Lisp}
+    ``` Lisp
     (defvar subject "Awesome startup started!")
 
     (defun personalize ()
@@ -330,7 +328,7 @@ fine using the `compose-mail` function.
     When we call the `personalize` function it will open a new buffer
     for us, that looks like this.
 
-    ``` {.Text}
+    ``` Text
     To: hogan@venturebeat.com
     Subject: Awesome startup started!
     From: Joe the Coder <coder1@awesome-startup.com>

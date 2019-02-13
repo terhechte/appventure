@@ -46,7 +46,7 @@ Manager documentation and prefix our library with the letter
 **C**](https://github.com/apple/swift-package-manager/blob/master/Documentation/SystemModules.md)[^3].
 We\'ll name our library `CX11.swift`
 
-``` {.bash}
+``` bash
 mkdir CX11.swift
 ```
 
@@ -59,7 +59,7 @@ here](http://clang.llvm.org/docs/Modules.html). We create the module map
 file, and edit the contents (via an editor of your choice, in this case
 we\'re using `nano`):
 
-``` {.bash}
+``` bash
 touch CX11.swift/module.modulemap
 nano CX11.swift/module.modulemap
 ```
@@ -74,7 +74,7 @@ below. Apart from including the headers, we also need to tell Swift
 which library to link against. We\'re using the `link` keyword for that.
 Our `modulemap` looks like this:
 
-``` {.scala}
+``` Swift
 module CX11 [system] {
   module Xlib {
       header "/usr/include/X11/Xlib.h"
@@ -99,7 +99,7 @@ other headers (via `#include`) commands. A good example is
 `<Cocoa/Cocoa.h>` or `<Foundation/Foundation.h>` or `<gtk/gtk.h>`.
 Umbrella headers are defined via the umbrella keyword:
 
-``` {.scala}
+``` Swift
 umbrella header "/usr/include/gtk/gtk.h"
 ```
 
@@ -107,14 +107,14 @@ umbrella header "/usr/include/gtk/gtk.h"
 umbrella header. In this case you just point Swift to the directory of
 headers:
 
-``` {.scala}
+``` Swift
 umbrella "/usr/include/X11/"
 ```
 
 In addition to the modulemap, we\'ll also need a **Package.swift** file,
 otherwise building will fail. This file can be empty though:
 
-``` {.bash}
+``` bash
 touch CX11.swift/Package.swift
 ```
 
@@ -123,7 +123,7 @@ packages. So before we\'re done, we need to create a Git repository for
 our Package, add all the files, and create a version tag. This is fairly
 easy though:
 
-``` {.bash}
+``` bash
 cd CX11.swift
 git init
 git add .
@@ -144,7 +144,7 @@ In order to use a package, we need to define a `Package.swift` file
 which will tell Swift which packages we intend to import for our
 project. But first, we need to create a directory for our project.
 
-``` {.bash}
+``` bash
 mkdir swift-x11
 touch swift-x11/Package.swift
 touch swift-x11/main.swift
@@ -153,7 +153,7 @@ touch swift-x11/main.swift
 Keep in mind that (for this example to work) the `swift-x11` folder has
 to be next to the `CX11.swift` folder. I.e.:
 
-``` {.bash}
+``` bash
 ls -l
 CX11.swift
 swift-x11
@@ -163,7 +163,7 @@ Before we start writing the actual Swift code to interact with X11, we
 need to tell our `swift-x11` project how to import the `CX11` package.
 This is done, as explained below, via the `swift-x11/Package.swift`:
 
-``` {.swift}
+``` Swift
 import PackageDescription
 
 let package = Package(
@@ -181,7 +181,7 @@ uploaded my own CX11.swift to
 GitHub](https://github.com/terhechte/CX11.swift), and you could
 alternatively link directly to the GitHub version as follows:
 
-``` {.swift}
+``` Swift
 import PackageDescription
 
 let package = Package(
@@ -200,7 +200,7 @@ One issue which I could not solve is that macro definitions in the X11
 header file are not imported into Swift. The `Xlib.h` defines many
 shortcut macros like:
 
-``` {.c org-language="C"}
+``` C
 #define RootWindow(dpy, src) (ScreenOfDisplay(dpy, src)->root)
 #define ScreenOfDisplay(dpy, scr)(&((_XPrivDisplay)dpy)->screens[scr])
 ```
@@ -218,7 +218,7 @@ below. If you find them, [feel free to open a PR on this repo
 
 We begin by importing the `CX11` library which we defined above:
 
-``` {.swift}
+``` Swift
 import CX11.Xlib
 import CX11.X
 ```
@@ -245,7 +245,7 @@ After this, we have to define a couple of variables.
 -   Finally, we need a pointer to the X11 root window, which houses the
     other windows. This is the `rootWindow` variable.
 
-``` {.swift}
+``` Swift
 // The X11 Display
 var d: _XPrivDisplay
 
@@ -267,7 +267,7 @@ X11 Server. However, as users can also run this app when no X server is
 running (i.e. in console mode) we need to make sure that the connection
 succeeded:
 
-``` {.swift}
+``` Swift
 d = XOpenDisplay(nil)
 if d == nil {
     fatalError("cannot open display")
@@ -281,7 +281,7 @@ directly. However, as the current screen `s` is a
 `UnsafeMutablePointer`, we need to add the `memory` property in order to
 access the `root` instance.
 
-``` {.swift}
+``` Swift
 // Get the default screen
 s = XDefaultScreenOfDisplay(d)
 
@@ -296,7 +296,7 @@ it on the screen. We\'re [using the `XCreateSimpleWindow` function for
 that](http://linux.die.net/man/3/xcreatesimplewindow). The function has
 the following parameters:
 
-``` {.c org-language="C"}
+``` C
 XCreateSimpleWindow(Display *display, Window parent, int x, int y, 
   unsigned int width, unsigned int height, unsigned int border_width, 
   unsigned long border, unsigned long background);
@@ -307,7 +307,7 @@ color creation, we will simply pass in a reference to the default black
 and white colors which are defined on the current screen. We have to use
 the `.memory` property again.
 
-``` {.swift}
+``` Swift
 // Create our window
 w = XCreateSimpleWindow(d, rootWindow, 10, 10, 200, 100, 1, 
   s.memory.black_pixel, s.memory.white_pixel)
@@ -327,7 +327,7 @@ one is the `KeyPress` event. [Receiving events works by registering
 event masks via the `XSelectInput`
 function](http://tronche.com/gui/x/xlib/event-handling/XSelectInput.html):
 
-``` {.swift}
+``` Swift
 XSelectInput(d, w, ExposureMask | KeyPressMask)
 ```
 
@@ -335,7 +335,7 @@ Now that we created our window, we want to display it. [This is done via
 the `XMapWindow`
 function](http://tronche.com/gui/x/xlib/window/XMapWindow.html):
 
-``` {.swift}
+``` Swift
 XMapWindow(d, w)
 ```
 
@@ -347,7 +347,7 @@ continously pulls the `XNextEvent` function to get new X11 events. Then,
 we\'ll test the event to see whether it is a `Expose` or a `KeyPress`
 event[^5]. We\'re testing the events using the swift `switch` statement:
 
-``` {#feature-image .swift export-image="true" export-template="template4"}
+``` Swift
 loop: while true {
 
   // Wait for the next event
@@ -390,7 +390,7 @@ and quit the app once the user enters a key.
 To use this, simply check out the repo (preferrably on Linux) and do the
 following in the folder:
 
-``` {.bash}
+``` bash
 swift build
 ```
 
@@ -399,7 +399,7 @@ This will clone the `CX11.swift` package and build the binary in the
 
 Run it via:
 
-``` {.bash}
+``` bash
 .build/debug/swift-x11-example
 ```
 

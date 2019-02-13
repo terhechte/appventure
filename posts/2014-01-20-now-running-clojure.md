@@ -1,7 +1,8 @@
 [frontMatter]
-published = true
+description = "FIXME FIXME FIXME"
 title = "Now Running Clojure"
 created = "2014-01-20"
+published = true
 slug = "2014-01-20-now-running-clojure.html"
 tags = ["clojure", "blog"]
 ---

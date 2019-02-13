@@ -17,7 +17,7 @@ find yourself initializing enums from raw values, maybe because the
 values were intermittendly stored somewhere else, say in the
 `NSUserDefaults`:
 
-``` {.swift exports="both" cache="yes"}
+``` Swift
 enum Device: String {
   case phone, tablet, watch
 }
@@ -34,7 +34,7 @@ Prints Optional(main.Device.phone)
 As soon as you\'re using associated values in your enums, this doesn\'t
 work anymore:
 
-``` {.swift}
+``` Swift
 enum Example {
    case Factory(workers: Int)
    case House(street: String)
@@ -48,7 +48,7 @@ different parameters, so this can\'t be generalized.
 
 However, that\'s not the case when your associated types all match up:
 
-``` {.swift}
+``` Swift
 enum Device {
     case phone(name: String, screenSize: CGSize)
     case watch(name: String, screenSize: CGSize)
@@ -65,7 +65,7 @@ have to do is perform a
 [match](https://appventure.me/2015/08/20/swift-pattern-matching-in-detail/)
 in order to create the correct instance:
 
-``` {.swift exports="both" cache="yes"}
+``` Swift
 import Foundation
 
 enum Device {
@@ -94,7 +94,7 @@ This looks ok, but it **is** already a bit of repetitive code. Once you
 develop more than just three enum cases / two associated types, this
 will quickly get out of hand.
 
-``` {.swift}
+``` Swift
 enum Vehicle {
   case .car(wheels: Int, capacity: Int, weight: Int, length: Int, height: Int, width: Int, color: Int, name: Int, producer: Int, creation: NSDate, amountOfProducedUnits: Int)
   case .ship(wheels: Int, capacity: Int, weight: Int, length: Int, height: Int, width: Int, color: Int, name: Int, producer: Int, creation: NSDate, amountOfProducedUnits: Int)
@@ -115,7 +115,7 @@ So.. how do we solve this? Interestingly, there\'s a quirky similarity
 between the initializer of an associated type and a closure. Take this
 code:
 
-``` {.swift}
+``` Swift
 enum Example {
   case test(x: Int)
 }
@@ -129,7 +129,7 @@ the correct types, will return an instance of said type.
 
 This means that, the following is valid, working Swift:
 
-``` {.swift exports="both" cache="yes"}
+``` Swift
 enum Fruit {
   case apple(amount: Int)
   case orange(amount: Int)
@@ -147,7 +147,7 @@ apple(10) apple(12)
 So, how would that help us simplify the gross code duplication problem
 above? Have a look:
 
-``` {#feature-image .swift export-image="true" export-template="template5" exports="both" cache="yes"}
+``` Swift
 import Foundation
 
 enum Device {
@@ -186,7 +186,7 @@ This leads to a much shorter implementation, especially for bigger enums
 (like our **Vehicle** example above). As you can see, creating a
 `Device` instance is then as simple as:
 
-``` {.swift}
+``` Swift
 Device.initializers["phone"]?(name: "iPhone 5", screenSize: CGSize(width: 640, height: 1134)))
 ```
 

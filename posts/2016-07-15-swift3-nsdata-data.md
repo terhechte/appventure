@@ -34,7 +34,7 @@ example application that will read and parse a Doom [^2] WAD file.
 One of the most common usage scenarios for `NSData` is the loading and
 writing of data via these calls:
 
-``` {.swift}
+``` Swift
 func writeToURL(_ url: NSURL, atomically atomically: Bool) -> Bool
 func writeToURL(_ url: NSURL, options writeOptionsMask: NSDataWritingOptions) throws
 // ... (implementations for file: String instead of NSURL)
@@ -46,7 +46,7 @@ init(contentsOfURL url: NSURL, options readOptionsMask: NSDataReadingOptions) th
 For those basic usages, very little changed. The new `Data` type offers
 these methods:
 
-``` {.swift}
+``` Swift
 init(contentsOf: URL, options: ReadingOptions)
 func write(to: URL, options: WritingOptions)
 ```
@@ -72,7 +72,7 @@ those methods from the following protocols:
 This adds functionality to `Data` which did not exist in `NSData`.
 Here\'s a small sample:
 
-``` {.swift}
+``` Swift
 func distance(from: Int, to: Int)
 func dropFirst(Int)
 func dropLast(Int)
@@ -97,7 +97,7 @@ can now be done on the byte contents of `Data` types. This, to me, is a
 huge improvement over `NSData`. An example of the benefits this brings
 is how easily you can now subscript and compare data:
 
-``` {.swift prologue=""import Foundation""}
+``` Swift
 var data = Data(bytes: [0x00, 0x01, 0x02, 0x03])  
 print(data[2]) // 2
 data[2] = 0x09
@@ -107,7 +107,7 @@ print (data == Data(bytes: [0x00, 0x01, 0x09, 0x03])) // true
 `Data` also offers several new initializers which specifically handle
 other common Swift data types:
 
-``` {.swift}
+``` Swift
 init(bytes: Array<UInt8>)
 init<SourceType>(buffer: UnsafeMutableBufferPointer<SourceType>)
 init(repeating: UInt8, count: Int)
@@ -119,7 +119,7 @@ Another difference which you will run into if you\'re using `Data` to
 interact with lower level code such as `C` libraries is the distinct
 lack of the `NSData` `getBytes` method:
 
-``` {.swift}
+``` Swift
 // NSData
 func getBytes(_ buffer: UnsafeMutablePointer<Void>, length length: Int)
 ```
@@ -142,7 +142,7 @@ header define the amount of items stored in this file.
 
 Parsing this data with `NSData` is pretty straight forward:
 
-``` {.swift}
+``` Swift
 let data = ...
 var length: UInt32 = 0
 var start: UInt32 = 0
@@ -160,7 +160,7 @@ into the struct:
   UInt32     4      Start of Data
   UInt32     4      Amount of items
 
-``` {.swift}
+``` Swift
 let data = ...
 struct Header { 
   let start: UInt32
@@ -175,7 +175,7 @@ data.getBytes(&header, range: NSRange(location: 0, length: 8))
 However, if you\'re using `Data` this functionality is not available
 anymore. Instead, `Data` offers a new method:
 
-``` {.swift}
+``` Swift
 // Access the bytes in the data.
 func withUnsafeBytes<ResultType, ContentType>((UnsafePointer<ContentType>) -> ResultType)
 ```
@@ -183,7 +183,7 @@ func withUnsafeBytes<ResultType, ContentType>((UnsafePointer<ContentType>) -> Re
 This method allows direct access of the our data\'s bytes from within a
 closure. Let\'s see a simple example:
 
-``` {.swift prologue=""import Foundation""}
+``` Swift
 let data = Data(bytes: [0x01, 0x02, 0x03])
 data.withUnsafeBytes { (pointer: UnsafePointer<UInt8>) -> Void in
     print(pointer)
@@ -205,7 +205,7 @@ this into an unsafe pointer of our target type. `UnsafePointer` has a
 `pointee` property which returns the type that the pointer is pointing
 to as the correct type:
 
-``` {.swift prologue=""import Foundation""}
+``` Swift
 let data = Data(bytes: [0x00, 0x01, 0x00, 0x00])
 let result = data.withUnsafeBytes { (pointer: UnsafePointer<Int32>) -> Int32 in
       return pointer.pointee
@@ -219,7 +219,7 @@ as `Int32` by defining an `UnsafePointer<Int32>` in the closure. You can
 shorten this code if the compiler is able to infer the result type from
 the context:
 
-``` {.swift}
+``` Swift
 let result: Int32 = data.withUnsafeBytes { $0.pointee }
 ```
 
@@ -242,7 +242,7 @@ still did not account for the fact that we need to perform the operation
 on a subsequence of our data and not the whole `Data` instance. A
 generic solution would look like this:
 
-``` {.swift prologue=""import Foundation""}
+``` Swift
 extension Data {
     func scanValue<T>(start: Int, length: Int) -> T {
         return self.subdata(in: start..<start+length).withUnsafeBytes { $0.pointee }
@@ -267,7 +267,7 @@ The opposite case, taking an existing variable and getting a `Data`
 buffer to the content, is not relevant for the Doom example below, but
 easy enough to implement:
 
-``` {.swift prologue=""import Foundation""}
+``` Swift
 var variable = 256
 let data = Data(buffer: UnsafeBufferPointer(start: &variable, count: 1))
 print(data) // : <00010000 00000000>
@@ -314,14 +314,14 @@ it. First, lets parse the header.
 
 Reading a WAD file is straight forward:
 
-``` {.swift}
+``` Swift
 let data = try Data(contentsOf: wadFileURL, options: .alwaysMapped)
 ```
 
 Once we have the data, we need to parse the header. We\'re making heavy
 use of the `scanValue` `Data` extension we defined earlier.
 
-``` {.swift}
+``` Swift
 public func validateWadFile() throws {
     // Several Wad File definitions
     let wadMaxSize = 12, wadLumpsStart = 4, wadDirectoryStart = 8, wadDefSize = 4
@@ -399,7 +399,7 @@ easier part, reading the start and size.
 Before we start, we should define a data structure that can store the
 information from the directory:
 
-``` {.swift}
+``` Swift
 public struct Lump {
     public let filepos: Int32
     public let size: Int32
@@ -410,7 +410,7 @@ public struct Lump {
 Afterwards, we take the slice of data that constitutes our directory
 from the complete data instance.
 
-``` {.swift}
+``` Swift
 // Define the default size of a directory entry
 let wadDirectoryEntrySize = 16
 // Extract the directory slice from the main Data
@@ -420,7 +420,7 @@ let directory = data.subdata(in: Int(directoryLocation)..<(Int(directoryLocation
 Next, we can iterate over the `Data` in 16byte steps. This works great
 with Swift\'s `stride` function:
 
-``` {.swift}
+``` Swift
 for currentIndex in stride(from: 0, to: directory.count, by: wadDirectoryEntrySize) {
     let currentDirectoryEntry = directory.subdata(in: currentIndex..<currentIndex+wadDirectoryEntrySize)
 
@@ -442,7 +442,7 @@ Swift string once we reach a null terminator **or** once we reach 8
 bytes. The very first thing to do is create a data slice with the
 relevant data:
 
-``` {.swift}
+``` Swift
 let nameData = currentDirectoryEntry.subdata(in: 8..<16)
 ```
 
@@ -450,7 +450,7 @@ Swift offers great support for C String interoperability. This means
 that to create a string we just need to hand the data to a `String`
 initializer:
 
-``` {.swift}
+``` Swift
 let lumpName = String(data: nameData, encoding: String.Encoding.ascii)
 ```
 
@@ -466,7 +466,7 @@ If we want to support null characters, Swift offers something else, a
 `cString` initializer which is defined for reading valid cStrings with
 null terminators:
 
-``` {.swift}
+``` Swift
 // Produces a string containing the bytes in a given C array, 
 // interpreted according to a given encoding.
 init?(cString: UnsafePointer<CChar>, encoding enc: String.Encoding)
@@ -476,7 +476,7 @@ Note that it doesn\'t require a `data` instance as its parameter but an
 unsafePointer to `CChars` instead. We already know how to do that, so
 lets write the code:
 
-``` {.swift}
+``` Swift
 let lumpName2 = nameData.withUnsafeBytes({ (pointer: UnsafePointer<UInt8>) -> String? in
     return String(cString: UnsafePointer<CChar>(pointer), encoding: String.Encoding.ascii)
 })
@@ -492,7 +492,7 @@ Since this logic is custom to Doom, we also need to implement custom
 code. As `Data` supports Swift\'s collection & sequence operations, we
 can just solve this in terms of reduce:
 
-``` {.swift}
+``` Swift
 let lumpName3Bytes = try nameData.reduce([UInt8](), { (a: [UInt8], b: UInt8) throws -> [UInt8] in
     guard b > 0 else { return a }
     guard a.count <= 8 else { return a }
@@ -518,7 +518,7 @@ pointer addresses.
 How would we implement this logic in Swift? We can actually do something
 quite similar in Swift by, again, utilizing `withUnsafeBytes`. Lets see:
 
-``` {.swift}
+``` Swift
 
 let finalLumpName = nameData.withUnsafeBytes({ (pointer: UnsafePointer<CChar>) -> String? in
     var localPointer = pointer
@@ -557,7 +557,7 @@ with the subdata of actual C String.
 
 This allows us to create a new `Lump` struct with the required data:
 
-``` {.swift}
+``` Swift
 lumps.append(Lump(filepos: lumpStart, size: lumpSize, name: lumpName4))                
 ```
 
@@ -590,7 +590,7 @@ documentation writes:
 > subclass of NSData in struct Data by converting it using myData as
 > Data.
 
-``` {.swift prologue=""import Foundation""}
+``` Swift
 // Create a new Data Struct
 let aDataStruct = Data()
 // Get the underlying reference type NSData

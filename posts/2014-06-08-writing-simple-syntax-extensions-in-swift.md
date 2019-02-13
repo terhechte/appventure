@@ -1,4 +1,5 @@
 [frontMatter]
+description = "FIXME FIXME FIXME"
 title = "Creating a Swift syntax extension: the Lisp 'cond' function"
 created = "2014-06-08"
 published = true
@@ -27,7 +28,7 @@ in the Swift language that gives us some flexibility in this domain. If
 you look at the Swift documentation for the various operators, you\'ll
 find this line:
 
-``` {.Javascript}
+``` Swift
 func &&(lhs: LogicValue, rhs: @auto_closure () -> LogicValue) -> Bool
 ```
 
@@ -42,7 +43,7 @@ tells Swift to wrap the expression into a closure and only evaluate it
 if explicitly told to do so. The full function might look something like
 this
 
-``` {.Javascript}
+``` Swift
 func &&(lhs: LogicValue, rhs: @auto_closure () -> LogicValue) -> Bool {
   // Proof for left hand side
   if lhs {
@@ -63,7 +64,7 @@ new, namely the `cond` expression from Lisp?
 
 In Lisp, `cond` works as follows:
 
-``` {.Clojure}
+``` Clojure
 (cond ((= a 1) "a is one")
       ((= a 2) "a is two")
       ((= a 4) "a is four"))
@@ -94,7 +95,7 @@ depending on what the user selected.
 
 We want something that works for the current theoretical code:
 
-``` {.Javascript}
+``` Swift
 var a = get_user_input()
 var b = get_current_entity()
 // delete fro memory or db depending on what user selected
@@ -111,7 +112,7 @@ entity to be deleted from the db and the memory.
 
 ### A first version
 
-``` {.Javascript}
+``` Swift
 func cond_1 (a1: @auto_closure () -> Bool, b1: @auto_closure () -> Any,
     a2: @auto_closure () -> Bool, b2: @auto_closure () -> Any,
     bf: @auto_closure () -> Any) -> Any {
@@ -129,7 +130,7 @@ default expression (as a fallback). Lets see how it works. We will
 define two simple functions that perform side effects (imagine deleting
 a file, or writing to a file).
 
-``` {.Javascript}
+``` Swift
 func perform_side_effects1() -> Any {
     println("modify a state")
     return 1
@@ -157,7 +158,7 @@ function overloading so we can simply define more functions with more
 cases and let swift do the hard work of figuring out which one to
 choose:
 
-``` {.Javascript}
+``` Swift
 func cond_2 (a1: @auto_closure () -> Bool, b1: @auto_closure () -> Any,
     a2: @auto_closure () -> Bool, b2: @auto_closure () -> Any,
     bf: @auto_closure () -> Any) -> Any {
@@ -198,7 +199,7 @@ inference for anything that comes out of this function. For example, the
 following will not work because even though we\'re clearly returning
 `Int` our actual function is set to return `Any`
 
-``` {.Javascript}
+``` Swift
 // Causes an error
 var b:Int = cond_2(0 == 1, 1, 0 == 2, 2, 3)
 // Works fine
@@ -211,7 +212,7 @@ support for [Generic
 Programming](http://en.wikipedia.org/wiki/Generic_programming) and only
 a simple change is necessary for this:
 
-``` {.Javascript}
+``` Swift
 func cond_3<T> (a1: @auto_closure () -> Bool, b1: @auto_closure () -> T,
     a2: @auto_closure () -> Bool, b2: @auto_closure () -> T,
     bf: @auto_closure () -> T) -> T {
@@ -238,7 +239,7 @@ String, Array, Int, or custom types.
 That\'s it! We\'ve implemented our own syntax extension for Swift! Now
 we can write code this as this
 
-``` {.Javascript}
+``` Swift
 var a = get_user_input()
 var b = get_current_entity()
 // delete fro memory or db depending on what user selected
@@ -269,7 +270,7 @@ with the parameters variations. Still not optimal but much more
 readable. Sadly, this crashes the compiler (actually it kills Xcode the
 minute you type it in, which is pretty impressive.[^2]).
 
-``` {.Javascript}
+``` Swift
 func _cond<T> (a1: @auto_closure () -> Bool, b1: @auto_closure () -> T?,
     a2: @auto_closure () -> Bool, b2: @auto_closure () -> T?,
     a3: @auto_closure () -> Bool, b3: @auto_closure () -> T?,
@@ -320,7 +321,7 @@ slight modification](https://news.ycombinator.com/item?id%3D7865603)
 that makes it easy to use unlimited cases. The only downside is that the
 fallback has to be the first item.
 
-``` {.Javascript}
+``` Swift
 func cond<T>(#fallback: T, testsAndExprs: (test: @auto_closure () -> Bool, expr: @auto_closure () -> T)...) -> T {
     for (t, e) in testsAndExprs {
         if t() {

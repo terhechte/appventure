@@ -20,7 +20,7 @@ features that define said type system are `associated types`. They can
 be defined on a `protocol` to allow implementors of the `protocol` to
 specialize certain types in a generic way:
 
-``` {.swift}
+``` Swift
 protocol Example {
   associatedtype Value
   var value: Value { get }
@@ -38,7 +38,7 @@ The example below shows an example of ****finishing**** a type. By
 explicitly telling the compiler that the `Value` type is `Int` it is now
 able to understand `ImplementExample` fully.
 
-``` {.swift}
+``` Swift
 struct ImplementExample: Example {
   typealias Value = Int
 }
@@ -55,7 +55,7 @@ you end up with associated types trouble.
 The classic example of `associated types` trouble certainly is the
 following Swift error message:
 
-``` {.bash}
+``` bash
 protocol 'Bookmarkable' can only be used as a generic constraint because it has Self 
 or associated type requirements
 var bookmarks: [Bookmarkable]
@@ -64,7 +64,7 @@ var bookmarks: [Bookmarkable]
 This happens once your type conforms to a protocol which conforms to
 `Equatable`:
 
-``` {.swift}
+``` Swift
 protocol Bookmarkable: Equatable {
 }
 
@@ -91,7 +91,7 @@ simply require your full fledged, final, types to conform to the
 `Equatable` protocol instead of your custom protocol. Consider the
 previously defined `Bookmarkable` protocol:
 
-``` {.swift}
+``` Swift
 protocol Bookmarkable {
 }
 
@@ -125,7 +125,7 @@ Here, the idea is that we take one of the types that already implement
 this `property` to add `Equatable` support without actually implementing
 `Equatable`:
 
-``` {.swift}
+``` Swift
 protocol Bookmarkable {
     var identifier: Int { get }
 }
@@ -147,14 +147,14 @@ gain the standard library\'s methods that specifically deal with
 `Equatable` types. So instead of being able to call `Array.contains`
 like this:
 
-``` {.swift}
+``` Swift
 let ourBookmark = Bookmark(identifier: 0)
 let result = myBookmarks.contains(ourBookmark)
 ```
 
 You will have to use the more verbose closure-based version:
 
-``` {.swift}
+``` Swift
 let ourBookmark = Bookmark(identifier: 0)
 
 let result = myBookmarks.contains { (bookmark) -> Bool in
@@ -167,7 +167,7 @@ let result = myBookmarks.contains { (bookmark) -> Bool in
 Another vector which can introduce `associated types` into your codebase
 is the usage of `Self`:
 
-``` {.swift}
+``` Swift
 protocol Example {
   /// Indirect Associated Type
   var builder: Self { get }
@@ -185,7 +185,7 @@ The most helpful note here is that once you use a `method` instead of a
 `property` in order to return something of type `Self` you will not opt
 in to an `associated type`:
 
-``` {.swift}
+``` Swift
 protocol Example {
   /// No Indirect Associated Type
   func builder() -> Self
@@ -203,7 +203,7 @@ actually need these associated types.
 
 Take this example of a validator type:
 
-``` {.swift}
+``` Swift
 protocol Validator {
     associatedtype I
     func validate(_ input: I) -> Bool
@@ -214,7 +214,7 @@ As the `associated type` is only used in one method, you can
 alternatively just make it a `generic` method and thus save yourself
 from introducing unnecessary unfinished types:
 
-``` {.swift}
+``` Swift
 protocol Validator {
     func validate<I>(_ input: I) -> Bool
 }
@@ -236,7 +236,7 @@ runtime cast.
 Begin by defining an `associated` Protocol `ExampleAssociatedProtocol`
 that is shadowed by a `normal` Protocol `ExampleProtocol`.
 
-``` {#feature-image .swift export-image="true" export-template="template5"}
+``` Swift
 /// The `Normal` Protocol
 protocol ExampleProtocol {
   var anyValue: Any { get }
@@ -262,7 +262,7 @@ Now, you can use the `ExampleProtocol` as a normal type throughout your
 app in all situations where a protocol with an `associated type` would
 otherwise fail:
 
-``` {.swift}
+``` Swift
 struct World {
   var examples: [ExampleProtocol]
 
@@ -278,7 +278,7 @@ However, if you need to access the property that is specific to the
 `ExampleAssociatedProtocol` (`value`) then you can do so through at
 runtime.
 
-``` {.swift}
+``` Swift
 /// Custom type implementing `ExampleAssociatedProtocol`
 struct IntExample: ExampleAssociatedProtocol {
   var value: Int
@@ -322,7 +322,7 @@ non-X86 CPU architectures: PowerPC, Alpha, Sparc, 68000, and so on. One
 of the many differences were the `endianness` of the architecture. Lets
 model these computers in Swift:
 
-``` {.swift}
+``` Swift
 protocol CPU {
     var littleEndian: Bool { get }
 }
@@ -341,7 +341,7 @@ desktop computer or a phone or maybe a game console, so we use a
 protocol. In order to model the CPU, we\'re using an `associated type`,
 so that the actual type can define the CPU:
 
-``` {.swift}
+``` Swift
 protocol Computer {
     associatedtype ProcessorType: CPU
     var processor: ProcessorType { get }
@@ -351,7 +351,7 @@ protocol Computer {
 
 Based on this, we can now define a couple of systems:
 
-``` {.swift}
+``` Swift
 struct PowerMacG5: Computer {
     let processor = PowerPC()
     let processorCount = 2
@@ -371,7 +371,7 @@ struct MacPro: Computer {
 Now that we have all this, we\'d like to perform a computation on all
 **PowerPC** based computers. I.e. something like:
 
-``` {.swift}
+``` Swift
 let powerComputers = [PowerMacG5(), Xbox360()]
 ```
 
@@ -383,7 +383,7 @@ are kinda similar. However, there\'s no way to (easily) express this in
 the type system; both **PowerMacG5** and **Xbox360** are not the correct
 types for the array:
 
-``` {.swift}
+``` Swift
 // None of those work
 let powerComputers: [PowerMacG5] = [PowerMacG5(), Xbox360]
 let powerComputers: [Xbox360] = [PowerMacG5(), Xbox360]
@@ -394,7 +394,7 @@ Type erasure is a solution for this. The idea is to box the actual type
 into a generic wrapper so that Swift can coalesce around wrapper + type.
 The solution we\'re aiming for would look like this in the end:
 
-``` {.swift}
+``` Swift
 let powerComputers: [AnyComputer<PowerPC>] = [AnyComputer(PowerMacG5()), AnyComputer(Xbox360())]
 ```
 
@@ -414,7 +414,7 @@ forwarding all invocations to the boxed type.
 The first new type we need for that is a base `class` that acts as a
 abstract class:
 
-``` {.swift}
+``` Swift
 class AnyComputerBase<Processor: CPU>: Computer {
     var processor: Processor {
         fatalError()
@@ -435,7 +435,7 @@ whole `class` `private` with an even better result. Now, other parts of
 the code won\'t even know about the existence of `AnyComputerBase` or
 even `initialize` it:
 
-``` {.swift}
+``` Swift
 private class AnyComputerBase<Processor: CPU>: Computer {
 ...
 }
@@ -451,7 +451,7 @@ Swift automatically figures out that `Processor` is the `typealias` for
 `Computer.ProcessorType`. However, when in doubt you can also add an
 extra typealias:
 
-``` {.swift}
+``` Swift
 class AnyComputerBase<Processor: CPU>: Computer {
   typealias ProcessorType = Processor
   ...
@@ -466,7 +466,7 @@ which means that after this, it\'ll be easy. We will introduce another
 type (the XBox360 or the PowerMac G5). Let\'s start by having a look at
 the code:
 
-``` {.swift}
+``` Swift
 private class AnyComputerBox<ConcreteComputer: Computer>: 
         AnyComputerBase<ConcreteComputer.ProcessorType> 
 {
@@ -485,7 +485,7 @@ private class AnyComputerBox<ConcreteComputer: Computer>:
 
 The most important concept here can be found in the very first line:
 
-``` {.swift}
+``` Swift
 private class AnyComputerBox<ConcreteComputer: Computer>: 
         AnyComputerBase<ConcreteComputer.ProcessorType>
 ```
@@ -523,7 +523,7 @@ In the next and final step, we\'re building the actual type that will be
 used as the proverbial type eraser. Just as before, lets have a look at
 the code first:
 
-``` {.swift}
+``` Swift
 final class AnyComputer<Processor: CPU>: Computer {
     private let box: AnyComputerBase<Processor>
     var processor: Processor {
@@ -546,7 +546,7 @@ forward to a boxed type. This time we\'re forwarding to
 `private let box: AnyComputerBase<Processor>`. This `box` is set in the
 initializer where most of the magic happens:
 
-``` {.swift}
+``` Swift
 init<Concrete: Computer>(_ computer: Concrete) 
     where Concrete.ProcessorType == Processor {
   box = AnyComputerBox(computer)
@@ -572,7 +572,7 @@ this property. In this case, we\'re creating a new box with the
 Then we return the implementations of the contents of the box (i.e. the
 actual `Concrete` `Computer`) in our `Computer` implementations:
 
-``` {.swift}
+``` Swift
 var processorCount: Int {
     return box.processorCount
 }
@@ -583,7 +583,7 @@ var processorCount: Int {
 With all this machinery in place, we can finally use this in order to
 have different types (which share an associated type) in one container:
 
-``` {.swift}
+``` Swift
 let powerComputers: [AnyComputer<PowerPC>] = 
     [AnyComputer(PowerMacG5()), AnyComputer(Xbox360())]
 ```

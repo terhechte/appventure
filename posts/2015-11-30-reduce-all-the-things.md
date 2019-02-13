@@ -28,7 +28,7 @@ Consider this problem: You\'re getting a list of persons from a JSON
 endpoint. You\'d like to know the average age from all people living in
 California. The parsed data looks like this:
 
-``` {.swift noweb-ref="data" prologue=""import Foundation""}
+``` Swift
 let persons: [[String: AnyObject]] = [["name": "Carl Saxon", "city": "New York, NY", "age": 44],
  ["name": "Travis Downing", "city": "El Segundo, CA", "age": 34],
  ["name": "Liz Parker", "city": "San Francisco, CA", "age": 32],
@@ -47,8 +47,7 @@ of `flatMap` and `filter`. The `flatMap` is used instead of `map` as
 `flatMap([0, nil, 1, 2, nil])` results in `[0, 1, 2]`. This eases the
 handling of persons without a proper city.
 
-``` {.swift noweb="strip-export" prologue=""import Foundation""}
-<<data>>
+``` Swift
 func infoFromState(state state: String, persons: [[String: AnyObject]]) 
      -> Int {
     return persons.flatMap( { $0["city"]?.componentsSeparatedByString(", ").last })
@@ -89,7 +88,7 @@ complicated but becomes really easy with a couple of examples.
 
 It is a method on `SequenceType` and looks like this (simplified):
 
-``` {.swift}
+``` Swift
 func reduce<T>(initial: T, combine: (T, Self.Generator.Element) -> T) -> T
 ```
 
@@ -100,7 +99,7 @@ operation is also of the same type as the initial value.
 If we take a very simple reduce operation - adding up a list of
 integers, the evaluation will look like this:
 
-``` {.swift}
+``` Swift
 func combinator(accumulator: Int, current: Int) -> Int {
    return accumulator + current
 }
@@ -127,7 +126,7 @@ explained further below.
 
 ## Map
 
-``` {.swift prologue=""import Foundation""}
+``` Swift
 func rmap(elements: [Int], transform: (Int) -> Int) -> [Int] {
     return elements.reduce([Int](), combine: { (var acc: [Int], obj: Int) -> [Int] in
        acc.append(transform(obj))
@@ -156,7 +155,7 @@ This looks like much more code than just calling `map`. That\'s indeed
 true, but the version above is extra detailed in order to better explain
 how `reduce` works. We can simplify it.
 
-``` {.swift prologue=""import Foundation""}
+``` Swift
 func rmap(elements: [Int], transform: (Int) -> Int) -> [Int] {
     return elements.reduce([Int](), combine: {$0 + [transform($1)]})
 }
@@ -174,7 +173,7 @@ than `[1, 2, 3].append(4)`. If you operate on huge lists, instead of
 using collection + collection, you should have a mutable accumulator and
 mutate it in place:
 
-``` {.swift}
+``` Swift
 func rmap(elements: [Int], transform: (Int) -> Int) -> [Int] {
     return elements.reduce([Int](), combine: { (var ac: [Int], b: Int) -> [Int] in 
         ac.append(transform(b))
@@ -186,7 +185,7 @@ func rmap(elements: [Int], transform: (Int) -> Int) -> [Int] {
 In order to better understand `reduce` we will now go on and also
 implement `flatMap` and `filter`.
 
-``` {.swift prologue=""import Foundation""}
+``` Swift
 func rflatMap(elements: [Int], transform: (Int) -> Int?) -> [Int] {
     return elements.reduce([Int](), 
        combine: { guard let m = transform($1) else { return $0 } 
@@ -201,7 +200,7 @@ optional contains a value.
 
 ## Filter
 
-``` {.swift prologue=""import Foundation""}
+``` Swift
 func rFilter(elements: [Int], filter: (Int) -> Bool) -> [Int] {
     return elements.reduce([Int](), 
        combine: { guard filter($1) else { return $0 } 
@@ -223,7 +222,7 @@ to implement various reduction operations in a very simple way.
 
 Let\'s start with a favorite of mine, the sum of a list of numbers:
 
-``` {.swift}
+``` Swift
 [0, 1, 2, 3, 4].reduce(0, combine: +)
 // 10
 ```
@@ -234,14 +233,14 @@ the `rhs` and return the result, which is specifically the requirement
 
 Another example is building the product of a list of numbers:
 
-``` {.swift}
+``` Swift
 [1, 2, 3, 4].reduce(1, combine: *)
 // 24
 ```
 
 Or what about reversing a list:
 
-``` {.swift}
+``` Swift
 [1, 2, 3, 4, 5].reduce([Int](), combine: { [$1] + $0 })
 // 5, 4, 3, 2, 1
 ```
@@ -249,7 +248,7 @@ Or what about reversing a list:
 Finally, something a tad more complicated. We\'d like to partition a
 list based on a division criteria
 
-``` {.swift}
+``` Swift
 typealias Acc = (l: [Int], r: [Int])
 func partition(lst: [Int], criteria: (Int) -> Bool) -> Acc {
    return lst.reduce((l: [Int](), r: [Int]()), combine: { (ac: Acc, o: Int) -> Acc in 
@@ -276,7 +275,7 @@ advantage: Oftentimes, chaining `map` and `filter` induces a performance
 penalty as Swift has to iterate over your collection multiple times in
 order to generate the required data. Imagine the following code:
 
-``` {.swift}
+``` Swift
 [0, 1, 2, 3, 4].map({ $0 + 3}).filter({ $0 % 2 == 0}).reduce(0, combine: +)
 ```
 
@@ -286,7 +285,7 @@ it, and finally to sum up the contents. Instead, all of this can just as
 well be implemented as one reduce call, which greatly improves the
 performance:
 
-``` {.swift}
+``` Swift
 [0, 1, 2, 3, 4].reduce(0, combine: { (ac: Int, r: Int) -> Int in 
    if (r + 3) % 2 == 0 {
      return ac + r + 3
@@ -299,7 +298,7 @@ performance:
 Here\'s a quick benchmark of running both versions and the for-loop
 version below over an list with 100.000 items:
 
-``` {.swift}
+``` Swift
 var ux = 0
 for i in Array(0...100000) {
     if (i + 3) % 2 == 0 {
@@ -354,12 +353,12 @@ mutating for loop and more than twice as fast as the chaining operation.
 However, in other situations, chained operation can greatly outperform
 `reduce`. Consider the following example:
 
-``` {.swift}
+``` Swift
 Array(0...100000).map({ $0 + 3}).reverse().prefix(3)
 // 0.027 Seconds
 ```
 
-``` {.swift}
+``` Swift
 Array(0...100000).reduce([], combine: { (var ac: [Int], r: Int) -> [Int] in
     ac.insert(r + 3, atIndex: 0)
     return ac
@@ -388,8 +387,7 @@ solve it with `reduce`.
 
 # InfoFromState, take two
 
-``` {.swift noweb="strip-export" prologue=""import Foundation""}
-  <<data>>
+``` Swift
 
   func infoFromState(state state: String, persons: [[String: AnyObject]]) 
       -> (count: Int, age: Float) {
@@ -453,7 +451,7 @@ examples in various Swift libraries such as
 Return the minimum entry in a given list. Obviously,
 `[1, 5, 2, 9, 4].minElement()` would be a better solution.
 
-``` {.swift}
+``` Swift
 [1, 5, 2, 9, 4].reduce(Int.max, combine: min)
 ```
 
@@ -462,7 +460,7 @@ Return the minimum entry in a given list. Obviously,
 Return a list with all duplicates removed. The better solution would be
 to use a `Set`.
 
-``` {.swift}
+``` Swift
 [1, 2, 5, 1, 7].reduce([], combine: { (a: [Int], b: Int) -> [Int] in
 if a.contains(b) {
    return a
@@ -481,7 +479,7 @@ return a `Hashable` type so that we can differentiate keys. The order of
 the items will be preserved while the order of the groups won\'t
 necessarily be preserved.
 
-``` {.swift}
+``` Swift
 func groupby<T, H: Hashable>(items: [T], f: (T) -> H) -> [H: [T]] {
    return items.reduce([:], combine: { (var ac: [H: [T]], o: T) -> [H: [T]] in 
        let h = f(o)
@@ -506,7 +504,7 @@ This function returns the given `items`, with `element` inserted between
 every `count` items. The implementation below makes sure that the
 elements are only interposed and not appended at the end.
 
-``` {.swift}
+``` Swift
 func interpose<T>(items: [T], element: T, count: Int = 1) -> [T] {
    typealias Acc = (ac: [T], cur: Int, cnt: Int)
    return items.reduce((ac: [], cur: 0, cnt: 1), combine: { (a: Acc, o: T) -> Acc in 
@@ -533,7 +531,7 @@ print(interpose([1, 2, 3, 4, 5], element: 9, count: 2))
 This function allows you to combine two sequences by alternately
 selecting elements from each.
 
-``` {.swift}
+``` Swift
 func interdig<T>(list1: [T], list2: [T]) -> [T] {
    return Zip2Sequence(list1, list2).reduce([], combine: { (ac: [T], o: (T, T)) -> [T] in 
         return ac + [o.0, o.1]
@@ -548,7 +546,7 @@ print(interdig([1, 3, 5], list2: [2, 4, 6]))
 This function returns self, broken up into non-overlapping arrays of
 length `n`:
 
-``` {#feature-image .swift export-image="true" export-template="template4"}
+``` Swift
 func chunk<T>(list: [T], length: Int) -> [[T]] {
    typealias Acc = (stack: [[T]], cur: [T], cnt: Int)
    let l = list.reduce((stack: [], cur: [], cnt: 0), combine: { (ac: Acc, o: T) -> Acc in

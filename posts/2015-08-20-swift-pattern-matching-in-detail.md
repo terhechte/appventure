@@ -36,7 +36,7 @@ The main feature of `switch` is of course pattern matching, the ability
 to destructure values and match different switch cases based on correct
 match of the values to the cases.
 
-``` {.Swift}
+``` Swift
 // Example of the worst binary -> decimal converter in history
 let bool1 = 1
 let bool2 = 0
@@ -62,7 +62,7 @@ trades.
 
 ## First Draft
 
-``` {.swift noweb-ref="tenum1"}
+``` Swift
 enum Trades {
     case Buy(stock: String, amount: Int, stockPrice: Float)
     case Sell(stock: String, amount: Int, stockPrice: Float)
@@ -73,7 +73,7 @@ You were also handed the following API to handle trades. **Notice how
 sell orders are just negative amounts**. And you\'re told the stock
 price is not important, their engine will take an internal one anyway.
 
-``` {.swift noweb-ref="tprocess1"}
+``` Swift
 /**
  - parameter stock: The stock name
  - parameter amount: The amount, negative number = sell, positive = buy
@@ -86,9 +86,7 @@ func process(stock: String, _ amount: Int) {
 The next step is to process those trades. You see the potential for
 using pattern matching and write this:
 
-``` {.swift noweb="strip-export"}
-<<tenum1>>
-<<tprocess1>>
+``` Swift
 let aTrade = Trades.Buy(stock: "APPL", amount: 200, stockPrice: 115.5)
 
 switch aTrade {
@@ -116,7 +114,7 @@ the beautiful theory. Trades aren\'t trades you learn.
 They also realized that you\'ll need a new API for this, so you were
 handed this:
 
-``` {.swift noweb-ref="tprocess2"}
+``` Swift
 func processSlow(stock: String, _ amount: Int, _ fee: Float) { print("slow") }
 func processFast(stock: String, _ amount: Int, _ fee: Float) { print("fast") }
 ```
@@ -126,7 +124,7 @@ func processFast(stock: String, _ amount: Int, _ fee: Float) { print("fast") }
 So you go back to the drawing board and add another `enum`. The trader
 type is part of every trade, too.
 
-``` {.swift noweb-ref="tenum2"}
+``` Swift
 enum TraderType {
 case SingleGuy
 case Company
@@ -145,9 +143,7 @@ nested code which quickly lacks clarity - and who knows maybe these Wall
 Street guys come up with further complications. So you define it instead
 as additional requirements on the pattern matches:
 
-``` {.swift noweb="strip-export"}
-<<tenum2>>
-<<tprocess2>>
+``` Swift
 
 let aTrade = Trades.Sell(stock: "GOOG", amount: 100, stockPrice: 666.0, type: TraderType.Company)
 
@@ -188,9 +184,7 @@ cases.
 You only need to modify your `switch` a little bit to accommodate for
 those new changes
 
-``` {.swift noweb="strip-export"}
-<<tenum2>>
-<<tprocess2>>
+``` Swift
 
 let aTrade = Trades.Buy(stock: "GOOG", amount: 1000, stockPrice: 666.0, type: TraderType.SingleGuy)
 
@@ -238,7 +232,7 @@ where the `_` indicates that you don\'t wish to further use this value.
 The interesting part is that this matches all values including `nil`
 [^1]. You can even match optionals by appending a `?`:
 
-``` {.swift}
+``` Swift
 let p: String? = nil
 switch p {
 case _?: print ("Has String")
@@ -249,7 +243,7 @@ case nil: print ("No String")
 As you\'ve seen in the trading example, it also allows you to omit the
 data you don\'t need from matching `enums` or `tuples`:
 
-``` {.swift}
+``` Swift
 switch (15, "example", 3.14) {
     case (_, _, let pi): print ("pi: \(pi)")
 }
@@ -260,7 +254,7 @@ switch (15, "example", 3.14) {
 Matches a concrete value. This is how things work in Objective-C\'s
 `switch` implementation:
 
-``` {.swift}
+``` Swift
 switch 5 {
   case 5: print("5")
 }
@@ -272,7 +266,7 @@ This is the very same as binding values to variables via `let` or `var`.
 Only in a switch statement. You\'ve already seen this before, so I\'ll
 provide a very short example:
 
-``` {.swift}
+``` Swift
 switch (4, 5) {
   case let (x, y): print("\(x) \(y)")
 }
@@ -285,7 +279,7 @@ tuples,](http://appventure.me/2015/07/19/tuples-swift-advanced-usage-best-practi
 which offer much more information than this, but here\'s a quick
 example:
 
-``` {.swift}
+``` Swift
 let age = 23
 let job: String? = "Operator"
 let payload: AnyObject = NSDictionary()
@@ -319,7 +313,7 @@ couple of entities that you need to define. You could use `structs` but
 as your entities will have very little state, you feel that that\'s a
 bit of an overkill.
 
-``` {.swift noweb-ref="entt"}
+``` Swift
 enum Entities {
     case Soldier(x: Int, y: Int)
     case Tank(x: Int, y: Int)
@@ -330,9 +324,7 @@ enum Entities {
 Now you need to implement the drawing loop. Here, we only need the X and
 Y position:
 
-``` {.swift noweb="strip-export"}
-<<entt>>
-<<entfun>>
+``` Swift
 for e in entities() {
     switch e {
     case let .Soldier(x, y):
@@ -360,7 +352,7 @@ two different keywords:
 
 Here is an example of the two.
 
-``` {.swift}
+``` Swift
 let a: Any = 5 
 switch a {
   // this fails because a is still anyobject
@@ -382,7 +374,7 @@ against an expression implementing the `~=` operator. There\'re default
 implementations for this operator, for example for ranges, so that you
 can do:
 
-``` {.swift}
+``` Swift
 switch 5 {
  case 0..10: print("In range 0-10")
 }
@@ -393,7 +385,7 @@ operator yourself in order to add matchability to your custom types.
 Let\'s say that you decided to rewrite the soldier game we wrote earlier
 and you want to use structs after all.
 
-``` {.swift noweb-ref="psentity"}
+``` Swift
 struct Soldier {
   let hp: Int
   let x: Int
@@ -404,8 +396,7 @@ struct Soldier {
 Now you\'d like to easily match against all entities with a health of
 **0**. We can simply implement the `~=` operators as follows.
 
-``` {.swift noweb="strip-export" noweb-ref="pspat"}
-<<psentity>>
+``` Swift
 func ~= (pattern: Int, value: Soldier) -> Bool {
     return pattern == value.hp
 }
@@ -413,8 +404,7 @@ func ~= (pattern: Int, value: Soldier) -> Bool {
 
 Now we can match against an entity:
 
-``` {.swift noweb="strip-export"}
-<<pspat>>
+``` Swift
 let soldier = Soldier(hp: 99, x: 10, y: 10)
 switch soldier {
    case 0: print("dead soldier")
@@ -425,7 +415,7 @@ switch soldier {
 Sadly, full matching with tuples does not seem to work. If you implement
 the code below, there\'ll be a type checker error.
 
-``` {.swift}
+``` Swift
 func ~= (pattern: (hp: Int, x: Int, y: Int), value: Soldier) -> Bool {
    let (hp, x, y) = pattern
    return hp == value.hp && x == value.x && y == value.y
@@ -436,8 +426,7 @@ One possible way of implementing something akin to the above is by
 adding a `unapply` method to your `struct` and then matching against
 that:
 
-``` {.swift noweb="strip-export"}
-<<psentity>>
+``` Swift
 
 extension Soldier {
    func unapply() -> (Int, Int, Int) {
@@ -464,7 +453,7 @@ latrodectus on
 reddit](https://www.reddit.com/r/swift/comments/3hq6id/match_me_if_you_can_swift_pattern_matching_in/cub187r))
 does work fine:
 
-``` {.swift}
+``` Swift
 protocol Entity {
     var value: Int {get}
 }
@@ -506,7 +495,7 @@ next case which is why in Swift, you don\'t need to write `break` for
 every case. You can opt into traditional fallthrough behaviour with the
 `fallthrough` keyword.
 
-``` {.swift}
+``` Swift
 switch 5 {
    case 5:
     print("Is 5")
@@ -522,7 +511,7 @@ early. Why would you do that if there\'s no default fallthrough? For
 example if you can only realize within the `case` that a certain
 requirement is not met and you can\'t execute the `case` any further:
 
-``` {.swift}
+``` Swift
 let userType = "system"
 let userID = 10
 switch (userType, userID)  {
@@ -544,7 +533,7 @@ But what if you execute your switch in a `while` loop and you want to
 break out of the loop, not the `switch`? For those cases, Swift allows
 you to define `labels` to `break` or `continue` to:
 
-``` {.swift}
+``` Swift
 gameLoop: while true {
   switch state() {
      case .Waiting: continue gameLoop
@@ -567,7 +556,7 @@ optionals,](http://appventure.me/2014/06/13/swift-optionals-made-simple/)
 and pattern matching is one of them. You\'ve probably used that quite
 frequently by now, nevertheless, here\'s a short example:
 
-``` {.swift}
+``` Swift
 var result: String? = secretMethod()
 switch result {
 case .None:
@@ -579,8 +568,7 @@ case let a:
 
 With Swift 2.0, this becomes even easier:
 
-``` {.swift noweb="strip-export"}
-<<abcexp>>
+``` Swift
 var result: String? = secretMethod()
 switch result {
 case nil:
@@ -607,7 +595,7 @@ yet)](https://netguru.co/blog/objective-c-generics), then you often end
 up with code that needs to check for types. Imagine getting an array of
 NSStrings and NSNumbers:
 
-``` {.swift noweb-ref="nstest1" prologue=""import Cocoa""}
+``` Swift
 let u = NSArray(array: [NSString(string: "String1"), NSNumber(int: 20), NSNumber(int: 40)])
 ```
 
@@ -615,8 +603,7 @@ When you go through this NSArray, you never know what kind of type you
 get. However, `switch` statements allow you to easily test for types
 here:
 
-``` {.swift noweb="strip-export" prologue=""import Cocoa""}
-<<nstest1>>
+``` Swift
 for x in u {
     switch x {
     case _ as NSString:
@@ -635,7 +622,7 @@ So you\'re writing the grading iOS app for your local Highschool. The
 teachers want to enter a number value from 0 to 100 and receive the
 grade character for it (A - F). Pattern Matching to the rescue:
 
-``` {.swift}
+``` Swift
 let aGrade = 84
 
 switch aGrade {
@@ -658,14 +645,13 @@ words, without their respective frequencies.
 
 Here\'re our words:
 
-``` {.swift noweb-ref="tfreq1"}
+``` Swift
 let wordFreqs = [("k", 5), ("a", 7), ("b", 3)]
 ```
 
 A simple solution would be to model this with `map` and `filter`:
 
-``` {.swift noweb="strip-export"}
-<<tfreq1>>
+``` Swift
 let res = wordFreqs.filter({ (e) -> Bool in
     if e.1 > 3 {
         return true
@@ -682,8 +668,7 @@ of the `e.1` and instead have proper destructuring by utilizing (you
 guessed it) tuples. And then, we only need one call `flatmap` instead of
 `filter` and then `map` which adds unnecessary performance overhead.
 
-``` {.swift noweb="strip-export"}
-<<tfreq1>>
+``` Swift
 let res = wordFreqs.flatMap { (e) -> String? in
     switch e {
     case let (s, t) where t > 3: return s
@@ -701,7 +686,7 @@ Imagine you want to traverse a file hierachy and find:
 -   all \"blend\" files from customer2
 -   all \"jpeg\" files from all customers.
 
-``` {.swift prologue=""import Foundation""}
+``` Swift
 guard let enumerator = NSFileManager.defaultManager().enumeratorAtPath("/customers/2014/")
 else { return }
 
@@ -733,7 +718,7 @@ readable code.
 Also, see how beautiful an implementation of the fibonacci algorithm
 looks with pattern matching [^3]
 
-``` {.swift}
+``` Swift
 func fibonacci(i: Int) -> Int {
     switch(i) {
     case let n where n <= 0: return 0
@@ -777,7 +762,7 @@ API with only the following information: username, department. We only
 need users born before 1980. If no department is given, \"Corp\" is
 assumed.
 
-``` {.swift noweb-ref="legacyapi"}
+``` Swift
 func legacyAPI(id: Int) -> [String: AnyObject] {
     return ["type": "system", "department": "Dark Arts", "age": 57, 
            "name": ["voldemort", "Tom", "Marvolo", "Riddle"]] 
@@ -786,9 +771,7 @@ func legacyAPI(id: Int) -> [String: AnyObject] {
 
 Given these constraints, let\'s develop a pattern match for it:
 
-``` {.swift noweb="strip-export" prologue=""import Foundation""}
-<<legacyapi>>
-<<grrr>>
+``` Swift
 let item = legacyAPI(4)
 switch (item["type"], item["department"], item["age"], item["name"]) {
    case let (sys as String, dep as String, age as Int, name as [String]) where 
@@ -827,7 +810,7 @@ here.](https://gist.github.com/terhechte/6eaeb90276bbfcd1ea41)
 As a shorter example, see the **Value Binding**, **Tuple**, and **Type
 Casting** pattern used for all three keywords in one example:
 
-``` {.swift}
+``` Swift
 // This is just a collection of keywords that compiles. This code makes no sense
 func valueTupleType(a: (Int, Any)) -> Bool {
     // guard case Example
@@ -869,7 +852,7 @@ language as the `switch` capabilities have been extended to other
 keywords as well. For example, let\'s write a simple array function
 which only returns the non-nil elements
 
-``` {.swift}
+``` Swift
 func nonnil<T>(array: [T?]) -> [T] {
    var result: [T] = []
    for case let x? in array {
@@ -886,7 +869,7 @@ Here\'s another example. Remember the game we talked about earlier?
 Well, after the first refactoring, our entity system now looks like
 this:
 
-``` {.swift noweb-ref="tgame2"}
+``` Swift
 enum Entity {
     enum EntityType {
         case Soldier
@@ -898,9 +881,7 @@ enum Entity {
 
 Fancy, this allows us to draw all items with even less code:
 
-``` {.swift noweb="strip-export"}
-<<tgame2>>
-<<tgame3>>
+``` Swift
 for case let Entity.Entry(t, x, y, _) in gameEntities()
 where x > 0 && y > 0 {
     drawEntity(t, x, y)
@@ -913,9 +894,7 @@ drawing beyond 0, and finally calls the render call (`drawEntity`).
 In order to see if the player won the game, we want to know if there is
 at least one Soldier with health \> 0
 
-``` {.swift noweb="strip-export"}
-<<tgame2>>
-<<tgame3>>
+``` Swift
 func gameOver() -> Bool {
     for case Entity.Entry(.Soldier, _, _, let hp) in gameEntities() 
     where hp > 0 {return false}
@@ -937,7 +916,7 @@ Another keyword which supports patterns is the newly introduced `guard`
 keyword. You know how it allows you to bind `optionals` into the local
 scope much like `if let` only without nesting things:
 
-``` {.swift}
+``` Swift
 func example(a: String?) {
     guard let a = a else { return }
     print(a)
@@ -951,9 +930,7 @@ We want to calculate the required HP until our player has full health
 again. Soldiers can\'t regain HP, so we should always return 0 for a
 soldier entity.
 
-``` {.swift noweb="strip-export"}
-<<tgame2>>
-<<tgame3>>
+``` Swift
 let MAX_HP = 100
 
 func healthHP(entity: Entity) -> Int {
@@ -993,7 +970,7 @@ to unwrap and match data within a branch. In line with our previous
 allows us to say that an entity moved in a direction. Since our entities
 are `enums`, we need to return an updated entity.
 
-``` {#feature-image .swift noweb="strip-export" export-image="true" export-template="template5"}
+``` Swift
 func move(entity: Entity, xd: Int, yd: Int) -> Entity {
     if case Entity.Entry(let t, let x, let y, let hp) = entity
     where (x + xd) < 1000 &&
@@ -1024,7 +1001,7 @@ destructuring against classes or structs. Scala allows us to define an
 Implementing this method, then, allows the type checker to match against
 classes. In Swift, this could look as follows:
 
-``` {.swift}
+``` Swift
 struct Imaginary {
    let x: Int
    let y: Int

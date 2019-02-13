@@ -17,7 +17,7 @@ Here\'s a quick example: Imagine you\'re writing an app that shows the
 current trending links out of Hacker News, Reddit, and Product Hunt
 combined. For each source, you\'re setting up an importer:
 
-``` {.swift}
+``` Swift
 let importers = [
   importerHackerNews()
   importerReddit(),
@@ -34,7 +34,7 @@ So, in order to be productive again, you quickly comment out the
 HackerNews importer, making a mental note to uncomment it before you
 commit todays changes:
 
-``` {.swift}
+``` Swift
 let importers = [
   // REMEMBER: Only temporary
   // importerHackerNews()
@@ -76,7 +76,7 @@ part of the actual source code.
 
 When that tag has been added to the staging area like so:
 
-``` {.swift}
+``` Swift
 let importers = [
   // #BABOON#(comment out again)
   // importerHackerNews()
@@ -88,7 +88,7 @@ let importers = [
 And I\'m trying to commit this, Git will fail with an exception. It does
 that because I\'ve added the following hook to my Git repository:
 
-``` {.bash}
+``` bash
 #!/bin/sh
 if git rev-parse --verify HEAD >/dev/null 2>&1
 then
@@ -117,7 +117,7 @@ fi
 This file has to be stored within your Git repository at the following
 place:
 
-``` {.bash}
+``` bash
 .git/hooks/pre-commit
 ```
 

@@ -1,6 +1,6 @@
 [frontMatter]
 description = "Mixing optional and non-optional functions in a guard is impossible and requires breaking up the lines. Here's a neat solution on how to circumvent this."
-title = "Force optionals in multi-unwrapped "guard let" or "if let""
+title = "Force optionals in multi-unwrapped 'guard let' or 'if let'"
 created = "2016-04-14"
 published = true
 keywords = ["swift", "guard", "let", "unwrap", "bind", "binding", "unwrapped", "optional", "some", "none", "optionals"]
@@ -16,7 +16,7 @@ However, sometimes I run into a situation where I have one function call
 (or a array subscript) in between my others that does not return an
 optional:
 
-``` {.swift}
+``` Swift
 // Imagine this function does something complicated
 func someArray() -> [Int]? {
     return [1, 2, 3, 4, 5, 6]
@@ -40,7 +40,7 @@ optional:
 
 So, what you oftentimes end up with, instead, is something like this:
 
-``` {.swift}
+``` Swift
 func example() {
     guard let array = someArray() else { return }
     let numberThree = array[2]
@@ -57,7 +57,7 @@ repeat code blocks; and that\'s bad [^1].
 So what\'s the solution here? Well, since the `guard` or `let` requires
 an optional, we can just as well create one and unpack it again:
 
-``` {.swift}
+``` Swift
 func example() {
     guard let array = someArray(),
         numberThree = Optional.Some(array[2])
@@ -79,7 +79,7 @@ us to keep the `guard` or `let` unwrappings much cleaner.
 This obviously doesn\'t just work with array subscripts like `array[3]`
 but also with any non-optional function, i.e.:
 
-``` {#feature-image .swift export-image="true" export-template="template5"}
+``` Swift
 guard let aString = optionalString(),
     elements = Optional.Some(aString.characters.split("/")),
     last = elements.last,

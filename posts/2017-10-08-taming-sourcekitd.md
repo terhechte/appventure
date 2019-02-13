@@ -10,9 +10,8 @@ tags = ["swift", "cocoa", "ios"]
 
 # Update \[10/15/2017\]
 
-It seems that Xcode 9.1 beta 2 fixes this issue:
-
-<blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">Please try out Xcode 9.1 beta 2 and let us know if it does/doesn’t address big memory usage problems with SourceKit. <a href="https://t.co/aJc8ZZSm9c">https://t.co/aJc8ZZSm9c</a></p>&mdash; Ted Kremenek (@tkremenek) <a href="https://twitter.com/tkremenek/status/918354948487655424?ref_src=twsrc%5Etfw">October 12, 2017</a></blockquote> <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+\<a href=\"<https://t.co/aJc8ZZSm9c>\"\>It seems that Xcode 9.1 beta 2
+fixes this issue.\</a\>
 
 In my preliminary testing, everything worked fine. This feels really
 good.
@@ -44,7 +43,7 @@ posterity. Note that this is an awful hack and future versions of
 `SourceKitService` will probably (hopefully!) not need this anymore.
 Meanwhile, this might be of help to others:
 
-``` {.bash}
+``` bash
 #!/bin/bash
 
 # Amount of seconds to wait between measures
@@ -74,7 +73,7 @@ done
 To use this just paste that code into a file (say `sourcekill.sh`) and
 do:
 
-``` {.bash}
+``` bash
 chmod +x ./sourcekill.sh
 ./sourcekill.sh
 ```

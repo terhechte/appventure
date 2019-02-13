@@ -1,14 +1,12 @@
 [frontMatter]
 description = "When and how to use enums in Swift? This is a detailed practical overview of all the possibilities enums can offer you."
-title = "Advanced & Practical Enum usage in Swift"
+title = "Advanced and Practical Enum usage in Swift"
 created = "2015-10-17"
 published = true
 keywords = ["feature", "swift", "enum", "algebraic", "caseclass", "union", "case", "switch", "pattern", "simple", "practical", "advanced", "example"]
 slug = "2015-10-17-advanced-practical-enum-examples.html"
 tags = ["swift", "cocoa", "ios"]
 ---
-
-<h6><a href="http://swift.gg/2015/11/20/advanced-practical-enum-examples/">This post is also available in <b>🇨🇳Chinese</b></a><span> Thanks to </span><a href="http://swift.gg/tags/APPVENTURE/">SwiftGG</a></h6>
 
 When and how to use enums in Swift? This is a detailed practical
 overview of all the possibilities enums can offer you.
@@ -47,7 +45,7 @@ We\'re working on a game, and the player can move in four directions. So
 our player movement is restricted. Obviously, we can use an enum for
 that.
 
-``` {.swift noweb-ref="movementenum"}
+``` Swift
 enum Movement {
 case Left
 case Right
@@ -60,8 +58,7 @@ You can then use [various pattern matching
 constructs](http://appventure.me/2015/08/20/swift-pattern-matching-in-detail/)
 to retrieve the value of a `Movement`, or act upon a specific case:
 
-``` {.swift noweb="strip-export"}
-<<movementenum>>
+``` Swift
 let aMovement = Movement.Left
 
 switch aMovement {
@@ -86,7 +83,7 @@ This is useful if the `enum` itself indeed relates to something which
 can be expressed in a different type. **C** allows you to assign numbers
 to `enum cases`. Swift gives you much more flexibility here:
 
-``` {.swift noweb-ref="enumsimplevalues"}
+``` Swift
 // Mapping to Integer
 enum Movement: Int {
     case Left = 0
@@ -117,7 +114,7 @@ enum Constants: Double {
 For `String` and `Int` types, you can even omit the values and the Swift
 compiler will do the right thing:
 
-``` {.swift}
+``` Swift
 // Mercury = 1, Venus = 2, ... Neptune = 8
 enum Planet: Int {
     case Mercury = 1, Venus, Earth, Mars, Jupiter, Saturn, Uranus, Neptune
@@ -142,8 +139,7 @@ enum.
 If you want to access the values, you can do so with the `rawValue`
 property:
 
-``` {.swift noweb="strip-export"}
-<<enumsimplevalues>>
+``` Swift
 let bestHouse = House.Stark
 print(bestHouse.rawValue)
 // prints "Winter is coming"
@@ -153,7 +149,7 @@ However, there may also be a situation where you want to construct an
 `enum case` from an existing raw value. In that case, there\'s a special
 initializer for enums:
 
-``` {.swift noweb="strip-export"}
+``` Swift
 enum Movement: Int {
     case Left = 0
     case Right = 1
@@ -177,7 +173,7 @@ binary representations into something much more readable. As an example,
 have a look as this encoding of the **VNode Flags** for [the BSD kqeue
 library](https://developer.apple.com/library/mac/documentation/Darwin/Reference/ManPages/man2/kqueue.2.html):
 
-``` {.swift}
+``` Swift
 enum VNodeFlags : UInt32 {
     case Delete = 0x00000001
     case Write = 0x00000002
@@ -203,7 +199,7 @@ Each character can have a weapon, all characters have access to the same
 set of weapons. All other instances in the game do not have access to
 those weapons (they\'re trolls, they just have clubs).
 
-``` {.swift}
+``` Swift
 enum Character {
   enum Weapon {
     case Bow
@@ -225,7 +221,7 @@ enum Character {
 Now you have a hierachical system to describe the various items that
 your character has access to.
 
-``` {.swift}
+``` Swift
 let character = Character.Thief
 let weapon = Character.Weapon.Bow
 let helmet = Character.Helmet.Iron
@@ -236,7 +232,7 @@ let helmet = Character.Helmet.Iron
 In a similar vein, you can also embed enums in `structs` or `classes`.
 Continuing with our previous example:
 
-``` {.swift}
+``` Swift
 struct Character {
    enum CharacterType {
     case Thief
@@ -267,7 +263,7 @@ them would be for a specific stock and amount:
 
 ### Simple Example
 
-``` {.swift}
+``` Swift
 enum Trade {
     case Buy
     case Sell
@@ -280,7 +276,7 @@ having them as separate parameters feels unclean. You could embed it
 into a `struct`, but associated values allow for a much cleaner
 solution:
 
-``` {.swift noweb-ref="tradetype"}
+``` Swift
 enum Trade {
     case Buy(stock: String, amount: Int)
     case Sell(stock: String, amount: Int)
@@ -294,10 +290,9 @@ If you want to access this information, again, [pattern matching comes
 to the
 rescue](http://appventure.me/2015/08/20/swift-pattern-matching-in-detail/):
 
-``` {.swift noweb="strip-export"}
-<<tradetype>>
+``` Swift
 
-let trade = Trade.Buy(stock: "APPL", amount: 500)
+let trade = Trade.Buy(stock: "AAPL", amount: 500)
 if case let Trade.Buy(stock, amount) = trade {
     print("buy \(amount) of \(stock)")
 }
@@ -308,7 +303,7 @@ if case let Trade.Buy(stock, amount) = trade {
 
 Associated values do not require labels:
 
-``` {.swift}
+``` Swift
 enum Trade {
    case Buy(String, Int)
    case Sell(String, Int)
@@ -323,8 +318,7 @@ your enum cases.
 What\'s more, the Swift internal associated information is just a
 `Tuple`, so you can do things like this:
 
-``` {.swift noweb="strip-export"}
-<<tradetype>>
+``` Swift
 
 let tp = (stock: "TSLA", amount: 100)
 let trade = Trade.Sell(tp)
@@ -336,11 +330,11 @@ if case let Trade.Sell(stock, amount) = trade {
 ```
 
 This syntax allows you to take `Tuples` as a simple data structure and
-later on automatically elevate them into a higher type like a
+later on automatically elevate them into a higher type like an
 `enum case`. Imagine an app where a user can configure a Desktop that he
 wants to order:
 
-``` {.swift noweb-ref="tupleargs"}
+``` Swift
 typealias Config = (RAM: Int, CPU: String, GPU: String)
 
 // Each of these takes a config and returns an updated config
@@ -361,8 +355,7 @@ Each step of the configuration updates a `tuple` which is handed in to
 the `enum` at the end. This works even better if we take a hint from
 **functional programming** apply [^2]:
 
-``` {.swift noweb="strip-export" noweb-ref="tuplefunc"}
-<<tupleargs>>
+``` Swift
 
 infix operator <^> { associativity left }
 
@@ -374,8 +367,7 @@ func <^>(a: Config, f: (Config) -> Config) -> Config {
 Finally, we can thread through the different configuration steps. This
 is particularly helpful if you have many of those steps.
 
-``` {.swift noweb="strip-export"}
-<<tuplefunc>>
+``` Swift
 
 let config = (0, "", "") <^> selectRAM  <^> selectCPU <^> selectGPU
 let aCube = Desktop.Cube(config)
@@ -388,7 +380,7 @@ Associated Values can be used in a variety of ways. As code can tell
 more than a thousand words, what follows is a list of short examples in
 no particular order.
 
-``` {.swift prologue=""import Foundation""}
+``` Swift
 // Cases can have different values
 enum UserAction {
   case OpenURL(url: NSURL)
@@ -446,7 +438,7 @@ let woodenHelmet = Wearable.Helmet(weight: .Light, armor: .Light)
 
 You can also define methods on an `enum` like so:
 
-``` {.swift}
+``` Swift
 enum Wearable {
     enum Weight: Int {
         case Light = 1
@@ -470,7 +462,7 @@ Methods on enums exist for every `enum case`. So if you want to have
 specific code for specific cases, you need a branch or a switch to
 determine the correct code path.
 
-``` {.swift}
+``` Swift
 enum Device { 
     case iPad, iPhone, AppleTV, AppleWatch 
     func introduced() -> String {
@@ -492,7 +484,7 @@ Even though you can\'t add actual stored properties to an `enum`, you
 can still create computed properties. Their contents, of course, can be
 based on the **enum value** or **enum associated value**.
 
-``` {.swift}
+``` Swift
 enum Device {
   case iPad, iPhone
   var year: Int {
@@ -510,7 +502,7 @@ You can also have static methods on `enums`, i.e. in order to create an
 `enum` from a non-value type. In this example we want to get the proper
 Apple Device for the wrong name that\'s sometimes used by people.
 
-``` {.swift}
+``` Swift
 enum Device { 
     case AppleWatch 
     static func fromSlang(term: String) -> Device? {
@@ -528,7 +520,7 @@ print (Device.fromSlang(term:"iWatch")!)
 Methods can be declared `mutating`. They\'re then allowed to change the
 `case` of the underlying `self` parameter [^3]:
 
-``` {.swift}
+``` Swift
 enum TriStateSwitch {
     case Off, Low, High
     mutating func next() {
@@ -566,7 +558,7 @@ and nesting, an `enum case` is like a closed, simplified `struct`. The
 advantage over structs being the ability to encode categorization and
 hierachy:
 
-``` {.swift}
+``` Swift
 // Struct Example
 struct Point { let x: Int, y: Int }
 struct Rect { let x: Int, y: Int, width: Int, height: Int }
@@ -582,7 +574,7 @@ The addition of methods and static methods allow us to attach
 functionality to an `enum` without having to resort to free functions
 [^4]
 
-``` {.swift}
+``` Swift
 // C-Like example
 enum Trade {
    case Buy
@@ -613,7 +605,7 @@ let\'s take a protocol from the Swift standard library.
 `CustomStringConvertible` is a type with a customized textual
 representation suitable for printing purposes:
 
-``` {.swift}
+``` Swift
 protocol CustomStringConvertible {
   var description: String { get }
 }
@@ -622,7 +614,7 @@ protocol CustomStringConvertible {
 It has only one requirement, namely a **getter** for a string. We can
 implement this on an enum quite easily:
 
-``` {.swift}
+``` Swift
 enum Trade: CustomStringConvertible {
    case Buy, Sell
    var description: String {
@@ -641,7 +633,7 @@ print("this action is \(action)")
 Some protocol implementations may need internal state handling to cope
 with the requirements. Imagine a protocol that manages a bank account:
 
-``` {.swift noweb-ref="accountcompatible"}
+``` Swift
 protocol AccountCompatible {
   var remainingFunds: Int { get }
   mutating func addFunds(amount: Int) throws
@@ -655,7 +647,7 @@ However, you can\'t add properties like `var remainingFunds: Int` to an
 `enum`, so how would you model that? The answer is actually easy, you
 can use associated values for this:
 
-``` {#feature-image .swift noweb="strip-export" noweb-ref="accountthing" export-image="true" export-template="template4"}
+``` Swift
 enum Account {
   case Empty
   case Funds(remaining: Int)
@@ -676,9 +668,7 @@ enum Account {
 To keep things clean, we can then define the required protocol functions
 in a protocol extension on the `enum`:
 
-``` {.swift noweb="strip-export"}
-<<accountcompatible>>
-<<accountthing>>
+``` Swift
 extension Account: AccountCompatible {
 
   mutating func addFunds(amount: Int) throws {
@@ -735,7 +725,7 @@ for this is keeping `enum cases` and `methods` separate, so that a
 reader of your code can easily digest the `enum` and after that move on
 to the methods:
 
-``` {.swift noweb-ref="entities"}
+``` Swift
 enum Entities {
     case Soldier(x: Int, y: Int)
     case Tank(x: Int, y: Int)
@@ -745,8 +735,7 @@ enum Entities {
 
 Now, we can extend this `enum` with methods:
 
-``` {.swift noweb="strip-export" prologue=""import CoreGraphics""}
-<<entities>>
+``` Swift
 extension Entities {
    mutating func move(dist: CGVector) {}
    mutating func attack() {}
@@ -755,8 +744,7 @@ extension Entities {
 
 You can also write extensions to add support for a specific protocol:
 
-``` {.swift noweb="strip-export"}
-<<entities>>
+``` Swift
 extension Entities: CustomStringConvertible {
   var description: String {
     switch self {
@@ -777,7 +765,7 @@ You probably mostly use it with **optional chaining** (`?`), `if let`,
 `guard let`, or `switch`, but syntactically you can also use Optionals
 like so:
 
-``` {.swift}
+``` Swift
 let aValue = Optional<Int>.some(5)
 let noValue = Optional<Int>.none
 if noValue == Optional.none { print("No value") }
@@ -788,7 +776,7 @@ sugar that Swift adds in order to make your life a tremendous amount
 easier. If you look at the code above, you can probably guess that
 internally the `Optional` is defined as follows [^5]:
 
-``` {.swift}
+``` Swift
 // Simplified implementation of Swift's Optional
 enum MyOptional<T> {
   case Some(T)
@@ -808,7 +796,7 @@ instead of just returning a value or no value (née Optional) you\'d
 return either the successful value or something else (probably an error
 value).
 
-``` {.swift}
+``` Swift
 // The well-known either type is, of course, an enum that allows you to return either
 // value one (say, a successful value) or value two (say an error) from a function
 enum Either<T1, T2> {
@@ -820,7 +808,7 @@ enum Either<T1, T2> {
 Finally, all the type constraints that work on classes and structs in
 Swift also work on enums.
 
-``` {.swift}
+``` Swift
 // Totally nonsensical example. A bag that is either full (has an array with contents)
 // or empty.
 enum Bag<T: Sequence> where T.Iterator.Element==Equatable {
@@ -847,7 +835,7 @@ preparations for it. Quoting from the Swift documentation:
 So to implement our **FileNode** `enum`, we\'d have to write it like
 this:
 
-``` {.swift}
+``` Swift
 enum FileNode {
   case File(name: String)
   indirect case Folder(name: String, files: [FileNode])
@@ -859,7 +847,7 @@ indirectly. You can also add the keyword for the whole enum. [As an
 example imagine mapping a binary
 tree](http://airspeedvelocity.net/2015/07/22/a-persistent-tree-using-indirect-enums-in-swift/):
 
-``` {.swift}
+``` Swift
 indirect enum Tree<Element: Comparable> {
     case Empty
     case Node(Tree<Element>,Element,Tree<Element>)
@@ -880,7 +868,7 @@ be serialized to and from String.
 As an example, imagine you\'d like to store the different screen sizes
 of iOS devices in an enum:
 
-``` {.swift noweb="strip-export" prologue=""import Foundation""}
+``` Swift
 enum Devices: CGSize {
    case iPhone3GS = CGSize(width: 320, height: 480)
    case iPhone5 = CGSize(width: 320, height: 568)
@@ -896,7 +884,7 @@ requires us to implement three **initializers** each of them is being
 called with a `String`, and we have to convert this string into our
 receiver type (`CGSize`)
 
-``` {.swift prologue=""import Foundation; import UIKit"" noweb-ref="cgsizenum"}
+``` Swift
 extension CGSize: ExpressibleByStringLiteral {
     public init(stringLiteral value: String) {
         let size = CGSizeFromString(value)
@@ -920,7 +908,7 @@ values have to be written as a String, since that\'s what the enum will
 use (remember, we complied with StringLiteralConvertible, so that the
 **String** can be converted to our `CGSize` type.
 
-``` {.swift noweb-ref="cgsizeenum2" prologue=""import Foundation""}
+``` Swift
 enum Devices: CGSize {
    case iPhone3GS = "{320, 480}"
    case iPhone5 = "{320, 568}"
@@ -933,9 +921,7 @@ This, finally, allows us to use our `CGSize` enum. Keep in mind that in
 order to get the actual CGSize value, we have to access the `rawvalue`
 of the enum.
 
-``` {.swift noweb="strip-export" prologue=""import Foundation; func CGSizeFromString(a: String) -> CGSize { return NSSizeFromString(a)}""}
-<<cgsizenum>>
-<<cgsizeenum2>>
+``` Swift
 let a = Devices.iPhone5
 let b = a.rawValue
 print("the phone size string is \(a), width is \(b.width), height is \(b.height)")
@@ -957,7 +943,7 @@ If you add associated values though, Swift cannot correctly infer the
 equality of two enums, and you have to implement the `==` operator
 yourself. This is simple though:
 
-``` {.swift}
+``` Swift
 enum Trade {
     case Buy(stock: String, amount: Int)
     case Sell(stock: String, amount: Int)
@@ -986,7 +972,7 @@ they can be used as a way to conveniently create an enum from different
 data. The example we had was for returning the proper Apple device for
 the wrong worded version that the press sometimes uses:
 
-``` {.swift}
+``` Swift
 enum Device { 
     case AppleWatch 
     static func fromSlang(term: String) -> Device? {
@@ -1003,7 +989,7 @@ initializer. The main difference compared to a Swift `struct` or `class`
 is that within an `enum` initializer, you need to set the implicit
 `self` property to the correct case.
 
-``` {.swift}
+``` Swift
 enum Device { 
     case AppleWatch 
     init?(term: String) {
@@ -1019,7 +1005,7 @@ enum Device {
 In the above example, we used a failable initializer. However, normal
 initializers work just as well:
 
-``` {.swift}
+``` Swift
 enum NumberCategory {
    case Small
    case Medium
@@ -1070,7 +1056,7 @@ You don\'t have to do it that way though. Add two methods to your
 `enums` back and forth just fine, without having to conform to private
 protocols:
 
-``` {.swift prologue=""import Foundation""}
+``` Swift
 enum Trade {
     case Buy(stock: String, amount: Int)
     case Sell(stock: String, amount: Int)
@@ -1195,7 +1181,7 @@ In addition to that, Argo also includes a custom error for anything not
 fitting in these two categories above. Their `ErrorType enum` looks like
 this:
 
-``` {.swift noweb-ref="argo"}
+``` Swift
 enum DecodeError: Error {
   case TypeMismatch(expected: String, actual: String)
   case MissingKey(String)
@@ -1209,8 +1195,7 @@ about the error in question.
 A more general `ErrorType` for complete HTTP / REST API handling could
 look like this:
 
-``` {.swift noweb="strip-export" prologue=""import Foundation""}
-<<argo>>
+``` Swift
 enum APIError : Error {
     // Can't connect to the server (maybe offline?)
     case ConnectionError(error: NSError)
@@ -1248,7 +1233,7 @@ observation. If we think about it, we only have a couple of possible
 cases: One or more items are inserted, one or more items are deleted,
 one or more items are updated. This sounds like a job for an enum:
 
-``` {.swift}
+``` Swift
 enum Change {
      case Insertion(items: [Item])
      case Deletion(items: [Item])
@@ -1266,7 +1251,7 @@ If you\'re working with an outside system which uses status codes (or
 error codes) to convey information, like HTTP Status Codes, enums are
 obviously a great way to encode the information. [^7]
 
-``` {.swift}
+``` Swift
 enum HttpError: String {
   case Code400 = "Bad Request"
   case Code401 = "Unauthorized"
@@ -1281,7 +1266,7 @@ enum HttpError: String {
 Enums are also frequently used to map the result of JSON parsing into
 the Swift type system. Here\'s a short example of this:
 
-``` {.swift}
+``` Swift
 enum JSON {
     case JSONString(Swift.String)
     case JSONNumber(Double)
@@ -1304,7 +1289,7 @@ Enums can be used to map reuse identifiers or storyboard identifiers
 from stringly typed information to something the type checker can
 understand. Imagine a UITableView with different prototype cells:
 
-``` {.swift}
+``` Swift
 enum CellType: String {
     case ButtonValueCell = "ButtonValueCell"
     case UnitEditCell = "UnitEditCell"
@@ -1319,7 +1304,7 @@ Units and unit conversion are another nice use case for enums. You can
 map the units and their respective values and then add methods to do
 automatic conversions. Here\'s an oversimplified example.
 
-``` {.swift}
+``` Swift
 enum Liquid: Float {
   case ml = 1.0
   case l = 1000.0
@@ -1352,7 +1337,7 @@ protocol extensions and protocol based programming to add functionality
 to the various enums that you defined for your game. Here\'s a short
 example that tries to display such a hierarchy:
 
-``` {.swift}
+``` Swift
 enum FlyingBeast { case Dragon, Hippogriff, Gargoyle }
 enum Horde { case Ork, Troll }
 enum Player { case Mage, Warrior, Barbarian }
@@ -1381,7 +1366,7 @@ Nibs, Fonts, and other resources. Oftentimes, those resources can be
 grouped into several distinct sets. If that\'s the case, a `String`
 typed `enum` is a good way of having the compiler check this for you.
 
-``` {.swift}
+``` Swift
 enum DetailViewImages: String {
   case Background = "bg1.png"
   case Sidebar = "sbg.png"
@@ -1404,7 +1389,7 @@ values.
 Take, for example, a look at a simplified version of the [**Instagram
 API**](https://instagram.com/developer/endpoints/media/)
 
-``` {.swift}
+``` Swift
 enum Instagram {
   enum Media {
     case Popular
@@ -1430,7 +1415,7 @@ code in his post goes far beyond enums and touches a lot of interesting
 topics [^9], but the basis of his linked list looks kinda like this (I
 simplified it a bit):
 
-``` {.swift}
+``` Swift
 enum List {
     case End
     indirect case Node(Int, next: List)
@@ -1446,7 +1431,7 @@ red black tree with indirect Swift enums, so while you\'re already
 reading his blog, [you may just as well also read this
 one.](http://airspeedvelocity.net/2015/07/22/a-persistent-tree-using-indirect-enums-in-swift/)
 
-## Settings Dictionaries {#settingsdics}
+## Settings Dictionaries
 
 [This is a very, very smart solution that Erica Sadun came up
 with](http://ericasadun.com/2015/10/19/sets-vs-dictionaries-smackdown-in-swiftlang/?utm_campaign%3DSwift%252BSandbox&utm_medium%3Demail&utm_source%3DSwift_Sandbox_12).
@@ -1475,7 +1460,7 @@ tuples which were attached to the enum case. Tuples, on the other hand,
 can be deconstructed in a much simpler way simply by using
 `.keyword or .0`. i.e:
 
-``` {.swift}
+``` Swift
 // Enums
 enum Ex { case Mode(ab: Int, cd: Int) }
 if case Ex.Mode(let ab, let cd) = Ex.Mode(ab: 4, cd: 5) {
@@ -1501,7 +1486,7 @@ all associated value / tuple types conform to equatable, I think the
 default case should be that the compiler automatically also generates
 the equatable extension.
 
-``` {.swift}
+``` Swift
 // Int and String are Equatable, so case Ex should also be equatable.
 enum Ex { case Mode(ab: Int, cd: String) }
 
@@ -1524,7 +1509,7 @@ I love tuples, they make many things easier, but they\'re currently
 under-documented and cannot be used in many scenarios. In terms of
 enums, you can\'t have tuples as the enum value:
 
-``` {.swift}
+``` Swift
 enum Devices: (intro: Int, name: String) {
   case iPhone = (intro: 2007, name: "iPhone")
   case AppleTV = (intro: 2006, name: "Apple TV")
@@ -1548,7 +1533,7 @@ Another thing which you may run into is that associated values are
 always types but you can\'t set a default value for those types. Imagine
 such an example:
 
-``` {.swift}
+``` Swift
 enum Characters {
   case Mage(health: Int = 70, magic: Int = 100, strength: Int = 30)
   case Warrior(health: Int = 100, magic: Int = 0, strength: Int = 100)
@@ -1565,7 +1550,6 @@ settings for your character would be mapped.
 
 -   Added additional limitation examples (Equatable & Retrieving
     associated values)
--   *Added Erica Sadun\'s Set with Associated Enums example*
 
 ****10/22/2015****
 

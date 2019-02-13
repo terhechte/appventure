@@ -1,4 +1,5 @@
 [frontMatter]
+description = "FIXME FIXME FIXME"
 title = "Clojure/Enlive Static Site Generator that keeps your HTML intact"
 created = "2014-01-22"
 published = true
@@ -101,7 +102,7 @@ With that in mind, lets see a simple example:
 
 public/index.html
 
-``` {.html}
+``` HTML
 <html>
 <head><title>title</title></head>
 <body>
@@ -152,7 +153,7 @@ entries. A snipped is a piece of html from a template that you can clone
 
 templates/base.clj
 
-``` {.clojure}
+``` Clojure
 ; template-path prefixes the name with the correct path
 ; We bind this to a var so we can access it easily
 
@@ -188,7 +189,7 @@ being done in our default template.
 
 ### templates/default.clj
 
-``` {.clojure}
+``` Clojure
 ; The define-template is a macro in core.clj 
 ; that helps us define simple templates
 (define-template base-template-file

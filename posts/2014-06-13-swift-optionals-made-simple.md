@@ -25,7 +25,7 @@ In Objective-C, each method that returns a NSObject[^1] subclass can
 also choose to return `Nil` instead. Quick Example, imagine we want to
 split an array in two equally sized partitions.
 
-``` {.Objective-C}
+``` Objective-C
 @implementation Example
 + (NSArray*) partitionArray:(NSArray*)p {
     // can't partition for non-power-2 array-sizes
@@ -48,7 +48,7 @@ compiler that the function **may** return an NSArray, but that it
 **may** also return nil. That really depends upon the input values. The
 return value of your function may be NSArray or nil, it is optional.
 
-``` {.Javascript}
+``` Swift
 // Wrong
 func partitionArray(p: NSArray) -> NSArray {
     return nil // Compile error
@@ -73,7 +73,7 @@ or not. The `?` at the end of a type declares it as an Optional type.
 
 Let\'s go back to our initial Objective-C example and see it in use.
 
-``` {.Objective-C}
+``` Objective-C
 NSArray *data = someWebServiceMagic();
 NSArray *storePartitions = [Example partitionArray: data];
 // move user backups to locations
@@ -105,7 +105,7 @@ you try a forced unwrap on an empty optional (i.e. nil) it will cause a
 runtime error. (Ignore the `as NSArray`, it simply tells the compiler to
 convert the native Array to an NSArray)
 
-``` {.Javascript}
+``` Swift
 partitionArray([1, 2, 3, 4] as NSArray?)![0] // will work fine
 partitionArray([1, 2, 3] as NSArray?)![0] // will crash
 ```
@@ -117,7 +117,7 @@ The other way is to unwrap into a let expression. That way, you define a
 block of code that will only be executed if the Optional contains a
 value.
 
-``` {.Javascript}
+``` Swift
 if let p = partitionArray([1, 2, 3, 4] as NSArray?) {
     // this code will be called
 }
@@ -136,7 +136,7 @@ of value (the actual NSArray) to the constant p.
 
 Oftentimes, however, you actually just want to do the opposite.
 
-``` {.Javascript}
+``` Swift
 if not let p = partitionArray([1, 2, 3] as NSArray?) {
     // print an error
    return
@@ -148,7 +148,7 @@ Unwrapping it into a variable with ! also doesn\'t work, because if it
 is indeed nil, it will crash. So what to do? Thankfully, this case can
 be identified with a simple equality comparison:
 
-``` {.Javascript}
+``` Swift
 if p == nil {
     return
 }
@@ -177,7 +177,7 @@ just objects, so you can also use them for Int, Bool, even Closures:
     method on a Objective-C object, but you didn\'t know whether it
     existed or not, you can do that the following way:
 
-    ``` {.Javascript}
+    ``` Swift
     // 1.
     object.secredMethod?(param)
     // 2.
@@ -191,7 +191,7 @@ just objects, so you can also use them for Int, Bool, even Closures:
     The sophisticated Pattern Matching in Swift\'s `switch` construct is
     also a good alternative to unwrap Optionals:
 
-    ``` {.Javascript}
+    ``` Swift
     var result: String? = secretFunction()
     switch result {
     case .None:
@@ -203,7 +203,7 @@ just objects, so you can also use them for Int, Bool, even Closures:
 
     With Swift 2.0, this can also be expressed more cleanly:
 
-    ``` {.Javascript}
+    ``` Swift
     var result: String? = secretFunction()
     switch result {
     case nil:
@@ -217,7 +217,7 @@ just objects, so you can also use them for Int, Bool, even Closures:
     matching syntax in Swift allow you to define far more detailed cases
     that test for much more than just nil or not nil.
 
-    ``` {.Javascript}
+    ``` Swift
     // A number of very stub methods 
     func secretFunction1() -> Int? {return 0}
     func secretFunction2() -> [String] {return ["a", "b"]}
@@ -247,7 +247,7 @@ just objects, so you can also use them for Int, Bool, even Closures:
     you interact with UIKit or Cocoa libraries, you will need to unwrap
     your values:
 
-    ``` {.Javascript}
+    ``` Swift
     if let u = c.componentsSeperatedByString("a") {
     }
     if let u = c.firstItem() {
@@ -258,7 +258,7 @@ just objects, so you can also use them for Int, Bool, even Closures:
 
     This is also necessary for NSDictionary access:
 
-    ``` {.Javascript}
+    ``` Swift
     let u: NSDictionary = magicMethod()
     // image u as having the following structure
     // Objc Syntax: @{@"a-key": @[@1, @2, @3]}
@@ -277,7 +277,7 @@ just objects, so you can also use them for Int, Bool, even Closures:
     `!` outside of `IBOutlet` bindings, there may be a better way to do
     this. In this case, Swift\'s combined `let` statements.
 
-    ``` {.Javascript}
+    ``` Swift
     let example = ["a": ["b": ["c": 1]]]
     if let a = example["a"],
         b = a["b"],
@@ -304,7 +304,7 @@ just objects, so you can also use them for Int, Bool, even Closures:
     as any one evaluates to nil. For our previous example, that would
     look like the following:
 
-    ``` {.Javascript}
+    ``` Swift
     example["a"]?["b"]?["c"]
     ```
 
@@ -312,7 +312,7 @@ just objects, so you can also use them for Int, Bool, even Closures:
 
     Consider the following code:
 
-    ``` {.Javascript}
+    ``` Swift
     func example() -> Int? {return 10}
     if let value = example() {
         storeInDatabase(value * 2)
@@ -322,7 +322,7 @@ just objects, so you can also use them for Int, Bool, even Closures:
     If we break down the logic, what we\'re really trying to achieve,
     were it not for optionals, is the following:
 
-    ``` {.Javascript}
+    ``` Swift
     storeInDatabase(example() * 10)
     ```
 
@@ -336,7 +336,7 @@ just objects, so you can also use them for Int, Bool, even Closures:
     call the `.Some` value of an optional with a supplied closure iff
     the optional has a value.
 
-    ``` {.Javascript}
+    ``` Swift
     // The following will call print with 5, i.e. will print 5
     let px: Int? = 5
     px.map { print($0) }
@@ -350,7 +350,7 @@ just objects, so you can also use them for Int, Bool, even Closures:
     This lets us rewrite our example from above in terms of `map` as
     follows:
 
-    ``` {.Javascript}
+    ``` Swift
     example().map { storeInDatabase($0 * 2) }
     ```
 
@@ -372,7 +372,7 @@ just objects, so you can also use them for Int, Bool, even Closures:
     came up with a really good solution for this. They\'re utilizing the
     switch statement with a tuple to test for multiple entries.
 
-    ``` {.Javascript}
+    ``` Swift
     let j2 = ["a": 1, "b": 2, "c": 3]
     switch (j2["a"], j2["b"], j2["c"]) {
     case (let a?, nil, nil):

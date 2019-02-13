@@ -1,4 +1,5 @@
 [frontMatter]
+description = "FIXME FIXME FIXME"
 title = "Debugging advanced compilation errors in ClojureScript"
 created = "2015-07-02"
 published = true
@@ -25,7 +26,7 @@ where the bug you\'re seeing originated.
 
 **An Example:**
 
-``` {.JavaScript}
+``` Swift
 {
     :optimizations :advanced
     :pretty-print true

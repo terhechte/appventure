@@ -1,11 +1,11 @@
 [frontMatter]
 description = "How can we as a community help expanding the reach of Swift"
 title = "Expanding Swift's Reach"
-created = "2018-05-01"
+created = "2018-05-03"
 published = true
 keywords = ["swift", "linux", "server", "opensource"]
-slug = "2018-05-01-expanding-swifts-reach.html"
-tags = ["swift"]
+slug = "2018-05-03-expanding-swifts-reach.html"
+tags = ["swift", "linux"]
 ---
 
 I guess we can all agree that Swift is a beautiful programming language
@@ -31,9 +31,10 @@ issue that can be solved by us as a community while most of the other
 issues are already being worked on.
 
 I\'d also like have a brief look at Swift\'s **competition** in this
-space. I.e. other languages that also strive for
-`total world domination`. By observing where they stand right now, we
-can see what we can do in order to expand Swift\'s reach.
+space. I.e. other languages that also aspire to become a general purpose
+language for all the domains that C++ currently encompasses - and maybe
+more [^1]. By observing their take on the issue we can see where Swift
+stands in comparison, and what we can do.
 
 # System Packages
 
@@ -62,12 +63,13 @@ blockchain tooling - just to name a few.
 In line with Swift\'s 4.1 release, [there was a thread on Hacker News
 discussing the language](https://news.ycombinator.com/item?id=16710895).
 I\'ve read the entire thread multiple times due to the fact that the
-answers were really interesting. What stood out to me was the following
-comment:
+answers were really interesting. What stood out to me was [the following
+comment](https://news.ycombinator.com/item?id=16710895):
 
-    The set of libraries and supported OSes is a tiny dot comparable with the Go and Rust.
-    ...
-    If we start listing the kind of libraries used in distributed applications, database backends, Swift has hardly none of them.
+> The set of libraries and supported OSes is a tiny dot comparable with
+> the Go and Rust. ... If we start listing the kind of libraries used in
+> distributed applications, database backends, Swift has hardly none of
+> them.
 
 So lets have a look at the others.
 
@@ -247,9 +249,11 @@ almost all existing libraries were iOS / macOS only. If you already work
 on something that could be cross platform (due to no UIKit / AppKit
 dependencies) try to go the extra step of testing it on Swift Linux.
 
-This might also be easier than it sounds. There\'s a readily-available
-docker image for Swift 4.1, so you can just run that in order to test
-your code. Alternatively, you can run Virtualbox if you\'d rather have a
+This might also be easier than it sounds. [There\'s a readily-available
+docker image for Swift
+4.1](https://hub.docker.com/r/ibmcom/swift-ubuntu/tags/), so you can
+just run that in order to test your code.[^2]. Alternatively, you can
+run [Virtualbox](https://www.virtualbox.org/) if you\'d rather have a
 full running VM.
 
 ## Support Swift Package Manager
@@ -313,3 +317,8 @@ have. If you feel the same, feel free to share this article.
 
 [Also, for any discussion on this article, head to
 Twitter.](https://twitter.com/terhechte)
+
+[^1]: I.e. WebAssembly
+
+[^2]: I\'m trying to write another blog post that explains this in much
+    more detail

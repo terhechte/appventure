@@ -1,4 +1,5 @@
 [frontMatter]
+description = "FIXME FIXME FIXME"
 title = "Debugging entitlement issues in Maps, iCloud, In-App, Keychain, or GameCenter"
 created = "2014-01-21"
 published = true
@@ -36,7 +37,7 @@ entitlements are set:
 2.  Locate the generated Pkg file in the Terminal
 3.  Run the following code in the Terminal
 
-``` {.bash}
+``` bash
 pkgutil --expand "YourApp.pkg" Expanded_pkg
 open Expanded_pkg/com.yourcompany.yourapp/Payload
 codesign -d --entitlements - "Expanded_pkg/com.yourcompany.yourapp/YourApp.app"

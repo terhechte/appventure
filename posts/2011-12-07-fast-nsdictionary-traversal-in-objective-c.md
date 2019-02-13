@@ -1,7 +1,10 @@
----
-title: Fast NSDictionary traversal in Objective-C
-tags: objective-c ios cocoa
-alias: ["/2011/12/index.html"]
+[frontMatter]
+description = "Using the C preprocessor to improve NSDictionary key path traversal"
+title = "Fast NSDictionary traversal in Objective-C"
+created = "2015-12-07"
+published = true
+keywords = ["objective-c", "ios", "cocoa"]
+tags = ["objective-c", "ios", "cocoa"]
 ---
 [Dictionaries](http://developer.apple.com/library/mac/#documentation/Cocoa/Reference/Foundation/Classes/nsdictionary_Class/Reference/Reference.html) in Cocoa are really powerful objects that offer a solid base of useful methods, are easy to expand, and fast - especially due to the framework-wide distinction between mutable and immutable classes. One can really see the benefits of nurturing and enhancing a single API over the course of more than 18 years [^foot1].
 
