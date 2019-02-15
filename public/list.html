@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}{{ content.info.title }}{% endblock title %}
+
+{% block lefttop %} <h3>Articles</h3> {% endblock lefttop %}
+
+{% block content %}
+<div class="tile is-ancestor">
+	{% for articles in content.posts | split() %}
+	<div class="tile is-6 is-vertical is-parent">
+		{% for article in articles %}
+		<div class="tile is-child article-box">
+			<figure class="image">
+				<img src="/content/2015-11-30-reduce-all-the-things-feature-image.jpg">
+			</figure>
+			<p class="subtitle is-7 article-tile-meta-box">
+			{{ article.info.created }}
+			{% for tag in article.info.tags %}
+			<span><a href="{{ url_tag(id=tag) }}">#{{tag}}</a></span>
+			{% endfor %}
+			</p>
+			<h4 class="title is-4"><a href="{{ url_post(id=article.identifier) }}">{{ article.info.title }}</a></h4>
+			<p class="subtitle is-6">
+			{{ article.info.description }}
+			</p>
+		</div>
+		{% endfor %}
+	</div>
+	{% endfor %}
+</div>
+
+<nav class="pagination is-centered" role="navigation" aria-label="pagination">
+	<a class="pagination-previous is-success">Previous</a>
+	<a class="pagination-next is-success">Next page</a>
+	<ul class="pagination-list">
+		<li><a class="pagination-link" aria-label="Goto page 1">1</a></li>
+		<li><span class="pagination-ellipsis">&hellip;</span></li>
+		<li><a class="pagination-link" aria-label="Goto page 45">45</a></li>
+		<li><a class="pagination-link is-current" aria-label="Page 46" aria-current="page">46</a></li>
+		<li><a class="pagination-link" aria-label="Goto page 47">47</a></li>
+		<li><span class="pagination-ellipsis">&hellip;</span></li>
+		<li><a class="pagination-link" aria-label="Goto page 86">86</a></li>
+	</ul>
+</nav>
+{% endblock content %}
+
