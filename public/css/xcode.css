@@ -1,0 +1,137 @@
+/* Name: Xcode default */
+pre > code * {
+	color: #000000ff;
+	background-color: #ffffffff;
+}
+
+pre > code .comment {
+	color: #474b5cff;
+	background-color: #e9e0e0ff;
+}
+
+pre > code .meta.preprocessor {
+	color: #84441dff;
+}
+
+pre > code .keyword.control.import {
+	color: #84441dff;
+}
+
+pre > code .string {
+	color: #dd0004ff;
+}
+
+pre > code .constant.numeric {
+	color: #1c00cfff;
+}
+
+pre > code .constant.language {
+	color: #c800a7ff;
+}
+
+pre > code .constant.character {
+	color: #204b51ff;
+}
+
+pre > code .constant.other {
+	color: #204b51ff;
+}
+
+pre > code .variable.language {
+	color: #c800a7ff;
+}
+
+pre > code .variable.other {
+	color: #5b1ca3ff;
+}
+
+pre > code .keyword {
+	color: #c800a7ff;
+}
+
+pre > code .storage {
+	color: #c800a7ff;
+}
+
+pre > code .entity.name.class {
+	color: #5b1ca3ff;
+}
+
+pre > code .entity.other.inherited-class {
+	color: #5b1ca3ff;
+}
+
+pre > code .entity.name.function {
+	color: #514343ff;
+}
+
+pre > code .variable.parameter {
+	color: #000000ff;
+}
+
+pre > code .entity.name.tag {
+	color: #7c05b6ff;
+}
+
+pre > code .entity.other.attribute-name {
+	color: #450084ff;
+}
+
+pre > code .support.function {
+	color: #2c0774ff;
+}
+
+pre > code .support.function.any-method {
+	color: #3f1d84ff;
+}
+
+pre > code .support.constant {
+	color: #450084ff;
+}
+
+pre > code .support.type {
+	color: #7c05b6ff;
+}
+
+pre > code .support.class {
+	color: #7c05b6ff;
+}
+
+pre > code .support.other.variable {
+	color: #7c05b6ff;
+}
+
+pre > code .invalid {
+}
+
+pre > code .markup.bold {
+	color: #008d00ff;
+	font-weight: bold;
+}
+
+pre > code .markup.italic {
+	color: #dd0004ff;
+	font-style: italic;
+}
+
+pre > code .markup.underline {
+	color: #3f1d84ff;
+}
+
+pre > code .markup.quote {
+	font-style: italic;
+}
+
+pre > code .markup.list {
+	color: #6d04a0ff;
+	font-style: italic;
+}
+
+pre > code .markup.heading {
+	color: #3f1d84ff;
+	font-weight: bold;
+}
+
+pre > code .implementation {
+}
+
