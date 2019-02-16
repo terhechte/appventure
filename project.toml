@@ -4,6 +4,9 @@ keywords = ["swift", "rust", "about", "blog", "diary"]
 [Folders]
 # The file and folders that should be copied over from within the public folder
 publicCopyFolders = ["css", "img", "js", "content"]
+booksFolder = "guides"
+booksFolderName = "guides"
+books = ["pattern_matching/summary.toml"]
 
 # [RSS]
 title = "Benedikt Terhechte"

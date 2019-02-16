@@ -1,0 +1,32 @@
+[frontMatter]
+title = "Advanced Pattern Matching"
+tags = ["first tag", "second tag"]
+keywords = ["first keyword", "second keyword"]
+created = "2009-12-30"
+description = "A run around the world"
+published = true
+---
+- [Intro](intro.md)
+- [A Trading Engine](trading_engine.md)
+- [Pattern Types](advanced_pattern_matching/pattern_types.md)
+  - [Wildcard Pattern](advanced_pattern_matching/wildcard_pattern.md)
+  - [Identifier Pattern](advanced_pattern_matching/identifier_pattern.md)
+  - [Value-Binding Pattern](advanced_pattern_matching/value_binding_pattern.md)
+  - [Tuple Pattern](advanced_pattern_matching/tuple_pattern.md)
+  - [Enumeration Case Pattern](advanced_pattern_matching/enumeration_case_pattern.md)
+  - [Type Casting Pattern](advanced_pattern_matching/type_casting_pattern.md)
+  - [Expression Pattern](advanced_pattern_matching/expressionpattern.md)
+- [Fallthrough, Break and Labels](fallthrough_break_labels.md)
+- [Real World Examples](real_world_examples/intro.md)
+  - [Optionals](real_world_examples/optionals.md)
+  - [Type Matches](real_world_examples/type_matches.md)
+  - [Applying ranges for grading](real_world_examples/applying_ranges.md)
+  - [Word Frequencies](real_world_examples/word_frequencies.md)
+  - [Directory Traversion](real_world_examples/directory_traversion.md)
+  - [Fibonacci](real_world_examples/fibonacci.md)
+  - [Legacy API and Value Extractions](real_world_examples/legacy_api.md)
+- [Language Support](language_support/intro.md)
+  - [For Case](language_support/for_case.md)
+  - [Guard Case](language_support/guard_case.md)
+  - [If Case](language_support/if_case.md)
+- [Finishing Words](finishing_words.md)

@@ -1,0 +1,7 @@
+<h3> {{ content.info.title }} </h3>
+
+<ul>
+{% for chapter in content.chapters %}
+<li><a href="{{chapter.slug}}">{{ chapter.name }}</a></li>
+{% endfor %}
+</ul>

@@ -1,0 +1,14 @@
+
+{{ content.chapter.name }}<br/>
+
+{% if chapter.next %}
+<a href="{{ chapter.next.slug }}">next:</a> <br/>
+{% endif %}
+
+{% if chapter.previous %}
+<a href="{{ chapter.previous.slug }}">previous:</a> <br/>
+{% endif %}
+
+{% if chapter.parent %}
+<a href="{{ chapter.parent.slug }}">parent:</a> <br/>
+{% endif %}
