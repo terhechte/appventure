@@ -8,3 +8,12 @@ published = false
 ---
 
 # Identifier Pattern
+
+Matches a concrete value. This is how things work in Objective-C\'s
+`switch` implementation:
+
+``` Swift
+switch 5 {
+  case 5: print("5")
+}
+```

@@ -1,14 +1,99 @@
+{% extends "base.html" %}
+{% block title %}
+{{ content.chapter.name }}
+{% endblock title %}
 
-{{ content.chapter.name }}<br/>
+{% block content %}
+<h1 class="title is-2">{{ content.book.info.title }}</h1>
+<h4 class="subtitle is-4">{{ content.chapter.document.info.title }}</h4>
 
-{% if chapter.next %}
-<a href="{{ chapter.next.slug }}">next:</a> <br/>
-{% endif %}
+</div>
+</div>
+<div class="columns">
+        <div class="column is-narrow">
 
-{% if chapter.previous %}
-<a href="{{ chapter.previous.slug }}">previous:</a> <br/>
-{% endif %}
+            <aside class="book-sidebar">
+                <p class="menu-label">
+                    <i class="fas fa-book"></i>
+                    Contents
+                </p>
+                {% for chapter in content.book.chapters %}
+                <ul class="menu-list">
+                    <li><a
+                        {% if content.chapter.slug == chapter.slug %} class="is-active"
+                        {% endif %}
+                            href="/{{ chapter.slug }}">{{ chapter.name }}</a>
 
-{% if chapter.parent %}
-<a href="{{ chapter.parent.slug }}">parent:</a> <br/>
-{% endif %}
+                    {% if chapter.sub_chapters | length > 0 %}
+                    <ul>
+                        {% for sub_chapter in chapter.sub_chapters %}
+                        <li><a
+                            {% if content.chapter.slug == sub_chapter.slug %} class="is-active"
+                            {% endif %}
+                                href="/{{ sub_chapter.slug }}">{{ sub_chapter.name }}</a></li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                    </li>
+
+                </ul>
+                {% endfor %}
+            </aside>
+
+        </div>
+        <div class="column">
+<article class="article-post">
+
+	<p>{{ content.chapter.document.info.description_html }}</p>
+
+	<div class="content is-medium">
+		{{ content.chapter.document.content }}
+
+	</div>
+
+
+	<article class="box">
+  <nav class="pagination is-centered" role="navigation" aria-label="pagination">
+      {% if content.chapter.previous %}
+      <a href="/{{ content.chapter.previous.slug }}" class="pagination-previous">Previous</a>
+      {% endif %}
+
+      {% if content.chapter.next %}
+      <a href="/{{ content.chapter.next.slug }}" class="pagination-next">Next</a>
+      {% endif %}
+
+      {% if content.chapter.parent %}
+      <ul class="pagination-list">
+          <li><a href="/{{ content.chapter.parent.slug }}" class="pagination-link"> Back to {{ content.chapter.parent.name }} </a></li>
+      </ul>
+      {% endif %}
+  </nav>
+  </article>
+
+
+	<article class="media box" id="followme">
+		<figure class="media-left">
+			<p class="image is-64x64">
+			<img src="/img/ez.png">
+			</p>
+		</figure>
+		<div class="media-content">
+			<div class="content">
+				<p>
+				<strong>Benedikt Terhechte</strong> <small>@terhechte</small> 
+				<br>
+				If you read this far, you should <a href="https://twitter.com/terhechte">follow Benedikt on Twitter</a>.<br/>
+				Benedikt writes about Swift, macOS, iOS &amp; Linux development, and sometimes about other modern programming languages.
+				</p>
+			</div>
+		</div>
+		<div class="media-right">
+			<a class="button is-info is-rounded">
+				<i class="fab fa-twitter"></i>
+				Follow Me</a>
+		</div>
+	</article>
+
+
+</article>
+{% endblock content %}

@@ -8,3 +8,5 @@ published = false
 ---
 
 # Finishing Words
+
+Pattern Matching is a really powerful feature of Swift. It is one of the defining features that makes Swift Code so much nicer to read than what you'd write in Objective-C.

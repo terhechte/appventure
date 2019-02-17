@@ -118,7 +118,38 @@ h2.title.is-2 > span.syntax {
     color: #999;
 }
 article > .content > pre  {
-	background-color: #fff;
+	background-color: #fafafa;
 	border: 1px solid #ddd;
 	border-radius: 16px;
+}
+.book-sidebar {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+}
+
+/* Temporarily, until I've added a footnote-collector/parser */
+.footnote-definition {
+    background-color: #fff;
+    border-radius: 6px;
+    box-shadow: 0 2px 3px rgba(10,10,10,.1),0 0 0 1px rgba(10,10,10,.1);
+    color: #4a4a4a;
+    display: block;
+    padding: 1.25rem;
+}
+.footnote-definition > sup.footnote-definition-label {
+    float: left;
+    padding: 0px;
+    padding-right: 10px;
+    margin: 0px;
+    font-size: 100%;
+    font-weight: bold;
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+.footnote-definition > p {
+    font-size: 1rem;
+    line-height: 1.5;
+    font-weight: 400;
 }
