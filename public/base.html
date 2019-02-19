@@ -19,13 +19,35 @@
       <div class="column is-3">
        <span id="brand">appventure.me</span>
       </div>
-      <div class="column is-9">
+      <div class="column is-7">
        <span id="subbrand">
         Articles to help on your Swift App Adventure</span>
+      </div>
+      <div class="column is-2">
+          <div class="field">
+              <div class="control is-small">
+                  <input id="searchbar" class="input is-rounded is-small" type="text" placeholder="search">
+              </div>
+          </div>
       </div>
      </div>
     </div>
    </div>
+  </section>
+
+  <section class="section" id="search-wrapper" class="hidden">
+      <nav class="panel" id="searchresults-outer">
+          <p class="panel-heading" id="searchresults-header">
+              81 Search Results for ...
+          </p>
+          <div id="searchresults">
+          </div>
+          <div class="panel-block">
+              <button class="button is-link is-outlined is-fullwidth" id="search-toggle">
+                  Reset
+              </button>
+          </div>
+      </nav>
   </section>
 
   <section class="section" id="main">
@@ -53,13 +75,6 @@
       </div>
 
       <div class="columns is-mobile is-hidden-tablet">
-      <div class="column">
-       <div class="field">
-        <div class="control is-small">
-         <input class="input is-rounded is-small" type="text" placeholder="search">
-        </div>
-       </div>
-      </div>
       <div class="column is-narrow">
        <div class="buttons has-addons">
         <span class="button is-success is-selected">
@@ -78,12 +93,6 @@
      </div>
 
      <div class="column is-narrow">
-
-      <div class="field">
-       <div class="control is-small">
-        <input class="input is-rounded is-small" type="text" placeholder="search">
-       </div>
-      </div>
 
       <aside class="menu">
        <br/>
@@ -163,6 +172,10 @@
    </article>
   </div>
 
+  <script src="/{{ config.Search.searchIndexFile }}" type="text/javascript" charset="utf-8"></script>
+  <script src="/js/elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+  <script src="/js/mark.min.js" type="text/javascript" charset="utf-8"></script>
+  <script src="/js/searcher.js" type="text/javascript" charset="utf-8"></script>
 
  </body>
 </html>

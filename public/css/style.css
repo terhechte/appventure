@@ -153,3 +153,11 @@ article > .content > pre  {
     line-height: 1.5;
     font-weight: 400;
 }
+
+#searchresults span.teaser em {
+    background-color: yellow;
+}
+
+#search-wrapper.hidden {
+    display: none !important;
+}
