@@ -1,0 +1,22 @@
+[frontMatter]
+title = "Map, FlatMap, Reduce & More"
+tags = ["swift", "ios", "cocoa"]
+keywords = ["feature", "swift", "reduce", "map", "filter", "group", "partition", "split", "interpose", "chunk", "functional", "programming", "flatMap", "compactMap"]
+created = "2015-11-30"
+description = "An introduction into the reduce function as an alternative to map, flatMap or filter for collection transformation"
+published = true
+---
+- [Intro](intro.md)
+- [A Simple Problem](a_simple_problem.md)
+- [Reduce](reduce.md)
+- [Map](map.md)
+- [Filter](filter.md)
+- [Reduce Examples](reduce_examples.md)
+- [Performance](performance.md)
+- [More Examples](more_examples/intro.md)
+  - [Minimum](more_examples/minimum.md)
+  - [Unique](more_examples/unique.md)
+  - [Group By](more_examples/group_by.md)
+  - [Interpose](more_examples/interpose.md)
+  - [Interdig](more_examples/interdig.md)
+  - [Chunk](more_examples/chunk.md)

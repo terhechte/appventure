@@ -6,7 +6,7 @@ keywords = ["swift", "rust", "about", "blog", "diary"]
 publicCopyFolders = ["css", "img", "js", "content"]
 booksFolder = "guides"
 booksFolderName = "guides"
-books = ["pattern_matching/summary.toml"]
+books = ["pattern_matching/summary.toml", "map_flatmap_reduce_more/summary.toml"]
 
 # [RSS]
 title = "Benedikt Terhechte"
