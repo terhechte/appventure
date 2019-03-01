@@ -1,0 +1,23 @@
+[frontMatter]
+description = "Tuples are one of Swift's less visible language features. They occupy a small space between Structs and Arrays. In addition, there's no comparable construct in Objective-C (or many other languages). Finally, the use of tuples in the standard library and in Apple's example code is sparse. The following guide tries to give a more comprehensive overview of tuples with best practices of when to use them, and when not to use them. I'll also try to list those things that you can't do with tuples, to spare you asking about them on stack overflow."
+title = "Tuples in Swift, Advanced Usage and Best Practices"
+created = "2015-07-19"
+published = true
+keywords = ["swift", "tuples", "generics", "feature"]
+slug = "2015-07-19-tuples-swift-advanced-usage-best-practices.html"
+tags = ["swift"]
+---
+- [Introduction](introduction.md)
+- [The absolute Basics](absolute_basics/intro.md)
+  - [Creating and Accessing Tuples](absolute_basics/creating_and_accessing_tuples.md)
+  - [Tuples for Pattern Matching](absolute_basics/tuples_for_pattern_matching.md)
+  - [Tuples as Return Types](absolute_basics/tuples_as_return_types.md)
+  - [Tuple Destructuring](absolute_basics/tuple_destructuring.md)
+- [Advanced Tuples](advanced_tuples/intro.md)
+  - [Anonymous Structs](advanced_tuples/anonymous_structs.md)
+  - [Private State](advanced_tuples/private_state.md)
+  - [Fixed-Size Sequences](advanced_tuples/fixed_size_sequences.md)
+  - [Variable Arguments](advanced_tuples/variable_arguments.md)
+  - [Iteration](advanced_tuples/iteration.md)
+  - [Generics](advanced_tuples/generics.md)
+  - [Type Aliases](advanced_tuples/type_aliases.md)

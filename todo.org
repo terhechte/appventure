@@ -1,8 +1,40 @@
 * New
 ** TODO Guides
+** TODO add swift version of article (i.e. 4.2 or 5.0) to meta of article so I can display it
 *** TODO Fix links
 some guides still contain links to other guides (either via https://appventure or if it was within one post via #lala) this has to be fixed
+*** TODO advanced_tuples/intro.md no content yet
+Swift took a lot of inspiration from different programming languages,
+and this is something that Python has been doing for years. While the
+previous examples mostly showed how to easily get something into a
+tuple, destructuring is a swifty way of getting something out of a
+tuple, and in line with the `abc` example above, it looks like this:
+
+``` Swift
+let (a, b, c) = abc()
+print(a)
+```
+
+Another example is getting several function calls into one line:
+
+``` Swift
+let (a, b, c) = (a(), b(), c())
+```
+
+Or, an easy way to swap two values:
+
+``` Swift
+var v1: Int
+var v2: Int
+(v1, v2) = (5, 4)
+(a: v1, b: v2) = (a: v2, b: v1) // swapped: v1 == 4, v2 == 5
+(v1, v2) = (5, 4)
+(a: v1, b: v2) = (b: v1, a: v2) // swapped: v1 == 4, v2 == 5
+
+```
+
 *** TODO Make sure all code compiles
+*** TODO Auto-inject keyword links for 'tuple', 'enum', 'optional', etc with the nice macappblog popup    
 Maybe write a tool that spits out code which doesn't compile?
 ** TODO alternative to the screenshots
 ** TODO New sections

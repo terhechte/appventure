@@ -11,8 +11,7 @@ published = false
 
 ## Tuples
 
-The biggest issue is, [again, Tuple
-support](http://appventure.me/2015/07/19/tuples-swift-advanced-usage-best-practices/).
+The biggest issue is, Tuple support.
 I love tuples, they make many things easier, but they\'re currently
 under-documented and cannot be used in many scenarios. In terms of
 enums, you can\'t have tuples as the enum value:
