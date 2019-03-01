@@ -1,4 +1,9 @@
 * New
+** TODO Guides
+*** TODO Fix links
+some guides still contain links to other guides (either via https://appventure or if it was within one post via #lala) this has to be fixed
+*** TODO Make sure all code compiles
+Maybe write a tool that spits out code which doesn't compile?
 ** TODO alternative to the screenshots
 ** TODO New sections
 Language => My tuple, pattern matching, etc posts

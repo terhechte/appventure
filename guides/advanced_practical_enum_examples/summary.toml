@@ -1,0 +1,40 @@
+[frontMatter]
+description = "When and how to use enums in Swift? This is a detailed practical overview of all the possibilities enums can offer you."
+title = "Advanced and Practical Enum usage in Swift"
+created = "2015-10-17"
+published = true
+keywords = ["feature", "swift", "enum", "algebraic", "caseclass", "union", "case", "switch", "pattern", "simple", "practical", "advanced", "example"]
+slug = "2015-10-17-advanced-practical-enum-examples.html"
+tags = ["swift", "cocoa", "ios"]
+---
+- [Introduction](introduction.md)
+- [Diving In: Basic Enums](diving_in/intro.md)
+  - [Enum values](diving_in/enum_values.md)
+  - [Nesting Enums](diving_in/nesting_enums.md)
+  - [Containing Enums](diving_in/containing_enums.md)
+  - [Associated Values](diving_in/associated_values.md)
+  - [Methods and Properties](diving_in/methods_and_properties.md)
+  - [Recap](diving_in/recap.md)
+- [Advanced Enum Usage](advanced_enum_usage/intro.md)
+  - [Protocols](advanced_enum_usage/protocols.md)
+  - [Extensions](advanced_enum_usage/extensions.md)
+  - [Generic Enums](advanced_enum_usage/generic_enums.md)
+  - [Recursive / Indirect Types](advanced_enum_usage/recursive_or_indirect_types.md)
+  - [Custom Data Types](advanced_enum_usage/custom_data_types.md)
+  - [Custom Initializers](advanced_enum_usage/custom_initializers.md)
+  - [Iterating over Enum Cases](advanced_enum_usage/iterating_over_enum_cases.md)
+  - [Objective-C Support](advanced_enum_usage/objective_c_support.md)
+- [Enums in the Standard Library](enums_standard_library.md)
+- [Practical Usecases](practical_use_cases/intro.md)
+  - [Error Handling](practical_use_cases/error_handling.md)
+  - [Observer Pattern](practical_use_cases/observer_pattern.md)
+  - [Status Codes](practical_use_cases/status_codes.md)
+  - [Result Types](practical_use_cases/result_types.md)
+  - [UIKit Identifiers](practical_use_cases/uikit_identifiers.md)
+  - [Units](practical_use_cases/units.md)
+  - [Games](practical_use_cases/games.md)
+  - [Stringly Typed Code](practical_use_cases/stringly_typed_code.md)
+  - [API Endpoints](practical_use_cases/api_endpoints.md)
+  - [Linked Lists](practical_use_cases/linked_lists.md)
+  - [Settings](practical_use_cases/settings.md)
+- [Limitations](limitations.md)

@@ -1,0 +1,21 @@
+[frontMatter]
+description = "In this guide we'll examine the Swift reflection API, see how fast it is, and will try to show use cases where it can be applied successfully."
+title = "The Swift Reflection API and what you can do with it"
+created = "2015-10-24"
+published = true
+keywords = ["feature", "swift", "reflection", "struct", "class", "displayType", "mirror", "api", "reflecting", "any", "anyobject"]
+slug = "2015-10-24-swift-reflection-api-what-you-can-do.html"
+tags = ["swift", "cocoa", "ios"]
+---
+- [Introduction](introduction.md)
+- [Mirrors](mirrors/intro.md)
+  - [Creating a Mirror](mirrors/creating_a_mirror.md)
+  - [What is in a Mirror](mirrors/what_is_in_a_mirror.md)
+  - [How to use a Mirror](mirrors/how_to_use_a_mirror.md)
+- [Practical Example](example/intro.md)
+  - [Structs to Core Data](example/implementation.md)
+  - [Performance](example/performance.md)
+- [Custom Mirrors](custom_mirrors/intro.md)
+  - [Collections](custom_mirrors/collections.md)
+  - [Classes or Structs](custom_mirrors/classes_or_structs.md)
+- [Conclusion](conclusion.md)

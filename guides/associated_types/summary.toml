@@ -1,0 +1,21 @@
+[frontMatter]
+description = "Understand how to model your way around some of the issues that arise when introducing associated typed protocols into your codebase"
+title = "Patterns for Working With Associated Types"
+created = "2017-12-10"
+published = true
+keywords = ["swift", "protocol", "protocols", "associated", "associatedtype", "typealias", "pattern", "pat"]
+slug = "2017-12-10-patterns-for-working-with-associated-types.html"
+tags = ["swift", "cocoa", "ios"]
+published = true
+---
+- [Associated Types](associated_types.md)
+- [Associated Types Trouble](associated_types_trouble.md)
+- [Equatable](working_around_associated_type_issues/equatable.md)
+  - [Associated Types and Self](working_around_associated_type_issues/self.md)
+  - [Method-Only Types](working_around_associated_type_issues/method_only_types.md)
+  - [Hiding Behind Protocols](working_around_associated_type_issues/hiding_behind_protocols.md)
+- [Type Erasure](type_erasure/intro.md)
+  - [An Abstract Class](type_erasure/an_abstract_class.md)
+  - [A Box Type](type_erasure/a_box_type.md)
+  - [Puttting it all together](type_erasure/putting_it_all_together.md)
+- [Conclusion](conclusion.md)
