@@ -1,64 +1,38 @@
-* New
-** TODO Search guides / books / chapters
-** TODO Guides
-** TODO Have markdown tag for books for "prev_chapter" and "next_chapter" maybe it is just a js function that is injected into the template.. that would be easier
-** TODO add swift version of article (i.e. 4.2 or 5.0) to meta of article so I can display it
-*** TODO Fix links
-some guides still contain links to other guides (either via https://appventure or if it was within one post via #lala) this has to be fixed
-*** TODO advanced_tuples/intro.md no content yet
-Swift took a lot of inspiration from different programming languages,
-and this is something that Python has been doing for years. While the
-previous examples mostly showed how to easily get something into a
-tuple, destructuring is a swifty way of getting something out of a
-tuple, and in line with the `abc` example above, it looks like this:
+* Design
+** TODO Maybe change font to open sans, I really like that here: 
+  https://intellij-rust.github.io/2019/03/04/changelog-93.html
 
-``` Swift
-let (a, b, c) = abc()
-print(a)
-```
-
-Another example is getting several function calls into one line:
-
-``` Swift
-let (a, b, c) = (a(), b(), c())
-```
-
-Or, an easy way to swap two values:
-
-``` Swift
-var v1: Int
-var v2: Int
-(v1, v2) = (5, 4)
-(a: v1, b: v2) = (a: v2, b: v1) // swapped: v1 == 4, v2 == 5
-(v1, v2) = (5, 4)
-(a: v1, b: v2) = (b: v1, a: v2) // swapped: v1 == 4, v2 == 5
-
-```
-
-*** TODO Make sure all code compiles
-*** TODO Auto-inject keyword links for 'tuple', 'enum', 'optional', etc with the nice macappblog popup    
-Maybe write a tool that spits out code which doesn't compile?
+* Content
 ** TODO alternative to the screenshots
 ** TODO New sections
 Language => My tuple, pattern matching, etc posts
 Projects / Examples / Tutorials => Go by example, apps, etc (maybe even stuff like how to read with iPhone 6s what the CPU is)
 Tooling = > Swift Package Manager, etc
 Blog => Stuff like Expanding Swift's Reach
+** TODO add swift version of article (i.e. 4.2 or 5.0) to meta of article so I can display it
+** TODO Fix links
+some guides still contain links to other guides (either via https://appventure or if it was within one post via #lala) this has to be fixed
+** TODO advanced_tuples/intro.md no content yet
+** TODO Make sure all code compiles
 ** TODO The rest ends up in the "Articles" section => Value Types, Useful Optional Extensions
-** TODO Split posts up into multiple smaller posts and make them into books (i.e. pattern matching guide)
-** TODO Add "Generics" Guide
-** TODO fix syntax highlighting
+Maybe write a tool that spits out code which doesn't compile?
+** TODO Auto-inject keyword links for 'tuple', 'enum', 'optional', etc with the nice macappblog popup    
 ** TODO Add backwards compatible links to the old content:
  take the old generated html, and insert a header at the top "APPVENTURE RELAUNCHED" with a link to the new versions of the article,
   and then re-generate it and just keep the old /2015, /2016 etc folders as "copy folders" in (for search engine links and for posterity)
-* General
+
+
+* HTML Stuff
 ** TODO Debug Responsiveness
-* list
-** TODO List view (not icon view)
-** TODO Profile (my pic and the icons below it)
 ** TODO Headline / logo
-** TODO search result
-** TODO archve
 ** TODO About
-** TODO Projects
 ** TODO social interaction (follow on twitter, etc)
+
+* Future
+** TODO Add "Generics" Guide
+   
+* Done
+** DONE Search guides / books / chapters
+** DONE Have markdown tag for books for "prev_chapter" and "next_chapter" maybe it is just a js function that is injected into the template.. that would be easier
+** DONE Split posts up into multiple smaller posts and make them into books (i.e. pattern matching guide)
+** DONE fix syntax highlighting

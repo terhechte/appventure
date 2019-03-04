@@ -9,6 +9,7 @@ published = true
 [meta]
 image = "/content/doom.png"
 swift_version = "2.3"
+short_title = "Pattern Matching"
 ---
 - [Intro](intro.md)
 - [A Trading Engine](trading_engine.md)
@@ -28,7 +29,7 @@ swift_version = "2.3"
   - [Word Frequencies](real_world_examples/word_frequencies.md)
   - [Directory Traversion](real_world_examples/directory_traversion.md)
   - [Fibonacci](real_world_examples/fibonacci.md)
-  - [Legacy API and Value Extractions](real_world_examples/legacy_api.md)
+  - [Legacy API](real_world_examples/legacy_api.md)
 - [Language Support](language_support/intro.md)
   - [For Case](language_support/for_case.md)
   - [Guard Case](language_support/guard_case.md)

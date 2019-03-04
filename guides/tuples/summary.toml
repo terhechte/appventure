@@ -10,6 +10,7 @@ tags = ["swift"]
 [meta]
 image = "/content/doom.png"
 swift_version = "2.3"
+short_title = "Tuples"
 ---
 - [Introduction](introduction.md)
 - [The absolute Basics](absolute_basics/intro.md)

@@ -390,6 +390,7 @@ window.search = window.search || {};
             searchbar.select();
         } else {
             showSearch(false);
+            searchbar.value = "";
         }
     }
     
@@ -399,6 +400,7 @@ window.search = window.search || {};
         if (searchterm != "") {
             searchbar.classList.add("active");
             doSearch(searchterm);
+            showSearch(true);
         } else {
             searchbar.classList.remove("active");
             showResults(false);

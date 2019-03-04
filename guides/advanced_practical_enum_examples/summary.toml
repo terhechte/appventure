@@ -10,6 +10,7 @@ tags = ["swift", "cocoa", "ios"]
 [meta]
 image = "/content/doom.png"
 swift_version = "2.3"
+short_title = "Enums"
 ---
 - [Introduction](introduction.md)
 - [Diving In: Basic Enums](diving_in/intro.md)

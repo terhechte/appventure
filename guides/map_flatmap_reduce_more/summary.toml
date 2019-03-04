@@ -9,6 +9,7 @@ published = true
 [meta]
 image = "/content/doom.png"
 swift_version = "2.3"
+short_title = "Map, Reduce & more"
 ---
 - [Intro](intro.md)
 - [A Simple Problem](a_simple_problem.md)

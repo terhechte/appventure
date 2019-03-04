@@ -36,7 +36,7 @@
    </div>
   </section>
 
-  <section class="section" id="search-wrapper" class="hidden">
+  <section class="section hidden" id="search-wrapper">
       <nav class="panel" id="searchresults-outer">
           <p class="panel-heading" id="searchresults-header">
               81 Search Results for ...
@@ -125,7 +125,7 @@
             </p>
             <ul>
 	              {% for book in context.books %}
-                <li><a href="{{ url_book(id=book.identifier) }}">{{ book.info.title }}</a></li>
+                <li><a href="{{ url_book(id=book.identifier) }}">{{ book.info.meta.short_title }}</a></li>
 	              {% endfor %}
             </ul>
         </li>

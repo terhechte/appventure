@@ -73,13 +73,13 @@ function prev() {
       {% if content.chapter.previous %}
       <a href="/{{ content.chapter.previous.slug }}" class="pagination-previous">Previous</a>
       {% else %}
-      <a href="#" class="pagination-previous disabled">&nbsp;</a>
+      &nbsp;
       {% endif %}
 
       {% if content.chapter.next %}
       <a href="/{{ content.chapter.next.slug }}" class="pagination-next">Next</a>
       {% else %}
-      <a href="#" class="pagination-next disabled">&nbsp;</a>
+      &nbsp;
       {% endif %}
 
       {% if content.chapter.parent %}
