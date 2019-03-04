@@ -1,0 +1,17 @@
+[frontMatter]
+title = "Optionals"
+keywords = ["feature", "lisp", "swift", "optional", "scala", "simple", "optionals", "switch", "chaining", "for", "pattern", "matching", "clojure", "haskell"]
+tags = ["swift", "ios", "cocoa"]
+created = "2015-08-20"
+description = "With Swift, Apple introduced several new programming languages features to iOS and Mac developers. One of them are Optionals. This is a simple introduction into Optionals that glosses over details to make it more approachable."
+published = true
+
+[meta]
+image = "/content/doom.png"
+swift_version = "2.3"
+---
+- [What are Optionals](intro.md)
+- [Why Optionals are useful](why_optionals_are_useful.md)
+- [How to handle optionals](how_to_handle_optionals.md)
+- [Advanced Optionals](advanced_optionals.md)
+- [Extending Optionals](extending_optionals.md)
