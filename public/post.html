@@ -35,7 +35,16 @@
 	<h4 class="subtitle is-4">{{ content.info.description_html }}</h4>
 
 	<div class="content is-medium">
-		{{ content.content }}
+      {% if content.info.meta.moved %}
+      <div class="media box">
+          <div class="media-content">
+              This article has moved <a href="{{ content.info.meta.moved }}">here</a>:<br/>
+              <h4><a href="{{ content.info.meta.moved }}">{{ content.info.meta.moved }}</a></h4>
+          </div>
+      </div>
+      {% else %}
+		  {{ content.content }}
+      {% endif %}
 	</div>
 
 	<article class="media box" id="followme">
