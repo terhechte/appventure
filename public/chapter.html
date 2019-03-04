@@ -3,6 +3,22 @@
 {{ content.chapter.name }}
 {% endblock title %}
 
+{% block javascript %}
+<script>
+function prev() {
+     {% if content.chapter.previous %}
+     document.location.href = "/{{ content.chapter.previous.slug }}";
+     {% endif %}
+}
+
+ function next() {
+     {% if content.chapter.next %}
+     document.location.href = "/{{ content.chapter.next.slug }}";
+     {% endif %}
+ }
+</script>
+{% endblock javascript %}
+
 {% block content %}
 <h1 class="title is-2">{{ content.book.info.title }}</h1>
 <h4 class="subtitle is-4">{{ content.chapter.document.info.title }}</h4>
@@ -56,10 +72,14 @@
   <nav class="pagination is-centered" role="navigation" aria-label="pagination">
       {% if content.chapter.previous %}
       <a href="/{{ content.chapter.previous.slug }}" class="pagination-previous">Previous</a>
+      {% else %}
+      <a href="#" class="pagination-previous disabled">&nbsp;</a>
       {% endif %}
 
       {% if content.chapter.next %}
       <a href="/{{ content.chapter.next.slug }}" class="pagination-next">Next</a>
+      {% else %}
+      <a href="#" class="pagination-next disabled">&nbsp;</a>
       {% endif %}
 
       {% if content.chapter.parent %}

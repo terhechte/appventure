@@ -5,6 +5,10 @@ keywords = ["feature", "swift", "reduce", "map", "filter", "group", "partition",
 created = "2015-11-30"
 description = "An introduction into the reduce function as an alternative to map, flatMap or filter for collection transformation"
 published = true
+
+[meta]
+image = "/content/doom.png"
+swift_version = "2.3"
 ---
 - [Intro](intro.md)
 - [A Simple Problem](a_simple_problem.md)

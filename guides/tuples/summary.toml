@@ -6,6 +6,10 @@ published = true
 keywords = ["swift", "tuples", "generics", "feature"]
 slug = "2015-07-19-tuples-swift-advanced-usage-best-practices.html"
 tags = ["swift"]
+
+[meta]
+image = "/content/doom.png"
+swift_version = "2.3"
 ---
 - [Introduction](introduction.md)
 - [The absolute Basics](absolute_basics/intro.md)

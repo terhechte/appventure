@@ -1,5 +1,7 @@
 * New
+** TODO Search guides / books / chapters
 ** TODO Guides
+** TODO Have markdown tag for books for "prev_chapter" and "next_chapter" maybe it is just a js function that is injected into the template.. that would be easier
 ** TODO add swift version of article (i.e. 4.2 or 5.0) to meta of article so I can display it
 *** TODO Fix links
 some guides still contain links to other guides (either via https://appventure or if it was within one post via #lala) this has to be fixed

@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="/css/halflight.css">
   <link href="https://fonts.googleapis.com/css?family=Lato:400,700,900" rel="stylesheet"> 
   <script defer src="/js/fontawesome-all.min.js"></script>
+  {% block javascript %}{% endblock javascript %}
  </head>
  <body>
   <section class="section" id="head">
@@ -17,11 +18,11 @@
 
      <div class="columns">
       <div class="column is-3">
-       <span id="brand">appventure.me</span>
+          <span id="brand"><a href="/index.html">appventure.me</a></span>
       </div>
       <div class="column is-7">
        <span id="subbrand">
-        Articles to help on your Swift App Adventure</span>
+        Helping on your Swift App Adventure</span>
       </div>
       <div class="column is-2">
           <div class="field">
@@ -114,6 +115,21 @@
           <li><a>macOS</a></li>
          </ul>
         </li>
+
+        <li>
+            <p class="menu-label">
+                <a>
+                    <i class="fas fa-book"></i>
+                    Guides
+                </a>
+            </p>
+            <ul>
+	              {% for book in context.books %}
+                <li><a href="{{ url_book(id=book.identifier) }}">{{ book.info.title }}</a></li>
+	              {% endfor %}
+            </ul>
+        </li>
+
         <li>
          <p class="menu-label">
           <a>

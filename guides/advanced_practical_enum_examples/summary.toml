@@ -6,6 +6,10 @@ published = true
 keywords = ["feature", "swift", "enum", "algebraic", "caseclass", "union", "case", "switch", "pattern", "simple", "practical", "advanced", "example"]
 slug = "2015-10-17-advanced-practical-enum-examples.html"
 tags = ["swift", "cocoa", "ios"]
+
+[meta]
+image = "/content/doom.png"
+swift_version = "2.3"
 ---
 - [Introduction](introduction.md)
 - [Diving In: Basic Enums](diving_in/intro.md)

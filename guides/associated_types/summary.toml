@@ -2,11 +2,14 @@
 description = "Understand how to model your way around some of the issues that arise when introducing associated typed protocols into your codebase"
 title = "Patterns for Working With Associated Types"
 created = "2017-12-10"
-published = true
 keywords = ["swift", "protocol", "protocols", "associated", "associatedtype", "typealias", "pattern", "pat"]
 slug = "2017-12-10-patterns-for-working-with-associated-types.html"
 tags = ["swift", "cocoa", "ios"]
 published = true
+
+[meta]
+image = "/content/doom.png"
+swift_version = "2.3"
 ---
 - [Associated Types](associated_types.md)
 - [Associated Types Trouble](associated_types_trouble.md)

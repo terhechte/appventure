@@ -1,9 +1,47 @@
 {% extends "base.html" %}
 {% block title %}{{ content.info.title }}{% endblock title %}
 
-{% block lefttop %} <h3>Articles</h3> {% endblock lefttop %}
+{% block lefttop %}
+<ul>
+    <li class="is-active">
+        <a><i class="fas fa-anchor"></i>&nbsp; Articles</a></li>
+    <li>
+        <a><i class="fas fa-couch"></i>&nbsp; Blog</a></li>
+    <li>
+        <a><i class="fas fa-coffee"></i>&nbsp; About</a></li>
+</ul>
+{% endblock lefttop %}
 
 {% block content %}
+
+<h3>Guides</h3>
+
+<div class="tile is-ancestor">
+	  {% for books in context.books | split() %}
+	  <div class="tile is-6 is-vertical is-parent">
+		    {% for book in books %}
+		    <div class="tile is-child article-box">
+			      <figure class="image">
+                <img src="{{ book.info.meta.image }}"/>
+			      </figure>
+			      <p class="subtitle is-7 article-tile-meta-box">
+			          {{ book.info.created }}
+			          {% for tag in book.info.tags %}
+			          <span><a href="{{ url_tag(id=tag) }}">#{{tag}}</a></span>
+			          {% endfor %}
+			      </p>
+			      <h4 class="title is-4"><a href="{{ url_book(id=book.identifier) }}">{{ book.info.title }}</a></h4>
+			      <p class="subtitle is-6">
+			          {{ book.info.description }}
+			      </p>
+		    </div>
+		    {% endfor %}
+	  </div>
+	  {% endfor %}
+</div>
+
+<h3>Articles</h3>
+
 <div class="tile is-ancestor">
 	{% for articles in content.posts | split() %}
 	<div class="tile is-6 is-vertical is-parent">
