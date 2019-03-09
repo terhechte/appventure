@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="/css/bulma.min.css">
   <link rel="stylesheet" href="/css/style.css">
   <link rel="stylesheet" href="/css/monokai.css">
-  <link href="https://fonts.googleapis.com/css?family=Lato:400,700,900" rel="stylesheet"> 
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700,800" rel="stylesheet">
   <script defer src="/js/fontawesome-all.min.js"></script>
   {% block javascript %}{% endblock javascript %}
  </head>
@@ -18,7 +18,7 @@
 
      <div class="columns">
       <div class="column is-3">
-          <span id="brand"><a href="/index.html">appventure.me</a></span>
+          <span id="brand"><a href="/index.html">APPVENTURE.ME</a></span>
       </div>
       <div class="column is-7">
        <span id="subbrand">
@@ -98,6 +98,9 @@
      <div class="column is-narrow">
 
       <aside class="menu">
+
+          {% block sections %}{% endblock sections %}
+
        <br/>
        <ul class="menu-list">
         <li>
@@ -108,13 +111,12 @@
           </a>
          </p>
          <ul>
-          <li><a>All</a></li>
-          <li><a href="/guides/language_features">Language Features</a></li>
-          <li><a>Tooling Tips</a></li>
-          <li><a>Examples</a></li>
-          <li><a>Community</a></li>
-          <li><a>Linux</a></li>
-          <li><a>macOS</a></li>
+             <li><a>All</a></li>
+	        {% for category in context.by_category %}
+             {% if category.name != "All" %}
+             <li><a href="{{ url_category(id=category.name) }}">{{ category.name }}</a></li>
+             {% endif %}
+          {% endfor %}
          </ul>
         </li>
 

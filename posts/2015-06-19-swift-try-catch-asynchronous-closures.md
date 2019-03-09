@@ -1,11 +1,15 @@
 [frontMatter]
-description = "FIXME FIXME FIXME"
+description = "Swift's `try` / `catch` error handling is great. However, you can't use it in an async context. This article briefly explains which options you have if you intend to use Error Handling asynchronously"
 title = "Using try / catch in Swift with asynchronous closures"
 created = "2015-06-19"
 published = true
 keywords = ["swift", "try", "catch", "errortype", "closure", "async", "result", "feature"]
 slug = "2015-06-19-swift-try-catch-asynchronous-closures.html"
 tags = ["swift", "ios"]
+category = ["Language", "All"]
+
+[meta]
+swift_version = "2.3"
 ---
 
 With Swift 2.0, Apple introduced a new error handling model with the

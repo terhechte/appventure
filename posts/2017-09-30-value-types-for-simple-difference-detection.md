@@ -6,6 +6,10 @@ published = true
 keywords = ["swift", "value", "types", "uitableview", "uicollectionview", "valuetypes", "struct", "class", "equatable", "tuple"]
 slug = "2017-09-30-value-types-for-simple-difference-detection.html"
 tags = ["swift", "cocoa", "ios"]
+category = ["Swift Tricks", "All"]
+
+[meta]
+swift_version = "2.3"
 ---
 
 Following sage advice I received from [John

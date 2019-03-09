@@ -6,6 +6,10 @@ published = true
 keywords = ["swift", "error", "throw", "result", "either", "rethrow", "try", "syntax", "swift2"]
 slug = "2015-08-25-optional-throw-swift.html"
 tags = ["swift"]
+category = ["Language", "All"]
+
+[meta]
+swift_version = "2.3"
 ---
 
 <h6><a href="http://swift.gg/2015/09/11/optional-throw-swift/">This post is also available in <b>🇨🇳Chinese</b></a><span> Thanks to </span><a href="http://swift.gg/tags/APPVENTURE/">SwiftGG</a></h6>

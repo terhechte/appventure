@@ -1,6 +1,19 @@
 {% extends "base.html" %}
 {% block title %}{{ content.info.title }}{% endblock title %}
 
+{% block sections %}
+<nav class="panel">
+    <p class="panel-heading">
+        In this Article
+    </p>
+    {% for section in content.sections %}
+    <a href="header-section-{{ section.0 }}" class="panel-block">
+        {{ section.1 }}
+    </a>
+    {% endfor %}
+</nav>
+{% endblock sections %}
+
 {% block content %}
 <article class="article-post">
 
@@ -8,9 +21,18 @@
 		<div class="control">
 			<div class="tags has-addons">
 				<span class="tag is-dark">released</span>
-				<span class="tag is-info">{{ content.info.created }}</span>
+				<span class="tag is-info">{{ content.info.date | date(format="%a, %d %b %Y")  }}</span>
 			</div>
 		</div>
+
+    {% if content.info.meta.swift_version %}
+		<div class="control">
+			  <div class="tags has-addons">
+				    <span class="tag is-dark">Swift Version</span>
+				    <span class="tag is-info">{{ content.info.meta.swift_version }}</span>
+			  </div>
+		</div>
+    {% endif %}
 
 		<!--
 		<div class="control">
@@ -47,6 +69,26 @@
       {% endif %}
 	</div>
 
+	<div class="footnotes box">
+		  <table class="table">
+			    <thead>
+				      <tr>
+					        <th>Similar Articles</th>
+				      </tr>
+			    </thead>
+			    <tbody>
+	            {% for sim in content.similar_documents %}
+				      <tr>
+					        <td>
+						          <p><a href="/{{sim.1.slug}}">{{ sim.1.title }}</a></p>
+					        </td>
+				      </tr>
+              {% endfor %}
+			    </tbody>
+		  </table>
+	</div>
+
+  <!-- 
 	<article class="media box" id="followme">
 		<figure class="media-left">
 			<p class="image is-64x64">
@@ -69,7 +111,6 @@
 				Follow Me</a>
 		</div>
 	</article>
-
 
 	<div class="footnotes box">
 		<table class="table">
@@ -101,6 +142,7 @@
 			</tbody>
 		</table>
 	</div>
+  -->
 
 </article>
 {% endblock content %}

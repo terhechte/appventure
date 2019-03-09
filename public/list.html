@@ -15,8 +15,8 @@
 {% endblock lefttop %}
 
 {% block content %}
+{% if content.pagination.current == 0 and content.list_type == "Index" %}
 
-{% if content.pagination.current == 0 %}
 <h2 class="section-header title is-4">Guides</h2>
 
 <div class="tile is-ancestor guides">
@@ -45,7 +45,7 @@
 		<div class="article-box blog-box" onclick="window.location = '{{ url_post(id=article.identifier) }}'">
 
 			  <div class="meta">
-			      {{ article.info.created }}
+			      {{ article.info.date | date(format="%a, %d %b %Y")  }}
 			      {% for tag in article.info.tags %}
 			      <a href="{{ url_tag(id=tag) }}">#{{tag}}</a>
 			      {% endfor %}
@@ -61,7 +61,7 @@
                 <h4 class="title is-5"><a href="{{ url_post(id=article.identifier) }}">{{ article.info.title }}</a></h4>
                 <p class="subtitle is-6">
                     <a href="{{ url_post(id=article.identifier) }}">
-                        {{ article.info.description }}
+                        {{ article.info.description_html }}
                     </a>
                 </p>
             </div>
@@ -72,6 +72,8 @@
 </div>
 
 
+{% if content.pagination.next or content.pagination.previous %}
+<article class="box">
 <nav class="pagination is-centered" role="navigation" aria-label="pagination">
 
     {% if content.pagination.previous %}
@@ -87,5 +89,7 @@
 	{% endif %}
 
 </nav>
+</article>
+{% endif %}
 {% endblock content %}
 

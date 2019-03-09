@@ -1,4 +1,10 @@
+* Brief
+** TODO have the article left image only display if there is one (doom)
+** TODO use the pagination footer from the chapters
+** TODO there're sometimes org markdown tags in the desc (=lala=) etc
+** TODO related articles
 * Design
+** TODO Reconsider the "Articles" layout. Maybe something with more whitespace?
 ** TODO Use dark theme for code that works well with swift syntax
 ** TODO update the "guides" section on the start page
 ** TODO "list view" for all chapters in a guide
@@ -7,6 +13,8 @@
   https://intellij-rust.github.io/2019/03/04/changelog-93.html
 
 * Content
+** TODO Use emoji for each guide
+** TODO use the keywords for the "Swift Topics"
 ** TODO alternative to the screenshots
 ** TODO New sections
 Language => My tuple, pattern matching, etc posts

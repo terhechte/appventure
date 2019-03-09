@@ -6,6 +6,10 @@ published = true
 keywords = ["swift", "guard", "let", "unwrap", "bind", "binding", "unwrapped", "optional", "some", "none", "optionals"]
 slug = "2016-04-14-force-optionals-in-guard-or-let-optional-binding.html"
 tags = ["swift", "cocoa", "ios"]
+category = ["Swift Tricks", "All"]
+
+[meta]
+swift_version = "2.3"
 ---
 
 I really love unwrapping optionals in a multi- `guard` or `let`

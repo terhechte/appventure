@@ -6,6 +6,10 @@ published = true
 keywords = ["swift", "optional", "simple", "overloading", "method", "protocol", "extensions", "generics", "feature"]
 slug = "2015-06-17-swift-method-overloading-by-protocol.html"
 tags = ["swift", "ios", "cocoa"]
+category = ["Language", "All"]
+
+[meta]
+swift_version = "2.3"
 ---
 
 I just stumbled upon a very nice way of abstraction in Swift, which I

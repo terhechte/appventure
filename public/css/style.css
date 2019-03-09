@@ -1,9 +1,9 @@
 * {
-    font-family: Lato;
+    font-family: 'Open Sans', sans-serif;
 }
 
 body, html {
-    background-color: #f0f0f0;
+    background-color: #f9f9f9;
 }
 
 .image-is-150 {
@@ -27,13 +27,17 @@ body, html {
 }
 
 #brand {
-    font-weight: 900;
-    font-family: Lato;
+    font-weight: 800;
+    font-family: 'Open Sans';
     font-size: 22px;
 }
 
+#brand a {
+    color: #888;
+}
+
 #subbrand {
-    font-family: Lato;
+    font-family: 'Open Sans';
     font-size: 22px;
 }
 
@@ -48,8 +52,8 @@ body, html {
 
 .title {
     /*font-family: Bitter;*/
-    font-family: Lato;
-    font-weight: 900;
+    font-family: 'Open Sans';
+    font-weight: 800;
 }
 
 .article-box {
@@ -95,20 +99,24 @@ body, html {
 
 .article-box:hover {
     box-shadow: 1px 1px 16px 0px rgba(0, 0, 0, 0.3);
-    border: 1px solid #eee;
 }
 
 .blog-box {
     margin-bottom: 20px;
+    border: 0px;
+    background-color: #f9f9f9;
+}
+
+.blog-box:hover {
+    background-color: white;
 }
 
 .blog-box > div.meta {
-    background-color: #fff;
+    /*background-color: #fff;*/
     padding: 15px;
-    padding-bottom: 5px;
-    padding-top: 5px;
-    font-weight: bold;
-    border-bottom: 1px solid #efefef;
+    padding-bottom: 0px;
+    padding-top: 10px;
+    color: #333;
 }
 .blog-box > div.meta > a {
     padding-left: 5px;
@@ -120,6 +128,7 @@ body, html {
 
 .blog-box .media-content h4 {
     padding-bottom: 7px;
+    font-weight: bold !important;
 }
 
 .blog-box .media-content h4 a {
@@ -131,7 +140,7 @@ body, html {
 }
 
 .blog-box .media-content p a {
-    color: #777;
+    color: #333;
     line-height: 1.4;
 }
 
@@ -197,6 +206,7 @@ article > .content > pre  {
     color: #4a4a4a;
     display: block;
     padding: 1.25rem;
+    margin-bottom: 20px;
 }
 .footnote-definition > sup.footnote-definition-label {
     float: left;

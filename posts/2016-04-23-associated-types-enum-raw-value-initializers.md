@@ -6,10 +6,11 @@ published = true
 keywords = ["swift", "optional", "enum", "raw", "value", "initializers", "associated", "type"]
 slug = "2016-04-23-associated-types-enum-raw-value-initializers.html"
 tags = ["swift", "cocoa", "ios"]
----
+category = ["Swift Tricks", "All"]
 
+[meta]
+swift_version = "2.3"
 ---
-## results[1e6cacee85d087911fee25093e5f4726fd8ed117]: 'feature-image'
 
 [Enums](https://appventure.me/2015/10/17/advanced-practical-enum-examples/)
 are a beautiful way of structuring information in Swift. Sometimes you
