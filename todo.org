@@ -1,4 +1,8 @@
 * Design
+** TODO Use dark theme for code that works well with swift syntax
+** TODO update the "guides" section on the start page
+** TODO "list view" for all chapters in a guide
+** TODO "list view" for all posts for a tag
 ** TODO Maybe change font to open sans, I really like that here: 
   https://intellij-rust.github.io/2019/03/04/changelog-93.html
 

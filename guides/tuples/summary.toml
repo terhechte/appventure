@@ -11,6 +11,7 @@ tags = ["swift"]
 image = "/content/doom.png"
 swift_version = "2.3"
 short_title = "Tuples"
+short_code = "<pre class='Swift'><code><span class='source swift'>(<span class='constant numeric integer decimal swift'>18</span>, <span class='meta literal string swift'><span class='string quoted double swift'>&quot;</span><span class='string quoted double swift'>C</span><span class='string quoted double swift'>a</span><span class='string quoted double swift'>r</span><span class='string quoted double swift'>l</span><span class='string quoted double swift'>&quot;</span></span>, [<span class='constant numeric integer decimal swift'>3</span>, <span class='constant numeric integer decimal swift'>5</span>, <span class='constant numeric integer decimal swift'>1</span>]) </span></code></pre></code></pre>"
 ---
 - [Introduction](introduction.md)
 - [The absolute Basics](absolute_basics/intro.md)

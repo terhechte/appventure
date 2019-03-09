@@ -2,6 +2,7 @@
 {% block title %}{{ content.info.title }}{% endblock title %}
 
 {% block lefttop %}
+<!--
 <ul>
     <li class="is-active">
         <a><i class="fas fa-anchor"></i>&nbsp; Articles</a></li>
@@ -10,74 +11,81 @@
     <li>
         <a><i class="fas fa-coffee"></i>&nbsp; About</a></li>
 </ul>
+-->
 {% endblock lefttop %}
 
 {% block content %}
 
-<h3>Guides</h3>
+{% if content.pagination.current == 0 %}
+<h2 class="section-header title is-4">Guides</h2>
 
-<div class="tile is-ancestor">
+<div class="tile is-ancestor guides">
 	  {% for books in context.books | split() %}
 	  <div class="tile is-6 is-vertical is-parent">
 		    {% for book in books %}
-		    <div class="tile is-child article-box">
-			      <figure class="image">
-                <img src="{{ book.info.meta.image }}"/>
-			      </figure>
-			      <p class="subtitle is-7 article-tile-meta-box">
-			          {{ book.info.created }}
-			          {% for tag in book.info.tags %}
-			          <span><a href="{{ url_tag(id=tag) }}">#{{tag}}</a></span>
-			          {% endfor %}
-			      </p>
-			      <h4 class="title is-4"><a href="{{ url_book(id=book.identifier) }}">{{ book.info.title }}</a></h4>
+		    <div class="tile is-child article-box" onclick="window.location = {{ url_book(id=book.identifier) }};">
+            {% if book.info.meta.short_code %}
+            {{ book.info.meta.short_code }}
+            {% endif %}
+            <h4 class="title is-5"><a href="{{ url_book(id=book.identifier) }}">{{ book.info.meta.short_title }}</a></h4>
 			      <p class="subtitle is-6">
-			          {{ book.info.description }}
-			      </p>
+                <a href="{{ url_book(id=book.identifier) }}">{{ book.info.title }}</a>
+            </p>
 		    </div>
 		    {% endfor %}
 	  </div>
 	  {% endfor %}
 </div>
+{% endif %}
 
-<h3>Articles</h3>
+<h2 class="section-header title is-4">Articles</h2>
 
-<div class="tile is-ancestor">
-	{% for articles in content.posts | split() %}
-	<div class="tile is-6 is-vertical is-parent">
-		{% for article in articles %}
-		<div class="tile is-child article-box">
-			<figure class="image">
-				<img src="/content/2015-11-30-reduce-all-the-things-feature-image.jpg">
-			</figure>
-			<p class="subtitle is-7 article-tile-meta-box">
-			{{ article.info.created }}
-			{% for tag in article.info.tags %}
-			<span><a href="{{ url_tag(id=tag) }}">#{{tag}}</a></span>
-			{% endfor %}
-			</p>
-			<h4 class="title is-4"><a href="{{ url_post(id=article.identifier) }}">{{ article.info.title }}</a></h4>
-			<p class="subtitle is-6">
-			{{ article.info.description }}
-			</p>
-		</div>
-		{% endfor %}
-	</div>
-	{% endfor %}
+<div class="article-list">
+	  {% for article in content.posts %}
+		<div class="article-box blog-box" onclick="window.location = '{{ url_post(id=article.identifier) }}'">
+
+			  <div class="meta">
+			      {{ article.info.created }}
+			      {% for tag in article.info.tags %}
+			      <a href="{{ url_tag(id=tag) }}">#{{tag}}</a>
+			      {% endfor %}
+        </div>
+
+        <div class="media">
+            <figure class="media-left">
+                <p class="image is-64x64">
+                    <img src="https://bulma.io/images/placeholders/128x128.png">
+                </p>
+            </figure>
+            <div class="media-content">
+                <h4 class="title is-5"><a href="{{ url_post(id=article.identifier) }}">{{ article.info.title }}</a></h4>
+                <p class="subtitle is-6">
+                    <a href="{{ url_post(id=article.identifier) }}">
+                        {{ article.info.description }}
+                    </a>
+                </p>
+            </div>
+        </div>
+
+    </div>
+    {% endfor %}
 </div>
 
+
 <nav class="pagination is-centered" role="navigation" aria-label="pagination">
-	<a class="pagination-previous is-success">Previous</a>
-	<a class="pagination-next is-success">Next page</a>
-	<ul class="pagination-list">
-		<li><a class="pagination-link" aria-label="Goto page 1">1</a></li>
-		<li><span class="pagination-ellipsis">&hellip;</span></li>
-		<li><a class="pagination-link" aria-label="Goto page 45">45</a></li>
-		<li><a class="pagination-link is-current" aria-label="Page 46" aria-current="page">46</a></li>
-		<li><a class="pagination-link" aria-label="Goto page 47">47</a></li>
-		<li><span class="pagination-ellipsis">&hellip;</span></li>
-		<li><a class="pagination-link" aria-label="Goto page 86">86</a></li>
-	</ul>
+
+    {% if content.pagination.previous %}
+    <a href="{{ content.pagination.previous.path }}" class="pagination-previous is-success" alt="{{ content.pagination.previous.title }}">Previous</a>
+    {% else %}
+    &nbsp;
+    {% endif %}
+
+	{% if content.pagination.next %}
+	  <a href="{{ content.pagination.next.path }}" class="pagination-next is-success" alt="{{ content.pagination.next.title }}">Next</a>
+    {% else %}
+    &nbsp;
+	{% endif %}
+
 </nav>
 {% endblock content %}
 

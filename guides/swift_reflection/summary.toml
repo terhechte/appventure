@@ -11,6 +11,7 @@ tags = ["swift", "cocoa", "ios"]
 image = "/content/doom.png"
 swift_version = "2.3"
 short_title = "Reflection"
+short_code = "<pre class='Swift'><code><span class='source swift'><span class='storage type swift'>let</span> m <span class='keyword operator assignment swift'>=</span> Mirror(reflecting: me) </span></code></pre></code></pre>"
 ---
 - [Introduction](introduction.md)
 - [Mirrors](mirrors/intro.md)

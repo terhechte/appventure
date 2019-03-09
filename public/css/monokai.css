@@ -1,7 +1,6 @@
 /* Name: Monokai */
 pre > code * {
 	color: #F8F8F2;
-	background-color: #272822;
 }
 
 pre > code .comment {
@@ -93,11 +92,9 @@ pre > code .support.other.variable {
 
 pre > code .invalid {
 	color: #F8F8F0;
-	background-color: #F92672;
 }
 
 pre > code .invalid.deprecated {
 	color: #F8F8F0;
-	background-color: #AE81FF;
 }
 

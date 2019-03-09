@@ -10,6 +10,7 @@ published = true
 image = "/content/doom.png"
 swift_version = "2.3"
 short_title = "Optionals"
+short_code = "<pre class='Swift'><code><span class='source swift'>a?<span class='keyword operator custom postfix unary swift'>.</span>b?<span class='keyword operator custom postfix unary swift'>.</span>c? <span class='keyword operator comparative swift'>==</span> <span class='constant nil swift'>nil</span> </span></code></pre></code></pre>"
 ---
 - [What are Optionals](intro.md)
 - [Why Optionals are useful](why_optionals_are_useful.md)

@@ -11,6 +11,7 @@ tags = ["swift", "cocoa", "ios"]
 image = "/content/doom.png"
 swift_version = "2.3"
 short_title = "Enums"
+short_code = "<pre class='Swift'><code><span class='source swift'><span class='storage type swift'>enum</span> Either<span class='keyword operator comparative swift'>&lt;</span>A, B<span class='keyword operator comparative swift'>&gt;</span> {<br/> &nbsp;<span class='keyword control switch swift'>case</span> <span class='keyword other swift'>left</span>(A), <span class='keyword other swift'>right</span>(B)<br/>} </span></code></pre></code></pre>"
 ---
 - [Introduction](introduction.md)
 - [Diving In: Basic Enums](diving_in/intro.md)

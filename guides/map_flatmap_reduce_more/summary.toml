@@ -10,6 +10,7 @@ published = true
 image = "/content/doom.png"
 swift_version = "2.3"
 short_title = "Map, Reduce & more"
+short_code = "<pre class='Swift'><code><span class='source swift'>array<span class='keyword operator custom postfix unary swift'>.</span>reduce(<span class='constant numeric integer decimal swift'>0</span>, { $<span class='constant numeric integer decimal swift'>0</span> <span class='keyword operator assignment swift'>+=</span> $<span class='constant numeric integer decimal swift'>1</span> }) </span></code></pre></code></pre>"
 ---
 - [Intro](intro.md)
 - [A Simple Problem](a_simple_problem.md)
