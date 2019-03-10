@@ -5,12 +5,14 @@ created = "2019-03-01 16:31:41"
 description = ""
 published = false
 
+[meta]
+swift_version = "5.1"
 ---
 
 # Practical Usecases
 
-We\'ve already seen a couple of useful `enums` in the [previous feature
-descriptions.](#basicexamples) Examples would be `Optional`, `Either`,
+We\'ve already seen a couple of useful `enums` in the previous feature
+descriptions. Examples would be `Optional`, `Either`,
 `FileNode`, or the binary tree. However, there\'re many more scenarios
 where using an `enum` wins over a `struct` or `class`. Usually, if your
 problem domain can be divided into a finite set of distinctive

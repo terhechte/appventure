@@ -5,13 +5,13 @@ created = "2019-03-01 16:29:51"
 description = ""
 published = false
 
+[meta]
+swift_version = "5.1"
 ---
 
 # Recap
 
-We\'ve finished our overview of the basic use cases of Swift\'s `enum`
-syntax. Before we head into the advanced usage, lets have another look
-at the explanation we gave at the beginning and see if it became clearer
+Lets have another look at the explanation we gave at the beginning and see if it became clearer
 now.
 
 > Enums declare types with finite sets of possible states and
@@ -31,27 +31,26 @@ struct Rect { let x: Int, y: Int, width: Int, height: Int }
 
 // Enum Example
 enum GeometricEntity {
-   case Point(x: Int, y: Int)
-   case Rect(x: Int, y: Int, width: Int, height: Int)
+   case point(x: Int, y: Int)
+   case rect(x: Int, y: Int, width: Int, height: Int)
 }
 ```
 
 The addition of methods and static methods allow us to attach
 functionality to an `enum` without having to resort to free functions
-[^4]
 
 ``` Swift
 // C-Like example
 enum Trade {
-   case Buy
-   case Sell
+   case buy
+   case sell
 }
 func order(trade: Trade)
 
 // Swift Enum example
 enum Trade {
-   case Buy
-   case Sell
+   case buy
+   case sell
    func order() {}
 }
 ```

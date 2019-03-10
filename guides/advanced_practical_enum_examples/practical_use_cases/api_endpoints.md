@@ -5,6 +5,8 @@ created = "2019-03-01 16:31:41"
 description = ""
 published = false
 
+[meta]
+swift_version = "5.1"
 ---
 
 # API Endpoints
@@ -20,14 +22,18 @@ API**](https://instagram.com/developer/endpoints/media/)
 ``` Swift
 enum Instagram {
   enum Media {
-    case Popular
-    case Shortcode(id: String)
-    case Search(lat: Float, min_timestamp: Int, lng: Float, max_timestamp: Int, distance: Int)
+    case popular
+    case shortcode(id: String)
+    case search(lat: Float, 
+                min_timestamp: Int, 
+                lng: Float, 
+                max_timestamp: Int, 
+                distance: Int)
   }
   enum Users {
-    case User(id: String)
-    case Feed
-    case Recent(id: String)
+    case user(id: String)
+    case feed
+    case recent(id: String)
   }
 }
 ```

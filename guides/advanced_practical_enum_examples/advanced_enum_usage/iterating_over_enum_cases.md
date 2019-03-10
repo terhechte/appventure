@@ -1,10 +1,12 @@
 [frontMatter]
 title = "Iterating over Enum Cases"
-tags = []
+tags = ["enum", "CaseIterable"]
 created = "2019-03-01 16:29:51"
 description = ""
 published = false
 
+[meta]
+swift_version = "5.1"
 ---
 
 # Iterating over Enum Cases

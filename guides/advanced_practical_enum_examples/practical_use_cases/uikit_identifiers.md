@@ -5,6 +5,8 @@ created = "2019-03-01 16:31:41"
 description = ""
 published = false
 
+[meta]
+swift_version = "5.1"
 ---
 
 # UIKit Identifiers
@@ -15,9 +17,9 @@ understand. Imagine a UITableView with different prototype cells:
 
 ``` Swift
 enum CellType: String {
-    case ButtonValueCell = "ButtonValueCell"
-    case UnitEditCell = "UnitEditCell"
-    case LabelCell = "LabelCell"
-    case ResultLabelCell = "ResultLabelCell"
+    case buttonValueCell = "ButtonValueCell"
+    case unitEditCell = "UnitEditCell"
+    case labelCell = "LabelCell"
+    case resultLabelCell = "ResultLabelCell"
 }
 ```

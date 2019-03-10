@@ -5,6 +5,8 @@ created = "2019-03-01 16:31:41"
 description = ""
 published = false
 
+[meta]
+swift_version = "5.1"
 ---
 
 # Units
@@ -25,8 +27,6 @@ enum Liquid: Float {
       }
   }
 }
-// Convert liters to milliliters
-print (Liquid.l.convert(amount: 5, to: Liquid.ml))
 ```
 
 Another example of this would be Currency conversion. Also, mathematical

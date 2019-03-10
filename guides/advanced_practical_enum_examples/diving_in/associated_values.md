@@ -1,25 +1,27 @@
 [frontMatter]
 title = "Associated Values"
-tags = []
+tags = ["enum", "associated"]
 created = "2019-03-01 16:29:51"
 description = ""
 published = false
 
+[meta]
+swift_version = "5.1"
 ---
 
 # Associated Values
 
 Associated values are a fantastic way of attaching additional
 information to an `enum case`. Say you\'re writing a trading engine, and
-there\'re two different possible trade types. `Buy` and `Sell`. Each of
+there\'re two different possible trade types. `buy` and `sell`. Each of
 them would be for a specific stock and amount:
 
 ### Simple Example
 
 ``` Swift
 enum Trade {
-    case Buy
-    case Sell
+    case buy
+    case sell
 }
 func trade(tradeType: Trade, stock: String, amount: Int) {}
 ```
@@ -31,123 +33,90 @@ solution:
 
 ``` Swift
 enum Trade {
-    case Buy(stock: String, amount: Int)
-    case Sell(stock: String, amount: Int)
+    case buy(stock: String, amount: Int)
+    case sell(stock: String, amount: Int)
 }
 func trade(type: Trade) {}
+```
+
+This defines two cases, `buy` and `sell`. Each of these cases has additional
+values attached to it: The `stock` and amount to buy / sell. These cases cannot exist
+without these additional values. You can't do this:
+
+``` Swift
+let trade = Trade.buy
+```
+
+You always have to initialize these cases **with the associated** values:
+
+``` Swift
+let trade = Trade.buy("APPL", 500)
 ```
 
 ### Pattern Matching
 
 If you want to access this information, again, [pattern matching comes
 to the
-rescue](http://appventure.me/2015/08/20/swift-pattern-matching-in-detail/):
+rescue](apv::switch):
 
 ``` Swift
+let trade = Trade.buy(stock: "AAPL", amount: 500)
 
-let trade = Trade.Buy(stock: "AAPL", amount: 500)
-if case let Trade.Buy(stock, amount) = trade {
+if case let Trade.buy(stock, amount) = trade {
     print("buy \(amount) of \(stock)")
 }
+```
 
+Here, you're telling the Swift compiler the following:
+"If the `trade` is of type `Trade.buy` with the two values `stock` and `amount`, then `let` those
+two variables exist with the values". You kinda have to read this `if` line from right to left.
+
+There's an alternative way of writing this with two `let` statements:
+
+``` Swift
+if case Trade.buy(let stock, let amount) = trade {
+  ...
+}
 ```
 
 ### Labels
 
-Associated values do not require labels:
+Associated values do not require labels. You can just denote the types you'd like to see in your `enum case`.
 
 ``` Swift
 enum Trade {
-   case Buy(String, Int)
-   case Sell(String, Int)
+   case buy(String, Int)
+   case sell(String, Int)
 }
+
+// Initialize without labels
+let trade = Trade.sell("APPL", 500)
 ```
 
-If you add them, though, you\'ll have to type them out when creating
+If you don't add labels, you also don't write them out when creating a case. 
+If you add them, though, you\'ll have to always type them out when creating
 your enum cases.
 
-### Tuples as Arguments
+### Use Case Examples
 
-What\'s more, the Swift internal associated information is just a
-`Tuple`, so you can do things like this:
-
-``` Swift
-
-let tp = (stock: "TSLA", amount: 100)
-let trade = Trade.Sell(tp)
-
-if case let Trade.Sell(stock, amount) = trade {
-    print("buy \(amount) of \(stock)")
-}
-// Prints: "buy 100 of TSLA"
-```
-
-This syntax allows you to take `Tuples` as a simple data structure and
-later on automatically elevate them into a higher type like an
-`enum case`. Imagine an app where a user can configure a Desktop that he
-wants to order:
-
-``` Swift
-typealias Config = (RAM: Int, CPU: String, GPU: String)
-
-// Each of these takes a config and returns an updated config
-func selectRAM(_ config: Config) -> Config {return (RAM: 32, CPU: config.CPU, GPU: config.GPU)}
-func selectCPU(_ config: Config) -> Config {return (RAM: config.RAM, CPU: "3.2GHZ", GPU: config.GPU)}
-func selectGPU(_ config: Config) -> Config {return (RAM: config.RAM, CPU: config.CPU, GPU: "NVidia")}
-
-enum Desktop {
-   case Cube(Config)
-   case Tower(Config)
-   case Rack(Config)
-}
-
-let aTower = Desktop.Tower(selectGPU(selectCPU(selectRAM((0, "", "") as Config))))
-```
-
-Each step of the configuration updates a `tuple` which is handed in to
-the `enum` at the end. This works even better if we take a hint from
-**functional programming** apply [^2]:
-
-``` Swift
-
-infix operator <^> { associativity left }
-
-func <^>(a: Config, f: (Config) -> Config) -> Config { 
-    return f(a)
-}
-```
-
-Finally, we can thread through the different configuration steps. This
-is particularly helpful if you have many of those steps.
-
-``` Swift
-
-let config = (0, "", "") <^> selectRAM  <^> selectCPU <^> selectGPU
-let aCube = Desktop.Cube(config)
-
-```
-
-### Use Case Examples {#basicexamples}
-
-Associated Values can be used in a variety of ways. As code can tell
-more than a thousand words, what follows is a list of short examples in
+Associated Values can be used in a variety of ways. What follows is a list of short examples in
 no particular order.
 
 ``` Swift
 // Cases can have different values
 enum UserAction {
-  case OpenURL(url: NSURL)
-  case SwitchProcess(processId: UInt32)
-  case Restart(time: NSDate?, intoCommandLine: Bool)
+  case openURL(url: NSURL)
+  case switchProcess(processId: UInt32)
+  case restart(time: NSDate?, intoCommandLine: Bool)
 }
 
 // Or imagine you're implementing a powerful text editor that allows you to have
 // multiple selections, like Sublime Text here:
 // https://www.youtube.com/watch?v=i2SVJa2EGIw
 enum Selection {
-  case None
-  case Single(Range<Int>)
-  case Multiple([Range<Int>])
+  case none
+  case single(Range<Int>)
+  case multiple([Range<Int>])
 }
 
 // Or mapping different types of identifier codes
@@ -159,11 +128,11 @@ enum Barcode {
 // Or, imagine you're wrapping a C library, like the Kqeue BSD/Darwin notification
 // system: https://www.freebsd.org/cgi/man.cgi?query=kqueue&sektion=2
 enum KqueueEvent {
-    case UserEvent(identifier: UInt, fflags: [UInt32], data: Int)
-    case ReadFD(fd: UInt, data: Int)
-    case WriteFD(fd: UInt, data: Int)
-    case VnodeFD(fd: UInt, fflags: [UInt32], data: Int)
-    case ErrorEvent(code: UInt, message: String)
+    case userEvent(identifier: UInt, fflags: [UInt32], data: Int)
+    case readFD(fd: UInt, data: Int)
+    case writeFD(fd: UInt, data: Int)
+    case vnodeFD(fd: UInt, fflags: [UInt32], data: Int)
+    case errorEvent(code: UInt, message: String)
 }
 
 // Finally, all user-wearable items in an RPG could be mapped with one
@@ -171,18 +140,18 @@ enum KqueueEvent {
 // Now, adding a new material like 'Diamond' is just one line of code and we'll have the option to add several new Diamond-Crafted wearables.
 enum Wearable {
     enum Weight: Int {
-        case Light = 1
-        case Mid = 4
-        case Heavy = 10
+        case light = 1
+        case mid = 4
+        case heavy = 10
     }
     enum Armor: Int {
-        case Light = 2
-        case Strong = 8
-        case Heavy = 20
+        case light = 2
+        case strong = 8
+        case heavy = 20
     }
-    case Helmet(weight: Weight, armor: Armor)
-    case Breastplate(weight: Weight, armor: Armor)
-    case Shield(weight: Weight, armor: Armor)
+    case helmet(weight: Weight, armor: Armor)
+    case breastplate(weight: Weight, armor: Armor)
+    case shield(weight: Weight, armor: Armor)
 }
-let woodenHelmet = Wearable.Helmet(weight: .Light, armor: .Light)
+let woodenHelmet = Wearable.helmet(weight: .light, armor: .light)
 ```

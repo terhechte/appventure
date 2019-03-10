@@ -1,42 +1,36 @@
 [frontMatter]
 title = "Custom Initializers"
-tags = []
+tags = ["enum", "init?"]
 created = "2019-03-01 16:29:51"
 description = ""
 published = false
 
+[meta]
+swift_version = "5.1"
 ---
 
 # Custom Initializers
 
-In the context of **static methods** on enums, we already mentioned that
-they can be used as a way to conveniently create an enum from different
-data. The example we had was for returning the proper Apple device for
-the wrong worded version that the press sometimes uses:
+Imagine you'd want to initialize an `enum` with custom data. In our example
+we have a `Device` enum that represents Apple devices and we'd like to 
+also initialize them with non-standard names. Here's the `enum`:
 
 ``` Swift
-enum Device { 
-    case AppleWatch 
-    static func fromSlang(term: String) -> Device? {
-      if term == "iWatch" {
-          return .AppleWatch
-      }
-      return nil
-    }
+enum Device {
+  case appleWatch
 }
 ```
 
-Instead of using a static method for this, we can also use a custom
-initializer. The main difference compared to a Swift `struct` or `class`
-is that within an `enum` initializer, you need to set the implicit
-`self` property to the correct case.
+Now if a user accidentally enters `iWatch` as their device, we still want to map this
+to the correct `AppleWatch` case. To do that, we will implement a custom initializer
+that sets `self` to the correct type:
 
 ``` Swift
 enum Device { 
-    case AppleWatch 
+    case appleWatch 
     init?(term: String) {
       if term == "iWatch" {
-          self = .AppleWatch
+          self = .appleWatch
       } else {
           return nil
       }
@@ -49,19 +43,17 @@ initializers work just as well:
 
 ``` Swift
 enum NumberCategory {
-   case Small
-   case Medium
-   case Big
-   case Huge
+   case small
+   case medium
+   case big
+   case huge
+
    init(number n: Int) {
-        if n < 10000 { self = .Small }
-        else if n < 1000000 { self = .Medium }
-        else if n < 100000000 { self = .Big }
-        else { self = .Huge }
+        if n < 10000 { self = .small }
+        else if n < 1000000 { self = .medium }
+        else if n < 100000000 { self = .big }
+        else { self = .huge }
    }
 }
-let aNumber = NumberCategory(number: 100)
-print(aNumber)
-// prints: "Small"
 ```
 

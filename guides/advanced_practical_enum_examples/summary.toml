@@ -8,8 +8,7 @@ slug = "2015-10-17-advanced-practical-enum-examples.html"
 tags = ["swift", "cocoa", "ios"]
 
 [meta]
-image = "/content/doom.png"
-swift_version = "2.3"
+swift_version = "5.1"
 short_title = "Enums"
 short_code = "<pre class='Swift'><code><span class='source swift'><span class='storage type swift'>enum</span> Either<span class='keyword operator comparative swift'>&lt;</span>A, B<span class='keyword operator comparative swift'>&gt;</span> {<br/> &nbsp;<span class='keyword control switch swift'>case</span> <span class='keyword other swift'>left</span>(A), <span class='keyword other swift'>right</span>(B)<br/>} </span></code></pre></code></pre>"
 ---
@@ -17,7 +16,6 @@ short_code = "<pre class='Swift'><code><span class='source swift'><span class='s
 - [Diving In: Basic Enums](diving_in/intro.md)
   - [Enum values](diving_in/enum_values.md)
   - [Nesting Enums](diving_in/nesting_enums.md)
-  - [Containing Enums](diving_in/containing_enums.md)
   - [Associated Values](diving_in/associated_values.md)
   - [Methods and Properties](diving_in/methods_and_properties.md)
   - [Recap](diving_in/recap.md)
@@ -27,6 +25,8 @@ short_code = "<pre class='Swift'><code><span class='source swift'><span class='s
   - [Generic Enums](advanced_enum_usage/generic_enums.md)
   - [Recursive / Indirect Types](advanced_enum_usage/recursive_or_indirect_types.md)
   - [Custom Data Types](advanced_enum_usage/custom_data_types.md)
+  - [Comparing Enums](advanced_enum_usage/comparing_enums.md)
+  - [FIXMERaw Representations](advanced_enum_usage/raw_representable.md)
   - [Custom Initializers](advanced_enum_usage/custom_initializers.md)
   - [Iterating over Enum Cases](advanced_enum_usage/iterating_over_enum_cases.md)
   - [Objective-C Support](advanced_enum_usage/objective_c_support.md)

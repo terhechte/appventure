@@ -10,6 +10,8 @@ category = ["Hands On", "All"]
 
 [meta]
 swift_version = "2.3"
+thumbnail = "/content/thumb-doom.png"
+toc = "true"
 ---
 
 # From NSData to Data in Swift 3
@@ -30,6 +32,7 @@ example application that will read and parse a Doom [^2] WAD file.
 
 <div align="center">
 <img src="/img-content/doom.png" srcset="/img-content/doom@2x.png 2x" /><br/>
+</div>
 <br/>
 <br/>
 

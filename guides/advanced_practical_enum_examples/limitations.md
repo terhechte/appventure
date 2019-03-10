@@ -5,6 +5,8 @@ created = "2019-03-01 16:31:41"
 description = ""
 published = false
 
+[meta]
+swift_version = "5.1"
 ---
 
 # Limitations
@@ -19,8 +21,8 @@ enums, you can\'t have tuples as the enum value:
 ``` Swift
 enum Devices: (intro: Int, name: String) {
   case iPhone = (intro: 2007, name: "iPhone")
-  case AppleTV = (intro: 2006, name: "Apple TV")
-  case AppleWatch = (intro: 2014, name: "Apple Watch")
+  case appleTV = (intro: 2006, name: "Apple TV")
+  case appleWatch = (intro: 2014, name: "Apple Watch")
 }
 ```
 
@@ -36,9 +38,9 @@ such an example:
 
 ``` Swift
 enum Characters {
-  case Mage(health: Int = 70, magic: Int = 100, strength: Int = 30)
-  case Warrior(health: Int = 100, magic: Int = 0, strength: Int = 100)
-  case Neophyte(health: Int = 50, magic: Int = 20, strength: Int = 80)
+  case mage(health: Int = 70, magic: Int = 100, strength: Int = 30)
+  case warrior(health: Int = 100, magic: Int = 0, strength: Int = 100)
+  case neophyte(health: Int = 50, magic: Int = 20, strength: Int = 80)
 }
 ```
 

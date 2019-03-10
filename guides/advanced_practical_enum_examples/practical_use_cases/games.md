@@ -5,6 +5,8 @@ created = "2019-03-01 16:31:41"
 description = ""
 published = false
 
+[meta]
+swift_version = "5.1"
 ---
 
 # Games
@@ -14,7 +16,7 @@ belong to a specific family of items (enemies, obstacles, textures,
 ...). In comparison to native iOS or Mac apps, games oftentimes are a
 tabula rasa. Meaning you invent a new world with new relationships and
 new kinds of objects, whereas on iOS or OSX you\'re using a well-defined
-world of UIButtons, UITableViews, UITableViewCells or NSStackView.
+world of `UIButtons`, `UITableViews`, `UITableViewCells` or `NSStackView`.
 
 What\'s more, since Enums can conform to protocols, you can utilize
 protocol extensions and protocol based programming to add functionality
@@ -22,11 +24,11 @@ to the various enums that you defined for your game. Here\'s a short
 example that tries to display such a hierarchy:
 
 ``` Swift
-enum FlyingBeast { case Dragon, Hippogriff, Gargoyle }
-enum Horde { case Ork, Troll }
-enum Player { case Mage, Warrior, Barbarian }
-enum NPC { case Vendor, Blacksmith }
-enum Element { case Tree, Fence, Stone }
+enum FlyingBeast { case dragon, hippogriff, gargoyle }
+enum Horde { case ork, troll }
+enum Player { case mage, warrior, barbarian }
+enum NPC { case vendor, blacksmith }
+enum Element { case tree, fence, stone }
 
 protocol Hurtable {}
 protocol Killable {}

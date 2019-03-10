@@ -188,10 +188,15 @@ h2.title.is-2 > span.syntax {
     color: #999;
 }
 article > .content > pre  {
-	background-color: #fafafa;
 	border: 1px solid #ddd;
 	border-radius: 16px;
+  background-color: rgb(9, 36, 78);
 }
+
+article > .content > pre * {
+    font-family: Menlo !important;
+}
+
 .book-sidebar {
     position: -webkit-sticky;
     position: sticky;
@@ -235,4 +240,34 @@ article > .content > pre  {
 
 .guides, .article-box {
     flex-grow: 0;
+}
+
+.in-this-post {
+    font-size: 11pt;
+}
+
+.in-this-post > p {
+    font-weight: bold;
+}
+
+.content > p > code {
+    color: rgb(9, 36, 78);
+    background-color: white;
+    border-radius: 6px;
+    font-weight: bold;
+    border: 1px solid #eee;
+}
+
+/*
+.content > pre > code {
+    overflow-x: scroll;
+}
+.content > pre > code {
+    overflow-wrap: break-word;
+}*/
+
+pre {
+ white-space: pre-wrap !important;       /* css-3 */
+ white-space: -moz-pre-wrap !iportant;  /* Mozilla, since 1999 */
+ word-wrap: break-word !important;       /* Internet Explorer 5.5+ */
 }

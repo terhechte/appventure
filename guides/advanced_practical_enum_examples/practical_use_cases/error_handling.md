@@ -1,10 +1,12 @@
 [frontMatter]
 title = "Error Handling"
-tags = []
+tags = ["error"]
 created = "2019-03-01 16:31:41"
 description = ""
 published = false
 
+[meta]
+swift_version = "5.1"
 ---
 
 # Error Handling
@@ -34,9 +36,9 @@ this:
 
 ``` Swift
 enum DecodeError: Error {
-  case TypeMismatch(expected: String, actual: String)
-  case MissingKey(String)
-  case Custom(String)
+  case typeMismatch(expected: String, actual: String)
+  case missingKey(String)
+  case custom(String)
 }
 ```
 
@@ -49,11 +51,11 @@ look like this:
 ``` Swift
 enum APIError : Error {
     // Can't connect to the server (maybe offline?)
-    case ConnectionError(error: NSError)
+    case connectionError(error: NSError)
     // The server responded with a non 200 status code
-    case ServerError(statusCode: Int, error: NSError)
+    case serverError(statusCode: Int, error: NSError)
     // We got no data (0 bytes) back from the server
-    case NoDataError
+    case noDataError
     // The server response can't be converted from JSON to a Dictionary
     case JSONSerializationError(error: Error)
     // The Argo decoding Failed
@@ -64,10 +66,6 @@ enum APIError : Error {
 This `ErrorType` implements the complete REST Stack up to the point
 where your app would get the completely decoded native `struct` or
 `class` object.
-
-If you look closely, you\'ll see that within the `JSONMappingError`,
-we\'re wrapping the **Argo** `DecodeError` into our `APIError` type as
-we\'re still using Argo for the actual JSON decoding.
 
 More information on `ErrorType` and more `enum` examples in this context
 can be found in the official documentation

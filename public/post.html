@@ -2,16 +2,18 @@
 {% block title %}{{ content.info.title }}{% endblock title %}
 
 {% block sections %}
-<nav class="panel">
+{% if content.info.meta.toc %}
+<nav class="panel in-this-post">
     <p class="panel-heading">
         In this Article
     </p>
     {% for section in content.sections %}
-    <a href="header-section-{{ section.0 }}" class="panel-block">
+    <a href="#header-section-{{ section.0 }}" class="panel-block">
         {{ section.1 }}
     </a>
     {% endfor %}
 </nav>
+{% endif %}
 {% endblock sections %}
 
 {% block content %}
@@ -33,15 +35,6 @@
 			  </div>
 		</div>
     {% endif %}
-
-		<!--
-		<div class="control">
-			<div class="tags has-addons">
-				<span class="tag is-dark">updated</span>
-				<span class="tag is-success">11/11/2017</span>
-			</div>
-		</div>
-		-->
 
 		<div class="control">
 			<div class="tags">
@@ -65,7 +58,7 @@
           </div>
       </div>
       {% else %}
-		  {{ content.content }}
+        {{ content.content }}
       {% endif %}
 	</div>
 
@@ -88,61 +81,6 @@
 		  </table>
 	</div>
 
-  <!-- 
-	<article class="media box" id="followme">
-		<figure class="media-left">
-			<p class="image is-64x64">
-			<img src="/img/ez.png">
-			</p>
-		</figure>
-		<div class="media-content">
-			<div class="content">
-				<p>
-				<strong>Benedikt Terhechte</strong> <small>@terhechte</small> 
-				<br>
-				If you read this far, you should <a href="https://twitter.com/terhechte">follow Benedikt on Twitter</a>.<br/>
-				Benedikt writes about Swift, macOS, iOS &amp; Linux development, and sometimes about other modern programming languages.
-				</p>
-			</div>
-		</div>
-		<div class="media-right">
-			<a class="button is-info is-rounded">
-				<i class="fab fa-twitter"></i>
-				Follow Me</a>
-		</div>
-	</article>
-
-	<div class="footnotes box">
-		<table class="table">
-			<thead>
-				<tr>
-					<th><abbr title="Position">Pos</abbr></th>
-					<th>Footnote</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<th>1</th>
-					<td>
-						<p>In many cases they use a Bluetooth keyboard though. I guess it is hard to argue that the on-screen keyboard, though very nice, can replace a hardware keyboard for serious writing.<a href="#fnref:foot2" rev="footnote">↩</a></p>
-					</td>
-				</tr>
-				<tr>
-					<th>2</th>
-					<td>
-						<p><a href="http://mac.appstorm.net/roundups/productivity-roundups/6-minimal-full-screen-writing-apps-for-mac/">More on mac.appstorm.net</a><a href="#fnref:foot1" rev="footnote">↩</a></p>
-					</td>
-				</tr>
-				<tr>
-					<th>3</th>
-					<td>
-						<p>First, of course you need to know and remember it<a href="#fnref:foot3" rev="footnote">↩</a></p>
-					</td>
-				</tr>
-			</tbody>
-		</table>
-	</div>
-  -->
 
 </article>
 {% endblock content %}

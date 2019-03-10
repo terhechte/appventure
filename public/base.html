@@ -6,7 +6,7 @@
   <title>FIXME: APPVENTURE META</title>
   <link rel="stylesheet" href="/css/bulma.min.css">
   <link rel="stylesheet" href="/css/style.css">
-  <link rel="stylesheet" href="/css/monokai.css">
+  <link rel="stylesheet" href="/css/monokai2.css">
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700,800" rel="stylesheet">
   <script defer src="/js/fontawesome-all.min.js"></script>
   {% block javascript %}{% endblock javascript %}
@@ -111,7 +111,7 @@
           </a>
          </p>
          <ul>
-             <li><a>All</a></li>
+             <li><a href="/topics/all.html">All</a></li>
 	        {% for category in context.by_category %}
              {% if category.name != "All" %}
              <li><a href="{{ url_category(id=category.name) }}">{{ category.name }}</a></li>

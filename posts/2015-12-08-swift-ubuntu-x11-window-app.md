@@ -10,6 +10,7 @@ category = ["Hands On", "All"]
 
 [meta]
 swift_version = "2.3"
+thumbnail = "/content/thumb-swift-ubuntu-x11.png"
 ---
 
 <h6><a href="http://swift.gg/2016/01/13/swift-ubuntu-x11-window-app/">This post is also available in <b>🇨🇳Chinese</b></a><span> Thanks to </span><a href="http://swift.gg/tags/APPVENTURE/">SwiftGG</a></h6>

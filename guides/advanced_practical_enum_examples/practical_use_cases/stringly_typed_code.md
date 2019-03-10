@@ -5,6 +5,8 @@ created = "2019-03-01 16:31:41"
 description = ""
 published = false
 
+[meta]
+swift_version = "5.1"
 ---
 
 # Stringly Typed Code
@@ -18,10 +20,10 @@ typed `enum` is a good way of having the compiler check this for you.
 
 ``` Swift
 enum DetailViewImages: String {
-  case Background = "bg1.png"
-  case Sidebar = "sbg.png"
-  case ActionButton1 = "btn1_1.png"
-  case ActionButton2 = "btn2_1.png"
+  case background = "bg1.png"
+  case sidebar = "sbg.png"
+  case actionButton1 = "btn1_1.png"
+  case actionButton2 = "btn2_1.png"
 }
 ```
 

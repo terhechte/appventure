@@ -1,20 +1,24 @@
 [frontMatter]
 title = "Recursive / Indirect Types"
-tags = []
+tags = ["enum", "indirect"]
 created = "2019-03-01 16:29:51"
 description = ""
 published = false
 
+[meta]
+swift_version = "5.1"
 ---
 
 # Recursive / Indirect Types
 
-Indirect types are a new addition that came with Swift 2.0. They allow
+Indirect types allow
 you to define enums where the associated value of a `case` is the very
-same enum again. As an example, consider that you want to define a file
+same enum again. 
+
+As an example, consider that you want to define a file
 system representations with files and folders containing files. If
 **File** and **Folder** were enum cases, then the **Folder** case would
-need to have an array of **File** cases as it\'s associated value. Since
+need to have an array of **File** cases as it\'s `associated value`. Since
 this is a recursive operation, the compiler has to make special
 preparations for it. Quoting from the Swift documentation:
 
@@ -27,8 +31,8 @@ this:
 
 ``` Swift
 enum FileNode {
-  case File(name: String)
-  indirect case Folder(name: String, files: [FileNode])
+  case file(name: String)
+  indirect case folder(name: String, files: [FileNode])
 }
 ```
 
@@ -39,8 +43,8 @@ tree](http://airspeedvelocity.net/2015/07/22/a-persistent-tree-using-indirect-en
 
 ``` Swift
 indirect enum Tree<Element: Comparable> {
-    case Empty
-    case Node(Tree<Element>,Element,Tree<Element>)
+    case empty
+    case node(Tree<Element>,Element,Tree<Element>)
 }
 ```
 

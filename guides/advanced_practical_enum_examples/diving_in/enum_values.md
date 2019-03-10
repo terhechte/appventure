@@ -1,36 +1,36 @@
 [frontMatter]
 title = "Enum values"
-tags = []
+tags = ["enum"]
 created = "2019-03-01 16:29:51"
 description = ""
 published = false
 
+[meta]
+swift_version = "5.1"
 ---
 
 # Enum values
 
-Of course, you may want to have a value assigned to each `enum` case.
+Sometimes may want to have a value assigned to each `enum` case.
 This is useful if the `enum` itself indeed relates to something which
 can be expressed in a different type. **C** allows you to assign numbers
 to `enum cases`. Swift gives you much more flexibility here:
 
 ``` Swift
-// Mapping to Integer
-enum Movement: Int {
-    case Left = 0
-    case Right = 1
-    case Top = 2
-    case Bottom = 3
+// A pretty useless enum
+enum Binary {
+  case zero = 0
+  case one = 1
 }
 
 // You can also map to strings
 enum House: String {
-    case Baratheon = "Ours is the Fury"
-    case Greyjoy = "We Do Not Sow"
-    case Martell = "Unbowed, Unbent, Unbroken"
-    case Stark = "Winter is Coming"
-    case Tully = "Family, Duty, Honor"
-    case Tyrell = "Growing Strong"
+    case baratheon = "Ours is the Fury"
+    case greyjoy = "We Do Not Sow"
+    case martell = "Unbowed, Unbent, Unbroken"
+    case stark = "Winter is Coming"
+    case tully = "Family, Duty, Honor"
+    case tyrell = "Growing Strong"
 }
 
 // Or to floating point (also note the fancy unicode in enum cases)
@@ -46,14 +46,14 @@ For `String` and `Int` types, you can even omit the values and the Swift
 compiler will do the right thing:
 
 ``` Swift
-// Mercury = 1, Venus = 2, ... Neptune = 8
+// mercury = 1, venus = 2, ... neptune = 8
 enum Planet: Int {
-    case Mercury = 1, Venus, Earth, Mars, Jupiter, Saturn, Uranus, Neptune
+    case mercury = 1, venus, earth, mars, jupiter, saturn, uranus, neptune
 }
 
-// North = "North", ... West = "West"
+// north = "north", ... west = "west"
 enum CompassPoint: String {
-    case North, South, East, West
+    case north, south, east, west
 }
 ```
 
@@ -64,14 +64,13 @@ Swift supports the following types for the value of an enum:
 -   String
 -   Boolean
 
-So you won\'t be able[^1] to use, say, a CGPoint as the value of your
-enum.
+You can support more types [by implementing a specific protocol](apv::enum-custom-data-types).
 
 If you want to access the values, you can do so with the `rawValue`
 property:
 
 ``` Swift
-let bestHouse = House.Stark
+let bestHouse = House.stark
 print(bestHouse.rawValue)
 // prints "Winter is coming"
 ```
@@ -82,10 +81,10 @@ initializer for enums:
 
 ``` Swift
 enum Movement: Int {
-    case Left = 0
-    case Right = 1
-    case Top = 2
-    case Bottom = 3
+    case left = 0
+    case right = 1
+    case top = 2
+    case bottom = 3
 }
 // creates a movement.Right case, as the raw value for that is 1
 let rightMovement = Movement(rawValue: 1)
@@ -93,30 +92,8 @@ let rightMovement = Movement(rawValue: 1)
 
 If you use the `rawValue` initializer, keep in mind that it is a
 [failable
-initializer](https://developer.apple.com/library/prerelease/ios/documentation/Swift/Conceptual/Swift_Programming_Language/Declarations.html#//apple_ref/doc/uid/TP40014097-CH34-ID376),
+initializer](swi::failable-initializer),
 i.e. you get back an
-[Optional](http://appventure.me/2014/06/13/swift-optionals-made-simple/),
+[Optional](apv::optional),
 as the value you\'re using may not map to any case at all, say if you
 were to write `Movement(rawValue: 42)`.
-
-This is a very useful feature in case you want to encode low level C
-binary representations into something much more readable. As an example,
-have a look as this encoding of the **VNode Flags** for [the BSD kqeue
-library](https://developer.apple.com/library/mac/documentation/Darwin/Reference/ManPages/man2/kqueue.2.html):
-
-``` Swift
-enum VNodeFlags : UInt32 {
-    case Delete = 0x00000001
-    case Write = 0x00000002
-    case Extended = 0x00000004
-    case Attrib = 0x00000008
-    case Link = 0x00000010
-    case Rename = 0x00000020
-    case Revoke = 0x00000040
-    case None = 0x00000080
-}
-```
-
-This allows you to use the much nicer looking **Delete** or **Write**
-cases, and later on hand the raw value into the **C** function only when
-it is really needed.

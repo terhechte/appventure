@@ -5,12 +5,14 @@ created = "2019-03-01 16:31:41"
 description = ""
 published = false
 
+[meta]
+swift_version = "5.1"
 ---
 
 # Observer Pattern
 
 There\'re various ways of modelling observation in Swift. If you include
-`@objc` compatibility, you can use `NSNotificationCenter` or **KVO**.
+`@objc` compatibility, you can use `NotificationCenter` or **KVO**.
 Even if not, the `didSet` syntax makes it easy to implement simple
 observation. Enums can be used here in order to make the type of change
 that happens to the observed object clearer. Imagine collection
@@ -20,9 +22,9 @@ one or more items are updated. This sounds like a job for an enum:
 
 ``` Swift
 enum Change {
-     case Insertion(items: [Item])
-     case Deletion(items: [Item])
-     case Update(items: [Item])
+     case insertion(items: [Item])
+     case deletion(items: [Item])
+     case update(items: [Item])
 }
 ```
 

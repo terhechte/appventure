@@ -5,6 +5,8 @@ created = "2019-03-01 16:31:41"
 description = ""
 published = false
 
+[meta]
+swift_version = "5.1"
 ---
 
 # Linked Lists
@@ -17,12 +19,12 @@ simplified it a bit):
 
 ``` Swift
 enum List {
-    case End
-    indirect case Node(Int, next: List)
+    case end
+    indirect case node(Int, next: List)
 }
 ```
 
-Each `Node case` points to the next case, and by using an `enum` instead
+Each `node case` points to the next case, and by using an `enum` instead
 of something else, you don\'t have to use an optional for the `next`
 value to signify the termination of the list.
 

@@ -13,11 +13,11 @@ When and how to use enums in Swift? This is a detailed practical
 overview of all the possibilities enums can offer you.
 
 Similarly to the [`switch`
-statement](http://appventure.me/2015/08/20/swift-pattern-matching-in-detail/),
+statement](apv::switch),
 `enum`\'s in Swift may at first glance look like a slightly improved
 variant of the well known **C** `enum` statement. I.e. a type that
 allows you to define that something is \"one of something more
-general\". However, upon close introspection, the particular design
+general\". However, the particular design
 decisions behind Swift\'s enums allow it to be used in a much wider
 range of practical scenarios than plain **C** enums. In particular,
 they\'re great tools to clearly manifest the intentions of your code.
@@ -35,3 +35,5 @@ revisit this definition later on:
 accompanying values. With nesting, methods, associated values, and
 pattern matching, however, enums can define any hierarchically organized
 data.\"
+
+First, though, what are `enums`?

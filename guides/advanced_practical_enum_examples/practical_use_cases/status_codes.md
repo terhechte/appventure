@@ -5,6 +5,8 @@ created = "2019-03-01 16:31:41"
 description = ""
 published = false
 
+[meta]
+swift_version = "5.1"
 ---
 
 # Status Codes
@@ -15,10 +17,10 @@ obviously a great way to encode the information. [^7]
 
 ``` Swift
 enum HttpError: String {
-  case Code400 = "Bad Request"
-  case Code401 = "Unauthorized"
-  case Code402 = "Payment Required"
-  case Code403 = "Forbidden"
-  case Code404 = "Not Found"
+  case code400 = "Bad Request"
+  case code401 = "Unauthorized"
+  case code402 = "Payment Required"
+  case code403 = "Forbidden"
+  case code404 = "Not Found"
 }
 ```
