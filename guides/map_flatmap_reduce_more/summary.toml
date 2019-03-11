@@ -17,6 +17,7 @@ short_code = "<pre class='Swift'><code><span class='source swift'>array<span cla
 - [Map, compactMap & filter](map.md)
 - [Reduce Examples](reduce_examples.md)
 - [Performance & inout](performance.md)
+- [Simple Problem Redux](problem_redux.md)
 - [More Examples](more_examples/intro.md)
   - [Unique](more_examples/unique.md)
   - [Group By](more_examples/group_by.md)

@@ -1,5 +1,5 @@
 [frontMatter]
-title = "Map"
+title = "Map, compactMap & Filter"
 tags = ["map", "compactMap", "filter", "reduce"]
 created = "2019-02-20 19:49:10"
 description = ""
