@@ -1,10 +1,12 @@
 [frontMatter]
 title = "Performance"
-tags = []
+tags = ["map", "compactMap", "filter", "reduce"]
 created = "2019-02-20 19:49:10"
 description = ""
 published = false
 
+[meta]
+swift_version = "5.1"
 ---
 
 # Performance
@@ -15,7 +17,9 @@ penalty as Swift has to iterate over your collection multiple times in
 order to generate the required data. Imagine the following code:
 
 ``` Swift
-[0, 1, 2, 3, 4].map({ $0 + 3}).filter({ $0 % 2 == 0}).reduce(0, combine: +)
+[0, 1, 2, 3, 4].map({ $0 + 3})
+    .filter({ $0 % 2 == 0})
+    .reduce(0, combine: +)
 ```
 
 Apart from being nonsensical, it is also wasting CPU cycles. The initial

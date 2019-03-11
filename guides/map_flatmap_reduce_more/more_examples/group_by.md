@@ -1,10 +1,12 @@
 [frontMatter]
 title = "Group By"
-tags = []
+tags = ["map", "compactMap", "filter", "reduce", "groupby"]
 created = "2019-02-20 19:49:10"
 description = ""
 published = false
 
+[meta]
+swift_version = "5.1"
 ---
 
 # Group By
@@ -16,8 +18,8 @@ the items will be preserved while the order of the groups won\'t
 necessarily be preserved.
 
 ``` Swift
-func groupby<T, H: Hashable>(items: [T], f: (T) -> H) -> [H: [T]] {
-   return items.reduce([:], combine: { (var ac: [H: [T]], o: T) -> [H: [T]] in 
+func groupby<T, H: Hashable>(_ items: [T], f: (T) -> H) -> [H: [T]] {
+   return items.reduce([:], { (var ac: [H: [T]], o: T) -> [H: [T]] in 
        let h = f(o)
        if var c = ac[h] {
            c.append(o)

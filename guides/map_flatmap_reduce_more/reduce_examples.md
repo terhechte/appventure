@@ -1,10 +1,12 @@
 [frontMatter]
 title = "Reduce Examples"
-tags = []
+tags = ["reduce", "partition"]
 created = "2019-02-20 19:49:10"
 description = ""
 published = false
 
+[meta]
+swift_version = "5.1"
 ---
 
 # Reduce Examples
@@ -12,7 +14,7 @@ published = false
 Let\'s start with a favorite of mine, the sum of a list of numbers:
 
 ``` Swift
-[0, 1, 2, 3, 4].reduce(0, combine: +)
+[0, 1, 2, 3, 4].reduce(0, +)
 // 10
 ```
 
@@ -23,14 +25,14 @@ the `rhs` and return the result, which is specifically the requirement
 Another example is building the product of a list of numbers:
 
 ``` Swift
-[1, 2, 3, 4].reduce(1, combine: *)
+[1, 2, 3, 4].reduce(1, *)
 // 24
 ```
 
 Or what about reversing a list:
 
 ``` Swift
-[1, 2, 3, 4, 5].reduce([Int](), combine: { [$1] + $0 })
+[1, 2, 3, 4, 5].reduce([Int](), { [$1] + $0 })
 // 5, 4, 3, 2, 1
 ```
 
@@ -39,8 +41,8 @@ list based on a division criteria
 
 ``` Swift
 typealias Acc = (l: [Int], r: [Int])
-func partition(lst: [Int], criteria: (Int) -> Bool) -> Acc {
-   return lst.reduce((l: [Int](), r: [Int]()), combine: { (ac: Acc, o: Int) -> Acc in 
+func partition(_ lst: [Int], criteria: (Int) -> Bool) -> Acc {
+   return lst.reduce((l: [Int](), r: [Int]()), { (ac: Acc, o: Int) -> Acc in 
       if criteria(o) {
         return (l: ac.l + [o], r: ac.r)
       } else {

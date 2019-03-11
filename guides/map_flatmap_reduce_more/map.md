@@ -1,23 +1,28 @@
 [frontMatter]
 title = "Map"
-tags = []
+tags = ["map", "compactMap", "filter", "reduce"]
 created = "2019-02-20 19:49:10"
 description = ""
 published = false
 
+[meta]
+swift_version = "5.1"
 ---
 
 # Map
 
+Lets re-implement `map` and call it `rmap` (short for `reduce map`)
+
 ``` Swift
-func rmap(elements: [Int], transform: (Int) -> Int) -> [Int] {
+func rmap(_ elements: [Int], transform: (Int) -> Int) -> [Int] {
     return elements.reduce([Int](), combine: { (var acc: [Int], obj: Int) -> [Int] in
        acc.append(transform(obj))
        return acc
     })
 }
-print(rmap([1, 2, 3, 4], transform: { $0 * 2}))
-// [2, 4, 6, 8]
+let input = [1, 2, 3, 4]
+let output = rmap(input, transform: { $0 * 2})
+assert(output == [2, 4, 6, 8])
 ```
 
 This is a good example to understand the basics of `reduce`.
@@ -39,7 +44,7 @@ true, but the version above is extra detailed in order to better explain
 how `reduce` works. We can simplify it.
 
 ``` Swift
-func rmap(elements: [Int], transform: (Int) -> Int) -> [Int] {
+func rmap(_ elements: [Int], transform: (Int) -> Int) -> [Int] {
     return elements.reduce([Int](), combine: {$0 + [transform($1)]})
 }
 print(rmap([1, 2, 3, 4], transform: { $0 * 2}))
@@ -57,7 +62,7 @@ using collection + collection, you should have a mutable accumulator and
 mutate it in place:
 
 ``` Swift
-func rmap(elements: [Int], transform: (Int) -> Int) -> [Int] {
+func rmap(_ elements: [Int], transform: (Int) -> Int) -> [Int] {
     return elements.reduce([Int](), combine: { (var ac: [Int], b: Int) -> [Int] in 
         ac.append(transform(b))
         return ac
@@ -66,17 +71,37 @@ func rmap(elements: [Int], transform: (Int) -> Int) -> [Int] {
 ```
 
 In order to better understand `reduce` we will now go on and also
-implement `flatMap` and `filter`.
+implement `compactMap` and `filter`.
 
 ``` Swift
-func rflatMap(elements: [Int], transform: (Int) -> Int?) -> [Int] {
+func rcompactMap(_ elements: [Int], transform: (Int) -> Int?) -> [Int] {
     return elements.reduce([Int](), 
        combine: { guard let m = transform($1) else { return $0 } 
                   return $0 + [m]})
 }
-print(rflatMap([1, 3, 4], transform: { guard $0 != 3 else { return nil }; return $0 * 2}))
+print(rcompactMap([1, 3, 4], transform: { guard $0 != 3 else { return nil }; return $0 * 2}))
 // [2, 8]
 ```
 
 The main difference is that we\'re adding a `guard` to make sure the
 optional contains a value.
+
+# Filter
+
+``` Swift
+func rFilter(_ elements: [Int], filter: (Int) -> Bool) -> [Int] {
+    return elements.reduce([Int](), 
+       combine: { guard filter($1) else { return $0 } 
+                  return $0 + [$1]})
+}
+print(rFilter([1, 3, 4, 6], filter: { $0 % 2 == 0}))
+// [4, 6]
+```
+
+Again, a simple operation. We\'re leveraging guard again to make sure
+our filter condition holds.
+
+Up until now, `reduce` may feel like a more complicated version of `map`
+or `filter` without any major advantages. However, the combinator does
+not need to be an array. It can be anything. This makes it easy for us
+to implement various reduction operations in a very simple way.

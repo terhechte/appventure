@@ -1,10 +1,12 @@
 [frontMatter]
 title = "Interpose"
-tags = []
+tags = ["reduce"]
 created = "2019-02-20 19:49:10"
 description = ""
 published = false
 
+[meta]
+swift_version = "5.1"
 ---
 
 # Interpose
@@ -16,7 +18,7 @@ elements are only interposed and not appended at the end.
 ``` Swift
 func interpose<T>(items: [T], element: T, count: Int = 1) -> [T] {
    typealias Acc = (ac: [T], cur: Int, cnt: Int)
-   return items.reduce((ac: [], cur: 0, cnt: 1), combine: { (a: Acc, o: T) -> Acc in 
+   return items.reduce((ac: [], cur: 0, cnt: 1), { (a: Acc, o: T) -> Acc in 
        switch a {
           // the last item will not have any interposition
           case let (ac, cur, _) where (cur+1) == items.count: return (ac + [o], 0, 0)
@@ -29,8 +31,8 @@ func interpose<T>(items: [T], element: T, count: Int = 1) -> [T] {
        }
    }).ac
 }
-print(interpose([1, 2, 3, 4, 5], element: 9))
+print(interpose(items: [1, 2, 3, 4, 5], element: 9))
 // : [1, 9, 2, 9, 3, 9, 4, 9, 5]
-print(interpose([1, 2, 3, 4, 5], element: 9, count: 2))
+print(interpose(items: [1, 2, 3, 4, 5], element: 9, count: 2))
 // : [1, 2, 9, 3, 4, 9, 5]
 ```

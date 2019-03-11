@@ -1,10 +1,12 @@
 [frontMatter]
 title = "Interdig"
-tags = []
+tags = ["reduce", "zip"]
 created = "2019-02-20 19:49:10"
 description = ""
 published = false
 
+[meta]
+swift_version = "5.1"
 ---
 
 # Interdig
@@ -14,10 +16,10 @@ selecting elements from each.
 
 ``` Swift
 func interdig<T>(list1: [T], list2: [T]) -> [T] {
-   return Zip2Sequence(list1, list2).reduce([], combine: { (ac: [T], o: (T, T)) -> [T] in 
+   return zip(list1, list2).reduce([], { (ac: [T], o: (T, T)) -> [T] in 
         return ac + [o.0, o.1]
    })
 }
-print(interdig([1, 3, 5], list2: [2, 4, 6]))
+print(interdig(list1: [1, 3, 5], list2: [2, 4, 6]))
 // : [1, 2, 3, 4, 5, 6]
 ```

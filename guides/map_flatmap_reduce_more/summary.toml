@@ -7,20 +7,17 @@ description = "An introduction into the reduce function as an alternative to map
 published = true
 
 [meta]
-image = "/content/doom.png"
-swift_version = "2.3"
+swift_version = "5.1"
 short_title = "Map, Reduce & more"
 short_code = "<pre class='Swift'><code><span class='source swift'>array<span class='keyword operator custom postfix unary swift'>.</span>reduce(<span class='constant numeric integer decimal swift'>0</span>, { $<span class='constant numeric integer decimal swift'>0</span> <span class='keyword operator assignment swift'>+=</span> $<span class='constant numeric integer decimal swift'>1</span> }) </span></code></pre></code></pre>"
 ---
 - [Intro](intro.md)
 - [A Simple Problem](a_simple_problem.md)
 - [Reduce](reduce.md)
-- [Map](map.md)
-- [Filter](filter.md)
+- [Map, compactMap & filter](map.md)
 - [Reduce Examples](reduce_examples.md)
-- [Performance](performance.md)
+- [Performance & inout](performance.md)
 - [More Examples](more_examples/intro.md)
-  - [Minimum](more_examples/minimum.md)
   - [Unique](more_examples/unique.md)
   - [Group By](more_examples/group_by.md)
   - [Interpose](more_examples/interpose.md)
