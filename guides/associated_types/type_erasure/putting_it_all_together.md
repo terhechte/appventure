@@ -1,10 +1,12 @@
 [frontMatter]
 title = "Puttting it all together"
-tags = []
+tags = ["box", "associated", "generics", "erasure"]
 created = "2019-03-01 11:01:50"
 description = ""
 published = false
 
+[meta]
+swift_version = "5.1"
 ---
 
 # Puttting it all together

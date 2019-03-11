@@ -1,15 +1,16 @@
 [frontMatter]
 title = "Associated Types"
-tags = []
+tags = ["associated", "protocol"]
 created = "2019-03-01 11:01:50"
 description = ""
 published = false
 
+[meta]
+swift_version = "5.1"
+talk = "https://www.youtube.com/watch?v=P_ifSjia9mE"
 ---
 
 # Associated Types
-
-This blog post is based [on a talk I gave](https://www.youtube.com/watch?v=P_ifSjia9mE) at [AppBuilders 2016](https://www.appbuilders.ch/) explaining protocols with associated types offering tips for using them.
 
 Swift is a powerful language with a very powerful type system. Among the
 features that define said type system are `associated types`. They can
@@ -41,7 +42,7 @@ struct ImplementExample: Example {
 ```
 
 Associated types are useful for a certain kind of problems where
-subclassing and composition does allow you to [build the right kind of
-abstractions](https://www.appbuilders.ch/). However, this is a seperate
+subclassing and composition does allow you to build the right kind of
+abstractions. However, this is a seperate
 topic. The topic of this article, on the other hand, is what to do when
 you end up with associated types trouble.

@@ -1,10 +1,12 @@
 [frontMatter]
 title = "Associated Types and Self"
-tags = []
+tags = ["box", "associated", "self"]
 created = "2019-03-01 11:01:50"
 description = ""
 published = false
 
+[meta]
+swift_version = "5.1"
 ---
 
 # Associated Types and Self
