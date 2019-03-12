@@ -5,6 +5,8 @@ created = "2019-03-01 11:47:01"
 description = ""
 published = false
 
+[meta]
+swift_version = "5.1"
 ---
 
 # Structs to Core Data
@@ -14,7 +16,7 @@ Bunny**. We offer an Artificial Intelligence with a browser plugin that
 automatically analyses all the sites that the user visits and
 automatically bookmarks the relevant urls.
 
-It\'s 2016, Swift is already open source, so our server backend is
+Our server backend is
 obviously written in Swift. Since we have millions of site visits active
 in our system at a time, we\'d like to use `structs` for the analysis
 part of each site that a user visits. However, if our AI decides that

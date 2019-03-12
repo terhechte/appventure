@@ -1,55 +1,57 @@
 [frontMatter]
 title = "Performance"
-tags = []
+tags = ["reflection", "performance"]
 created = "2019-03-01 11:47:01"
 description = ""
 published = false
 
+[meta]
+swift_version = "5.1"
 ---
 
 # Performance
 
-So, how fast is this? Can this be used well in production? I did some
-testing:
+So we just wrote some code that converts `struct` types via `reflection` at runtime to `Core Data` types.
+How fast is this? Can this be used well in production? I did some testing:
 
-        <style type="text/css">
-         .linechart {
-             border: 3px solid white;
-             border-radius: 32px;
-             font-family: Sans-Serif;
-             color: white;
-             font-weight: normal;
-             padding: 4px;
-             margin-bottom: 20px;
-         }
-         .redxx {
-             background-color: red;
-         }
-         .greenxx {
-             background-color: green;
-         }
-         .linechart > span {
-             padding: 4px;
-         }
-         h3.ggx {
-             font-family: Sans-Serif;
+<style type="text/css">
+  .linechart {
+      border: 3px solid white;
+      border-radius: 32px;
+      font-family: Sans-Serif;
+      color: white;
+      font-weight: normal;
+      padding: 4px;
+      margin-bottom: 20px;
+  }
+  .redxx {
+      background-color: red;
+  }
+  .greenxx {
+      background-color: green;
+  }
+  .linechart > span {
+      padding: 4px;
+  }
+  h3.ggx {
+      font-family: Sans-Serif;
 font-weight: normal;
-         }
-         .orangexx {
-             background-color: orange;
-         }
-        </style>
-        <div style="background-color: #ccc; padding: 20px; border-radius: 16px;">
+  }
+  .orangexx {
+      background-color: orange;
+  }
+</style>
+<div style="background-color: #ccc; padding: 20px; border-radius: 16px;">
 
-        <h3 class='ggx'>Create 2000 NSManagedObjects</h3>
+<h3 class='ggx'>Create 2000 NSManagedObjects</h3>
 
-        <div class="linechart greenxx" style="width: 30%">
-            <span>Native: 0.062 seconds</span>
-        </div>
-        <div class="linechart redxx">
-            <span>Reflection: 0.207 seconds</span>
-        </div>
-        </div>
+<div class="linechart greenxx" style="width: 30%">
+    <span>Native: 0.062 seconds</span>
+</div>
+<div class="linechart redxx">
+    <span>Reflection: 0.207 seconds</span>
+</div>
+</div>
 
 Native, here, means creating an `NSManagedObject` and setting the
 property values via `setValueForKey`. If you create a `NSManagedObject`

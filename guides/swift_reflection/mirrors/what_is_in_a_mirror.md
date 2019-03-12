@@ -1,10 +1,12 @@
 [frontMatter]
 title = "What is in a Mirror"
-tags = []
+tags = ["reflection", "mirror"]
 created = "2019-03-01 11:47:01"
 description = ""
 published = false
 
+[meta]
+swift_version = "5.1"
 ---
 
 # What is in a Mirror
@@ -17,14 +19,14 @@ the subject:
 
 ``` Swift
 public enum DisplayStyle {
-    case Struct
-    case Class
-    case Enum
-    case Tuple
-    case Optional
-    case Collection
-    case Dictionary
-    case Set
+    case `struct`
+    case `class`
+    case `enum`
+    case tuple
+    case optional
+    case collection
+    case dictionary
+    case set
 }
 ```
 
@@ -57,19 +59,19 @@ little bit special. In Swift values in tuple could have optional labels.
 Doesn\'t matter if value in tupple is labeled or not, in reflection
 tuple will have labels \".0\", \".1\" and so on.
 
-Next up is the `AncestorRepresentation` `enum` [^3]:
+Next up is the `AncestorRepresentation` `enum`:
 
 ``` Swift
 public enum AncestorRepresentation {
     /// Generate a default mirror for all ancestor classes.  This is the
     /// default behavior.
-    case Generated
+    case generated
     /// Use the nearest ancestor's implementation of `customMirror()` to
     /// create a mirror for that ancestor.      
-    case Customized(() -> Mirror)
+    case customized(@escaping () -> Mirror)
     /// Suppress the representation of all ancestor classes.  The
     /// resulting `Mirror`'s `superclassMirror()` is `nil`.
-    case Suppressed
+    case suppressed
 }
 ```
 
@@ -78,9 +80,5 @@ should be reflected. I.e. this is only used for subjects of type
 `class`. The default (as you can see) is that Swift generates an
 additional mirror for each superclass. However, if you need more
 flexibility here, you can use the `AncestorRepresentation enum` to
-define how superclasses are being mirrored. [We will have a look at that
-further below](#custommirrors).
+define how superclasses are being mirrored. 
 
-[^2]: Or rather, an empty optional
-
-[^3]: I\'ve shortened the documentation a bit

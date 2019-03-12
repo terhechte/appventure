@@ -1,35 +1,15 @@
 [frontMatter]
 title = "Conclusion"
-tags = []
+tags = ["reflection"]
 created = "2019-03-01 11:47:01"
 description = ""
 published = false
 
+[meta]
+swift_version = "5.1"
 ---
 
 # Conclusion
-
-So in the `Custom Mirrors` section we added several performance improvements. If we do another performance measurement now, there\'s even a slight improvement:
-
-        <div style="background-color: #ccc; padding: 20px; border-radius: 16px;">
-
-        <h3 class="ggx">Create 2000 NSManagedObjects</h3>
-
-        <div class="linechart greenxx" style="width: 30%">
-            <span>Native: 0.062 seconds</span>
-        </div>
-        <div class="linechart redxx">
-            <span>Reflection: 0.207 seconds</span>
-        </div>
-        <div class="linechart orangexx" style="width: 98%">
-            <span>Reflection: 0.203 seconds</span>
-        </div>
-</div>
-
-But hardly worth the effort, as it defeats our initial purpose of
-reflecting over our `struct`\'s members.
-
-# Use Cases
 
 So, where does this leave us? What are good use cases for this?
 Obviously, if you\'re working a lot of `NSManagedObject`\'s, this will
@@ -57,16 +37,9 @@ cases:
 -   Iterate over tuples
 -   Analyze classes
 -   Runtime analysis of object conformance
+-   Converting to / from JSON (or other types)
 -   Generated detailed logging / debugging information automatically
     (i.e. for externally generated objects)
-
-# Discussion
-
-The Reflection API exists primarily as a tool for the Playgrounds.
-Objects conforming to the reflection API can easily be displayed in a
-hierarchical way in the playgrounds sidebar. Thus, the performance is
-not optimal. Nevertheless, this has still interesting use cases outside
-of playgrounds as we explained in the **Use Cases** chapter.
 
 # More Information
 

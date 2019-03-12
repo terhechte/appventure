@@ -2,6 +2,7 @@
 ** `apv::switch` => pattern matching in detail
 ** `apv::enum-custom-data-types => Enum / Custom Data Types`
 ** `swi::failable-initializer` => Swift docs, failable initializer
+** `apv::type-erase` => type erasure
  ** `apv::optional`
 * TODO `apv::tuple` => tuple article
 

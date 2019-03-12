@@ -1,29 +1,32 @@
 [frontMatter]
 title = "Introduction"
-tags = []
+tags = ["reflection"]
 created = "2019-03-01 11:47:01"
 description = ""
 published = false
 
+[meta]
+swift_version = "5.1"
 ---
 
 # Introduction
 
-Even though Swift stresses strong types, compile time safety, static
-dispatch it still offers a Reflection mechanism as part of the standard
-library. You may already have seen it in various blog posts or projects
-like [here
-(Tuples)](http://design.featherless.software/enumerating-tuple-values-swift/?utm_campaign%3DSwift%252BSandbox&utm_medium%3Demail&utm_source%3DSwift_Sandbox_12),
-[here (Midi
-Packets)](http://design.featherless.software/enumerate-messages-midipacket-swift-reflection/)
-or [here (Core Data).](https://github.com/terhechte/corevalue) Maybe
-you\'re interested in using in one of your projects, or you may want to
-better understand the problem domains on which reflection can be
-applied. This is an overview of the possibilities of the Swift
-Reflection API based a talk I held recently at the [Macoun
-conference](http://www.macoun.de) in Frankfurt, Germany.
+Even though Swift stresses strong types, compile time safety and static
+dispatch, it still offers a Reflection mechanism as part of the standard
+library. 
 
-# API Overview
+Reflection means that you can ask Swift at runtime questions about types.
+I.e. you can tell Swift "what are the methods that this class implements"
+
+This might not sound useful, but in reality is allows to do some really
+clever tricks: For example, you could write a function that takes any
+`struct`, lists all the properties (`var username, var age`, etc)
+and writes this information into Core Data. 
+
+Reflection in Swift is `read-only`, so you can't write any properties.
+However, it is still quite powerful. This guide will explain reflection
+and also show how it can be used in a practical way (the aforementioned
+struct to Core Data example).
 
 The best understanding of the topic can be achieved by having a look at
 the API to see what it offers us.

@@ -1,10 +1,12 @@
 [frontMatter]
 title = "Mirrors"
-tags = []
+tags = ["reflection", "mirror"]
 created = "2019-03-01 11:47:01"
 description = ""
 published = false
 
+[meta]
+swift_version = "5.1"
 ---
 
 # Mirrors
@@ -13,11 +15,10 @@ Swift\'s reflection capabilities are based around a `struct` called
 **Mirror**. You create a mirror for a particular `subject` and the
 mirror will then let you query it.
 
-Before we do that, let\'s define a simple data structure that we can use
-as our subject.
+Before we look at the API, let\'s define a simple data structure that we can experiment on.
 
 ``` Swift
-import Foundation.NSURL
+import Foundation
 
 public class Store {
     let storesToDisk: Bool = true
@@ -27,17 +28,20 @@ public class BookmarkStore: Store {
 }
 public struct Bookmark {
    enum Group {
-      case Tech
-      case News
+      case tech
+      case news
    }
    private let store = {
        return BookmarkStore()
    }()
    let title: String?
-   let url: NSURL
+   let url: URL
    let keywords: [String]
    let group: Group
 }
 
-let aBookmark = Bookmark(title: "Appventure", url: NSURL(string: "appventure.me")!, keywords: ["Swift", "iOS", "OSX"], group: .Tech)
+let aBookmark = Bookmark(title: "Appventure", url: URL(string: "appventure.me")!, keywords: ["Swift", "iOS", "OSX"], group: .tech)
 ```
+
+So, we have a `Bookmark`. Bookmarks can have titles, urls, keywords, and bookmarks can belong to a `Group`. There is also a `BookmarkStore` and a more general `Store`. So, how do we query this data structure at runtime?
+

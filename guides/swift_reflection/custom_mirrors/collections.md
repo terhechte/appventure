@@ -1,21 +1,22 @@
 [frontMatter]
 title = "Collections"
-tags = []
+tags = ["reflection"]
 created = "2019-03-01 11:47:01"
 description = ""
 published = false
 
+[meta]
+swift_version = "5.1"
 ---
 
 # Collections
 
+In order to 
+
 The first special `init` is tailor-made for collections:
 
 ``` Swift
-public init<T, C : CollectionType where C.Generator.Element == Child>
-  (_ subject: T, children: C, 
-   displayStyle: Mirror.DisplayStyle? = default, 
-   ancestorRepresentation: Mirror.AncestorRepresentation = default)
+init<Subject, C>(_ subject: Subject, children: C, displayStyle: Mirror.DisplayStyle? = nil, ancestorRepresentation: Mirror.AncestorRepresentation = .generated) where C : Collection, C.Element == Mirror.Child
 ```
 
 Compared to the `init(reflecting:)` initializer above, this one allows
