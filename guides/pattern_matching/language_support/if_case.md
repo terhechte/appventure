@@ -1,10 +1,12 @@
 [frontMatter]
 title = "If Case"
-tags = []
+tags = ["pattern matching", "switch", "if case"]
 created = "2019-02-15 20:40:47"
 description = ""
 published = false
 
+[meta]
+swift_version = "5.1"
 ---
 
 # Using **if case**
@@ -24,6 +26,6 @@ func move(entity: Entity, xd: Int, yd: Int) -> Entity {
     }
     return entity
 }
-print(move(Entity.Entry(type: .Soldier, x: 10, y: 10, hp: 79), xd: 30, yd: 500))
-// prints: Entry(main.Entity.EntityType.Soldier, 40, 510, 79)
+print(move(Entity.Entry(type: .soldier, x: 10, y: 10, hp: 79), xd: 30, yd: 500))
+// prints: Entry(main.Entity.EntityType.soldier, 40, 510, 79)
 ```

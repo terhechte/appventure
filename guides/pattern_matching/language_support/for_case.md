@@ -1,18 +1,17 @@
 [frontMatter]
 title = "For Case"
-tags = []
+tags = ["pattern matching", "switch", "for", "for case", "where"]
 created = "2019-02-15 20:40:47"
 description = ""
 published = false
 
+[meta]
+swift_version = "5.1"
 ---
 
 # Using **for case**
 
-With Swift 2.0, pattern matching has become even more important in the
-language as the `switch` capabilities have been extended to other
-keywords as well. For example, let\'s write a simple array function
-which only returns the non-nil elements
+Let\'s write a simple array function which only returns the non-nil elements
 
 ``` Swift
 func nonnil<T>(array: [T?]) -> [T] {
@@ -34,8 +33,8 @@ this:
 ``` Swift
 enum Entity {
     enum EntityType {
-        case Soldier
-        case Player
+        case soldier
+        case player
     }
     case Entry(type: EntityType, x: Int, y: Int, hp: Int)
 }
@@ -58,16 +57,16 @@ at least one Soldier with health \> 0
 
 ``` Swift
 func gameOver() -> Bool {
-    for case Entity.Entry(.Soldier, _, _, let hp) in gameEntities() 
+    for case Entity.Entry(.soldier, _, _, let hp) in gameEntities() 
     where hp > 0 {return false}
     return true
 }
 print(gameOver())
 ```
 
-What\'s nice is that the `Soldier` match is part of the for query. This
+What\'s nice is that the `.soldier` match is part of the for query. This
 feels a bit like `SQL` and less like imperative loop programming. Also,
 this makes our intent clearer to the compiler, opening up the
 possibilities for dispatch enhancements down the road. Another nice
-touch is that we don\'t have to spell out `Entity.EntityType.Soldier`.
-Swift understands our intent even if we only write `.Soldier` as above.
+touch is that we don\'t have to spell out `Entity.EntityType.soldier`.
+Swift understands our intent even if we only write `.soldier` as above.

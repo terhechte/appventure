@@ -1,16 +1,18 @@
 [frontMatter]
 title = "Fibonacci"
-tags = []
+tags = ["pattern matching", "switch"]
 created = "2019-02-15 20:40:47"
 description = ""
 published = false
 
+[meta]
+swift_version = "5.1"
 ---
 
 # Fibonacci
 
 Also, see how beautiful an implementation of the fibonacci algorithm
-looks with pattern matching [^3]
+looks with pattern matching.
 
 ``` Swift
 func fibonacci(i: Int) -> Int {
@@ -24,4 +26,5 @@ func fibonacci(i: Int) -> Int {
 print(fibonacci(8))
 ```
 
-Of course, this will kill your stack with big numbers.
+Since we're doing recursion here, this will fail to work with sufficiently large numbers
+(you'll see the dreaded `stack overflow` error)

@@ -7,8 +7,7 @@ description = "In this post, we'll have a look at Pattern Matching in Swift in t
 published = true
 
 [meta]
-image = "/content/doom.png"
-swift_version = "2.3"
+swift_version = "5.1"
 short_title = "Pattern Matching"
 short_code = "<pre class='Swift'><code><span class='source swift'><span class='keyword control switch swift'>case</span> (<span class='keyword operator type-casting swift'>is</span> <span class='support type swift'>Bool</span>, <span class='storage type swift'>let</span> x <span class='keyword operator type-casting swift'>as</span> <span class='support type swift'>Int</span>)<br/>&nbsp;&nbsp;&nbsp;&nbsp; <span class='keyword control switch swift'>where</span> x <span class='keyword operator comparative swift'>&gt;</span> <span class='constant numeric integer decimal swift'>10</span> </span></code></pre></code></pre>"
 ---

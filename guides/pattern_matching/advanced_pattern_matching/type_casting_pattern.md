@@ -1,10 +1,12 @@
 [frontMatter]
 title = "Type Casting Pattern"
-tags = []
+tags = ["pattern matching", "switch", "is", "as"]
 created = "2019-02-15 20:40:47"
 description = ""
 published = false
 
+[meta]
+swift_version = "5.1"
 ---
 
 # Type Casting Pattern
@@ -25,11 +27,14 @@ Here is an example of the two.
 ``` Swift
 let a: Any = 5 
 switch a {
-  // this fails because a is still anyobject
+
+  // this fails because a is still Any
   // error: binary operator '+' cannot be applied to operands of type 'Any' and 'Int'
   case is Int: print (a + 1)
+
   // This works and returns '6'
   case let n as Int: print (n + 1)
+
   default: ()
 }
 ```

@@ -1,10 +1,12 @@
 [frontMatter]
 title = "Enumeration Case Pattern"
-tags = []
+tags = ["pattern matching", "switch", "enum"]
 created = "2019-02-15 20:40:47"
 description = ""
 published = false
 
+[meta]
+swift_version = "5.1"
 ---
 
 # Enumeration Case Pattern
@@ -13,7 +15,7 @@ As you saw in our trading example, pattern matching works **really
 great** with Swift\'s `enums`. That\'s because `enum cases` are like
 sealed, immutable, destructable structs. Much like with `tuples`, you
 can unwrap the contents of an individual case right in the match and
-only extract the information you need [^2].
+only extract the information you need.
 
 Imagine you\'re writing a game in a functional style and you have a
 couple of entities that you need to define. You could use `structs` but
@@ -22,9 +24,9 @@ bit of an overkill.
 
 ``` Swift
 enum Entities {
-    case Soldier(x: Int, y: Int)
-    case Tank(x: Int, y: Int)
-    case Player(x: Int, y: Int)
+    case soldier(x: Int, y: Int)
+    case tank(x: Int, y: Int)
+    case player(x: Int, y: Int)
 }
 ```
 
@@ -34,12 +36,15 @@ Y position:
 ``` Swift
 for e in entities() {
     switch e {
-    case let .Soldier(x, y):
+    case let .soldier(x, y):
       drawImage("soldier.png", x, y)
-    case let .Tank(x, y):
+    case let .tank(x, y):
       drawImage("tank.png", x, y)
-    case let .Player(x, y):
+    case let .player(x, y):
       drawImage("player.png", x, y)
     }
 }
 ```
+
+This is the gist of it. The `enumeration case pattern` is really just
+using `enum` cases in the `switch` statement.

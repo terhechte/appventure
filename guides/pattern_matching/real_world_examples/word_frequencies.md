@@ -1,10 +1,12 @@
 [frontMatter]
 title = "Word Frequencies"
-tags = []
+tags = ["pattern matching", "switch", "compactMap", "map", "filter"]
 created = "2019-02-15 20:40:47"
 description = ""
 published = false
 
+[meta]
+swift_version = "5.1"
 ---
 
 # Word Frequencies
@@ -20,7 +22,7 @@ Here\'re our words:
 let wordFreqs = [("k", 5), ("a", 7), ("b", 3)]
 ```
 
-A simple solution would be to model this with `map` and `filter`:
+A simple solution would be to model this with [`map` and `filter`](apv::map-filter-reduce):
 
 ``` Swift
 let res = wordFreqs.filter({ (e) -> Bool in
@@ -33,14 +35,14 @@ let res = wordFreqs.filter({ (e) -> Bool in
 print(res)
 ```
 
-However, with `flatmap` a map that only returns the non-nil elements, we
+However, with `compactMap` a map that only returns the non-nil elements, we
 can improve a lot upon this solution. First and foremost, we can get rid
 of the `e.1` and instead have proper destructuring by utilizing (you
-guessed it) tuples. And then, we only need one call `flatmap` instead of
+guessed it) tuples. And then, we only need one call `compactMap` instead of
 `filter` and then `map` which adds unnecessary performance overhead.
 
 ``` Swift
-let res = wordFreqs.flatMap { (e) -> String? in
+let res = wordFreqs.compactMap { (e) -> String? in
     switch e {
     case let (s, t) where t > 3: return s
     default: return nil

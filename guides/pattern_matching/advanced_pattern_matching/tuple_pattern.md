@@ -1,27 +1,26 @@
 [frontMatter]
 title = "Tuple Pattern"
-tags = []
+tags = ["pattern matching", "switch", "tuple"]
 created = "2019-02-15 20:40:47"
 description = ""
 published = false
 
+[meta]
+swift_version = "5.1"
 ---
 
 # Tuple Pattern
 
-[I\'ve written a whole blog post about
-tuples,](http://appventure.me/2015/07/19/tuples-swift-advanced-usage-best-practices/)
-which offer much more information than this, but here\'s a quick
-example:
+[We have a full article on tuples](apv::tuple), but here is a quick overview:
 
 ``` Swift
 let age = 23
 let job: String? = "Operator"
-let payload: AnyObject = NSDictionary()
+let payload: Any = NSDictionary()
 
 switch (age, job, payload) {
   case (let age, _?, _ as NSDictionary):
-  print(age)
+      print(age)
   default: ()
 }
 ```

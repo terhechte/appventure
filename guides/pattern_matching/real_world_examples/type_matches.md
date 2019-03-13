@@ -1,10 +1,12 @@
 [frontMatter]
 title = "Type Matches"
-tags = []
+tags = ["pattern matching", "switch", "is", "objc"]
 created = "2019-02-15 20:40:47"
 description = ""
 published = false
 
+[meta]
+swift_version = "5.1"
 ---
 
 # Type Matches
@@ -26,14 +28,14 @@ get. However, `switch` statements allow you to easily test for types
 here:
 
 ``` Swift
-for x in u {
-    switch x {
-    case _ as NSString:
+for item in array {
+    switch item {
+    case is NSString:
         print("string")
-    case _ as NSNumber:
+    case is NSNumber:
         print("number")
     default:
-        print("Unknown types")
+        print("Unknown type \(item)")
     }
 }
 ```

@@ -1,15 +1,17 @@
 [frontMatter]
 title = "A Trading Engine"
-tags = []
+tags = ["pattern matching", "switch"]
 created = "2019-02-15 20:40:47"
 description = ""
 published = false
 
+[meta]
+swift_version = "5.1"
 ---
 
 # A Trading Engine
 
-So Wall Street contacted you, they need a new trading platform running
+So a Wall Street company contacts you, they need a new trading platform running
 on iOS devices. As it is a trading platform, you define an `enum` for
 trades.
 
@@ -17,14 +19,13 @@ trades.
 
 ``` Swift
 enum Trades {
-    case Buy(stock: String, amount: Int, stockPrice: Float)
-    case Sell(stock: String, amount: Int, stockPrice: Float)
+    case buy(stock: String, amount: Int, stockPrice: Float)
+    case sell(stock: String, amount: Int, stockPrice: Float)
 }
 ```
 
 You were also handed the following API to handle trades. **Notice how
-sell orders are just negative amounts**. And you\'re told the stock
-price is not important, their engine will take an internal one anyway.
+sell orders are just negative amounts**. 
 
 ``` Swift
 /**
@@ -40,12 +41,12 @@ The next step is to process those trades. You see the potential for
 using pattern matching and write this:
 
 ``` Swift
-let aTrade = Trades.Buy(stock: "APPL", amount: 200, stockPrice: 115.5)
+let aTrade = Trades.buy(stock: "APPL", amount: 200, stockPrice: 115.5)
 
 switch aTrade {
-case .Buy(let stock, let amount, _):
+case .buy(let stock, let amount, _):
     process(stock, amount)
-case .Sell(let stock, let amount, _):
+case .sell(let stock, let amount, _):
     process(stock, amount * -1)
 }
 // Prints "buy 200 of APPL"
@@ -79,13 +80,13 @@ type is part of every trade, too.
 
 ``` Swift
 enum TraderType {
-case SingleGuy
-case Company
+case singleGuy
+case company
 } 
 
 enum Trades {
-    case Buy(stock: String, amount: Int, stockPrice: Float, type: TraderType)
-    case Sell(stock: String, amount: Int, stockPrice: Float, type: TraderType)
+    case buy(stock: String, amount: Int, stockPrice: Float, type: TraderType)
+    case sell(stock: String, amount: Int, stockPrice: Float, type: TraderType)
 }
 
 ```
@@ -98,23 +99,23 @@ as additional requirements on the pattern matches:
 
 ``` Swift
 
-let aTrade = Trades.Sell(stock: "GOOG", amount: 100, stockPrice: 666.0, type: TraderType.Company)
+let aTrade = Trades.sell(stock: "GOOG", amount: 100, stockPrice: 666.0, type: TraderType.company)
 
 switch aTrade {
-case let .Buy(stock, amount, _, TraderType.SingleGuy):
+case let .buy(stock, amount, _, TraderType.singleGuy):
     processSlow(stock, amount, 5.0)
-case let .Sell(stock, amount, _, TraderType.SingleGuy):
+case let .sell(stock, amount, _, TraderType.singleGuy):
     processSlow(stock, -1 * amount, 5.0)
-case let .Buy(stock, amount, _, TraderType.Company):
+case let .buy(stock, amount, _, TraderType.company):
     processFast(stock, amount, 2.0)
-case let .Sell(stock, amount, _, TraderType.Company):
+case let .sell(stock, amount, _, TraderType.company):
     processFast(stock, -1 * amount, 2.0)
 }
 ```
 
 The beauty of this is that there\'s a very succinct flow describing the
 different possible combinations. Also, note how we changed
-`.Buy(let stock, let amount)` into `let .Buy(stock, amount)` in order to
+`.buy(let stock, let amount)` into `let .buy(stock, amount)` in order to
 keep things simpler. This will destructure the `enum` just as before,
 only with less syntax.
 
@@ -139,22 +140,22 @@ those new changes
 
 ``` Swift
 
-let aTrade = Trades.Buy(stock: "GOOG", amount: 1000, stockPrice: 666.0, type: TraderType.SingleGuy)
+let aTrade = Trades.buy(stock: "GOOG", amount: 1000, stockPrice: 666.0, type: TraderType.singleGuy)
 
 switch aTrade {
-case let .Buy(stock, amount, _, TraderType.SingleGuy):
+case let .buy(stock, amount, _, TraderType.singleGuy):
     processSlow(stock, amount, 5.0)
-case let .Sell(stock, amount, price, TraderType.SingleGuy)
+case let .sell(stock, amount, price, TraderType.singleGuy)
     where price*Float(amount) > 1000000:
     processFast(stock, -1 * amount, 5.0)
-case let .Sell(stock, amount, _, TraderType.SingleGuy):
+case let .sell(stock, amount, _, TraderType.singleGuy):
     processSlow(stock, -1 * amount, 5.0)
-case let .Buy(stock, amount, price, TraderType.Company)
+case let .buy(stock, amount, price, TraderType.company)
     where price*Float(amount) < 1000:
     processSlow(stock, amount, 2.0)
-case let .Buy(stock, amount, _, TraderType.Company):
+case let .buy(stock, amount, _, TraderType.company):
     processFast(stock, amount, 2.0)
-case let .Sell(stock, amount, _, TraderType.Company):
+case let .sell(stock, amount, _, TraderType.company):
     processFast(stock, -1 * amount, 2.0)
 }
 ```

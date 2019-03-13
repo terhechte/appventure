@@ -1,16 +1,18 @@
 [frontMatter]
 title = "Guard Case"
-tags = []
+tags = ["pattern matching", "switch", "guard"]
 created = "2019-02-15 20:40:47"
 description = ""
 published = false
 
+[meta]
+swift_version = "5.1"
 ---
 
 # Using **guard case**
 
 Another keyword which supports patterns is the newly introduced `guard`
-keyword. You know how it allows you to bind `optionals` into the local
+keyword. You know how it allows you to bind `Optionals` into the local
 scope much like `if let` only without nesting things:
 
 ``` Swift
@@ -31,14 +33,14 @@ soldier entity.
 let MAX_HP = 100
 
 func healthHP(entity: Entity) -> Int {
-    guard case let Entity.Entry(.Player, _, _, hp) = entity 
-    where hp < MAX_HP 
-    else { return 0 }
+    guard case let Entity.Entry(.player, _, _, hp) = entity 
+      where hp < MAX_HP 
+        else { return 0 }
     return MAX_HP - hp
 }
 
-print("Soldier", healthHP(Entity.Entry(type: .Soldier, x: 10, y: 10, hp: 79)))
-print("Player", healthHP(Entity.Entry(type: .Player, x: 10, y: 10, hp: 57)))
+print("Soldier", healthHP(Entity.Entry(type: .soldier, x: 10, y: 10, hp: 79)))
+print("Player", healthHP(Entity.Entry(type: .player, x: 10, y: 10, hp: 57)))
 
 // Prints:
 "Soldier 0"

@@ -1,10 +1,12 @@
 [frontMatter]
 title = "Legacy API and Value Extractions"
-tags = []
+tags = ["pattern matching", "switch", "where"]
 created = "2019-02-15 20:40:47"
 description = ""
 published = false
 
+[meta]
+swift_version = "5.1"
 ---
 
 # Legacy API and Value Extractions
@@ -38,7 +40,7 @@ need users born before 1980. If no department is given, \"Corp\" is
 assumed.
 
 ``` Swift
-func legacyAPI(id: Int) -> [String: AnyObject] {
+func legacyAPI(id: Int) -> [String: Any] {
     return ["type": "system", "department": "Dark Arts", "age": 57, 
            "name": ["voldemort", "Tom", "Marvolo", "Riddle"]] 
 }
@@ -49,11 +51,11 @@ Given these constraints, let\'s develop a pattern match for it:
 ``` Swift
 let item = legacyAPI(4)
 switch (item["type"], item["department"], item["age"], item["name"]) {
-   case let (sys as String, dep as String, age as Int, name as [String]) where 
-      age < 1980 &&
-      sys == "system":
-     createSystemUser(name.count == 2 ? name.last! : name.first!, dep: dep ?? "Corp")
-  default:()
+case let (sys as String, dep as String, age as Int, name as [String]) where 
+  age < 1980 &&
+  sys == "system":
+  createSystemUser(name.count == 2 ? name.last! : name.first!, dep: dep ?? "Corp")
+default:()
 }
 
 // returns ("voldemort", "Dark Arts")

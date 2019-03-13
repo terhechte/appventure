@@ -1,10 +1,12 @@
 [frontMatter]
 title = "Expression Pattern"
-tags = []
+tags = ["pattern matching", "switch", "equatable", "~="]
 created = "2019-02-15 20:40:47"
 description = ""
 published = false
 
+[meta]
+swift_version = "5.1"
 ---
 
 # Expression Pattern
@@ -17,6 +19,7 @@ can do:
 ``` Swift
 switch 5 {
  case 0..10: print("In range 0-10")
+ default: print("In another range")
 }
 ```
 
@@ -42,7 +45,10 @@ func ~= (pattern: Int, value: Soldier) -> Bool {
 }
 ```
 
-Now we can match against an entity:
+Now we can match against an entity. In this example, only soldiers that
+have a `hp` of `0` would be matched (thus, we print `dead soldier`),
+because we're commparing the `value.hp` to the `switch` pattern in our
+`~=` implementation above.
 
 ``` Swift
 let soldier = Soldier(hp: 99, x: 10, y: 10)
@@ -52,46 +58,52 @@ switch soldier {
 }
 ```
 
-Sadly, full matching with tuples does not seem to work. If you implement
-the code below, there\'ll be a type checker error.
+What if you'd like to not just compare the `hp` but also the `x` and the `y`? You
+can just implement `pattern` with a [tuple](apv::tuple):
 
 ``` Swift
 func ~= (pattern: (hp: Int, x: Int, y: Int), value: Soldier) -> Bool {
-   let (hp, x, y) = pattern
-   return hp == value.hp && x == value.x && y == value.y
-}
-```
-
-One possible way of implementing something akin to the above is by
-adding a `unapply` method to your `struct` and then matching against
-that:
-
-``` Swift
-
-extension Soldier {
-   func unapply() -> (Int, Int, Int) {
-      return (self.hp, self.x, self.y)
-   }
+    let (hp, x, y) = pattern
+    return hp == value.hp && x == value.x && y == value.y
 }
 
-func ~= (p: (Int, Int, Int), t: (Int, Int, Int)) -> Bool {
-   return p.0 == t.0 && p.1 == t.1 && p.2 == t.2 
-}
 
 let soldier = Soldier(hp: 99, x: 10, y: 10)
-print(soldier.unapply() ~= (99, 10, 10))
-
+switch soldier {
+  case (50, 10, 10): print("health 50 at pos 10/10")
+  default: ()
+}
 ```
 
-But this is rather cumbersome and defeats the purpose of a lot of the
-magic behind pattern matching.
+You can even match structs against structs. However, this only works if your
+structs are `Equatable`. Swift can implement this automatically, as long as
+you tell it to by conforming to the protocol. So lets first extend our `Soldier`
+struct to conform to `Equatable`:
 
-In an earlier version of this post, I wrote that `~=` doesn\'t work with
-protocols, but I was wrong. I remember that I tried it in a Playground,
-and it didn\'t work. However, this example ([as kindly provided by
-latrodectus on
-reddit](https://www.reddit.com/r/swift/comments/3hq6id/match_me_if_you_can_swift_pattern_matching_in/cub187r))
-does work fine:
+``` Swift
+struct Soldier: Equatable {
+    let hp: Int
+    let x: Int
+    let y: Int
+}
+```
+
+Now, we can add a new match implementation. Since both soldiers are equatable `value types`, we can actually just directly compare them. If they both have the same values for their three properties (hp, x, y), then they are considered equal:
+
+``` Swift
+func ~= (pattern: Soldier, value: Soldier) -> Bool {
+    return pattern == value
+}
+
+let soldier = Soldier(hp: 50, x: 10, y: 10)
+switch soldier {
+  case Soldier(hp: 50, x: 10, y: 10): print("The same")
+  default: ()
+}
+```
+
+The left side of the `~=` operator (the `pattern` argument) can be anything. So 
+it can even be a `protocol`:
 
 ``` Swift
 protocol Entity {
@@ -123,5 +135,5 @@ much more detailed explanation of Expression Patterns, [have a look at
 this terrific blog post by Austin
 Zheng](http://austinzheng.com/2014/12/17/custom-pattern-matching/).
 
-This completes list of possible switch patterns. Before we move on,
-there\'s one final thing to discuss.
+This completes list of possible switch patterns. Our next topic is 
+flow control in `switch` statements.
