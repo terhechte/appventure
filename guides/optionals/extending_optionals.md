@@ -5,8 +5,10 @@ created = "2018-01-10"
 published = true
 keywords = ["swift", "protocol", "optional", "optionals", "extensions"]
 slug = "2018-01-10-optional-extensions.html"
-tags = ["swift", "cocoa", "ios"]
+tags = ["optionals", "extension"]
 
+[meta]
+swift_version = "5.1"
 ---
 
 `Optionals` are a staple of Swift. I guess everybody will agree that

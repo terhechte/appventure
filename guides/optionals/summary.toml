@@ -7,8 +7,7 @@ description = "With Swift, Apple introduced several new programming languages fe
 published = true
 
 [meta]
-image = "/content/doom.png"
-swift_version = "2.3"
+swift_version = "5.1"
 short_title = "Optionals"
 short_code = "<pre class='Swift'><code><span class='source swift'>a?<span class='keyword operator custom postfix unary swift'>.</span>b?<span class='keyword operator custom postfix unary swift'>.</span>c? <span class='keyword operator comparative swift'>==</span> <span class='constant nil swift'>nil</span> </span></code></pre></code></pre>"
 ---

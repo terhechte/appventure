@@ -1,10 +1,12 @@
 [frontMatter]
 title = "How to handle optionals"
-tags = []
+tags = ["optionals"]
 created = "2019-03-02 16:04:26"
 description = ""
 published = false
 
+[meta]
+swift_version = "5.1"
 ---
 
 # How to handle optionals
