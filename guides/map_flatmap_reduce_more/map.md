@@ -15,7 +15,8 @@ Lets re-implement `map` and call it `rmap` (short for `reduce map`)
 
 ``` Swift
 func rmap(_ elements: [Int], transform: (Int) -> Int) -> [Int] {
-    return elements.reduce([Int](), combine: { (var acc: [Int], obj: Int) -> [Int] in
+    return elements.reduce([Int](), combine: { 
+      (var acc: [Int], obj: Int) -> [Int] in
        acc.append(transform(obj))
        return acc
     })
