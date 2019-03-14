@@ -5,8 +5,15 @@
 ** `apv::type-erase` => type erasure
  ** `apv::optional`
 * TODO `apv::tuple` => tuple article
+apv::map-filter-reduce
+apv::reflection
+apply swift-link or swift-format to all code examples?
+reflinks between guide-chapters?
+[`~=`](apv::match-operator)
 
-!! Enums RawRepresentable Chapter!
+pattern matching article
+!! add new chapter on custom match operator ~=
+  
 !! Updated `Enums in the Standard Library Chapter + Links`
 !! search all for `apple.com` links (apple docs) to update to the most recent
 
