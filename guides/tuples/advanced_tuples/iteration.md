@@ -1,20 +1,22 @@
 [frontMatter]
 title = "Iteration"
-tags = []
+tags = ["tuples", "reflection"]
 created = "2019-03-01 17:35:30"
 description = ""
 published = false
 
+[meta]
+swift_version = "5.1"
 ---
 
 # Iteration
 
-In the above descriptions, I\'ve tried to steer clear of calling tuples
+So far, I\'ve tried to steer clear of calling tuples
 sequences or collections because they aren\'t. Since every element of a
 tuple can have a different type, there\'s no type-safe way of looping or
 mapping over the contents of a tuple. Well, no beautiful one, that is.
 
-Swift does offer limited reflection capabilities, and these allow us to
+Swift does offer [limited reflection capabilities](apv::reflection), and these allow us to
 inspect the elements of a tuple and loop over them. The downside is that
 the type checker has no way to figure out what the type of each element
 is, and thus everything is typed as `Any`. It is your job then to cast
@@ -39,3 +41,6 @@ for (label, value) in mirror.children {
 
 This is not as simple as array iteration, but it does work if you really
 need it.
+
+You can also abstract this into a nice function which translate your tuple
+type into a parseable description.

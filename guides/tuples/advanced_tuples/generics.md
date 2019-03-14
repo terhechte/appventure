@@ -1,10 +1,12 @@
 [frontMatter]
 title = "Generics"
-tags = []
+tags = ["tuples", "generics", "typealias", "either"]
 created = "2019-03-01 17:35:30"
 description = ""
 published = false
 
+[meta]
+swift_version = "5.1"
 ---
 
 # Generics
@@ -36,9 +38,18 @@ class BaseClass<A,B> {
         print(elm)
     }
 }
+
 class IntegerClass<B> : BaseClass<Int, B> {
 }
+
 let example = IntegerClass<String>()
 example.add((5, ""))
 // Prints (5, "")
+```
+
+You can also define a `typealias` with generic parameters
+like in this example where we introduce a custom `Either` type:
+
+``` Swift
+typealias MyEither<A, B> = (left: A, right: B)
 ```

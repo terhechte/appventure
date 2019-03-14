@@ -1,10 +1,12 @@
 [frontMatter]
 title = "Type Aliases"
-tags = []
+tags = ["tuples", "tupealias"]
 created = "2019-03-01 17:35:30"
 description = ""
 published = false
 
+[meta]
+swift_version = "5.1"
 ---
 
 # Type Aliases

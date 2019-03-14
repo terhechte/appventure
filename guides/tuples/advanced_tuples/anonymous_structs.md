@@ -1,10 +1,12 @@
 [frontMatter]
 title = "Anonymous Structs"
-tags = []
+tags = ["tuples", "struct"]
 created = "2019-03-01 17:35:30"
 description = ""
 published = false
 
+[meta]
+swift_version = "5.1"
 ---
 
 # Anonymous Structs
@@ -69,10 +71,13 @@ three methods) may not be required.
 
 ``` Swift
 // Made up algorithm
-func calculateInterim(values: [Int]) -> (r: Int, alpha: CGFloat, chi: (CGFloat, CGFloat)) {
+func calculateInterim(values: [Int]) -> 
+    (r: Int, alpha: CGFloat, chi: (CGFloat, CGFloat)) {
     return (values[0], 2, (4, 8))
 }
-func expandInterim(interim: (r: Int, alpha: CGFloat, chi: (CGFloat, CGFloat))) -> CGFloat {
+func expandInterim(interim: (r: Int, 
+                         alpha: CGFloat, 
+                           chi: (CGFloat, CGFloat))) -> CGFloat {
     return CGFloat(interim.r) + interim.alpha + interim.chi.0 + interim.chi.1
 }
 
@@ -81,5 +86,4 @@ print(expandInterim(interim: calculateInterim(values: [1])))
 
 There is, of course, a fine line here. Defining a struct for one
 instance is overly complex; defining a tuple 4 times instead of one
-struct is overly complex too. Finding the sweet spot depends on various
-factors.
+struct is overly complex too. Finding the sweet spot depends.

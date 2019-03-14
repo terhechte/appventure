@@ -1,10 +1,12 @@
 [frontMatter]
 title = "Variable Arguments"
-tags = []
+tags = ["tuples", "vararg", "reduce"]
 created = "2019-03-01 17:35:30"
 description = ""
 published = false
 
+[meta]
+swift_version = "5.1"
 ---
 
 # Variable Arguments
@@ -35,6 +37,11 @@ func batchUpdate(updates: (String, Int)...) {
     self.db.end()
 }
 
-// We're imagining a weird database
-batchUpdate(updates: ("tk1", 5), ("tk7", 9), ("tk21", 44), ("tk88", 12))
+batchUpdate(updates: ("tk1", 5), 
+       ("tk7", 9), 
+       ("tk21", 44), 
+       ("tk88", 12))
 ```
+
+This pattern allows us to model the insertions in a very simple
+manner without having to introduce additional struct types.

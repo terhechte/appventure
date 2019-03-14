@@ -1,14 +1,19 @@
 [frontMatter]
 title = "Advanced Tuples"
-tags = []
+tags = ["tuples"]
 created = "2019-03-01 17:35:30"
 description = ""
 published = false
 
+[meta]
+swift_version = "5.1"
 ---
 
 # Advanced Tuples
 
-TBD
-FIXME
-TODO
+Now that we've seen the basics of how to use tuples, we will 
+look at more advanced use cases. This also means there will be
+less often situations where you can apply those patterns.
+
+Nevertheless, it is still very valuable to have them in your
+toolbox.

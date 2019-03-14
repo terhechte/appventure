@@ -1,17 +1,18 @@
 [frontMatter]
 title = "Private State"
-tags = []
+tags = ["tuples", "closure"]
 created = "2019-03-01 17:35:30"
 description = ""
 published = false
 
+[meta]
+swift_version = "5.1"
 ---
 
 # Private State
 
 In addition to the previous example, there are also use cases where
-using tuples beyond a temporary scope is useful. Following Rich
-Hickey\'s \"If a tree falls in the woods, does it make a sound?\", as
+using tuples beyond a temporary scope is useful. As
 long as the scope is private and the tuple\'s type isn\'t littered all
 over the implementation, using tuples to store internal state can be
 fine.
@@ -24,8 +25,8 @@ whether the value can be edited when tapping on the cell.
 ``` Swift
 let tableViewValues = [
     (title: "Age", value: "user.age", editable: true),
-    ("Name",           "user.name.combinedName",  true),
-    ("Username",       "user.name.username",      false),
+    ("Name", "user.name.combinedName", true),
+    ("Username", "user.name.username", false),
     ("ProfilePicture", "user.pictures.thumbnail", false)]
 ```
 
@@ -49,7 +50,6 @@ Here, using a tuple may even be the better solution, as the
 destructuring makes things simpler:
 
 ``` Swift
-
 class ListenerStuff {
 
     typealias Action = (_ change: Any?) -> Void
