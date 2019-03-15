@@ -13,10 +13,12 @@
 	  {% for books in context.books | split() %}
 	  <div class="tile is-6 is-vertical is-parent">
 		    {% for book in books %}
-		    <div class="tile is-child article-box" onclick="window.location = '{{ url_book(id=book.identifier) }}';">
+		    <div class="tile is-child article-box" >
+            <a href="{{ url_book(id=book.identifier) }}">
             {% if book.info.meta.short_code %}
             {{ book.info.meta.short_code }}
             {% endif %}
+            </a>
 
             <h4 class="title is-5"><a href="{{ url_book(id=book.identifier) }}">{{ book.info.meta.short_title }}</a></h4>
 			      <p class="subtitle is-6">
@@ -33,10 +35,10 @@
 
 <div class="article-list">
 	  {% for article in content.posts %}
-		<div class="article-box blog-box" onclick="window.location = '{{ url_post(id=article.identifier) }}'">
+		<div class="article-box blog-box">
 
 			  <div class="meta">
-			      {{ article.info.date | date(format="%a, %d %b %Y")  }}
+			      <a href="{{ url_post(id=article.identifier) }}">{{ article.info.date | date(format="%a, %d %b %Y")  }}</a>
 			      {% for tag in article.info.tags %}
 			      <a href="{{ url_tag(id=tag) }}">#{{tag}}</a>
 			      {% endfor %}
@@ -46,7 +48,7 @@
             {% if article.info.meta.thumbnail %}
             <figure class="media-left">
                 <p class="image is-64x64">
-                    <img src="{{ article.info.meta.thumbnail }}">
+                    <a href="{{ url_post(id=article.identifier) }}"><img src="{{ article.info.meta.thumbnail }}"></a>
                 </p>
             </figure>
             {% endif %}

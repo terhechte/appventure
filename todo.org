@@ -1,5 +1,10 @@
+* The terhech.de articles still need to receive the *move* flag
+* next / prev button on list.html doesn't work
 * Write inout article, then generate the old html a last time for inclusion
-
+* short title has to go into <title> (i.e. 'Pattern Matching')
+* Sitemap
+* RSSFeed
+* favicon
 * Generate a 'full page' version of each guide
 * Links in the footer of the website / base.html
 * Link to contravariance
