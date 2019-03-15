@@ -12,6 +12,7 @@
 * RawRepresentable article
 * About page
 * Debug reponsiveness (guides right sidebar has to disappear earlier)
+* Clicking a guide image doesn't work. only headline works
 
 * Keywords for ref-links
 ** `apv::switch` => pattern matching in detail

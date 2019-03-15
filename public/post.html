@@ -39,7 +39,7 @@
 		<div class="control">
 			<div class="tags">
 				{% for tag in content.info.tags %}
-				<span class="tag is-link is-rounded"><a>#{{tag}}</a></span>
+				<span class="tag is-link is-rounded"><a href="{{ url_tag(id=tag) }}">#{{tag}}</a></span>
 				{% endfor %}
 			</div>
 		</div>

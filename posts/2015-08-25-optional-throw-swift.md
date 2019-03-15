@@ -1,6 +1,6 @@
 [frontMatter]
 description = "Swift 2.0 includes a new way of handling exceptions via the try? keyword. This is a quick post to explain the basics, and why this is cool."
-title = "Optional throw via try? in Swift 2 beta 6"
+title = "Optional throw via try? in Swift 2"
 created = "2015-08-25"
 published = true
 keywords = ["swift", "error", "throw", "result", "either", "rethrow", "try", "syntax", "swift2"]
@@ -12,9 +12,7 @@ category = ["Language", "All"]
 swift_version = "2.3"
 ---
 
-<h6><a href="http://swift.gg/2015/09/11/optional-throw-swift/">This post is also available in <b>🇨🇳Chinese</b></a><span> Thanks to </span><a href="http://swift.gg/tags/APPVENTURE/">SwiftGG</a></h6>
-
-Swift 2.0 b6 includes a new way of handling exceptions via the `try?`
+Swift 2.0 includes a new way of handling exceptions via the `try?`
 keyword. This is a quick post to explain the basics, and why this is
 cool.
 
