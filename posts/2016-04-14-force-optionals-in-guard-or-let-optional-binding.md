@@ -5,7 +5,7 @@ created = "2016-04-14"
 published = true
 keywords = ["swift", "guard", "let", "unwrap", "bind", "binding", "unwrapped", "optional", "some", "none", "optionals"]
 slug = "2016-04-14-force-optionals-in-guard-or-let-optional-binding.html"
-tags = ["swift", "cocoa", "ios"]
+tags = ["optional"]
 category = ["Swift Tricks", "All"]
 
 [meta]

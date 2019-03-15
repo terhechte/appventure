@@ -3,13 +3,13 @@ title = "Map, FlatMap, Reduce & More"
 tags = ["swift", "ios", "cocoa"]
 keywords = ["feature", "swift", "reduce", "map", "filter", "group", "partition", "split", "interpose", "chunk", "functional", "programming", "flatMap", "compactMap"]
 created = "2015-11-30"
-description = "An introduction into the reduce function as an alternative to map, flatMap or filter for collection transformation"
+description = "A practical introduction into the `map`, `compactMap`, `filter`, and `reduce` functions."
 published = true
 
 [meta]
 swift_version = "5.1"
-short_title = "Map, Reduce & more"
-short_code = "<pre class='Swift'><code><span class='source swift'>array<span class='keyword operator custom postfix unary swift'>.</span>reduce(<span class='constant numeric integer decimal swift'>0</span>, { $<span class='constant numeric integer decimal swift'>0</span> <span class='keyword operator assignment swift'>+=</span> $<span class='constant numeric integer decimal swift'>1</span> }) </span></code></pre></code></pre>"
+short_title = "🗺 Map, Reduce & more"
+short_code = "<pre class='Swift'><code><span class='source swift'>array<span class='apvkeyword apvoperator apvcustom apvpostfix apvunary swift'>.</span>reduce(<span class='apvconstant apvnumeric apvinteger apvdecimal swift'>0</span>, { $<span class='apvconstant apvnumeric apvinteger apvdecimal swift'>0</span> <span class='apvkeyword apvoperator apvassignment swift'>+=</span> $<span class='apvconstant apvnumeric apvinteger apvdecimal swift'>1</span> }) </span></code></pre></code></pre>"
 ---
 - [Intro](intro.md)
 - [A Simple Problem](a_simple_problem.md)

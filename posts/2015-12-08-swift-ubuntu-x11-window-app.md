@@ -5,7 +5,7 @@ created = "2015-12-08"
 published = true
 keywords = ["linux", "x11", "swift", "libx11", "xserver", "xorg"]
 slug = "2015-12-08-swift-ubuntu-x11-window-app.html"
-tags = ["swift", "linux"]
+tags = ["package"]
 category = ["Hands On", "All"]
 
 [meta]

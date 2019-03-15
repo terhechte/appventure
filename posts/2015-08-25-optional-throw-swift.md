@@ -1,11 +1,11 @@
 [frontMatter]
-description = "Swift 2.0 b6 includes a new way of handling exceptions via the =try?= keyword. This is a quick post to explain the basics, and why this is cool."
+description = "Swift 2.0 includes a new way of handling exceptions via the try? keyword. This is a quick post to explain the basics, and why this is cool."
 title = "Optional throw via try? in Swift 2 beta 6"
 created = "2015-08-25"
 published = true
 keywords = ["swift", "error", "throw", "result", "either", "rethrow", "try", "syntax", "swift2"]
 slug = "2015-08-25-optional-throw-swift.html"
-tags = ["swift"]
+tags = ["try", "error"]
 category = ["Language", "All"]
 
 [meta]

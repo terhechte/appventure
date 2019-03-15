@@ -9,12 +9,12 @@ booksFolderName = "guides"
 categoryFolderName = "topics"
 books = [
   "associated_types/summary.toml", 
-#  "advanced_practical_enum_examples/summary.toml", 
+  "advanced_practical_enum_examples/summary.toml", 
   "map_flatmap_reduce_more/summary.toml", 
-#  "optionals/summary.toml", 
-#  "pattern_matching/summary.toml", 
-#  "swift_reflection/summary.toml",
-#  "tuples/summary.toml",
+  "optionals/summary.toml", 
+  "pattern_matching/summary.toml", 
+  "swift_reflection/summary.toml",
+  "tuples/summary.toml",
 ]
 
 # [RSS]

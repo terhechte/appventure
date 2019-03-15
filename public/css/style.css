@@ -66,6 +66,8 @@ body, html {
   border: 1px solid #eaeaea;
   cursor: pointer;
   box-shadow: 0px;
+  border: 1px solid #aaa;
+  border-radius: 16px;
 }
 
 .article-box pre {
@@ -176,7 +178,7 @@ h2.title.is-2 > span.syntax {
 #head {
     background-color: white;
     padding-top: 20px;
-    padding-bottom: 20px;
+    padding-bottom: 10px;
 }
 
 .article-tile-meta-box {
@@ -269,4 +271,60 @@ pre {
 
 .menu-list a {
     font-size: 13px;
+}
+
+
+#head {
+ border-bottom: 1px solid #aaa;
+}
+.blog-box > div.meta {
+ padding-top: 5px;
+ color: #777;
+}
+.blog-box > .media {
+ padding-top: 5px;
+}
+.blog-box .media-content h4 a {
+ color: rgb(9, 36, 78);
+}
+.blog-box .media-content h4 {
+ padding-bottom: 0px;
+}
+.blog-box > div.meta > a {
+ font-weight: bold;
+}
+.title {
+ font-weight: 700;
+}
+.tag:not(body).is-primary {
+ background-color: #aaa;
+ font-weight: bold;
+}
+.input, .textarea {
+ border-color: #666;
+}
+
+.tag:not(body).is-link {
+ background-color: #009EF4;
+}
+.content blockquote:not(:last-child), .content dl:not(:last-child), .content ol:not(:last-child), .content p:not(:last-child), .content pre:not(:last-child), .content table:not(:last-child), .content ul:not(:last-child) {
+ margin-bottom: 1.5em;
+}
+
+.content p a , .content li a {
+    font-weight: bold;
+    border-bottom: 1px dashed #aaa;
+}
+
+.tag:not(body).is-primary {
+ background-color: #363636;
+}
+
+.sidebar-banner {
+    margin-top: 30px;
+    text-align: center;
+}
+
+.profile-image {
+    border-radius: 32px;
 }

@@ -5,11 +5,11 @@ created = "2017-10-08"
 published = true
 keywords = ["xcode", "sourcekit", "swift", "SourceKitService"]
 slug = "2017-10-08-taming-sourcekitd.html"
-tags = ["swift", "cocoa", "ios"]
+tags = []
 category = ["Swift Tricks", "All"]
 
 [meta]
-swift_version = "2.3"
+swift_version = "4.0"
 ---
 
 # Update \[10/15/2017\]

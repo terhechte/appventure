@@ -1,22 +1,15 @@
 [frontMatter]
-description = """Hey, look at this:
-``` Swift
-func runMe(p: String) -> Int {
-  return 5
-}
-```
-yeah
-"""
+description = ""
 title = "Creating a Swift syntax extension: the Lisp 'cond' function"
 created = "2014-06-08"
 published = true
 keywords = ["clojure", "lisp", "swift", "cond", "syntax", "macro", "extension", "cocoa", "ios", "feature"]
 slug = "2014-06-08-writing-simple-syntax-extensions-in-swift.html"
-tags = ["swift", "ios", "cocoa"]
+tags = ["autoclosure"]
 category = ["Language", "All"]
 
 [meta]
-swift_version = "2.3"
+swift_version = "1.2"
 ---
 
 It has been less than a week since Apple announced Swift, and people are

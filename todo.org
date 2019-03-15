@@ -1,3 +1,18 @@
+* Write inout article, then generate the old html a last time for inclusion
+
+* Generate a 'full page' version of each guide
+* Links in the footer of the website / base.html
+* Link to contravariance
+* `ez.png` image
+* Tags in books/guides are not counted in
+* the ref-links need to be implemented
+* Guide-box stronger borders
+* Top border (for the white area, see sketch)
+* updated magic logo
+* RawRepresentable article
+* About page
+* Debug reponsiveness (guides right sidebar has to disappear earlier)
+
 * Keywords for ref-links
 ** `apv::switch` => pattern matching in detail
 ** `apv::enum-custom-data-types => Enum / Custom Data Types`
@@ -69,3 +84,5 @@ Maybe write a tool that spits out code which doesn't compile?
 ** DONE Have markdown tag for books for "prev_chapter" and "next_chapter" maybe it is just a js function that is injected into the template.. that would be easier
 ** DONE Split posts up into multiple smaller posts and make them into books (i.e. pattern matching guide)
 ** DONE fix syntax highlighting
+
+   

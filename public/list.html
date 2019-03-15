@@ -2,16 +2,6 @@
 {% block title %}{{ content.info.title }}{% endblock title %}
 
 {% block lefttop %}
-<!--
-<ul>
-    <li class="is-active">
-        <a><i class="fas fa-anchor"></i>&nbsp; Articles</a></li>
-    <li>
-        <a><i class="fas fa-couch"></i>&nbsp; Blog</a></li>
-    <li>
-        <a><i class="fas fa-coffee"></i>&nbsp; About</a></li>
-</ul>
--->
 {% endblock lefttop %}
 
 {% block content %}
@@ -29,7 +19,8 @@
             {% endif %}
             <h4 class="title is-5"><a href="{{ url_book(id=book.identifier) }}">{{ book.info.meta.short_title }}</a></h4>
 			      <p class="subtitle is-6">
-                <a href="{{ url_book(id=book.identifier) }}">{{ book.info.title }}</a>
+                <!-- <a href="{{ url_book(id=book.identifier) }}">{{ book.info.title }}</a> -->
+                <a href="{{ url_book(id=book.identifier) }}">{{ book.info.description }}</a>
             </p>
 		    </div>
 		    {% endfor %}

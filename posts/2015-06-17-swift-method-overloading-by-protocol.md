@@ -1,11 +1,11 @@
 [frontMatter]
-description = "FIXME FIXME FIXME"
+description = "See how you can even overload methods in a generic manner by using protocols"
 title = "Generic method overloading by protocol in Swift"
 created = "2015-06-17"
 published = true
 keywords = ["swift", "optional", "simple", "overloading", "method", "protocol", "extensions", "generics", "feature"]
 slug = "2015-06-17-swift-method-overloading-by-protocol.html"
-tags = ["swift", "ios", "cocoa"]
+tags = ["generics", "protocols", "overload"]
 category = ["Language", "All"]
 
 [meta]

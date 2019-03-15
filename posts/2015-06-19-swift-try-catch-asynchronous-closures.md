@@ -5,7 +5,7 @@ created = "2015-06-19"
 published = true
 keywords = ["swift", "try", "catch", "errortype", "closure", "async", "result", "feature"]
 slug = "2015-06-19-swift-try-catch-asynchronous-closures.html"
-tags = ["swift", "ios"]
+tags = ["try", "catch"]
 category = ["Language", "All"]
 
 [meta]

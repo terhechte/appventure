@@ -5,11 +5,11 @@ created = "2016-07-15"
 published = true
 keywords = ["swift", "doom", "wad", "lumps", "data", "nsdata", "swift3", "binary", "bytes"]
 slug = "2016-07-15-swift3-nsdata-data.html"
-tags = ["swift", "cocoa", "ios"]
+tags = ["Data"]
 category = ["Hands On", "All"]
 
 [meta]
-swift_version = "2.3"
+swift_version = "3.0"
 thumbnail = "/content/thumb-doom.png"
 toc = "true"
 ---

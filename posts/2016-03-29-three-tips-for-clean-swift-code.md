@@ -5,7 +5,7 @@ created = "2016-03-29"
 published = true
 keywords = ["swift", "mac", "cocoa", "guard", "let", "enum", "pattern", "matching", "patterns"]
 slug = "2016-03-29-three-tips-for-clean-swift-code.html"
-tags = ["swift", "cocoa", "ios"]
+tags = ["enum", "guard", "if let"]
 category = ["Swift Tricks", "All"]
 
 [meta]

@@ -1,5 +1,5 @@
 [frontMatter]
-description = "Tuples are one of Swift's less visible language features. They occupy a small space between Structs and Arrays. In addition, there's no comparable construct in Objective-C (or many other languages). Finally, the use of tuples in the standard library and in Apple's example code is sparse. The following guide tries to give a more comprehensive overview of tuples with best practices of when to use them, and when not to use them. I'll also try to list those things that you can't do with tuples, to spare you asking about them on stack overflow."
+description = "A brief introduction into Swift's tuples including a basic introduction and several useful tips for advanced usage."
 title = "Tuples in Swift, Advanced Usage and Best Practices"
 created = "2015-07-19"
 published = true
@@ -9,8 +9,8 @@ tags = ["swift"]
 
 [meta]
 swift_version = "5.1"
-short_title = "Tuples"
-short_code = "<pre class='Swift'><code><span class='source swift'>(<span class='constant numeric integer decimal swift'>18</span>, <span class='meta literal string swift'><span class='string quoted double swift'>&quot;</span><span class='string quoted double swift'>C</span><span class='string quoted double swift'>a</span><span class='string quoted double swift'>r</span><span class='string quoted double swift'>l</span><span class='string quoted double swift'>&quot;</span></span>, [<span class='constant numeric integer decimal swift'>3</span>, <span class='constant numeric integer decimal swift'>5</span>, <span class='constant numeric integer decimal swift'>1</span>]) </span></code></pre></code></pre>"
+short_title = "🍱 Tuples"
+short_code = "<pre class='Swift'><code><span class='source swift'>(<span class='apvconstant apvnumeric apvinteger apvdecimal apvswift'>18</span>, <span class='apvmeta apvliteral apvstring swift'><span class='apvstring apvquoted apvdouble swift'>&quot;</span><span class='apvstring apvquoted apvdouble swift'>C</span><span class='apvstring apvquoted apvdouble swift'>a</span><span class='apvstring apvquoted apvdouble swift'>r</span><span class='apvstring apvquoted apvdouble swift'>l</span><span class='apvstring apvquoted apvdouble swift'>&quot;</span></span>, [<span class='apvconstant apvnumeric apvinteger apvdecimal swift'>3</span>, <span class='apvconstant apvnumeric apvinteger apvdecimal swift'>5</span>, <span class='apvconstant apvnumeric apvinteger apvdecimal swift'>1</span>]) </span></code></pre></code></pre>"
 ---
 - [Introduction](introduction.md)
 - [Creating and Accessing Tuples](absolute_basics/creating_and_accessing_tuples.md)

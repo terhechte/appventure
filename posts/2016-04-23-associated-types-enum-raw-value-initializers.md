@@ -5,7 +5,7 @@ created = "2016-04-23"
 published = true
 keywords = ["swift", "optional", "enum", "raw", "value", "initializers", "associated", "type"]
 slug = "2016-04-23-associated-types-enum-raw-value-initializers.html"
-tags = ["swift", "cocoa", "ios"]
+tags = ["enum", "init", "associated"]
 category = ["Swift Tricks", "All"]
 
 [meta]

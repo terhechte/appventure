@@ -3,13 +3,13 @@ title = "Optionals"
 keywords = ["feature", "lisp", "swift", "optional", "scala", "simple", "optionals", "switch", "chaining", "for", "pattern", "matching", "clojure", "haskell"]
 tags = ["swift", "ios", "cocoa"]
 created = "2015-08-20"
-description = "With Swift, Apple introduced several new programming languages features to iOS and Mac developers. One of them are Optionals. This is a simple introduction into Optionals that glosses over details to make it more approachable."
+description = "Best practices for handling Swift's `Optional` and extending them to make them much more approachable"
 published = true
 
 [meta]
 swift_version = "5.1"
-short_title = "Optionals"
-short_code = "<pre class='Swift'><code><span class='source swift'>a?<span class='keyword operator custom postfix unary swift'>.</span>b?<span class='keyword operator custom postfix unary swift'>.</span>c? <span class='keyword operator comparative swift'>==</span> <span class='constant nil swift'>nil</span> </span></code></pre></code></pre>"
+short_title = "⁉️ Optionals"
+short_code = "<pre class='Swift'><code><span class='apvsource swift'>a?<span class='apvkeyword apvoperator apvcustom apvpostfix apvunary swift'>.</span>b?<span class='apvkeyword apvoperator apvcustom apvpostfix apvunary swift'>.</span>c? <span class='apvkeyword apvoperator apvcomparative swift'>==</span> <span class='apvconstant apvnil swift'>nil</span> </span></code></pre></code></pre>"
 ---
 - [What are Optionals](intro.md)
 - [Why Optionals are useful](why_optionals_are_useful.md)

@@ -3,7 +3,7 @@
  <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>FIXME: APPVENTURE META</title>
+  <title>Simple. Swift. Guides.</title>
   <link rel="stylesheet" href="/css/bulma.min.css">
   <link rel="stylesheet" href="/css/style.css">
   <link rel="stylesheet" href="/css/monokai2.css">
@@ -19,11 +19,10 @@
      <div class="columns">
       <div class="column is-3">
           <span id="brand"><a href="/index.html"><img src="/img/brand.png" srcset="/img/brand.png 1x, /img/brand@2x.png 2x" /></a></span>
-          <!-- <span id="brand"><a href="/index.html">APPVENTURE.ME</a></span> -->
       </div>
       <div class="column is-7">
        <span id="subbrand">
-        Swift Guides</span>
+        Simple. Swift. Guides.</span>
       </div>
       <div class="column is-2">
           <div class="field">
@@ -40,7 +39,6 @@
   <section class="section hidden" id="search-wrapper">
       <nav class="panel" id="searchresults-outer">
           <p class="panel-heading" id="searchresults-header">
-              81 Search Results for ...
           </p>
           <div id="searchresults">
           </div>
@@ -64,32 +62,9 @@
        </div>
        <div class="column is-narrow">
         <div class="buttons has-addons is-hidden-mobile">
-            <!--
-         <span class="button is-success is-selected">
-          <i class="fas fa-th-large"></i>
-         </span>
-         <span class="button">
-          <i class="fas fa-list"></i>
-         </span>
-         -->
         </div>
        </div>
       </div>
-
-      <!-- 
-      <div class="columns is-mobile is-hidden-tablet">
-      <div class="column is-narrow">
-       <div class="buttons has-addons">
-        <span class="button is-success is-selected">
-         <i class="fas fa-th-large"></i>
-        </span>
-        <span class="button">
-         <i class="fas fa-list"></i>
-        </span>
-       </div>
-      </div>
-      </div>
-      -->
 
       {% block content %}{% endblock content %}
 
@@ -151,6 +126,11 @@
          </ul>
         </li>
        </ul>
+
+       <div class="sidebar-banner">
+           <a href="https://contravariance.rocks"><img src="/img/contravariance_banner.png" srcset="/img/contravariance_banner.png 1x, /img/contravariance_banner@2x.png 2x" /></a>
+       </div>
+
       </aside> 
 
 
@@ -163,31 +143,51 @@
    <article class="media" id="followme">
     <figure class="media-left">
      <p class="image is-64x64">
-      <img src="/img/ez.png">
+      <img src="/img/terhechte.jpg" class="profile-image">
      </p>
     </figure>
     <div class="media-content">
-     <div class="content">
-      <p>
-       <strong>Benedikt Terhechte</strong> <small>@terhechte</small> 
-       <br>
-       If you read this far, you should <a href="https://twitter.com/terhechte">follow Benedikt on Twitter</a>.<br/>
-       Benedikt writes about Swift, macOS, iOS &amp; Linux development, and sometimes about other modern programming languages.
-      </p>
-      <p>
-       <strong>2011 - 2018 Benedikt Terhechte</strong>
-      </p>
-          <p class="subtitle is-6">
-           <i class="fab fa-twitter"></i>
-           <i class="fab fa-xing"></i>
-           <i class="fab fa-github"></i>
-           <i class="fab fa-hacker-news"></i>
-           </p>
-     </div>
+        <div class="columns">
+            <div class="column">
+                <div class="content">
+                    <p>
+                        <strong>Benedikt Terhechte</strong> <a href="https://twitter.com/terhechte"><small>@terhechte</small></a>
+                        <br>
+                        If you read this far, you should <a href="https://twitter.com/terhechte">follow Benedikt on Twitter</a>.<br/>
+                        APPVENTURE is dedicated to providing articles about Swift, macOS, iOS &amp; Linux development.
+                    </p>
+                    <p>
+                        <strong>2011 - 2019 Benedikt Terhechte</strong>
+                    </p>
+                </div>
+            </div>
+            <div class="column">
+                <p>
+                    <a href="https://terhech.de">Benedikt's private blog can be found
+                        at <strong>terhech.de</strong></a>
+                </p>
+                <p>
+                    <br/>
+                    <strong>Other Profiles</strong>
+                </p>
+                <p class="subtitle is-6">
+                    <a href="https://twitter.com/terhechte"><i class="fab fa-twitter"></i></a>
+                    <a href="https://www.xing.com/profile/Benedikt_Terhechte">
+                        <i class="fab fa-xing"></i>
+                    </a>
+                    <a href="https://twitter.com/terhechte">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="https://news.ycombinator.com/user?id=terhechte">
+                        <i class="fab fa-hacker-news"></i>
+                    </a>
+                </p>
+            </div>
+        </div>
     </div>
     <div class="media-right">
-     <a class="button is-info is-rounded">
-      <i class="fab fa-twitter"></i>
+     <a href="https://twitter.com/terhechte" class="button is-info is-rounded">
+      <i class="fab fa-twitter"></i>&nbsp;
       Follow Me</a>
     </div>
    </article>

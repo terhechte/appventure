@@ -5,7 +5,7 @@ created = "2015-09-30"
 published = true
 keywords = ["swift", "iphone6s", "iphone", "tsmc", "samsung", "gestalt", "private", "api", "foundation"]
 slug = "2015-09-30-getting-iphone6s-foundry-from-swift.html"
-tags = ["swift"]
+tags = []
 category = ["Hands On", "All"]
 
 [meta]

@@ -8,8 +8,8 @@ published = true
 
 [meta]
 swift_version = "5.1"
-short_title = "Pattern Matching"
-short_code = "<pre class='Swift'><code><span class='source swift'><span class='keyword control switch swift'>case</span> (<span class='keyword operator type-casting swift'>is</span> <span class='support type swift'>Bool</span>, <span class='storage type swift'>let</span> x <span class='keyword operator type-casting swift'>as</span> <span class='support type swift'>Int</span>)<br/>&nbsp;&nbsp;&nbsp;&nbsp; <span class='keyword control switch swift'>where</span> x <span class='keyword operator comparative swift'>&gt;</span> <span class='constant numeric integer decimal swift'>10</span> </span></code></pre></code></pre>"
+short_title = "🧩 Pattern Matching"
+short_code = "<pre class='Swift'><code><span class='apvsource swift'><span class='apvkeyword apvcontrol apvswitch swift'>case</span> (<span class='apvkeyword apvoperator apvtype-casting swift'>is</span> <span class='apvsupport apvtype swift'>Bool</span>, <span class='apvstorage apvtype swift'>let</span> x <span class='apvkeyword apvoperator apvtype-casting swift'>as</span> <span class='apvsupport apvtype swift'>Int</span>)<br/>&nbsp;&nbsp;&nbsp;&nbsp; <span class='apvkeyword apvcontrol apvswitch swift'>where</span> x <span class='apvkeyword apvoperator apvcomparative swift'>&gt;</span> <span class='apvconstant apvnumeric apvinteger apvdecimal swift'>10</span> </span></code></pre></code></pre>"
 ---
 - [Intro](intro.md)
 - [A Trading Engine](trading_engine.md)

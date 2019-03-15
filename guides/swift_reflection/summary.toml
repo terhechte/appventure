@@ -9,8 +9,8 @@ tags = ["swift", "cocoa", "ios"]
 
 [meta]
 swift_version = "5.1"
-short_title = "Reflection"
-short_code = "<pre class='Swift'><code><span class='source swift'><span class='storage type swift'>let</span> m <span class='keyword operator assignment swift'>=</span> Mirror(reflecting: me) </span></code></pre></code></pre>"
+short_title = "🔮 Reflection"
+short_code = "<pre class='Swift'><code><span class='source swift'><span class='apvstorage apvtype swift'>let</span> m <span class='apvkeyword apvoperator apvassignment swift'>=</span> Mirror(reflecting: me) </span></code></pre></code></pre>"
 ---
 - [Introduction](introduction.md)
 - [Mirrors](mirrors/intro.md)

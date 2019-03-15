@@ -5,11 +5,8 @@ created = "2018-05-03"
 published = true
 keywords = ["swift", "linux", "server", "opensource"]
 slug = "2018-05-03-expanding-swifts-reach.html"
-tags = ["swift", "linux"]
+tags = []
 category = ["Blog", "All"]
-
-[meta]
-swift_version = "2.3"
 ---
 
 I guess we can all agree that Swift is a beautiful programming language

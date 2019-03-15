@@ -9,8 +9,8 @@ tags = ["swift", "cocoa", "ios"]
 
 [meta]
 swift_version = "5.1"
-short_title = "Enums"
-short_code = "<pre class='Swift'><code><span class='source swift'><span class='storage type swift'>enum</span> Either<span class='keyword operator comparative swift'>&lt;</span>A, B<span class='keyword operator comparative swift'>&gt;</span> {<br/> &nbsp;<span class='keyword control switch swift'>case</span> <span class='keyword other swift'>left</span>(A), <span class='keyword other swift'>right</span>(B)<br/>} </span></code></pre></code></pre>"
+short_title = "🚦 Enums"
+short_code = "<pre class='Swift'><code><span class='source swift'><span class='apvstorage apvtype swift'>enum</span> Either<span class='apvkeyword apvoperator apvcomparative swift'>&lt;</span>A, B<span class='apvkeyword apvoperator apvcomparative swift'>&gt;</span> {<br/> &nbsp;<span class='apvkeyword apvcontrol apvswitch swift'>case</span> <span class='apvkeyword apvother swift'>left</span>(A), <span class='apvkeyword apvother swift'>right</span>(B)<br/>} </span></code></pre></code></pre>"
 ---
 - [Introduction](introduction.md)
 - [Diving In: Basic Enums](diving_in/intro.md)
