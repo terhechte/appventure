@@ -3,7 +3,7 @@ title = "Applying ranges for grading"
 tags = ["pattern matching", "switch", "range"]
 created = "2019-02-15 20:40:47"
 description = ""
-published = false
+published = true
 
 [meta]
 swift_version = "5.1"

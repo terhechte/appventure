@@ -3,7 +3,7 @@ title = "Generics"
 tags = ["tuples", "generics", "typealias", "either"]
 created = "2019-03-01 17:35:30"
 description = ""
-published = false
+published = true
 
 [meta]
 swift_version = "5.1"

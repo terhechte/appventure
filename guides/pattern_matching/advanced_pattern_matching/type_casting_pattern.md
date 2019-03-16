@@ -3,7 +3,7 @@ title = "Type Casting Pattern"
 tags = ["pattern matching", "switch", "is", "as"]
 created = "2019-02-15 20:40:47"
 description = ""
-published = false
+published = true
 
 [meta]
 swift_version = "5.1"

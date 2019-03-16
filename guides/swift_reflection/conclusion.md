@@ -3,7 +3,7 @@ title = "Conclusion"
 tags = ["reflection"]
 created = "2019-03-01 11:47:01"
 description = ""
-published = false
+published = true
 
 [meta]
 swift_version = "5.1"

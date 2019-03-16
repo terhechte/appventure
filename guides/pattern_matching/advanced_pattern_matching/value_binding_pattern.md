@@ -3,7 +3,7 @@ title = "Value-Binding Pattern"
 tags = ["pattern matching", "switch", "where"]
 created = "2019-02-15 20:40:47"
 description = ""
-published = false
+published = true
 
 [meta]
 swift_version = "5.1"

@@ -3,7 +3,7 @@ title = "Fallthrough, Break and Labels"
 tags = ["pattern matching", "switch", "fallthrough", "break", "label"]
 created = "2019-02-15 20:40:47"
 description = ""
-published = false
+published = true
 
 [meta]
 swift_version = "5.1"

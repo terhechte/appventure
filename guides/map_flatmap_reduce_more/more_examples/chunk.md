@@ -3,7 +3,7 @@ title = "Chunk"
 tags = ["map", "compactMap", "filter", "reduce"]
 created = "2019-02-20 19:49:10"
 description = ""
-published = false
+published = true
 
 [meta]
 swift_version = "5.1"

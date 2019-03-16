@@ -3,7 +3,7 @@ title = "Conclusion"
 tags = ["box", "associated"]
 created = "2019-03-01 11:01:50"
 description = ""
-published = false
+published = true
 
 [meta]
 swift_version = "5.1"

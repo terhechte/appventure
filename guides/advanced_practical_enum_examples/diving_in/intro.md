@@ -3,7 +3,7 @@ title = "Diving In: Basic Enums"
 tags = ["enum"]
 created = "2019-03-01 16:29:51"
 description = ""
-published = false
+published = true
 
 [meta]
 swift_version = "5.1"

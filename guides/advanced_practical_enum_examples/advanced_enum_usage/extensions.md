@@ -3,7 +3,7 @@ title = "Extensions"
 tags = ["enum", "extension"]
 created = "2019-03-01 16:29:51"
 description = ""
-published = false
+published = true
 
 [meta]
 swift_version = "5.1"
