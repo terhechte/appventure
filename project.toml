@@ -1,4 +1,5 @@
 [Project]
+baseURL = "https://appventure.me"
 keywords = ["swift", "objective-c", "ios", "macos", "tvos", "watch", "xcode", "iphone", "linux", "open source"]
 postsPerIndex = 20
 renderOnePageBooks = true
@@ -21,7 +22,6 @@ books = [
 
 [RSS]
 title = "AppVenture. Simple Swift Guides"
-baseURL = "https://appventure.me"
 feedAddress = "feed.rss"
 authorEmail = "benedikt.terhechte@appventure.me"
 authorName = "Benedikt Terhechte"

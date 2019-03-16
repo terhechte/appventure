@@ -6,6 +6,7 @@
 * favicon
 * Generate a 'full page' version of each guide
 * Links in the footer of the website / base.html
+* Make sure have no websocket code in release build
 * Updated chapters get a "updated" bubble
 * new chapters in RSSFeed
 * updated chapters in RSSFeed
