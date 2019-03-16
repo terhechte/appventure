@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block title %}
-{{ content.chapter.name }}
+- {{ content.chapter.name }}
 {% endblock title %}
 
 {% block javascript %}
@@ -33,6 +33,13 @@ function prev() {
                     <i class="fas fa-book"></i>
                     Contents
                 </p>
+
+                {% if content.book.complete_book %}
+                <p class="menu-label">
+                    <a href="/{{ content.book.complete_book.slug }}">All on one page</a>
+                </p>
+                {% endif %}
+
                 {% for chapter in content.book.chapters %}
                 <ul class="menu-list">
                     <li><a

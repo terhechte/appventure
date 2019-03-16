@@ -1,7 +1,7 @@
 [frontMatter]
 title = "Advanced Pattern Matching"
 keywords = ["feature", "lisp", "swift", "optional", "scala", "simple", "optionals", "switch", "chaining", "for", "pattern", "matching", "clojure", "haskell"]
-tags = ["swift", "ios", "cocoa"]
+tags = []
 created = "2015-08-20"
 description = "In this post, we'll have a look at Pattern Matching in Swift in terms of the 'switch', 'for', 'if', and 'guard' keywords. We'll have a look at the basic syntax and at best practices and helpful examples."
 published = true

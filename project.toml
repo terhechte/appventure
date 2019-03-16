@@ -1,6 +1,7 @@
 [Project]
 keywords = ["swift", "objective-c", "ios", "macos", "tvos", "watch", "xcode", "iphone", "linux", "open source"]
 postsPerIndex = 20
+renderOnePageBooks = true
 
 [Folders]
 # The file and folders that should be copied over from within the public folder
@@ -9,15 +10,19 @@ booksFolder = "guides"
 booksFolderName = "guides"
 categoryFolderName = "topics"
 books = [
-#  "pattern_matching/summary.toml", 
-#  "advanced_practical_enum_examples/summary.toml", 
-#  "map_flatmap_reduce_more/summary.toml", 
-#  "associated_types/summary.toml", 
-#  "tuples/summary.toml",
-#  "optionals/summary.toml", 
-#  "swift_reflection/summary.toml",
+  "pattern_matching/summary.toml", 
+  "advanced_practical_enum_examples/summary.toml", 
+  "map_flatmap_reduce_more/summary.toml", 
+  "associated_types/summary.toml", 
+  "tuples/summary.toml",
+  "optionals/summary.toml", 
+  "swift_reflection/summary.toml",
 ]
 
-# [RSS]
-# title = "Benedikt Terhechte"
-# absoluteFeedAddress = "https://terhech.de/feed.rss"
+[RSS]
+title = "AppVenture. Simple Swift Guides"
+baseURL = "https://appventure.me"
+feedAddress = "feed.rss"
+authorEmail = "benedikt.terhechte@appventure.me"
+authorName = "Benedikt Terhechte"
+description = "AppVenture provides simple swift guides to help you along your Swift journey."

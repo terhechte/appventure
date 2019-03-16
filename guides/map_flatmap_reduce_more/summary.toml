@@ -1,6 +1,6 @@
 [frontMatter]
 title = "Map, FlatMap, Reduce & More"
-tags = ["swift", "ios", "cocoa"]
+tags = []
 keywords = ["feature", "swift", "reduce", "map", "filter", "group", "partition", "split", "interpose", "chunk", "functional", "programming", "flatMap", "compactMap"]
 created = "2015-11-30"
 description = "A practical introduction into the `map`, `compactMap`, `filter`, and `reduce` functions."

@@ -1,5 +1,11 @@
 {% extends "base.html" %}
-{% block title %}{{ content.info.title }}{% endblock title %}
+
+{% block title %}- {% if content.info.meta.short_title %}
+{{ content.info.meta.short_title }}
+{% else %}
+{{ content.info.title }}
+{% endif %}
+{% endblock title %}
 
 {% block sections %}
 {% if content.info.meta.toc %}
@@ -8,7 +14,7 @@
         In this Article
     </p>
     {% for section in content.sections %}
-    <a href="#header-section-{{ section.0 }}" class="panel-block">
+    <a href="#{{ section.0 }}" class="panel-block">
         {{ section.1 }}
     </a>
     {% endfor %}

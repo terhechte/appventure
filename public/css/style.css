@@ -64,7 +64,6 @@ body, html {
   transition: all 0.2s ease-out;
   text-overflow: ellipsis;
   border: 1px solid #eaeaea;
-  cursor: pointer;
   box-shadow: 0px;
   border: 1px solid #aaa;
   border-radius: 16px;
@@ -255,7 +254,7 @@ article > .content > pre * {
     font-weight: bold;
 }
 
-.content > p > code, .content li > code  {
+.content > p > code, .content li > code, .content > h1 > code, .content > h2 > code, .content > h3 > code, .content > h4 > code, .content > h5 > code, .content > h6 > code, .article-post > h2 code, .article-post > h4 code  {
     color: rgb(9, 36, 78);
     background-color: white;
     border-radius: 6px;

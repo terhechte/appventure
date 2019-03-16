@@ -5,7 +5,7 @@ created = "2015-07-19"
 published = true
 keywords = ["swift", "tuples", "generics", "feature"]
 slug = "2015-07-19-tuples-swift-advanced-usage-best-practices.html"
-tags = ["swift"]
+tags = []
 
 [meta]
 swift_version = "5.1"
