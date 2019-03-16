@@ -2,7 +2,7 @@
 description = "Several helpful extensions to the Optional type in order to simplify using it."
 title = "Useful Optional Extensions"
 created = "2018-01-10"
-published = true
+published = false
 keywords = ["swift", "protocol", "optional", "optionals", "extensions"]
 slug = "2018-01-10-optional-extensions.html"
 tags = ["optionals", "extension"]

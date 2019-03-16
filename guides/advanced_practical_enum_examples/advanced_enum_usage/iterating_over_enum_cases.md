@@ -7,6 +7,7 @@ published = false
 
 [meta]
 swift_version = "5.1"
+updated = "true"
 ---
 
 # Iterating over Enum Cases

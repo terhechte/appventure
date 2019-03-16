@@ -1,13 +1,12 @@
 * The terhech.de articles still need to receive the *move* flag
 * Write inout article, then generate the old html a last time for inclusion
-* Sitemap
-* RSSFeed
 * Have 'released' and 'updated' flag for the posts, articles, etc
 * favicon
 * Generate a 'full page' version of each guide
 * Links in the footer of the website / base.html
 * Make sure have no websocket code in release build
 * Updated chapters get a "updated" bubble
+* support `published` in chapters
 * new chapters in RSSFeed
 * updated chapters in RSSFeed
 * Link to contravariance

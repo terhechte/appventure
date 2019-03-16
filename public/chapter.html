@@ -45,7 +45,11 @@ function prev() {
                     <li><a
                         {% if content.chapter.slug == chapter.slug %} class="is-active"
                         {% endif %}
-                            href="/{{ chapter.slug }}">{{ chapter.name }}</a>
+                            href="/{{ chapter.slug }}">{{ chapter.name }}
+                        {% if chapter.document.info.meta.updated %}
+                        *
+                        {% endif %}
+                    </a>
 
                     {% if chapter.sub_chapters | length > 0 %}
                     <ul>
@@ -53,7 +57,11 @@ function prev() {
                         <li><a
                             {% if content.chapter.slug == sub_chapter.slug %} class="is-active"
                             {% endif %}
-                                href="/{{ sub_chapter.slug }}">{{ sub_chapter.name }}</a></li>
+                                href="/{{ sub_chapter.slug }}">{{ sub_chapter.name }}
+                            {% if chapter.document.info.meta.updated %}
+                            *
+                            {% endif %}
+                        </a></li>
                         {% endfor %}
                     </ul>
                     {% endif %}
