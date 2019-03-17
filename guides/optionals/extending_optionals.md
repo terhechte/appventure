@@ -31,9 +31,9 @@ func flatMap<U>(_ transform: (Wrapped) throws -> U?) rethrows -> U?
 The reason why optionals are still very useful even though they have
 such a small amount of methods is that the Swift syntax makes up for it
 via features such as [optional
-chaining](http://appventure.me/2014/06/13/swift-optionals-made-simple/),
+chaining](lnk::optional),
 [pattern
-matching](http://appventure.me/2015/08/20/swift-pattern-matching-in-detail/),
+matching](lnk::switch),
 `if let` or `guard let`. In some situations, though, this manifests
 itself in unnecessary line noise. Sometimes, a very succinct method will
 let you express a concept in one short line of code instead of multiple
