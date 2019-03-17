@@ -1,0 +1,2233 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Advanced and Practical Enum usage in Swift</title>
+  <link rel="stylesheet" href="/css/bulma.min.css" />
+  <link rel="stylesheet" href="/css/style.css" />
+
+  <meta content="When and how to use enums in Swift? This is a detailed practical overview of a" name="description" /><meta content="advanced, algebraic, benedikt, c, case, caseclass, clojure, clojurescript, cocoa, enum, example, feature, html, ios, javascript, mac, objective-c, pattern, photodesk, practical, research, simple, stylemac, swift, switch, terhechte, union" name="keywords" /><meta content="Benedikt Terhechte" name="author" /><meta content="Advanced and Practical Enum usage in Swift" property="og:title" /><meta content="When and how to use enums in Swift? This is a detailed practical overview of a" property="og:description" /><meta content="http://appventure.me/2015/10/17/advanced-practical-enum-examples/" property="og:url" /><meta content="Advanced and Practical Enum usage in Swift" name="twitter:title" /><meta content="When and how to use enums in Swift? This is a detailed practical overview of a" name="twitter:description" /><meta content="summary_large_image" name="twitter:card" /><meta content="http://appventure.me/img-content/2015-10-17-advanced-practical-enum-examples-feature-image.jpg" name="twitter:image" /><meta content="http://appventure.me/img-content/2015-10-17-advanced-practical-enum-examples-feature-image.jpg" property="og:image" />
+  <meta name="twitter:site" content="@terhechte" />
+  <meta name="twitter:creator" content="@terhechte" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700,800" rel="stylesheet" />
+  <script defer="defer" src="/js/fontawesome-all.min.js"></script>
+  
+ </head>
+ <body>
+  <section class="section" id="head">
+   <div class="container" id="container">
+    <div>
+
+     <div class="columns">
+      <div class="column is-3">
+          <span id="brand"><a href="/index.html"><img src="/img/brand.png" srcset="/img/brand.png 1x, /img/brand@2x.png 2x" /></a></span>
+      </div>
+      <div class="column is-7">
+       <span id="subbrand">
+        Simple. Swift. Guides.</span>
+      </div>
+      <div class="column is-2">
+          <div class="field">
+
+          </div>
+      </div>
+     </div>
+    </div>
+   </div>
+  </section>
+
+
+  <section class="section" id="main">
+   <div class="container" id="container">
+    <div class="columns">
+     <div class="column">
+      <div class="columns">
+       <div class="column">
+        <div class="tabs">
+		 
+        </div>
+       </div>
+       <div class="column is-narrow">
+        <div class="buttons has-addons is-hidden-mobile">
+        </div>
+       </div>
+      </div>
+
+      <div class="box" style="margin-bottom: 250px;">
+            <h5 style="font-size: 38px; font-weight: bold;"><a class="xx-new-article" href="https://appventure.me/guides/advanced_practical_enum_examples/introduction.html">AppVenture has been updated</a></h5>
+            <p style="padding-top: 10px; padding-bottom: 10px; font-size: 18px;">
+                All articles have been rewritten and improved. You will be forwarded
+                to the updated article.
+            </p>
+            <p style="font-size: 18px; font-weight: bold;">
+                <a class="xx-new-article" href="https://appventure.me/guides/advanced_practical_enum_examples/introduction.html" id="xxx-new-article">Click here to go there directly.</a>
+            </p>
+            <script>
+                 setTimeout(function(){ 
+                    document.location.href=document.getElementById("xxx-new-article").href;
+                },
+                    0);
+            </script>
+      </div>
+
+
+
+
+      <div role="content" id="maincontent" style="opacity: 0.5"><article id="article--1784011342" class="article-post content is-medium">
+
+
+ 
+          <h6><i class="fi-pencil"></i> Sat, 17 Oct 2015 <a href="/2015/10/17/advanced-practical-enum-examples/">#</a></h6>
+
+        <h3><a href="/2015/10/17/advanced-practical-enum-examples/">Advanced and Practical Enum usage in Swift</a></h3>
+
+
+
+        <div class="actual-content"><!-- #+feature-image: /img-content/2015-10-17-advanced-practical-enum-examples-feature-image.jpg -->
+
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#orgabca96f">1. Diving In</a>
+<ul>
+<li><a href="#org85f6834">1.1. Defining Basic Enums</a></li>
+<li><a href="#orgb95964b">1.2. Enum Values</a></li>
+<li><a href="#org1910385">1.3. Nesting Enums</a></li>
+<li><a href="#org97fdfd4">1.4. Containing Enums</a></li>
+<li><a href="#org841bdd6">1.5. Associated Values</a>
+<ul>
+<li><a href="#org11b262c">1.5.1. Simple Example</a></li>
+<li><a href="#orgede4752">1.5.2. Pattern Matching</a></li>
+<li><a href="#orgc5ef34b">1.5.3. Labels</a></li>
+<li><a href="#orga241795">1.5.4. Tuples as Arguments</a></li>
+<li><a href="#basicexamples">1.5.5. Use Case Examples</a></li>
+</ul>
+</li>
+<li><a href="#org8bdab55">1.6. Methods and Properties</a>
+<ul>
+<li><a href="#org6da9401">1.6.1. Properties</a></li>
+<li><a href="#orgfd6a92e">1.6.2. Static Methods</a></li>
+<li><a href="#org1046a6b">1.6.3. Mutating Methods</a></li>
+</ul>
+</li>
+<li><a href="#org0decf0a">1.7. To Recap</a></li>
+</ul>
+</li>
+<li><a href="#orge64e789">2. Advanced Enum Usage</a>
+<ul>
+<li><a href="#org3841a83">2.1. Protocols</a></li>
+<li><a href="#org282e504">2.2. Extensions</a></li>
+<li><a href="#org1dd3fce">2.3. Generic Enums</a></li>
+<li><a href="#org7ab3fd8">2.4. Recursive / Indirect Types</a></li>
+<li><a href="#org2e1125c">2.5. Using Custom Data Types as Enum Values</a></li>
+<li><a href="#org743bd4e">2.6. Comparing Enums with associated values</a></li>
+<li><a href="#org20da472">2.7. Custom Initializers</a></li>
+<li><a href="#org4698ac2">2.8. Iterating over Enum Cases</a></li>
+<li><a href="#org5bedb64">2.9. Objective-C support</a></li>
+<li><a href="#org5ac0bb1">2.10. Enum Internals</a></li>
+</ul>
+</li>
+<li><a href="#orgb8866df">3. Enums in the Swift Standard Library</a></li>
+<li><a href="#org99f08fc">4. Practical Use Cases</a>
+<ul>
+<li><a href="#errortype">4.1. Error Handling</a></li>
+<li><a href="#org5e8f455">4.2. Observer Pattern</a></li>
+<li><a href="#org7665d7e">4.3. Status Codes</a></li>
+<li><a href="#orgc9761c7">4.4. Map Result Types</a></li>
+<li><a href="#orgdd16f9b">4.5. UIKit Identifiers</a></li>
+<li><a href="#org9c8e2f9">4.6. Units</a></li>
+<li><a href="#orgf6358a3">4.7. Games</a></li>
+<li><a href="#orga895732">4.8. Battling stringly typed code</a></li>
+<li><a href="#orgc5067bd">4.9. API Endpoints</a></li>
+<li><a href="#org0851387">4.10. Linked Lists</a></li>
+<li><a href="#org3dc04c3">4.11. Settings Dictionaries</a></li>
+</ul>
+</li>
+<li><a href="#org4bb5fdf">5. Limitations</a>
+<ul>
+<li><a href="#org436f100">5.1. Retrieving Associated Values</a></li>
+<li><a href="#orgc8f15af">5.2. Equatable</a></li>
+<li><a href="#org57d1ff0">5.3. Tuples</a></li>
+<li><a href="#org8b6b1c4">5.4. Enumerating Enum Cases</a></li>
+<li><a href="#org1390c44">5.5. Default Associated Values</a></li>
+</ul>
+</li>
+<li><a href="#org679a9af">6. Changes</a></li>
+</ul>
+</div>
+</div>
+<p>
+When and how to use enums in Swift? This is a detailed practical overview of all the possibilities enums can offer you.
+</p>
+
+<p>
+Similarly to the <a href="http://appventure.me/2015/08/20/swift-pattern-matching-in-detail/"><code>switch</code> statement</a>, <code>enum</code>'s in Swift may at first glance look like a slightly improved variant of the well known <b>C</b> <code>enum</code> statement. I.e. a type that allows you to define that something is "one of something more general".  However, upon close introspection, the particular design decisions behind Swift's enums allow it to be used in a much wider range of practical scenarios than plain <b>C</b> enums. In particular, they're great tools to clearly manifest the intentions of your code.
+</p>
+
+<p>
+In this post, we'll first look at the syntax and possibilities of using <code>enum</code>, and will then use them in a variety of (hopefully) practical, real world scenarios to give a better idea of how and when to use them. We'll also look a bit at how enums are being used in the Swift Standard library.
+</p>
+
+<p>
+Before we dive in, here's a definition of what <code>enums</code> can be. We'll revisit this definition later on:
+</p>
+
+<p>
+"Enums declare types with finite sets of possible states and accompanying values. With nesting, methods, associated values, and pattern matching, however, enums can define any hierarchically organized data."
+</p>
+
+
+<div id="outline-container-orgabca96f" class="outline-2">
+<h2 id="orgabca96f"><span class="section-number-2">1</span> Diving In</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+A short overview of how to define and use enums.
+</p>
+</div>
+
+<div id="outline-container-org85f6834" class="outline-3">
+<h3 id="org85f6834"><span class="section-number-3">1.1</span> Defining Basic Enums</h3>
+<div class="outline-text-3" id="text-1-1">
+<p>
+We're working on a game, and the player can move in four directions. So our player movement is restricted. Obviously, we can use an enum for that.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">enum Movement {
+case Left
+case Right
+case Top
+case Bottom
+}
+</pre>
+</div>
+
+<p>
+You can then use <a href="http://appventure.me/2015/08/20/swift-pattern-matching-in-detail/">various pattern matching constructs</a> to retrieve the value of a <code>Movement</code>, or act upon a specific case:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">
+let aMovement = Movement.Left
+
+switch aMovement {
+case .Left: print("left")
+default: ()
+}
+
+if case .Left = aMovement { print("left") }
+
+if aMovement == .Left { print("left") }
+</pre>
+</div>
+
+<p>
+Note that you don't have to specify the actual name of the <code>enum</code> (i.e. <code>case Movement.Left: print("Left")</code> in this case. The type checker figures that out automatically. This is extremely helpful for some of those convoluted <b>UIKit</b> or <b>AppKit</b> enums.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgb95964b" class="outline-3">
+<h3 id="orgb95964b"><span class="section-number-3">1.2</span> Enum Values</h3>
+<div class="outline-text-3" id="text-1-2">
+<p>
+Of course, you may want to have a value assigned to each <code>enum</code> case. This is useful if the <code>enum</code> itself indeed relates to something which can be expressed in a different type. <b>C</b> allows you to assign numbers to <code>enum cases</code>. Swift gives you much more flexibility here:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">// Mapping to Integer
+enum Movement: Int {
+    case Left = 0
+    case Right = 1
+    case Top = 2
+    case Bottom = 3
+}
+
+// You can also map to strings
+enum House: String {
+    case Baratheon = "Ours is the Fury"
+    case Greyjoy = "We Do Not Sow"
+    case Martell = "Unbowed, Unbent, Unbroken"
+    case Stark = "Winter is Coming"
+    case Tully = "Family, Duty, Honor"
+    case Tyrell = "Growing Strong"
+}
+
+// Or to floating point (also note the fancy unicode in enum cases)
+enum Constants: Double {
+    case π = 3.14159
+    case e = 2.71828
+    case φ = 1.61803398874
+    case λ = 1.30357
+}
+</pre>
+</div>
+
+<p>
+For <code>String</code> and <code>Int</code> types, you can even omit the values and the Swift compiler will do the right thing:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">// Mercury = 1, Venus = 2, ... Neptune = 8
+enum Planet: Int {
+    case Mercury = 1, Venus, Earth, Mars, Jupiter, Saturn, Uranus, Neptune
+}
+
+// North = "North", ... West = "West"
+enum CompassPoint: String {
+    case North, South, East, West
+}
+</pre>
+</div>
+
+<p>
+Swift supports the following types for the value of an enum:
+</p>
+<ul class="org-ul">
+<li>Integer</li>
+<li>Floating Point</li>
+<li>String</li>
+<li>Boolean</li>
+</ul>
+
+<p>
+So you won't be able<sup><a id="fnr.1" class="footref" href="#fn.1">1</a></sup> to use, say, a CGPoint as the value of your enum.
+</p>
+
+<p>
+If you want to access the values, you can do so with the <code>rawValue</code> property:
+</p>
+<div class="org-src-container">
+<pre class="src src-swift">
+let bestHouse = House.Stark
+print(bestHouse.rawValue)
+// prints "Winter is coming"
+</pre>
+</div>
+
+<p>
+However, there may also be a situation where you want to construct an <code>enum case</code> from an existing raw value. In that case, there's a special initializer for enums:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">enum Movement: Int {
+    case Left = 0
+    case Right = 1
+    case Top = 2
+    case Bottom = 3
+}
+// creates a movement.Right case, as the raw value for that is 1
+let rightMovement = Movement(rawValue: 1)
+</pre>
+</div>
+
+<p>
+If you use the <code>rawValue</code> initializer, keep in mind that it is a <a href="https://developer.apple.com/library/prerelease/ios/documentation/Swift/Conceptual/Swift_Programming_Language/Declarations.html#//apple_ref/doc/uid/TP40014097-CH34-ID376">failable initializer</a>, i.e. you get back an <a href="http://appventure.me/2014/06/13/swift-optionals-made-simple/">Optional</a>, as the value you're using may not map to any case at all, say if you were to write <code>Movement(rawValue: 42)</code>.
+</p>
+
+<p>
+This is a very useful feature in case you want to encode low level C binary representations into something much more readable. As an example, have a look as this encoding of the <b>VNode Flags</b> for <a href="https://developer.apple.com/library/mac/documentation/Darwin/Reference/ManPages/man2/kqueue.2.html">the BSD kqeue library</a>:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">enum VNodeFlags : UInt32 {
+    case Delete = 0x00000001
+    case Write = 0x00000002
+    case Extended = 0x00000004
+    case Attrib = 0x00000008
+    case Link = 0x00000010
+    case Rename = 0x00000020
+    case Revoke = 0x00000040
+    case None = 0x00000080
+}
+</pre>
+</div>
+
+<p>
+This allows you to use the much nicer looking <b>Delete</b> or <b>Write</b> cases, and later on hand the raw value into the <b>C</b> function only when it is really needed.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org1910385" class="outline-3">
+<h3 id="org1910385"><span class="section-number-3">1.3</span> Nesting Enums</h3>
+<div class="outline-text-3" id="text-1-3">
+<p>
+If you have specific sub type requirements, you can also logically nest enums in an enum. This allows you to contain specific information on your enum case within the actual enum. Imagine a character in an RPG. Each character can have a weapon, all characters have access to the same set of weapons. All other instances in the game do not have access to those weapons (they're trolls, they just have clubs).
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">enum Character {
+  enum Weapon {
+    case Bow
+    case Sword
+    case Lance
+    case Dagger
+  }
+  enum Helmet {
+    case Wooden
+    case Iron
+    case Diamond
+  }
+  case Thief
+  case Warrior
+  case Knight
+}
+</pre>
+</div>
+
+<p>
+Now you have a hierachical system to describe the various items that your character has access to.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">let character = Character.Thief
+let weapon = Character.Weapon.Bow
+let helmet = Character.Helmet.Iron
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org97fdfd4" class="outline-3">
+<h3 id="org97fdfd4"><span class="section-number-3">1.4</span> Containing Enums</h3>
+<div class="outline-text-3" id="text-1-4">
+<p>
+In a similar vein, you can also embed enums in <code>structs</code> or <code>classes</code>. Continuing with our previous example:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">struct Character {
+   enum CharacterType {
+    case Thief
+    case Warrior
+    case Knight
+  }
+  enum Weapon {
+    case Bow
+    case Sword
+    case Lance
+    case Dagger
+  }
+  let type: CharacterType
+  let weapon: Weapon
+}
+
+let warrior = Character(type: .Warrior, weapon: .Sword)
+</pre>
+</div>
+
+<p>
+This, again, helps in keeping related information together.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org841bdd6" class="outline-3">
+<h3 id="org841bdd6"><span class="section-number-3">1.5</span> Associated Values</h3>
+<div class="outline-text-3" id="text-1-5">
+<p>
+Associated values are a fantastic way of attaching additional information to an <code>enum case</code>. 
+Say you're writing a trading engine, and there're two different possible trade types. <code>Buy</code> and <code>Sell</code>. Each of them would be for a specific stock and amount:
+</p>
+</div>
+
+<div id="outline-container-org11b262c" class="outline-4">
+<h4 id="org11b262c"><span class="section-number-4">1.5.1</span> Simple Example</h4>
+<div class="outline-text-4" id="text-1-5-1">
+<div class="org-src-container">
+<pre class="src src-swift">enum Trade {
+    case Buy
+    case Sell
+}
+func trade(tradeType: Trade, stock: String, amount: Int) {}
+</pre>
+</div>
+
+<p>
+However, the stock and amount clearly belong to the trade in question, having them as separate parameters feels unclean. You could embed it into a <code>struct</code>, but associated values allow for a much cleaner solution:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">enum Trade {
+    case Buy(stock: String, amount: Int)
+    case Sell(stock: String, amount: Int)
+}
+func trade(type: Trade) {}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgede4752" class="outline-4">
+<h4 id="orgede4752"><span class="section-number-4">1.5.2</span> Pattern Matching</h4>
+<div class="outline-text-4" id="text-1-5-2">
+<p>
+If you want to access this information, again, <a href="http://appventure.me/2015/08/20/swift-pattern-matching-in-detail/">pattern matching comes to the rescue</a>:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">
+
+let trade = Trade.Buy(stock: "AAPL", amount: 500)
+if case let Trade.Buy(stock, amount) = trade {
+    print("buy \(amount) of \(stock)")
+}
+
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgc5ef34b" class="outline-4">
+<h4 id="orgc5ef34b"><span class="section-number-4">1.5.3</span> Labels</h4>
+<div class="outline-text-4" id="text-1-5-3">
+<p>
+Associated values do not require labels:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">enum Trade {
+   case Buy(String, Int)
+   case Sell(String, Int)
+}
+</pre>
+</div>
+
+<p>
+If you add them, though, you'll have to type them out when creating your enum cases.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orga241795" class="outline-4">
+<h4 id="orga241795"><span class="section-number-4">1.5.4</span> Tuples as Arguments</h4>
+<div class="outline-text-4" id="text-1-5-4">
+<p>
+What's more, the Swift internal associated information  is just a <code>Tuple</code>, so you can do things like this:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">
+
+let tp = (stock: "TSLA", amount: 100)
+let trade = Trade.Sell(tp)
+
+if case let Trade.Sell(stock, amount) = trade {
+    print("buy \(amount) of \(stock)")
+}
+// Prints: "buy 100 of TSLA"
+</pre>
+</div>
+
+<p>
+This syntax allows you to take <code>Tuples</code> as a simple data structure and later on automatically elevate them into a higher type like an <code>enum case</code>. Imagine an app where a user can configure a Desktop that he wants to order:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">typealias Config = (RAM: Int, CPU: String, GPU: String)
+
+// Each of these takes a config and returns an updated config
+func selectRAM(_ config: Config) -&gt; Config {return (RAM: 32, CPU: config.CPU, GPU: config.GPU)}
+func selectCPU(_ config: Config) -&gt; Config {return (RAM: config.RAM, CPU: "3.2GHZ", GPU: config.GPU)}
+func selectGPU(_ config: Config) -&gt; Config {return (RAM: config.RAM, CPU: config.CPU, GPU: "NVidia")}
+
+enum Desktop {
+   case Cube(Config)
+   case Tower(Config)
+   case Rack(Config)
+}
+
+let aTower = Desktop.Tower(selectGPU(selectCPU(selectRAM((0, "", "") as Config))))
+</pre>
+</div>
+
+<p>
+Each step of the configuration updates a <code>tuple</code> which is handed in to the <code>enum</code> at the end. This works even better if we take a hint from <b>functional programming</b> apply <sup><a id="fnr.2" class="footref" href="#fn.2">2</a></sup>:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">
+
+infix operator &lt;^&gt; { associativity left }
+
+func &lt;^&gt;(a: Config, f: (Config) -&gt; Config) -&gt; Config { 
+    return f(a)
+}
+</pre>
+</div>
+
+<p>
+Finally, we can thread through the different configuration steps. This is particularly helpful if you have many of those steps.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">
+
+let config = (0, "", "") &lt;^&gt; selectRAM  &lt;^&gt; selectCPU &lt;^&gt; selectGPU
+let aCube = Desktop.Cube(config)
+
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orga7a2c3f" class="outline-4">
+<h4 id="basicexamples"><a id="orga7a2c3f"></a><span class="section-number-4">1.5.5</span> Use Case Examples</h4>
+<div class="outline-text-4" id="text-basicexamples">
+<p>
+Associated Values can be used in a variety of ways. As code can tell more than a thousand words, what follows is a list of short examples in no particular order.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">// Cases can have different values
+enum UserAction {
+  case OpenURL(url: NSURL)
+  case SwitchProcess(processId: UInt32)
+  case Restart(time: NSDate?, intoCommandLine: Bool)
+}
+
+// Or imagine you're implementing a powerful text editor that allows you to have
+// multiple selections, like Sublime Text here:
+// https://www.youtube.com/watch?v=i2SVJa2EGIw
+enum Selection {
+  case None
+  case Single(Range&lt;Int&gt;)
+  case Multiple([Range&lt;Int&gt;])
+}
+
+// Or mapping different types of identifier codes
+enum Barcode {
+    case UPCA(numberSystem: Int, manufacturer: Int, product: Int, check: Int)
+    case QRCode(productCode: String)
+}
+
+// Or, imagine you're wrapping a C library, like the Kqeue BSD/Darwin notification
+// system: https://www.freebsd.org/cgi/man.cgi?query=kqueue&amp;sektion=2
+enum KqueueEvent {
+    case UserEvent(identifier: UInt, fflags: [UInt32], data: Int)
+    case ReadFD(fd: UInt, data: Int)
+    case WriteFD(fd: UInt, data: Int)
+    case VnodeFD(fd: UInt, fflags: [UInt32], data: Int)
+    case ErrorEvent(code: UInt, message: String)
+}
+
+// Finally, all user-wearable items in an RPG could be mapped with one
+// enum, that encodes for each item the additional armor and weight
+// Now, adding a new material like 'Diamond' is just one line of code and we'll have the option to add several new Diamond-Crafted wearables.
+enum Wearable {
+    enum Weight: Int {
+	case Light = 1
+	case Mid = 4
+	case Heavy = 10
+    }
+    enum Armor: Int {
+	case Light = 2
+	case Strong = 8
+	case Heavy = 20
+    }
+    case Helmet(weight: Weight, armor: Armor)
+    case Breastplate(weight: Weight, armor: Armor)
+    case Shield(weight: Weight, armor: Armor)
+}
+let woodenHelmet = Wearable.Helmet(weight: .Light, armor: .Light)
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org8bdab55" class="outline-3">
+<h3 id="org8bdab55"><span class="section-number-3">1.6</span> Methods and Properties</h3>
+<div class="outline-text-3" id="text-1-6">
+<p>
+You can also define methods on an <code>enum</code> like so:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">enum Wearable {
+    enum Weight: Int {
+	case Light = 1
+    }
+    enum Armor: Int {
+	case Light = 2
+    }
+    case Helmet(weight: Weight, armor: Armor)
+    func attributes() -&gt; (weight: Int, armor: Int) {
+       switch self {
+	 case .Helmet(let w, let a): return (weight: w.rawValue * 2, armor: a.rawValue * 4)
+       }
+    }
+}
+let woodenHelmetProps = Wearable.Helmet(weight: .Light, armor: .Light).attributes()
+print (woodenHelmetProps)
+// prints "(2, 8)"
+</pre>
+</div>
+
+<p>
+Methods on enums exist for every <code>enum case</code>. So if you want to have specific code for specific cases, you need a branch or a switch to determine the correct code path.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">enum Device { 
+    case iPad, iPhone, AppleTV, AppleWatch 
+    func introduced() -&gt; String {
+       switch self {
+	 case .AppleTV: return "\(self) was introduced 2006"
+	 case .iPhone: return "\(self) was introduced 2007"
+	 case .iPad: return "\(self) was introduced 2010"
+	 case .AppleWatch: return "\(self) was introduced 2014"
+       }
+    }
+}
+print (Device.iPhone.introduced())
+// prints: "iPhone was introduced 2007"
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org6da9401" class="outline-4">
+<h4 id="org6da9401"><span class="section-number-4">1.6.1</span> Properties</h4>
+<div class="outline-text-4" id="text-1-6-1">
+<p>
+Even though you can't add actual stored properties to an <code>enum</code>, you can still create computed properties. Their contents, of course, can be based on the <b>enum value</b> or <b>enum associated value</b>. 
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">enum Device {
+  case iPad, iPhone
+  var year: Int {
+    switch self {
+	case .iPhone: return 2007
+	case .iPad: return 2010
+     }
+  }
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgfd6a92e" class="outline-4">
+<h4 id="orgfd6a92e"><span class="section-number-4">1.6.2</span> Static Methods</h4>
+<div class="outline-text-4" id="text-1-6-2">
+<p>
+You can also have static methods on <code>enums</code>, i.e. in order to create an <code>enum</code> from a non-value type. In this example we want to get the proper Apple Device for the wrong name that's sometimes used by people.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">enum Device { 
+    case AppleWatch 
+    static func fromSlang(term: String) -&gt; Device? {
+      if term == "iWatch" {
+	  return .AppleWatch
+      }
+      return nil
+    }
+}
+print (Device.fromSlang(term:"iWatch")!)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org1046a6b" class="outline-4">
+<h4 id="org1046a6b"><span class="section-number-4">1.6.3</span> Mutating Methods</h4>
+<div class="outline-text-4" id="text-1-6-3">
+<p>
+Methods can be declared <code>mutating</code>. They're then allowed to change the <code>case</code> of the underlying <code>self</code> parameter <sup><a id="fnr.3" class="footref" href="#fn.3">3</a></sup>:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">enum TriStateSwitch {
+    case Off, Low, High
+    mutating func next() {
+	switch self {
+	case .Off:
+	    self = .Low
+	case .Low:
+	    self = .High
+	case High:
+	    self = .Off
+	}
+    }
+}
+var ovenLight = TriStateSwitch.Low
+ovenLight.next()
+// ovenLight is now equal to .High
+ovenLight.next()
+// ovenLight is now equal to .Off
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org0decf0a" class="outline-3">
+<h3 id="org0decf0a"><span class="section-number-3">1.7</span> To Recap</h3>
+<div class="outline-text-3" id="text-1-7">
+<p>
+We've finished our overview of the basic use cases of Swift's <code>enum</code> syntax. Before we head into the advanced usage, lets have another look at the explanation we gave at the beginning and see if it became clearer now.
+</p>
+
+<blockquote>
+<p>
+Enums declare types with finite sets of possible states and accompanying values. With nesting, methods, associated values, and pattern matching, however, enums can define any hierarchically organized data.
+</p>
+</blockquote>
+
+<p>
+The definition is a lot clearer now. Indeed, if we add associated values and nesting, an <code>enum case</code> is like a closed, simplified <code>struct</code>. The advantage over structs being the ability to encode categorization and hierachy:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">// Struct Example
+struct Point { let x: Int, y: Int }
+struct Rect { let x: Int, y: Int, width: Int, height: Int }
+
+// Enum Example
+enum GeometricEntity {
+   case Point(x: Int, y: Int)
+   case Rect(x: Int, y: Int, width: Int, height: Int)
+}
+</pre>
+</div>
+
+<p>
+The addition of methods and static methods allow us to attach functionality to an <code>enum</code> without having to resort to free functions <sup><a id="fnr.4" class="footref" href="#fn.4">4</a></sup>
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">// C-Like example
+enum Trade {
+   case Buy
+   case Sell
+}
+func order(trade: Trade)
+
+// Swift Enum example
+enum Trade {
+   case Buy
+   case Sell
+   func order() {}
+}
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orge64e789" class="outline-2">
+<h2 id="orge64e789"><span class="section-number-2">2</span> Advanced Enum Usage</h2>
+<div class="outline-text-2" id="text-2">
+</div>
+<div id="outline-container-org3841a83" class="outline-3">
+<h3 id="org3841a83"><span class="section-number-3">2.1</span> Protocols</h3>
+<div class="outline-text-3" id="text-2-1">
+<p>
+I already mentioned the similarity between the <code>structs</code> and <code>enums</code>. In addition to the ability to add methods, Swift also allows you to use <b>Protocols</b> and <b>Protocol Extensions</b> with enums. 
+</p>
+
+<p>
+Swift protocols define an interface or type that other structures can conform to. In this case our <code>enum</code> can conform to it. For a start, let's take a protocol from the Swift standard library.
+</p>
+
+<p>
+<code>CustomStringConvertible</code> is a type with a customized textual representation suitable for printing purposes:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">protocol CustomStringConvertible {
+  var description: String { get }
+}
+</pre>
+</div>
+
+<p>
+It has only one requirement, namely a <b>getter</b> for a string. We can implement this on an enum quite easily:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">enum Trade: CustomStringConvertible {
+   case Buy, Sell
+   var description: String {
+       switch self {
+	   case .Buy: return "We're buying something"
+	   case .Sell: return "We're selling something"
+       }
+   }
+}
+
+let action = Trade.Buy.description
+print("this action is \(action)")
+// prints: this action is We're buying something
+</pre>
+</div>
+
+<p>
+Some protocol implementations may need internal state handling to cope with the requirements. Imagine a protocol that manages a bank account:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">protocol AccountCompatible {
+  var remainingFunds: Int { get }
+  mutating func addFunds(amount: Int) throws
+  mutating func removeFunds(amount: Int) throws
+}
+</pre>
+</div>
+
+<p>
+You could easily fulfill this protocol with a <code>struct</code>, but in the context of your application, an <code>enum</code> is the more sensible approach. However, you can't add properties like <code>var remainingFunds: Int</code> to an <code>enum</code>, so how would you model that? The answer is actually easy, you can use associated values for this:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift" id="orgced4375">enum Account {
+  case Empty
+  case Funds(remaining: Int)
+
+  enum Error: Swift.Error {
+    case Overdraft(amount: Int)
+  }
+
+  var remainingFunds: Int {
+    switch self {
+    case .Empty: return 0
+    case .Funds(let remaining): return remaining
+    }
+  }
+}
+</pre>
+</div>
+
+<p>
+To keep things clean, we can then define the required protocol functions in a protocol extension on the <code>enum</code>:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">
+
+extension Account: AccountCompatible {
+
+  mutating func addFunds(amount: Int) throws {
+    var newAmount = amount
+    if case let .Funds(remaining) = self {
+      newAmount += remaining
+    }
+    if newAmount &lt; 0 {
+      throw Error.Overdraft(amount: -newAmount)
+    } else if newAmount == 0 {
+      self = .Empty
+    } else {
+      self = .Funds(remaining: newAmount)
+    }
+  }
+
+  mutating func removeFunds(amount: Int) throws {
+    try self.addFunds(amount * -1)
+  }
+
+}
+
+var account = Account.Funds(remaining: 20)
+print("add: ", try? account.addFunds(amount:10))
+print ("remove 1: ", try? account.removeFunds(amount:15))
+print ("remove 2: ", try? account.removeFunds(amount:55))
+// prints:
+// : add:  Optional(())
+// : remove 1:  Optional(())
+// : remove 2:  nil
+</pre>
+</div>
+
+<p>
+As you can see, we implemented all the protocol requirements by storing our values within our <code>enum cases</code>. A very nifty side effect of this is, that now you can test for an empty account with a simple pattern match all over your code base. You don't have to see whether the remainingFunds are zero.
+</p>
+
+<p>
+We're also nesting an <code>ErrorType</code> compatible <code>enum</code> in the <b>Account</b> enum so that we can use Swift 2.0's new error handling. This is explained in more detail in the <a href="#errortype"><b>Practical Use Cases</b></a> section.
+</p>
+</div>
+</div>
+
+
+<div id="outline-container-org282e504" class="outline-3">
+<h3 id="org282e504"><span class="section-number-3">2.2</span> Extensions</h3>
+<div class="outline-text-3" id="text-2-2">
+<p>
+As we just saw, enums can also be extended. The most apparent use case for this is keeping <code>enum cases</code> and <code>methods</code> separate, so that a reader of your code can easily digest the <code>enum</code> and after that move on to the methods:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">enum Entities {
+    case Soldier(x: Int, y: Int)
+    case Tank(x: Int, y: Int)
+    case Player(x: Int, y: Int)
+}
+</pre>
+</div>
+
+<p>
+Now, we can extend this <code>enum</code> with methods:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">
+extension Entities {
+   mutating func move(dist: CGVector) {}
+   mutating func attack() {}
+}
+</pre>
+</div>
+
+<p>
+You can also write extensions to add support for a specific protocol:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">
+extension Entities: CustomStringConvertible {
+  var description: String {
+    switch self {
+       case let .Soldier(x, y): return "\(x), \(y)"
+       case let .Tank(x, y): return "\(x), \(y)"
+       case let .Player(x, y): return "\(x), \(y)"
+    }
+  }
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org1dd3fce" class="outline-3">
+<h3 id="org1dd3fce"><span class="section-number-3">2.3</span> Generic Enums</h3>
+<div class="outline-text-3" id="text-2-3">
+<p>
+Enums can also be defined over generic parameters. You'd use them to adapt the associated values of an enum. The simplest example comes straight from the Swift standard library, namely the <code>Optional</code> type. You probably mostly use it with <b>optional chaining</b> (<code>?</code>), <code>if let</code>, <code>guard let</code>, or <code>switch</code>, but syntactically you can also use Optionals like so:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">let aValue = Optional&lt;Int&gt;.some(5)
+let noValue = Optional&lt;Int&gt;.none
+if noValue == Optional.none { print("No value") }
+</pre>
+</div>
+
+<p>
+This is the direct usage of an Optional without any of the syntactic sugar that Swift adds in order to make your life a tremendous amount easier. If you look at the code above, you can probably guess that internally the <code>Optional</code> is defined as follows <sup><a id="fnr.5" class="footref" href="#fn.5">5</a></sup>:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">// Simplified implementation of Swift's Optional
+enum MyOptional&lt;T&gt; {
+  case Some(T)
+  case None
+}
+</pre>
+</div>
+
+<p>
+What's special here is, that the enum's <b>associated values</b> take the type of the generic parameter <code>T</code>, so that optionals can be built for any kind you wish to return.
+</p>
+
+<p>
+Enums can have multiple generic parameters. Take the well-known <b>Either</b> type which is not part of Swift's standard library but implemented in many open source libraries as well as prevalent in other functional programming languages like Haskell or F#. The idea is that instead of just returning a value or no value (née Optional) you'd return either the successful value or something else (probably an error value).
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">// The well-known either type is, of course, an enum that allows you to return either
+// value one (say, a successful value) or value two (say an error) from a function
+enum Either&lt;T1, T2&gt; {
+  case Left(T1)
+  case Right(T2)
+}
+</pre>
+</div>
+
+<p>
+Finally, all the type constraints that work on classes and structs in Swift also work on enums.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">// Totally nonsensical example. A bag that is either full (has an array with contents)
+// or empty.
+enum Bag&lt;T: Sequence&gt; where T.Iterator.Element==Equatable {
+    case Empty
+    case Full(contents: T)
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org7ab3fd8" class="outline-3">
+<h3 id="org7ab3fd8"><span class="section-number-3">2.4</span> Recursive / Indirect Types</h3>
+<div class="outline-text-3" id="text-2-4">
+<p>
+Indirect types are a new addition that came with Swift 2.0. They allow you to define enums where the associated value of a <code>case</code> is the very same enum again. As an example, consider that you want to define a file system representations with files and folders containing files. If <b>File</b> and <b>Folder</b> were enum cases, then the <b>Folder</b> case would need to have an array of <b>File</b> cases as it's associated value. Since this is a recursive operation, the compiler has to make special preparations for it. Quoting from the Swift documentation:
+</p>
+
+<blockquote>
+<p>
+Enums and cases can be marked indirect, which causes the associated value for the enum to be stored indirectly, allowing for recursive data structures to be defined.
+</p>
+</blockquote>
+
+<p>
+So to implement our <b>FileNode</b> <code>enum</code>, we'd have to write it like this:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">enum FileNode {
+  case File(name: String)
+  indirect case Folder(name: String, files: [FileNode])
+}
+</pre>
+</div>
+
+<p>
+The <code>indirect</code> keyword tells the compiler to handle this <code>enum case</code> indirectly. You can also add the keyword for the whole enum. <a href="http://airspeedvelocity.net/2015/07/22/a-persistent-tree-using-indirect-enums-in-swift/">As an example imagine mapping a binary tree</a>:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">indirect enum Tree&lt;Element: Comparable&gt; {
+    case Empty
+    case Node(Tree&lt;Element&gt;,Element,Tree&lt;Element&gt;)
+}
+</pre>
+</div>
+
+<p>
+This is a very powerful feature that allows you to map complex relationships in a very clean way with an enum.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org2e1125c" class="outline-3">
+<h3 id="org2e1125c"><span class="section-number-3">2.5</span> Using Custom Data Types as Enum Values</h3>
+<div class="outline-text-3" id="text-2-5">
+<p>
+If we neglect associated values, then the value of an enum can only be an Integer, Floating Point, String, or Boolean. If you need to support something else, you can do so by implementing the <code>StringLiteralConvertible</code> protocol which allows the type in question to be serialized to and from String.
+</p>
+
+<p>
+As an example, imagine you'd like to store the different screen sizes of iOS devices in an enum:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">enum Devices: CGSize {
+   case iPhone3GS = CGSize(width: 320, height: 480)
+   case iPhone5 = CGSize(width: 320, height: 568)
+   case iPhone6 = CGSize(width: 375, height: 667)
+   case iPhone6Plus = CGSize(width: 414, height: 736)
+}
+</pre>
+</div>
+
+<p>
+However, this doesn't compile. CGSize is not a literal and can't be used as an enum value. Instead, what you need to do is add a type extension for the <code>StringLiteralConvertible</code> protocol. The protocol requires us to implement three <b>initializers</b> each of them is being called with a <code>String</code>, and we have to convert this string into our receiver type (<code>CGSize</code>)
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">extension CGSize: ExpressibleByStringLiteral {
+    public init(stringLiteral value: String) {
+	let size = CGSizeFromString(value)
+	self.init(width: size.width, height: size.height)
+    }
+
+    public init(extendedGraphemeClusterLiteral value: String) {
+	let size = CGSizeFromString(value)
+	self.init(width: size.width, height: size.height)
+    }
+
+    public init(unicodeScalarLiteral value: String) {
+	let size = CGSizeFromString(value)
+	self.init(width: size.width, height: size.height)
+    }
+}
+</pre>
+</div>
+
+<p>
+Now, we can write our <code>enum</code>, with one downside though: The initial values have to be written as a String, since that's what the enum will use (remember, we complied with StringLiteralConvertible, so that the <b>String</b> can be converted to our <code>CGSize</code> type.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">enum Devices: CGSize {
+   case iPhone3GS = "{320, 480}"
+   case iPhone5 = "{320, 568}"
+   case iPhone6 = "{375, 667}"
+   case iPhone6Plus = "{414, 736}"
+}
+</pre>
+</div>
+
+<p>
+This, finally, allows us to use our <code>CGSize</code> enum. Keep in mind that in order to get the actual CGSize value, we have to access the <code>rawvalue</code> of the enum.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">
+
+let a = Devices.iPhone5
+let b = a.rawValue
+print("the phone size string is \(a), width is \(b.width), height is \(b.height)")
+// prints : the phone size string is iPhone5, width is 320.0, height is 568.0
+</pre>
+</div>
+
+<p>
+The String serialization requirement makes it a bit difficult to use any kind of type, but for some specific use cases, this can work well (such as <b>NSColor</b> / <b>UIColor</b>). However, you can also use this with your custom types obviously.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org743bd4e" class="outline-3">
+<h3 id="org743bd4e"><span class="section-number-3">2.6</span> Comparing Enums with associated values</h3>
+<div class="outline-text-3" id="text-2-6">
+<p>
+Enums, by nature, are easily comparable by equality. A simple <code>enum T { case a, b}</code> implementation supports the proper equality tests <code>T.a == T.a, T.b != T.a</code>. 
+</p>
+
+<p>
+If you add associated values though, Swift cannot correctly infer the equality of two enums, and you have to implement the <code>==</code> operator yourself. This is simple though:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">enum Trade {
+    case Buy(stock: String, amount: Int)
+    case Sell(stock: String, amount: Int)
+}
+func ==(lhs: Trade, rhs: Trade) -&gt; Bool {
+   switch (lhs, rhs) {
+     case let (.Buy(stock1, amount1), .Buy(stock2, amount2))
+	   where stock1 == stock2 &amp;&amp; amount1 == amount2:
+	   return true
+     case let (.Sell(stock1, amount1), .Sell(stock2, amount2))
+	   where stock1 == stock2 &amp;&amp; amount1 == amount2:
+	   return true
+     default: return false
+   }
+}
+</pre>
+</div>
+
+<p>
+As you can see, we're comparing the two possible <code>enum cases</code> via a switch, and only if the cases match (i.e. .Buy &amp; .Buy) will we compare the actual associated values.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org20da472" class="outline-3">
+<h3 id="org20da472"><span class="section-number-3">2.7</span> Custom Initializers</h3>
+<div class="outline-text-3" id="text-2-7">
+<p>
+In the context of <b>static methods</b> on enums, we already mentioned that they can be used as a way to conveniently create an enum from different data. The example we had was for returning the proper Apple device for the wrong worded version that the press sometimes uses:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">enum Device { 
+    case AppleWatch 
+    static func fromSlang(term: String) -&gt; Device? {
+      if term == "iWatch" {
+	  return .AppleWatch
+      }
+      return nil
+    }
+}
+</pre>
+</div>
+
+<p>
+Instead of using a static method for this, we can also use a custom initializer. The main difference compared to a Swift <code>struct</code> or <code>class</code> is that within an <code>enum</code> initializer, you need to set the implicit <code>self</code> property to the correct case. 
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">enum Device { 
+    case AppleWatch 
+    init?(term: String) {
+      if term == "iWatch" {
+	  self = .AppleWatch
+      } else {
+	  return nil
+      }
+    }
+}
+</pre>
+</div>
+
+<p>
+In the above example, we used a failable initializer. However, normal initializers work just as well:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">enum NumberCategory {
+   case Small
+   case Medium
+   case Big
+   case Huge
+   init(number n: Int) {
+	if n &lt; 10000 { self = .Small }
+	else if n &lt; 1000000 { self = .Medium }
+	else if n &lt; 100000000 { self = .Big }
+	else { self = .Huge }
+   }
+}
+let aNumber = NumberCategory(number: 100)
+print(aNumber)
+// prints: "Small"
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org4698ac2" class="outline-3">
+<h3 id="org4698ac2"><span class="section-number-3">2.8</span> Iterating over Enum Cases</h3>
+<div class="outline-text-3" id="text-2-8">
+<p>
+One particularly often asked question with regards to enums is how to iterate over all cases. Sadly, enums do not conform to the <code>SequenceType</code> protocol, so there is no official way to do this. Depending on the type of enum that you have, it might be easier or more difficult to implement a way of iterating over all cases. <a href="http://stackoverflow.com/questions/24007461/how-to-enumerate-an-enum-with-string-type">There's a very good overview in this StackOverflow thread.</a> Also, there's so much variation in the replies that it wouldn't to listing only some of the examples here. On the other hand, listing all the examples would be too much.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org5bedb64" class="outline-3">
+<h3 id="org5bedb64"><span class="section-number-3">2.9</span> Objective-C support</h3>
+<div class="outline-text-3" id="text-2-9">
+<p>
+Integer-based enums such as <code>enum Bit: Int { case Zero = 0; case One = 1}</code> can be bridged to Objective-c via the <code>@objc</code> flag. However once you venture away from integers (say <code>String</code>) or start using <b>associated values</b> you can't use enums from within Objective-C.
+</p>
+
+<p>
+<a href="http://nshint.io/blog/2015/10/07/easy-cast-with-_ObjectiveCBridgeable/?utm_campaign=Swift%2BSandbox&amp;utm_medium=email&amp;utm_source=Swift_Sandbox_11">There's a hidden protocol called <code>_ObjectiveCBridgeable</code> which apparently</a> allows defining the proper methods so that Swift can convert things back and forth from Objective-C, but I suppose there's a reason why it is hidden. Nevertheless, theoretically it should allow you to add support for bridging an <code>enum</code> (including associated values) to Objective-C.
+</p>
+
+<p>
+You don't have to do it that way though. Add two methods to your <code>enum</code>, define a type replacement on the <code>@objc</code> side, and you can move <code>enums</code> back and forth just fine, without having to conform to private protocols:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">enum Trade {
+    case Buy(stock: String, amount: Int)
+    case Sell(stock: String, amount: Int)
+}
+
+// This type could also exist in Objective-C code.
+@objc class OTrade: NSObject {
+    var type: Int
+    var stock: String
+    var amount: Int
+    init(type: Int, stock: String, amount: Int) {
+	self.type = type
+	self.stock = stock
+	self.amount = amount
+    }
+}
+
+extension Trade  {
+
+    func toObjc() -&gt; OTrade {
+	switch self {
+	case let .Buy(stock, amount):
+	    return OTrade(type: 0, stock: stock, amount: amount)
+	case let .Sell(stock, amount):
+	    return OTrade(type: 1, stock: stock, amount: amount)
+	}
+    }
+
+    static func fromObjc(source: OTrade) -&gt; Trade? {
+	switch (source.type) {
+	case 0: return Trade.Buy(stock: source.stock, amount: source.amount)
+	case 1: return Trade.Sell(stock: source.stock, amount: source.amount)
+	default: return nil
+	}
+    }
+}
+</pre>
+</div>
+
+<p>
+This still has the downside that you need to mirror your <code>enum</code> via an <code>NSObject</code> based type on the Objective-C side (or you could just go and use an <code>NSDictionary</code>), but if you ever end up in a situation where you <b>need</b> to access an enum with associated values from Objective-C, this is a way to do it.
+</p>
+</div>
+</div>
+
+
+<div id="outline-container-org5ac0bb1" class="outline-3">
+<h3 id="org5ac0bb1"><span class="section-number-3">2.10</span> Enum Internals</h3>
+<div class="outline-text-3" id="text-2-10">
+<p>
+<a href="http://ericasadun.com/2015/07/12/swift-enumerations-or-how-to-annoy-tom/">Erica Sadun wrote a great blog post explaining the internals</a> of <code>enums</code> when you look at the bits and bytes behind the glossy syntax. This is something you should never do in production code, but still interesting to know. We'll only mention one of her findings here, but go and read her original article for more.
+</p>
+
+<blockquote>
+<p>
+Enums are typically one byte long. […] If you want to get very very silly, you can build an enumeration with hundreds of cases, in which case the enum takes up 2 or more bytes depending on the minimum bit count needed. 
+</p>
+</blockquote>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-orgb8866df" class="outline-2">
+<h2 id="orgb8866df"><span class="section-number-2">3</span> Enums in the Swift Standard Library</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+Before we go on and explore various use cases for enums in your projects, it might be tempting to see some of the enums being used in the Swift standard library, so let's have a look.
+</p>
+
+<p>
+<a href="https://developer.apple.com/library/watchos/documentation/Swift/Reference/Swift_Bit_Enumeration/index.html#//apple_ref/swift/enum/s:OSs3Bit"><b>Bit</b></a>
+The <code>Bit</code> enum can have two possible values, <b>One</b>, and <b>Zero</b>. It is used as the <code>Index</code> type for <code>CollectionOfOne&lt;T&gt;</code>.
+</p>
+
+<p>
+<a href="https://developer.apple.com/library/watchos/documentation/Swift/Reference/Swift_FloatingPointClassification_Enumeration/index.html#//apple_ref/swift/enumelt/FloatingPointClassification/s:FOSs27FloatingPointClassification12SignalingNaNFMS_S_"><b>FloatingPointClassification</b></a>
+This enum defines the set of possible IEEE 754 "classes", like <code>NegativeInfinity</code>, <code>PositiveZero</code>, or <code>SignalingNaN</code>.
+</p>
+
+<p>
+<a href="https://developer.apple.com/library/watchos/documentation/Swift/Reference/Swift_Mirror-AncestorRepresentation_Enumeration/index.html#//apple_ref/swift/enum/s:OVSs6Mirror22AncestorRepresentation"><b>Mirror.AncestorRepresentation</b></a>, and <a href="https://developer.apple.com/library/watchos/documentation/Swift/Reference/Swift_Mirror-DisplayStyle_Enumeration/index.html#//apple_ref/swift/enum/s:OVSs6Mirror12DisplayStyle"><b>Mirror.DisplayStyle</b></a>
+These two are used in the context of the Swift Reflection API.
+</p>
+
+<p>
+<a href="https://developer.apple.com/library/watchos/documentation/Swift/Reference/Swift_Optional_Enumeration/index.html#//apple_ref/swift/enum/s:Sq"><b>Optional</b></a>
+Not much to say here
+</p>
+
+<p>
+<a href="https://developer.apple.com/library/watchos/documentation/Swift/Reference/Swift_Process_Enumeration/index.html#//apple_ref/swift/enum/s:OSs7Process"><b>Process</b></a>
+The Process enum contains the command line arguments of the current process (<code>Process.argc</code>, <code>Process.arguments</code>). This is a particularly interesting <code>enum</code> as it used to be a <code>struct</code> in Swift 1.0.
+</p>
+</div>
+</div>
+
+
+<div id="outline-container-org99f08fc" class="outline-2">
+<h2 id="org99f08fc"><span class="section-number-2">4</span> Practical Use Cases</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+We've already seen a couple of useful <code>enums</code> in the <a href="#basicexamples">previous feature descriptions.</a> Examples would be <code>Optional</code>, <code>Either</code>, <code>FileNode</code>, or the binary tree. However, there're many more scenarios where using an <code>enum</code> wins over a <code>struct</code> or <code>class</code>. Usually, if your problem domain can be divided into a finite set of distinctive categories, an <code>enum</code> may be the right choice. Even only two cases are a perfectly valid scenario for an enum, as the Optional and Either types show.
+</p>
+
+<p>
+Here, then, are some more examples of practical <code>enum</code> usage to fuel your creativity.
+</p>
+</div>
+
+<div id="outline-container-org0f360b5" class="outline-3">
+<h3 id="errortype"><a id="org0f360b5" href="/2015/10/17/advanced-practical-enum-examples/">Advanced and Practical Enum usage in Swift</a><span class="section-number-3">4.1</span> Error Handling</h3>
+<div class="outline-text-3" id="text-errortype">
+<p>
+One of the prime examples of Enum usage in Swift is, of course, the new error handling in Swift 2.0. Your throwing function can throw anything which conforms to the empty <code>ErrorType</code> protocol. As the Swift documentation succinctly observes:
+</p>
+
+<blockquote>
+<p>
+Swift enumerations are particularly well suited to modeling a group of related error conditions, with associated values allowing for additional information about the nature of an error to be communicated.
+</p>
+</blockquote>
+
+<p>
+As an example, have a look at the popular <a href="https://github.com/thoughtbot/Argo">JSON Decoding library Argo</a>. When their JSON Decoding fails, it can fail due to two primary reasons.
+</p>
+<ol class="org-ol">
+<li>The JSON Data lacks a key which the end model requires (say your model has a property <code>username</code> and somehow the JSON lacks that)</li>
+<li>There's a type mismatch. Say instead of a String the <code>username</code> property in the JSON contains an <code>NSNull</code> <sup><a id="fnr.6" class="footref" href="#fn.6">6</a></sup>.</li>
+</ol>
+
+<p>
+In addition to that, Argo also includes a custom error for anything not fitting in these two categories above. Their <code>ErrorType enum</code> looks like this:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">enum DecodeError: Error {
+  case TypeMismatch(expected: String, actual: String)
+  case MissingKey(String)
+  case Custom(String)
+}
+</pre>
+</div>
+
+<p>
+All cases have associated values that contain additional information about the error in question.
+</p>
+
+<p>
+A more general <code>ErrorType</code> for complete HTTP / REST API handling could look like this:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">
+enum APIError : Error {
+    // Can't connect to the server (maybe offline?)
+    case ConnectionError(error: NSError)
+    // The server responded with a non 200 status code
+    case ServerError(statusCode: Int, error: NSError)
+    // We got no data (0 bytes) back from the server
+    case NoDataError
+    // The server response can't be converted from JSON to a Dictionary
+    case JSONSerializationError(error: Error)
+    // The Argo decoding Failed
+    case JSONMappingError(converstionError: DecodeError)
+}
+</pre>
+</div>
+
+<p>
+This <code>ErrorType</code> implements the complete REST Stack up to the point where your app would get the completely decoded native <code>struct</code> or <code>class</code> object. 
+</p>
+
+<p>
+If you look closely, you'll see that within the <code>JSONMappingError</code>, we're wrapping the <b>Argo</b> <code>DecodeError</code> into our <code>APIError</code> type as we're still using Argo for the actual JSON decoding.
+</p>
+
+<p>
+More information on <code>ErrorType</code> and more <code>enum</code> examples in this context can be found in the official documentation <a href="https://developer.apple.com/library/prerelease/ios/documentation/Swift/Conceptual/Swift_Programming_Language/ErrorHandling.html">here</a>.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org5e8f455" class="outline-3">
+<h3 id="org5e8f455"><span class="section-number-3">4.2</span> Observer Pattern</h3>
+<div class="outline-text-3" id="text-4-2">
+<p>
+There're various ways of modelling observation in Swift. If you include <code>@objc</code> compatibility, you can use <code>NSNotificationCenter</code> or <b>KVO</b>. Even if not, the <code>didSet</code> syntax makes it easy to implement simple observation. Enums can be used here in order to make the type of change that happens to the observed object clearer. Imagine collection observation. If we think about it, we only have a couple of possible cases: One or more items are inserted, one or more items are deleted, one or more items are updated. This sounds like a job for an enum:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">enum Change {
+     case Insertion(items: [Item])
+     case Deletion(items: [Item])
+     case Update(items: [Item])
+}
+</pre>
+</div>
+
+<p>
+Then, the observing object can receive the concrete information of what happened in a very clean way. This could easily be extended by adding <b>oldValue</b> and <b>newValue</b>, too.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org7665d7e" class="outline-3">
+<h3 id="org7665d7e"><span class="section-number-3">4.3</span> Status Codes</h3>
+<div class="outline-text-3" id="text-4-3">
+<p>
+If you're working with an outside system which uses status codes (or error codes) to convey information, like HTTP Status Codes, enums are obviously a great way to encode the information. <sup><a id="fnr.7" class="footref" href="#fn.7">7</a></sup>
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">enum HttpError: String {
+  case Code400 = "Bad Request"
+  case Code401 = "Unauthorized"
+  case Code402 = "Payment Required"
+  case Code403 = "Forbidden"
+  case Code404 = "Not Found"
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgc9761c7" class="outline-3">
+<h3 id="orgc9761c7"><span class="section-number-3">4.4</span> Map Result Types</h3>
+<div class="outline-text-3" id="text-4-4">
+<p>
+Enums are also frequently used to map the result of JSON parsing into the Swift type system. Here's a short example of this:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">enum JSON {
+    case JSONString(Swift.String)
+    case JSONNumber(Double)
+    case JSONObject([String : JSONValue])
+    case JSONArray([JSONValue])
+    case JSONBool(Bool)
+    case JSONNull
+}
+</pre>
+</div>
+
+<p>
+Similarly, if you're parsing something else, you may use the very same structure to convert your parsing results into Swift types. This also makes perfect sense to only do it during the parsing / processing step and then taking the <code>JSON enum</code> representation and converting it into one of your application's internal <code>class</code> or <code>struct</code> types.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgdd16f9b" class="outline-3">
+<h3 id="orgdd16f9b"><span class="section-number-3">4.5</span> UIKit Identifiers</h3>
+<div class="outline-text-3" id="text-4-5">
+<p>
+Enums can be used to map reuse identifiers or storyboard identifiers from stringly typed information to something the type checker can understand. Imagine a UITableView with different prototype cells:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">enum CellType: String {
+    case ButtonValueCell = "ButtonValueCell"
+    case UnitEditCell = "UnitEditCell"
+    case LabelCell = "LabelCell"
+    case ResultLabelCell = "ResultLabelCell"
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org9c8e2f9" class="outline-3">
+<h3 id="org9c8e2f9"><span class="section-number-3">4.6</span> Units</h3>
+<div class="outline-text-3" id="text-4-6">
+<p>
+Units and unit conversion are another nice use case for enums. You can map the units and their respective values and then add methods to do automatic conversions. Here's an oversimplified example.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">enum Liquid: Float {
+  case ml = 1.0
+  case l = 1000.0
+  func convert(amount: Float, to: Liquid) -&gt; Float {
+      if self.rawValue &lt; to.rawValue {
+	 return (self.rawValue / to.rawValue) * amount
+      } else {
+	 return (self.rawValue * to.rawValue) * amount
+      }
+  }
+}
+// Convert liters to milliliters
+print (Liquid.l.convert(amount: 5, to: Liquid.ml))
+</pre>
+</div>
+
+<p>
+Another example of this would be Currency conversion. Also, mathematical symbols (such as degrees vs radians) can benefit from this.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgf6358a3" class="outline-3">
+<h3 id="orgf6358a3"><span class="section-number-3">4.7</span> Games</h3>
+<div class="outline-text-3" id="text-4-7">
+<p>
+Enums are a great use case for games, where many entities on screen belong to a specific family of items (enemies, obstacles, textures, …). In comparison to native iOS or Mac apps, games oftentimes are a tabula rasa. Meaning you invent a new world with new relationships and new kinds of objects, whereas on iOS or OSX you're using a well-defined world of UIButtons, UITableViews, UITableViewCells or NSStackView.
+</p>
+
+<p>
+What's more, since Enums can conform to protocols, you can utilize protocol extensions and protocol based programming to add functionality to the various enums that you defined for your game. Here's a short example that tries to display such a hierarchy:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">enum FlyingBeast { case Dragon, Hippogriff, Gargoyle }
+enum Horde { case Ork, Troll }
+enum Player { case Mage, Warrior, Barbarian }
+enum NPC { case Vendor, Blacksmith }
+enum Element { case Tree, Fence, Stone }
+
+protocol Hurtable {}
+protocol Killable {}
+protocol Flying {}
+protocol Attacking {}
+protocol Obstacle {}
+
+extension FlyingBeast: Hurtable, Killable, Flying, Attacking {}
+extension Horde: Hurtable, Killable, Attacking {}
+extension Player: Hurtable, Obstacle {}
+extension NPC: Hurtable {}
+extension Element: Obstacle {}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orga895732" class="outline-3">
+<h3 id="orga895732"><span class="section-number-3">4.8</span> Battling stringly typed code</h3>
+<div class="outline-text-3" id="text-4-8">
+<p>
+In bigger Xcode projects, you're quickly accumulating lots of resources which are accessed by string. We've already mentioned reuse identifiers and storyboard identifiers above, but there's also: Images, Segues, Nibs, Fonts, and other resources. Oftentimes, those resources can be grouped into several distinct sets. If that's the case, a <code>String</code> typed <code>enum</code> is a good way of having the compiler check this for you.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">enum DetailViewImages: String {
+  case Background = "bg1.png"
+  case Sidebar = "sbg.png"
+  case ActionButton1 = "btn1_1.png"
+  case ActionButton2 = "btn2_1.png"
+}
+</pre>
+</div>
+
+<p>
+For iOS users, <a href="https://github.com/mac-cain13/R.swift">there's also R.swift which auto generates <code>structs</code> for  most of those use cases.</a> Sometimes you may need more control though (or you may be on a Mac <sup><a id="fnr.8" class="footref" href="#fn.8">8</a></sup>)
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgc5067bd" class="outline-3">
+<h3 id="orgc5067bd"><span class="section-number-3">4.9</span> API Endpoints</h3>
+<div class="outline-text-3" id="text-4-9">
+<p>
+Rest APIs are a great use case for enums. They're naturally grouped, they're limited to a finite set of APIs, and they may have additional query or named parameters which can be modelled through associated values. 
+</p>
+
+<p>
+Take, for example, a look at a simplified version of the <a href="https://instagram.com/developer/endpoints/media/"><b>Instagram API</b></a>
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">enum Instagram {
+  enum Media {
+    case Popular
+    case Shortcode(id: String)
+    case Search(lat: Float, min_timestamp: Int, lng: Float, max_timestamp: Int, distance: Int)
+  }
+  enum Users {
+    case User(id: String)
+    case Feed
+    case Recent(id: String)
+  }
+}
+</pre>
+</div>
+
+<p>
+<a href="https://github.com/Moya/Moya">Ash Furrow's <b>Moya</b> library</a> is based around this idea of using <code>enums</code> to map rest endpoints.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org0851387" class="outline-3">
+<h3 id="org0851387"><span class="section-number-3">4.10</span> Linked Lists</h3>
+<div class="outline-text-3" id="text-4-10">
+<p>
+<a href="http://airspeedvelocity.net/tag/swift/">Airspeed Velocity has a great writeup on how to implement a Linked List with an <code>enum</code>.</a> Most of the code in his post goes far beyond enums and touches a lot of interesting topics <sup><a id="fnr.9" class="footref" href="#fn.9">9</a></sup>, but the basis of his linked list looks kinda like this (I simplified it a bit):
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">enum List {
+    case End
+    indirect case Node(Int, next: List)
+}
+</pre>
+</div>
+
+<p>
+Each <code>Node case</code> points to the next case, and by using an <code>enum</code> instead of something else, you don't have to use an optional for the <code>next</code> value to signify the termination of the list.
+</p>
+
+<p>
+Airspeed Velocity also wrote a great post about the implementation of a red black tree with indirect Swift enums, so while you're already reading his blog, <a href="http://airspeedvelocity.net/2015/07/22/a-persistent-tree-using-indirect-enums-in-swift/">you may just as well also read this one.</a>
+</p>
+</div>
+</div>
+
+<div id="outline-container-org3dc04c3" class="outline-3">
+<h3 id="org3dc04c3"><span class="section-number-3">4.11</span> Settings Dictionaries</h3>
+<div class="outline-text-3" id="text-4-11">
+<p>
+<a href="http://ericasadun.com/2015/10/19/sets-vs-dictionaries-smackdown-in-swiftlang/?utm_campaign=Swift%2BSandbox&amp;utm_medium=email&amp;utm_source=Swift_Sandbox_12">This is a very, very smart solution that Erica Sadun came up with</a>. Basically whenever you'd use a dictionary of attribute keys as a way to configure an item,
+you'd instead use a <code>Set</code> of enums with associated values. That way, the type checker can confirm that your configuration values are of the correct type.
+</p>
+
+<p>
+<a href="http://ericasadun.com/2015/10/19/sets-vs-dictionaries-smackdown-in-swiftlang/?utm_campaign=Swift%2BSandbox&amp;utm_medium=email&amp;utm_source=Swift_Sandbox_12">For more details, and proper examples, check out her original blog post.</a>
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org4bb5fdf" class="outline-2">
+<h2 id="org4bb5fdf"><span class="section-number-2">5</span> Limitations</h2>
+<div class="outline-text-2" id="text-5">
+<p>
+We're ending this post, again, with a list of things that don't work yet with enums. 
+</p>
+</div>
+
+<div id="outline-container-org436f100" class="outline-3">
+<h3 id="org436f100"><span class="section-number-3">5.1</span> Retrieving Associated Values</h3>
+<div class="outline-text-3" id="text-5-1">
+<p>
+<a href="http://owensd.io/2015/09/15/associated-enum-cases-as-types.html">David Owens makes the case that the current way of associated value retrieval is unwieldy.</a> I encourage you to follow the link and read the post, but here's the gist:
+In order to retrieve the associated values from an enum, you have to use pattern matching. However, associated values are effectively tuples which were attached to the enum case.
+Tuples, on the other hand, can be deconstructed in a much simpler way simply by using <code>.keyword or .0</code>. i.e:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">// Enums
+enum Ex { case Mode(ab: Int, cd: Int) }
+if case Ex.Mode(let ab, let cd) = Ex.Mode(ab: 4, cd: 5) {
+    print(ab)
+}
+// vs tuples:
+let tp = (ab: 4, cd: 5)
+print(tp.ab)
+</pre>
+</div>
+
+<p>
+If you also feel that this is how we should be able to deconstruct enums, there's a rdar for you: <a href="http://openradar.me/22704262">rdar://22704262</a>
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgc8f15af" class="outline-3">
+<h3 id="orgc8f15af"><span class="section-number-3">5.2</span> Equatable</h3>
+<div class="outline-text-3" id="text-5-2">
+<p>
+Enums with associated values do not conform to the equatable protocol. That's a pity because it makes a lot of things much more cumbersome and verbose than they need to be.
+The underlying reason is probably that associated values are just tuples internally and tuples do not conform to equatable. However, for a limited subset of cases, namely those where all associated value / tuple types conform to equatable, I think the default case should be that the compiler automatically also generates the equatable extension.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">// Int and String are Equatable, so case Ex should also be equatable.
+enum Ex { case Mode(ab: Int, cd: String) }
+
+// Swift could auto-generate this func
+func == (lhs: Ex.Mode, rhs: Ex.Mode) -&gt; Bool {
+    switch (lhs, rhs) {
+       case (.Mode(let a, let b), .Mode(let c, let d)):
+	   return a == c &amp;&amp; b == d
+       default:
+	   return false
+    }
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org57d1ff0" class="outline-3">
+<h3 id="org57d1ff0"><span class="section-number-3">5.3</span> Tuples</h3>
+<div class="outline-text-3" id="text-5-3">
+<p>
+The biggest issue is, <a href="http://appventure.me/2015/07/19/tuples-swift-advanced-usage-best-practices/">again, Tuple support</a>. I love tuples, they make many things easier, but they're currently under-documented and cannot be used in many scenarios. In terms of enums, you can't have tuples as the enum value:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">enum Devices: (intro: Int, name: String) {
+  case iPhone = (intro: 2007, name: "iPhone")
+  case AppleTV = (intro: 2006, name: "Apple TV")
+  case AppleWatch = (intro: 2014, name: "Apple Watch")
+}
+</pre>
+</div>
+
+<p>
+This may not look like the best example, but once you start using enums, you'll often end up in situations where you'd like to be able to do something like the above.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org8b6b1c4" class="outline-3">
+<h3 id="org8b6b1c4"><span class="section-number-3">5.4</span> Enumerating Enum Cases</h3>
+<div class="outline-text-3" id="text-5-4">
+<p>
+We've already discussed this above. There's currently no good way to get a collection of all the cases in an enum so you can iterate over them.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org1390c44" class="outline-3">
+<h3 id="org1390c44"><span class="section-number-3">5.5</span> Default Associated Values</h3>
+<div class="outline-text-3" id="text-5-5">
+<p>
+Another thing which you may run into is that associated values are always types but you can't set a default value for those types. Imagine such an example:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">enum Characters {
+  case Mage(health: Int = 70, magic: Int = 100, strength: Int = 30)
+  case Warrior(health: Int = 100, magic: Int = 0, strength: Int = 100)
+  case Neophyte(health: Int = 50, magic: Int = 20, strength: Int = 80)
+}
+</pre>
+</div>
+
+<p>
+You could still create new cases with different values, but the default settings for your character would be mapped.
+</p>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org679a9af" class="outline-2">
+<h2 id="org679a9af"><span class="section-number-2">6</span> Changes</h2>
+<div class="outline-text-2" id="text-6">
+<p>
+<b><b>10/26/2015</b></b>
+</p>
+<ul class="org-ul">
+<li>Added additional limitation examples (Equatable &amp; Retrieving associated values)</li>
+</ul>
+<p>
+<b><b>10/22/2015</b></b>
+</p>
+<ul class="org-ul">
+<li>Incorporated PR <a href="https://github.com/terhechte/appventure-blog/pull/6">#6 from @mabidakun</a>.</li>
+<li>Added internal links</li>
+<li>Split up the account example into two easier to digest snippets.</li>
+</ul>
+<p>
+<b><b>10/21/2015</b></b> 
+</p>
+<ul class="org-ul">
+<li>Incorporated PR <a href="https://github.com/terhechte/appventure-blog/pull/4">#4 from @blixt</a> and <a href="https://github.com/terhechte/appventure-blog/pull/2">#2 from @kandelvijayavolare</a> and <a href="https://github.com/terhechte/appventure-blog/pull/3">#3 from @sriniram</a> and <a href="https://github.com/terhechte/appventure-blog/pull/5">#5 from @SixFiveSoftware</a></li>
+<li>Added calling code for the Account example.</li>
+<li>Added <code>ErrorType</code> example</li>
+</ul>
+</div>
+</div>
+<div id="footnotes">
+<h2 class="footnotes">Footnotes: </h2>
+<div id="text-footnotes">
+
+<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1">1</a></sup> <div class="footpara">Except by jumping through some hoops, see below</div></div>
+
+<div class="footdef"><sup><a id="fn.2" class="footnum" href="#fnr.2">2</a></sup> <div class="footpara">This is a simplified implementation for demo purposes. In reality you'd write this with optionals and a reverse argument order. Have a look at popular functional programming libraries like <a href="https://github.com/typelift/Swiftz">Swiftz</a> or <a href="https://github.com/ankurp/Dollar.swift">Dollar</a></div></div>
+
+<div class="footdef"><sup><a id="fn.3" class="footnum" href="#fnr.3">3</a></sup> <div class="footpara">This example stems straight <a href="https://developer.apple.com/library/prerelease/ios/documentation/Swift/Conceptual/Swift_Programming_Language/Methods.html#//apple_ref/doc/uid/TP40014097-CH15-ID234">from Apple's Swift documentation</a></div></div>
+
+<div class="footdef"><sup><a id="fn.4" class="footnum" href="#fnr.4">4</a></sup> <div class="footpara">Which make it oftentimes very difficult to discover them</div></div>
+
+<div class="footdef"><sup><a id="fn.5" class="footnum" href="#fnr.5">5</a></sup> <div class="footpara">This is a simplified version, of course. Swift adds a lot of sugar for you</div></div>
+
+<div class="footdef"><sup><a id="fn.6" class="footnum" href="#fnr.6">6</a></sup> <div class="footpara">If you ever used JSON in an app, you may well have run into this issue once</div></div>
+
+<div class="footdef"><sup><a id="fn.7" class="footnum" href="#fnr.7">7</a></sup> <div class="footpara">Btw. You can't use only numbers as enum case names, so <code>case 400</code> does not work</div></div>
+
+<div class="footdef"><sup><a id="fn.8" class="footnum" href="#fnr.8">8</a></sup> <div class="footpara">Although Mac support for R.swift seems to be forthcoming</div></div>
+
+<div class="footdef"><sup><a id="fn.9" class="footnum" href="#fnr.9">9</a></sup> <div class="footpara">Translated: Go there, read it</div></div>
+
+
+</div>
+</div></div>
+
+        <div id="followme">
+            <p>If you read this far, you should follow me (<a href="http://www.twitter.com/terhechte">@terhechte</a>) <br /> on <a href="http://www.twitter.com/terhechte"><i class="fi-social-twitter"></i> Twitter</a></p>
+            <br />
+        </div>
+        
+
+        <div class="footnotes">
+            <ol></ol>
+        </div>
+
+        <p class="anchor"><i class="fi-anchor"></i></p>
+ 
+      </article></div>
+
+
+    </div>
+
+    <div class="column is-narrow">
+
+     <aside class="menu">
+
+         
+
+
+
+      <br />
+      <ul class="menu-list">
+       <li>
+        <p class="menu-label">
+         <a>
+          <i class="fas fa-dove"></i>
+          Swift Topics
+         </a>
+        </p>
+        <ul>
+            <li><a href="/topics/all.html">All</a></li>
+           
+            
+            <li><a href="/topics/swift-tricks.html">Swift Tricks</a></li>
+            
+         
+            
+            <li><a href="/topics/language.html">Language</a></li>
+            
+         
+            
+            <li><a href="/topics/hands-on.html">Hands On</a></li>
+            
+         
+            
+            <li><a href="/topics/blog.html">Blog</a></li>
+            
+         
+            
+         
+        </ul>
+       </li>
+
+       <li>
+           <p class="menu-label">
+               <a>
+                   <i class="fas fa-book"></i>
+                   Guides
+               </a>
+           </p>
+           <ul>
+                 
+               <li><a href="/guides/pattern_matching/intro.html">🧩 Pattern Matching</a></li>
+                 
+               <li><a href="/guides/advanced_practical_enum_examples/introduction.html">🚦 Enums</a></li>
+                 
+               <li><a href="/guides/map_flatmap_reduce_more/intro.html">🗺 Map, Reduce &amp; more</a></li>
+                 
+               <li><a href="/guides/associated_types/associated_types.html">🧙🏻 Associated Types</a></li>
+                 
+               <li><a href="/guides/tuples/introduction.html">🍱 Tuples</a></li>
+                 
+               <li><a href="/guides/optionals/intro.html">⁉️ Optionals</a></li>
+                 
+               <li><a href="/guides/swift_reflection/introduction.html">🔮 Reflection</a></li>
+                 
+           </ul>
+       </li>
+      </ul>
+
+      <div class="sidebar-banner">
+          <a href="https://contravariance.rocks"><img src="/img/contravariance_banner.png" srcset="/img/contravariance_banner.png 1x, /img/contravariance_banner@2x.png 2x" /></a>
+      </div>
+
+      <ul class="menu-list">
+       <li>
+        <p class="menu-label">
+         <a>
+          <i class="fas fa-tags"></i>
+          Tags
+         </a>
+        </p>
+        <ul>
+
+     
+     <li><a href="/tags/pattern-matching.html" class="tags has-addons"><span class="tag is-info is-rounded">pattern matching</span><span class="tag is-primary is-rounded">25</span></a></li>
+     
+     <li><a href="/tags/switch.html" class="tags has-addons"><span class="tag is-info is-rounded">switch</span><span class="tag is-primary is-rounded">24</span></a></li>
+     
+     <li><a href="/tags/enum.html" class="tags has-addons"><span class="tag is-info is-rounded">enum</span><span class="tag is-primary is-rounded">20</span></a></li>
+     
+     <li><a href="/tags/associated.html" class="tags has-addons"><span class="tag is-info is-rounded">associated</span><span class="tag is-primary is-rounded">14</span></a></li>
+     
+     <li><a href="/tags/tuples.html" class="tags has-addons"><span class="tag is-info is-rounded">tuples</span><span class="tag is-primary is-rounded">13</span></a></li>
+     
+     <li><a href="/tags/reflection.html" class="tags has-addons"><span class="tag is-info is-rounded">reflection</span><span class="tag is-primary is-rounded">12</span></a></li>
+     
+     <li><a href="/tags/reduce.html" class="tags has-addons"><span class="tag is-info is-rounded">reduce</span><span class="tag is-primary is-rounded">11</span></a></li>
+     
+     <li><a href="/tags/box.html" class="tags has-addons"><span class="tag is-info is-rounded">box</span><span class="tag is-primary is-rounded">10</span></a></li>
+     
+     <li><a href="/tags/generics.html" class="tags has-addons"><span class="tag is-info is-rounded">generics</span><span class="tag is-primary is-rounded">7</span></a></li>
+     
+     <li><a href="/tags/compactmap.html" class="tags has-addons"><span class="tag is-info is-rounded">compactMap</span><span class="tag is-primary is-rounded">6</span></a></li>
+     
+     <li><a href="/tags/filter.html" class="tags has-addons"><span class="tag is-info is-rounded">filter</span><span class="tag is-primary is-rounded">6</span></a></li>
+     
+     <li><a href="/tags/map.html" class="tags has-addons"><span class="tag is-info is-rounded">map</span><span class="tag is-primary is-rounded">6</span></a></li>
+     
+     <li><a href="/tags/mirror.html" class="tags has-addons"><span class="tag is-info is-rounded">mirror</span><span class="tag is-primary is-rounded">6</span></a></li>
+     
+     <li><a href="/tags/protocol.html" class="tags has-addons"><span class="tag is-info is-rounded">protocol</span><span class="tag is-primary is-rounded">6</span></a></li>
+     
+     <li><a href="/tags/optionals.html" class="tags has-addons"><span class="tag is-info is-rounded">optionals</span><span class="tag is-primary is-rounded">5</span></a></li>
+     
+     <li><a href="/tags/where.html" class="tags has-addons"><span class="tag is-info is-rounded">where</span><span class="tag is-primary is-rounded">5</span></a></li>
+     
+     <li><a href="/tags/erasure.html" class="tags has-addons"><span class="tag is-info is-rounded">erasure</span><span class="tag is-primary is-rounded">4</span></a></li>
+     
+     <li><a href="/tags/equatable.html" class="tags has-addons"><span class="tag is-info is-rounded">equatable</span><span class="tag is-primary is-rounded">3</span></a></li>
+     
+     <li><a href="/tags/destructure.html" class="tags has-addons"><span class="tag is-info is-rounded">destructure</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/error.html" class="tags has-addons"><span class="tag is-info is-rounded">error</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/extension.html" class="tags has-addons"><span class="tag is-info is-rounded">extension</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/guard.html" class="tags has-addons"><span class="tag is-info is-rounded">guard</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/if-let.html" class="tags has-addons"><span class="tag is-info is-rounded">if let</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/is.html" class="tags has-addons"><span class="tag is-info is-rounded">is</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/objc.html" class="tags has-addons"><span class="tag is-info is-rounded">objc</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/optional.html" class="tags has-addons"><span class="tag is-info is-rounded">optional</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/struct.html" class="tags has-addons"><span class="tag is-info is-rounded">struct</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/try.html" class="tags has-addons"><span class="tag is-info is-rounded">try</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/.html" class="tags has-addons"><span class="tag is-info is-rounded">?</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/caseiterable.html" class="tags has-addons"><span class="tag is-info is-rounded">CaseIterable</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/customreflectable.html" class="tags has-addons"><span class="tag is-info is-rounded">CustomReflectable</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/data.html" class="tags has-addons"><span class="tag is-info is-rounded">Data</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/expressiblebystringliteral.html" class="tags has-addons"><span class="tag is-info is-rounded">ExpressibleByStringLiteral</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/rawrepresentable.html" class="tags has-addons"><span class="tag is-info is-rounded">RawRepresentable</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/as.html" class="tags has-addons"><span class="tag is-info is-rounded">as</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/autoclosure.html" class="tags has-addons"><span class="tag is-info is-rounded">autoclosure</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/break.html" class="tags has-addons"><span class="tag is-info is-rounded">break</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/catch.html" class="tags has-addons"><span class="tag is-info is-rounded">catch</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/closure.html" class="tags has-addons"><span class="tag is-info is-rounded">closure</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/copyonwrite.html" class="tags has-addons"><span class="tag is-info is-rounded">copy-on-write</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/coredata.html" class="tags has-addons"><span class="tag is-info is-rounded">coredata</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/either.html" class="tags has-addons"><span class="tag is-info is-rounded">either</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/fallthrough.html" class="tags has-addons"><span class="tag is-info is-rounded">fallthrough</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/for.html" class="tags has-addons"><span class="tag is-info is-rounded">for</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/for-case.html" class="tags has-addons"><span class="tag is-info is-rounded">for case</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/groupby.html" class="tags has-addons"><span class="tag is-info is-rounded">groupby</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/guard-let.html" class="tags has-addons"><span class="tag is-info is-rounded">guard let</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/if-case.html" class="tags has-addons"><span class="tag is-info is-rounded">if case</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/indirect.html" class="tags has-addons"><span class="tag is-info is-rounded">indirect</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/init.html" class="tags has-addons"><span class="tag is-info is-rounded">init</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/init.html" class="tags has-addons"><span class="tag is-info is-rounded">init?</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/inout.html" class="tags has-addons"><span class="tag is-info is-rounded">inout</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/label.html" class="tags has-addons"><span class="tag is-info is-rounded">label</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/literal.html" class="tags has-addons"><span class="tag is-info is-rounded">literal</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/method.html" class="tags has-addons"><span class="tag is-info is-rounded">method</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/overload.html" class="tags has-addons"><span class="tag is-info is-rounded">overload</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/package.html" class="tags has-addons"><span class="tag is-info is-rounded">package</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/partition.html" class="tags has-addons"><span class="tag is-info is-rounded">partition</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/performance.html" class="tags has-addons"><span class="tag is-info is-rounded">performance</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/property.html" class="tags has-addons"><span class="tag is-info is-rounded">property</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/protocols.html" class="tags has-addons"><span class="tag is-info is-rounded">protocols</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/range.html" class="tags has-addons"><span class="tag is-info is-rounded">range</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/self.html" class="tags has-addons"><span class="tag is-info is-rounded">self</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/tupealias.html" class="tags has-addons"><span class="tag is-info is-rounded">tupealias</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/tuple.html" class="tags has-addons"><span class="tag is-info is-rounded">tuple</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/typealias.html" class="tags has-addons"><span class="tag is-info is-rounded">typealias</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/unique.html" class="tags has-addons"><span class="tag is-info is-rounded">unique</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/value-type.html" class="tags has-addons"><span class="tag is-info is-rounded">value type</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/valuetype.html" class="tags has-addons"><span class="tag is-info is-rounded">valuetype</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/vararg.html" class="tags has-addons"><span class="tag is-info is-rounded">vararg</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/wildcard.html" class="tags has-addons"><span class="tag is-info is-rounded">wildcard</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/zip.html" class="tags has-addons"><span class="tag is-info is-rounded">zip</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/.html" class="tags has-addons"><span class="tag is-info is-rounded">~=</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+
+        </ul>
+       </li>
+      </ul>
+
+
+     </aside> 
+
+
+    </div>
+   </div>
+  </div>
+ </section>
+
+ <div class="footer">
+  <article class="media" id="followme">
+   <figure class="media-left">
+    <p class="image is-64x64">
+     <img src="/img/terhechte.jpg" class="profile-image" />
+    </p>
+   </figure>
+   <div class="media-content">
+       <div class="columns">
+           <div class="column">
+               <div class="content">
+                   <p>
+                       <strong>Benedikt Terhechte</strong> <a href="https://twitter.com/terhechte"><small>@terhechte</small></a>
+                       <br />
+                       If you read this far, you should <a href="https://twitter.com/terhechte">follow Benedikt on Twitter</a>.<br />
+                       APPVENTURE is dedicated to providing articles about Swift, macOS, iOS &amp; Linux development.
+                   </p>
+                   <p>
+                       <strong>2011 - 2019 Benedikt Terhechte</strong>
+                   </p>
+               </div>
+           </div>
+           <div class="column">
+               <p>
+                   <a href="https://terhech.de">Benedikt's private blog can be found
+                       at <strong>terhech.de</strong></a>
+               </p>
+               <p>
+                   <br />
+                   <strong>Other Profiles</strong>
+               </p>
+               <p class="subtitle is-6">
+                   <a href="https://twitter.com/terhechte"><i class="fab fa-twitter"></i></a>
+                   <a href="https://www.xing.com/profile/Benedikt_Terhechte">
+                       <i class="fab fa-xing"></i>
+                   </a>
+                   <a href="https://twitter.com/terhechte">
+                       <i class="fab fa-github"></i>
+                   </a>
+                   <a href="https://news.ycombinator.com/user?id=terhechte">
+                       <i class="fab fa-hacker-news"></i>
+                   </a>
+               </p>
+           </div>
+       </div>
+   </div>
+   <div class="media-right">
+    <a href="https://twitter.com/terhechte" class="button is-info is-rounded">
+     <i class="fab fa-twitter"></i> 
+     Follow Me</a>
+   </div>
+  </article>
+ </div>
+
+
+
+</body>
+
+
+</html>

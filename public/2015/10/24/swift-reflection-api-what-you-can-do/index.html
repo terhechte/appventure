@@ -1,0 +1,1214 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>The Swift Reflection API and what you can do with it</title>
+  <link rel="stylesheet" href="/css/bulma.min.css" />
+  <link rel="stylesheet" href="/css/style.css" />
+
+  <meta content="In this post I'll examine the Swift reflection API, see how fast it is, and " name="description" /><meta content="any, anyobject, api, benedikt, c, class, clojure, clojurescript, cocoa, displayType, feature, html, ios, javascript, mac, mirror, objective-c, photodesk, reflecting, reflection, research, struct, stylemac, swift, terhechte" name="keywords" /><meta content="Benedikt Terhechte" name="author" /><meta content="The Swift Reflection API and what you can do with it" property="og:title" /><meta content="In this post I'll examine the Swift reflection API, see how fast it is, and " property="og:description" /><meta content="http://appventure.me/2015/10/24/swift-reflection-api-what-you-can-do/" property="og:url" /><meta content="The Swift Reflection API and what you can do with it" name="twitter:title" /><meta content="In this post I'll examine the Swift reflection API, see how fast it is, and " name="twitter:description" /><meta content="summary_large_image" name="twitter:card" /><meta content="http://appventure.me/img-content/2015-10-24-swift-reflection-api-what-you-can-do-feature-image.jpg" name="twitter:image" /><meta content="http://appventure.me/img-content/2015-10-24-swift-reflection-api-what-you-can-do-feature-image.jpg" property="og:image" />
+  <meta name="twitter:site" content="@terhechte" />
+  <meta name="twitter:creator" content="@terhechte" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700,800" rel="stylesheet" />
+  <script defer="defer" src="/js/fontawesome-all.min.js"></script>
+  
+ </head>
+ <body>
+  <section class="section" id="head">
+   <div class="container" id="container">
+    <div>
+
+     <div class="columns">
+      <div class="column is-3">
+          <span id="brand"><a href="/index.html"><img src="/img/brand.png" srcset="/img/brand.png 1x, /img/brand@2x.png 2x" /></a></span>
+      </div>
+      <div class="column is-7">
+       <span id="subbrand">
+        Simple. Swift. Guides.</span>
+      </div>
+      <div class="column is-2">
+          <div class="field">
+
+          </div>
+      </div>
+     </div>
+    </div>
+   </div>
+  </section>
+
+
+  <section class="section" id="main">
+   <div class="container" id="container">
+    <div class="columns">
+     <div class="column">
+      <div class="columns">
+       <div class="column">
+        <div class="tabs">
+		 
+        </div>
+       </div>
+       <div class="column is-narrow">
+        <div class="buttons has-addons is-hidden-mobile">
+        </div>
+       </div>
+      </div>
+
+      <div class="box" style="margin-bottom: 250px;">
+            <h5 style="font-size: 38px; font-weight: bold;"><a class="xx-new-article" href="https://appventure.me/guides/swift_reflection/introduction.html">AppVenture has been updated</a></h5>
+            <p style="padding-top: 10px; padding-bottom: 10px; font-size: 18px;">
+                All articles have been rewritten and improved. You will be forwarded
+                to the updated article.
+            </p>
+            <p style="font-size: 18px; font-weight: bold;">
+                <a class="xx-new-article" href="https://appventure.me/guides/swift_reflection/introduction.html" id="xxx-new-article">Click here to go there directly.</a>
+            </p>
+            <script>
+                 setTimeout(function(){ 
+                    document.location.href=document.getElementById("xxx-new-article").href;
+                },
+                    0);
+            </script>
+      </div>
+
+
+
+
+      <div role="content" id="maincontent" style="opacity: 0.5"><article id="article-1478631696" class="article-post content is-medium">
+
+
+ 
+          <h6><i class="fi-pencil"></i> Sat, 24 Oct 2015 <a href="/2015/10/24/swift-reflection-api-what-you-can-do/">#</a></h6>
+
+        <h3><a href="/2015/10/24/swift-reflection-api-what-you-can-do/">The Swift Reflection API and what you can do with it</a></h3>
+
+
+
+        <div class="actual-content"><!-- #+feature-image: /img-content/2015-10-24-swift-reflection-api-what-you-can-do-feature-image.jpg -->
+
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org7564802">1. API Overview</a>
+<ul>
+<li><a href="#org616e1d8">1.1. Mirrors</a></li>
+<li><a href="#org25ad44d">1.2. Creating a Mirror</a></li>
+<li><a href="#orgc0dc10e">1.3. What's in a Mirror</a></li>
+<li><a href="#orgb167afe">1.4. How to use a Mirror</a>
+<ul>
+<li><a href="#org8baf2f3">1.4.1. displayStyle</a></li>
+<li><a href="#org1f59a67">1.4.2. children</a></li>
+<li><a href="#org4891739">1.4.3. SubjectType</a></li>
+<li><a href="#org49a64e7">1.4.4. SuperclassMirror</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#org1c0fee1">2. Practical Example</a>
+<ul>
+<li><a href="#org366c376">2.1. Structs to Core Data</a></li>
+<li><a href="#org713ff03">2.2. A Protocol</a></li>
+<li><a href="#org0427557">2.3. Bookmark struct</a></li>
+<li><a href="#org9c597bb">2.4. Protocol Extension</a></li>
+<li><a href="#org7dc6aa2">2.5. A Bit of Core Data</a></li>
+<li><a href="#org35a84d9">2.6. Implementing the Reflection</a></li>
+</ul>
+</li>
+<li><a href="#org3645de8">3. Performance</a></li>
+<li><a href="#custommirrors">4. Custom Mirrors</a>
+<ul>
+<li><a href="#org561a0b3">4.1. Collections</a></li>
+<li><a href="#orgbfe31b5">4.2. Classes or Structs</a></li>
+</ul>
+</li>
+<li><a href="#org09f6a7f">5. Use Cases</a></li>
+<li><a href="#org421f1d1">6. Discussion</a></li>
+<li><a href="#org8b4cc2f">7. More Information</a></li>
+</ul>
+</div>
+</div>
+<h6><a href="/2015/10/24/swift-reflection-api-what-you-can-do/">This post is also available in <b>🇨🇳Chinese</b></a><span> Thanks to </span><a href="/2015/10/24/swift-reflection-api-what-you-can-do/">SwiftGG</a></h6>
+
+<p>
+Even though Swift stresses strong types, compile time safety, static dispatch it still offers a Reflection mechanism as part of the standard library. You may already have seen it in various blog posts or projects like <a href="http://design.featherless.software/enumerating-tuple-values-swift/?utm_campaign=Swift%2BSandbox&amp;utm_medium=email&amp;utm_source=Swift_Sandbox_12">here (Tuples)</a>, <a href="http://design.featherless.software/enumerate-messages-midipacket-swift-reflection/">here (Midi Packets)</a> or <a href="https://github.com/terhechte/corevalue">here (Core Data).</a> Maybe you're interested in using in one of your projects, or you may want to better understand the problem domains on which reflection can be applied. This is an overview of the possibilities of the Swift Reflection API based a talk I held recently at the <a href="http://www.macoun.de">Macoun conference</a> in Frankfurt, Germany.
+</p>
+
+<div id="outline-container-org7564802" class="outline-2">
+<h2 id="org7564802"><span class="section-number-2">1</span> API Overview</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+The best understanding of the topic can be achieved by having a look at the API to see what it offers us.
+</p>
+</div>
+
+<div id="outline-container-org616e1d8" class="outline-3">
+<h3 id="org616e1d8"><span class="section-number-3">1.1</span> Mirrors</h3>
+<div class="outline-text-3" id="text-1-1">
+<p>
+Swift's reflection capabilities are based around a <code>struct</code> called <b>Mirror</b>. You create a mirror for a particular <code>subject</code> and the mirror will then let you query it.
+</p>
+
+<p>
+Before we do that, let's define a simple data structure that we can use as our subject.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">import Foundation.NSURL
+
+public class Store {
+    let storesToDisk: Bool = true
+}
+public class BookmarkStore: Store {
+    let itemCount: Int = 10
+}
+public struct Bookmark {
+   enum Group {
+      case Tech
+      case News
+   }
+   private let store = {
+       return BookmarkStore()
+   }()
+   let title: String?
+   let url: NSURL
+   let keywords: [String]
+   let group: Group
+}
+
+let aBookmark = Bookmark(title: "Appventure", url: NSURL(string: "appventure.me")!, keywords: ["Swift", "iOS", "OSX"], group: .Tech)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org25ad44d" class="outline-3">
+<h3 id="org25ad44d"><span class="section-number-3">1.2</span> Creating a Mirror</h3>
+<div class="outline-text-3" id="text-1-2">
+<p>
+The easiest way of creating a mirror is the <code>reflecting</code> initializer:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">public init(reflecting subject: Any)
+</pre>
+</div>
+
+<p>
+Lets use it with our <code>aBookmark</code> <code>struct</code>:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">
+let aMirror = Mirror(reflecting: aBookmark)
+print(aMirror)
+// prints : Mirror for Bookmark
+</pre>
+</div>
+
+<p>
+So this creates a <code>Mirror for Bookmark</code>. As you can see, the type of the subject is <code>Any</code>. This is the most general type in Swift. Anything under the Swift Sun is at least of type <code>Any</code> <sup><a id="fnr.1" class="footref" href="#fn.1">1</a></sup>. So this makes the mirror compatible with <code>struct</code>, <code>class</code>, <code>enum</code>, <code>Tuple</code>, <code>Array</code>, <code>Dictionary</code>, <code>set</code>, etc.
+</p>
+
+<p>
+There are three additional initializers in the Mirror struct, however those are mostly used for circumstances where you'd want to provide your own, custom mirror. We <a href="#custommirrors">will explain those additional initializers below when we discuss custom mirrors</a>.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgc0dc10e" class="outline-3">
+<h3 id="orgc0dc10e"><span class="section-number-3">1.3</span> What's in a Mirror</h3>
+<div class="outline-text-3" id="text-1-3">
+<p>
+The <code>Mirror struct</code> contains several <code>types</code> to help you identify the information you'd like to query.
+</p>
+
+<p>
+The first one is the <code>DisplayStyle</code> <code>enum</code> which tells you the type of the subject:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">public enum DisplayStyle {
+    case Struct
+    case Class
+    case Enum
+    case Tuple
+    case Optional
+    case Collection
+    case Dictionary
+    case Set
+}
+</pre>
+</div>
+
+<p>
+Those are the supported types of the reflection API. As we saw earlier, reflection only requires an <code>Any</code> type, and there're many things in the Swift standard library that are of type <code>Any</code> but aren't listed in the <code>DisplayStyle</code> enum above. What happens when you try to reflect over one of those, say a closure?
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">let closure = { (a: Int) -&gt; Int in return a * 2 }
+let aMirror = Mirror(reflecting: closure)
+</pre>
+</div>
+
+<p>
+In this case, you'd get a mirror, but the <code>DisplayStyle</code> would be nil <sup><a id="fnr.2" class="footref" href="#fn.2">2</a></sup>
+</p>
+
+<p>
+There's also a <code>typealias</code> for the child elements of a <code>Mirror</code>:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">public typealias Child = (label: String?, value: Any)
+</pre>
+</div>
+
+<p>
+So each child consists out of an optional <b>label</b> and a <b>value</b> of type <code>Any</code>. Why would the label be an <code>Optional</code>? If you think about it, it makes sense, not all of the structures that are supported by reflection have children with names. A <code>struct</code> has the property's name as the label, but a Collection only has indexes, not names. Tuples are a little bit special. In Swift values in tuple could have optional labels. Doesn't matter if value in tupple is labeled or not, in reflection tuple will have labels ".0", ".1" and so on.
+</p>
+
+<p>
+Next up is the <code>AncestorRepresentation</code> <code>enum</code> <sup><a id="fnr.3" class="footref" href="#fn.3">3</a></sup>:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">public enum AncestorRepresentation {
+    /// Generate a default mirror for all ancestor classes.  This is the
+    /// default behavior.
+    case Generated
+    /// Use the nearest ancestor's implementation of `customMirror()` to
+    /// create a mirror for that ancestor.      
+    case Customized(() -&gt; Mirror)
+    /// Suppress the representation of all ancestor classes.  The
+    /// resulting `Mirror`'s `superclassMirror()` is `nil`.
+    case Suppressed
+}
+</pre>
+</div>
+
+<p>
+This <code>enum</code> is used to define how superclasses of the reflected subject should be reflected. I.e. this is only used for subjects of type <code>class</code>. The default (as you can see) is that Swift generates an additional mirror for each superclass. However, if you need more flexibility here, you can use the <code>AncestorRepresentation enum</code> to define how superclasses are being mirrored. <a href="#custommirrors">We will have a look at that further below</a>. 
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgb167afe" class="outline-3">
+<h3 id="orgb167afe"><span class="section-number-3">1.4</span> How to use a Mirror</h3>
+<div class="outline-text-3" id="text-1-4">
+<p>
+So we have our <code>aMirror</code> instance variable that reflects our <code>aBookmark</code> of type <code>Bookmark</code> subject. What do we do with it?
+</p>
+
+<p>
+These are the available properties / methods on a <code>Mirror</code>:
+</p>
+
+<ul class="org-ul">
+<li><code>let children: Children</code>: The child elements of our subject</li>
+<li><code>displayStyle: Mirror.DisplayStyle?</code>: The display style of the subject</li>
+<li><code>let subjectType: Any.Type</code> : The type of the subject</li>
+<li><code>func superclassMirror() -&gt; Mirror?</code>: The mirror of the subject's superclass</li>
+</ul>
+
+<p>
+In the next step, we will analyze each of these.
+</p>
+</div>
+
+<div id="outline-container-org8baf2f3" class="outline-4">
+<h4 id="org8baf2f3"><span class="section-number-4">1.4.1</span> displayStyle</h4>
+<div class="outline-text-4" id="text-1-4-1">
+<p>
+This is easy. It will just return a case of the <code>DisplayStyle</code> <code>enum</code>. If you're trying to reflect over an unsupported type, you'll get an empty <code>Optional</code> back (as explained above).
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">
+print (aMirror.displayStyle)
+// prints: Optional(Swift.Mirror.DisplayStyle.Struct)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org1f59a67" class="outline-4">
+<h4 id="org1f59a67"><span class="section-number-4">1.4.2</span> children</h4>
+<div class="outline-text-4" id="text-1-4-2">
+<p>
+This returns a <code>AnyForwardCollection&lt;Child&gt;</code> with all the children that the subject contains. Children are not limited to entries in an <code>Array</code> or <code>Dictionary</code>. All properties of a <code>struct</code> or <code>class</code>, for example, are also children returned by this property. The protocol <code>AnyForwardCollection</code> means that this is a collection type with indices that support forward traversal.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">
+for case let (label?, value) in aMirror.children {
+    print (label, value)
+}
+//prints:
+//: store main.BookmarkStore
+//: title Optional("Appventure")
+//: url appventure.me
+//: keywords ["Swift", "iOS", "OSX"]
+//: group Tech
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org4891739" class="outline-4">
+<h4 id="org4891739"><span class="section-number-4">1.4.3</span> SubjectType</h4>
+<div class="outline-text-4" id="text-1-4-3">
+<p>
+This is the type of the subject:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">
+print(aMirror.subjectType)
+//prints : Bookmark
+print(Mirror(reflecting: 5).subjectType)
+//prints : Int
+print(Mirror(reflecting: "test").subjectType)
+//prints : String
+print(Mirror(reflecting: NSNull()).subjectType)
+//print : NSNull
+</pre>
+</div>
+
+<p>
+However, the Swift documentation has the following to say:
+</p>
+<blockquote>
+<p>
+This type may differ from the subject's dynamic type when <code>self</code>
+is the <code>superclassMirror()</code> of another mirror.
+</p>
+</blockquote>
+</div>
+</div>
+
+<div id="outline-container-org49a64e7" class="outline-4">
+<h4 id="org49a64e7"><span class="section-number-4">1.4.4</span> SuperclassMirror</h4>
+<div class="outline-text-4" id="text-1-4-4">
+<p>
+This is the mirror of the superclass of our subject. If the subject is not a class, this will be an empty <code>Optional</code>. If this is a class-based type, you'll get a new <code>Mirror</code>:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">
+// try our struct
+print(Mirror(reflecting: aBookmark).superclassMirror())
+// prints: nil
+// try a class
+print(Mirror(reflecting: aBookmark.store).superclassMirror())
+// prints: Optional(Mirror for Store)
+
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org1c0fee1" class="outline-2">
+<h2 id="org1c0fee1"><span class="section-number-2">2</span> Practical Example</h2>
+<div class="outline-text-2" id="text-2">
+</div>
+<div id="outline-container-org366c376" class="outline-3">
+<h3 id="org366c376"><span class="section-number-3">2.1</span> Structs to Core Data</h3>
+<div class="outline-text-3" id="text-2-1">
+<p>
+Imagine we're working at the newest, hot, tech startup: <b>Books Bunny</b>.
+We offer an Artificial Intelligence with a browser plugin that automatically analyses all the sites that the user visits and automatically bookmarks the relevant urls. 
+</p>
+
+<p>
+It's 2016, Swift is already open source, so our server backend is obviously written in Swift. Since we have millions of site visits active in our system at a time, we'd like to use <code>structs</code> for the analysis part of each site that a user visits. However, if our AI decides that this is worthy of a bookmark, we'd like to use CoreData to store this type in a database. 
+</p>
+
+<p>
+Now, we don't want to write custom serialization to Core Data code whenever we introduce a new <code>struct</code>. Rather, we'd like to develop this in a way so that we can utilize it for all future <code>structs</code> we develop.
+</p>
+
+<p>
+So, how do we do that?
+</p>
+</div>
+</div>
+
+<div id="outline-container-org713ff03" class="outline-3">
+<h3 id="org713ff03"><span class="section-number-3">2.2</span> A Protocol</h3>
+<div class="outline-text-3" id="text-2-2">
+<p>
+Remember, we have a <code>struct</code> and want to automatically convert this to <code>NSManagedObject</code> (<b>Core Data</b>).
+</p>
+
+<p>
+If we want to support different <code>structs</code> or even types, we can implement this as a protocol and then make sure our desired types conform to it. So which functionality should our imaginary protocol offer?
+</p>
+
+<ul class="org-ul">
+<li>First, it should allow us to define the name of the <b>Core Data Entity</b> that we want to create</li>
+<li>Second, it should have a way to tell it to convert itself to an <code>NSManagedObject</code></li>
+</ul>
+
+<p>
+Our <code>protocol</code> could look something like this:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">protocol StructDecoder {
+    // The name of our Core Data Entity
+    static var EntityName: String { get }
+    // Return an NSManagedObject with our properties set
+    func toCoreData(context: NSManagedObjectContext) throws -&gt; NSManagedObject
+}
+</pre>
+</div>
+
+<p>
+The <code>toCoreData</code> method uses the new Swift 2.0 exception handling to throw an error, if the conversion fails. There're several possible error cases, which are outlined in the <code>ErrorType</code> <code>enum</code> below:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">enum SerializationError: ErrorType {
+    // We only support structs
+    case StructRequired
+    // The entity does not exist in the Core Data Model
+    case UnknownEntity(name: String)
+    // The provided type cannot be stored in core data
+    case UnsupportedSubType(label: String?)
+}
+</pre>
+</div>
+
+<p>
+We have three error cases that our conversion has to look out for. The first one is that we're trying to apply it to something that is not a <code>struct</code>. The second is that the <code>entity</code> we're trying to create does not exist in our Core Data Model. The third is that we're trying to write something into Core Data which can not be stored there (i.e. an <code>enum</code>).
+</p>
+
+<p>
+Let's create a struct and add protocol conformance:
+</p>
+</div>
+</div>
+
+<div id="outline-container-org0427557" class="outline-3">
+<h3 id="org0427557"><span class="section-number-3">2.3</span> Bookmark struct</h3>
+<div class="outline-text-3" id="text-2-3">
+<div class="org-src-container">
+<pre class="src src-swift">struct Bookmark {
+   let title: String
+   let url: NSURL
+   let pagerank: Int
+   let created: NSDate
+}
+</pre>
+</div>
+
+<p>
+Next, we'd like to implement the <code>toCoreData</code> method.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org9c597bb" class="outline-3">
+<h3 id="org9c597bb"><span class="section-number-3">2.4</span> Protocol Extension</h3>
+<div class="outline-text-3" id="text-2-4">
+<p>
+We could, of course, write this anew for each <code>struct</code>, but that's a lot of work. Structs do not support inheritance, so we can't use a base class. However, we can use a <code>protocol extension</code> to extend to all conforming <code>structs</code>:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">extension StructDecoder {
+    func toCoreData(context: NSManagedObjectContext) throws -&gt; NSManagedObject {
+    }
+}
+</pre>
+</div>
+
+<p>
+As this extension is being applied to our conforming <code>structs</code>, this method will be called in the structs context. Thus, within the extension, <code>self</code> refers to the <code>struct</code> which we'd like to analyze.
+</p>
+
+<p>
+So, the first step for us is to create an <code>NSManagedObject</code> into which we can then write the values from our <code>Bookmark struct</code>. How do we do that? 
+</p>
+</div>
+</div>
+
+<div id="outline-container-org7dc6aa2" class="outline-3">
+<h3 id="org7dc6aa2"><span class="section-number-3">2.5</span> A Bit of Core Data</h3>
+<div class="outline-text-3" id="text-2-5">
+<p>
+Core Data is a tad verbose, so in order to create an object, we need the following steps:
+</p>
+
+<ol class="org-ol">
+<li>Get the name of the entity which we'd like to create (as a string)</li>
+<li>Take the <code>NSManagedObjectContext</code>, and create an <code>NSEntityDescription</code> for our entity</li>
+<li>Create an <code>NSManagedObject</code> with this information.</li>
+</ol>
+
+<p>
+When we implement this, we have:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">// Get the name of the Core Data Entity
+let entityName = self.dynamicType.EntityName
+
+// Create the Entity Description
+// The entity may not exist, so we're using a 'guard let' to throw 
+// an error in case it does not exist in our core data model
+guard let desc = NSEntityDescription.entityForName(entityName, inManagedObjectContext: context)
+    else { throw UnknownEntity(name: entityName) }
+
+// Create the NSManagedObject
+let managedObject = NSManagedObject(entity: desc, insertIntoManagedObjectContext: context)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org35a84d9" class="outline-3">
+<h3 id="org35a84d9"><span class="section-number-3">2.6</span> Implementing the Reflection</h3>
+<div class="outline-text-3" id="text-2-6">
+<p>
+Next up, we'd like to use the Reflection API to read our bookmarks properties and write it into our <code>NSManagedObject</code> instance.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">// Create a Mirror
+let mirror = Mirror(reflecting: self)
+
+// Make sure we're analyzing a struct
+guard mirror.displayStyle == .Struct else { throw SerializationError.StructRequired }
+</pre>
+</div>
+
+<p>
+We're making sure that this is indeed a <code>struct</code> by testing the <code>displayStyle</code> property.
+</p>
+
+<p>
+So now we have a <code>Mirror</code> that allows us to read properties, and we have a <code>NSManagedObject</code> which we can set properties on. As the mirror offers a way to read all children, we can iterate over them and set the values. So let's do that.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">for case let (label?, value) in mirror.children {
+    managedObject.setValue(value, forKey: label)
+}
+</pre>
+</div>
+
+<p>
+Awesome. However, if we try to compile this, it will fail. The reason is that <code>setValueForKey</code> requires an object of type <code>AnyObject?</code>, however our <code>children</code> property only returns a <code>tuple</code> of type <code>(String?, Any)</code> - i.e. our value is of type <code>Any</code> but we need an <code>AnyObject</code>. To solve this, we have to test the value for <code>AnyObject</code> conformance. This also means that we can throw an error if we receive a property with a type that does not conform to <code>AnyObject</code> (such as an <code>enum</code>, for example).
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift" id="org079fd04">let mirror = Mirror(reflecting: self)
+
+guard mirror.displayStyle == .Struct 
+  else { throw SerializationError.StructRequired }
+
+for case let (label?, anyValue) in mirror.children {
+    if let value = anyValue as? AnyObject {
+	managedObject.setValue(child, forKey: label)
+    } else {
+	throw SerializationError.UnsupportedSubType(label: label)
+    }
+}
+</pre>
+</div>
+
+<p>
+Now, our <code>setValueForKey</code> method will only be called if and only if the child is of type <code>AnyObject</code>.
+</p>
+
+<p>
+Now, the only thing left to do is return our <code>NSManagedObject</code>. The complete code looks like this:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">extension StructDecoder {
+    func toCoreData(context: NSManagedObjectContext) throws -&gt; NSManagedObject {
+	let entityName = self.dynamicType.EntityName
+
+	// Create the Entity Description
+	guard let desc = NSEntityDescription.entityForName(entityName, inManagedObjectContext: context)
+	    else { throw UnknownEntity(name: entityName) }
+
+	// Create the NSManagedObject
+	let managedObject = NSManagedObject(entity: desc, insertIntoManagedObjectContext: context)
+
+	// Create a Mirror
+	let mirror = Mirror(reflecting: self)
+
+	// Make sure we're analyzing a struct
+	guard mirror.displayStyle == .Struct else { throw SerializationError.StructRequired }
+
+	for case let (label?, anyValue) in mirror.children {
+	    if let value = anyValue as? AnyObject {
+		managedObject.setValue(child, forKey: label)
+	    } else {
+		throw SerializationError.UnsupportedSubType(label: label)
+	    }
+	}
+
+	return managedObject
+    }
+}
+</pre>
+</div>
+
+<p>
+That's it. We're converting our <code>struct</code> to <code>NSManagedObject</code>.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org3645de8" class="outline-2">
+<h2 id="org3645de8"><span class="section-number-2">3</span> Performance</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+So, how fast is this? Can this be used well in production? I did some testing:
+</p>
+
+        <style type="text/css">
+         .linechart {
+             border: 3px solid white;
+             border-radius: 32px;
+             font-family: Sans-Serif;
+             color: white;
+             font-weight: normal;
+             padding: 4px;
+             margin-bottom: 20px;
+         }
+         .redxx {
+             background-color: red;
+         }
+         .greenxx {
+             background-color: green;
+         }
+         .linechart > span {
+             padding: 4px;
+         }
+         h3.ggx {
+             font-family: Sans-Serif;
+font-weight: normal;
+         }
+         .orangexx {
+             background-color: orange;
+         }
+        </style>
+        <div style="background-color: #ccc; padding: 20px; border-radius: 16px;">
+
+        <h3 class="ggx">Create 2000 NSManagedObjects</h3>
+
+        <div class="linechart greenxx" style="width: 30%">
+            <span>Native: 0.062 seconds</span>
+        </div>
+        <div class="linechart redxx">
+            <span>Reflection: 0.207 seconds</span>
+        </div>
+        </div>
+
+<p>
+Native, here, means creating an <code>NSManagedObject</code> and setting the property values via <code>setValueForKey</code>. If you create a <code>NSManagedObject</code> subclass within Core Data and set the values directly on the properties (without the dynamic <code>setValueForKey</code> overhead) this is probably even faster.
+</p>
+
+<p>
+So, as you can see, using reflection slows the whole process of creating <code>NSManagedObjects</code> down by about <b>3.5x</b>. This is fine when you're using this for a limited amount of items, or when you don't have to care about speed. However, when you need to reflect over a huge amount of <code>structs</code>, this will probably kill your app's performance.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org9063f86" class="outline-2">
+<h2 id="custommirrors"><a id="org9063f86"></a><span class="section-number-2">4</span> Custom Mirrors</h2>
+<div class="outline-text-2" id="text-custommirrors">
+<p>
+As we already discussed earlier, there're other options creating a Mirror. This is useful, for example, if you need to customize just how much of your <b>subject</b> can be seen with a mirror. The <code>Mirror Struct</code> has additional initializers for this. 
+</p>
+</div>
+
+<div id="outline-container-org561a0b3" class="outline-3">
+<h3 id="org561a0b3"><span class="section-number-3">4.1</span> Collections</h3>
+<div class="outline-text-3" id="text-4-1">
+<p>
+The first special <code>init</code> is tailor-made for collections:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">public init&lt;T, C : CollectionType where C.Generator.Element == Child&gt;
+  (_ subject: T, children: C, 
+   displayStyle: Mirror.DisplayStyle? = default, 
+   ancestorRepresentation: Mirror.AncestorRepresentation = default)
+</pre>
+</div>
+
+<p>
+Compared to the <code>init(reflecting:)</code> initializer above, this one allows us to define much more details about the reflection process.
+</p>
+<ul class="org-ul">
+<li>It only works for collections</li>
+<li>We can set the subject to be reflected <b>and</b> the children of the subject (the collection contents)</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgbfe31b5" class="outline-3">
+<h3 id="orgbfe31b5"><span class="section-number-3">4.2</span> Classes or Structs</h3>
+<div class="outline-text-3" id="text-4-2">
+<p>
+The second can be used for a <code>class</code> or a <code>struct</code>.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">public init&lt;T&gt;(_ subject: T, 
+  children: DictionaryLiteral&lt;String, Any&gt;, 
+  displayStyle: Mirror.DisplayStyle? = default, 
+  ancestorRepresentation: Mirror.AncestorRepresentation = default)
+</pre>
+</div>
+
+<p>
+Interesting to note, here, is that you provide the children (i.e. properties) of your subject as a <code>DictionaryLiteral</code> which is a bit like a dictionary only that it can be used directly as function parameters. If we implement this for our <code>Bookmark struct</code>, it looks like this:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">extension Bookmark: CustomReflectable {
+    func customMirror() -&gt; Mirror {
+	let children = DictionaryLiteral&lt;String, Any&gt;(dictionaryLiteral: 
+	("title", self.title), ("pagerank", self.pagerank), 
+	("url", self.url), ("created", self.created), 
+	("keywords", self.keywords), ("group", self.group))
+
+	return Mirror.init(Bookmark.self, children: children, 
+	    displayStyle: Mirror.DisplayStyle.Struct, 
+	    ancestorRepresentation:.Suppressed)
+    }
+}
+</pre>
+</div>
+
+<p>
+If we do another performance measurement now, there's even a slight improvement:
+</p>
+
+        <div style="background-color: #ccc; padding: 20px; border-radius: 16px;">
+
+        <h3 class="ggx">Create 2000 NSManagedObjects</h3>
+
+        <div class="linechart greenxx" style="width: 30%">
+            <span>Native: 0.062 seconds</span>
+        </div>
+        <div class="linechart redxx">
+            <span>Reflection: 0.207 seconds</span>
+        </div>
+        <div class="linechart orangexx" style="width: 98%">
+            <span>Reflection: 0.203 seconds</span>
+        </div>
+</div>
+
+<p>
+But hardly worth the effort, as it defeats our initial purpose of reflecting over our <code>struct</code>'s members. 
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org09f6a7f" class="outline-2">
+<h2 id="org09f6a7f"><span class="section-number-2">5</span> Use Cases</h2>
+<div class="outline-text-2" id="text-5">
+<p>
+So, where does this leave us? What are good use cases for this? Obviously, if you're working a lot of <code>NSManagedObject</code>'s, this will considerably slow down your code base. Also if you only have one or two <code>structs</code>, it is easier, more performant, and less magical if you simply write a serialization technique yourself with the domain knowledge of your individual <code>struct</code>.
+</p>
+
+<p>
+Rather, the reflection technique showcased here can be used if you have many, complicated structs, and you'd like to store some of those sometimes. 
+</p>
+
+<p>
+Examples would be:
+</p>
+
+<ul class="org-ul">
+<li>Setting Favorites</li>
+<li>Storing Bookmarks</li>
+<li>Staring Items</li>
+<li>Keeping the last selection</li>
+<li>Storing the ast open item across restarts</li>
+<li>Temporary storage of items during specific processes.</li>
+</ul>
+
+<p>
+Apart from that, of course, you can also use reflection for other use cases:
+</p>
+
+<ul class="org-ul">
+<li>Iterate over tuples</li>
+<li>Analyze classes</li>
+<li>Runtime analysis of object conformance</li>
+<li>Generated detailed logging / debugging information automatically (i.e. for externally generated objects)</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org421f1d1" class="outline-2">
+<h2 id="org421f1d1"><span class="section-number-2">6</span> Discussion</h2>
+<div class="outline-text-2" id="text-6">
+<p>
+The Reflection API exists primarily as a tool for the Playgrounds. Objects conforming to the reflection API can easily be displayed in a hierarchical way in the playgrounds sidebar. Thus, the performance is not optimal. Nevertheless, this has still interesting use cases outside of playgrounds as we explained in the <b>Use Cases</b> chapter.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org8b4cc2f" class="outline-2">
+<h2 id="org8b4cc2f"><span class="section-number-2">7</span> More Information</h2>
+<div class="outline-text-2" id="text-7">
+<p>
+The source documentation of the Reflection API is very detailed. I'd encourage everyone to have a look at that as well.
+</p>
+
+<p>
+Also, there's a much more exhaustive implementation of the techniques showcased here in the <a href="http://github.com/terhechte/corevalue">CoreValue</a> project on GitHub which allows you to easily encode and decode from / to Structs to CoreData.
+</p>
+</div>
+</div>
+<div id="footnotes">
+<h2 class="footnotes">Footnotes: </h2>
+<div id="text-footnotes">
+
+<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1">1</a></sup> <div class="footpara">In particular, <code>Any</code> is an empty protocol and everything implicitly conforms to this protocol</div></div>
+
+<div class="footdef"><sup><a id="fn.2" class="footnum" href="#fnr.2">2</a></sup> <div class="footpara">Or rather, an empty optional</div></div>
+
+<div class="footdef"><sup><a id="fn.3" class="footnum" href="#fnr.3">3</a></sup> <div class="footpara">I've shortened the documentation a bit</div></div>
+
+
+</div>
+</div></div>
+
+        <div id="followme">
+            <p>If you read this far, you should follow me (<a href="http://www.twitter.com/terhechte">@terhechte</a>) <br /> on <a href="http://www.twitter.com/terhechte"><i class="fi-social-twitter"></i> Twitter</a></p>
+            <br />
+        </div>
+        
+
+        <div class="footnotes">
+            <ol></ol>
+        </div>
+
+        <p class="anchor"><i class="fi-anchor"></i></p>
+ 
+      </article></div>
+
+
+    </div>
+
+    <div class="column is-narrow">
+
+     <aside class="menu">
+
+         
+
+
+
+      <br />
+      <ul class="menu-list">
+       <li>
+        <p class="menu-label">
+         <a>
+          <i class="fas fa-dove"></i>
+          Swift Topics
+         </a>
+        </p>
+        <ul>
+            <li><a href="/topics/all.html">All</a></li>
+           
+            
+            <li><a href="/topics/swift-tricks.html">Swift Tricks</a></li>
+            
+         
+            
+            <li><a href="/topics/language.html">Language</a></li>
+            
+         
+            
+            <li><a href="/topics/hands-on.html">Hands On</a></li>
+            
+         
+            
+            <li><a href="/topics/blog.html">Blog</a></li>
+            
+         
+            
+         
+        </ul>
+       </li>
+
+       <li>
+           <p class="menu-label">
+               <a>
+                   <i class="fas fa-book"></i>
+                   Guides
+               </a>
+           </p>
+           <ul>
+                 
+               <li><a href="/guides/pattern_matching/intro.html">🧩 Pattern Matching</a></li>
+                 
+               <li><a href="/guides/advanced_practical_enum_examples/introduction.html">🚦 Enums</a></li>
+                 
+               <li><a href="/guides/map_flatmap_reduce_more/intro.html">🗺 Map, Reduce &amp; more</a></li>
+                 
+               <li><a href="/guides/associated_types/associated_types.html">🧙🏻 Associated Types</a></li>
+                 
+               <li><a href="/guides/tuples/introduction.html">🍱 Tuples</a></li>
+                 
+               <li><a href="/guides/optionals/intro.html">⁉️ Optionals</a></li>
+                 
+               <li><a href="/guides/swift_reflection/introduction.html">🔮 Reflection</a></li>
+                 
+           </ul>
+       </li>
+      </ul>
+
+      <div class="sidebar-banner">
+          <a href="https://contravariance.rocks"><img src="/img/contravariance_banner.png" srcset="/img/contravariance_banner.png 1x, /img/contravariance_banner@2x.png 2x" /></a>
+      </div>
+
+      <ul class="menu-list">
+       <li>
+        <p class="menu-label">
+         <a>
+          <i class="fas fa-tags"></i>
+          Tags
+         </a>
+        </p>
+        <ul>
+
+     
+     <li><a href="/tags/pattern-matching.html" class="tags has-addons"><span class="tag is-info is-rounded">pattern matching</span><span class="tag is-primary is-rounded">25</span></a></li>
+     
+     <li><a href="/tags/switch.html" class="tags has-addons"><span class="tag is-info is-rounded">switch</span><span class="tag is-primary is-rounded">24</span></a></li>
+     
+     <li><a href="/tags/enum.html" class="tags has-addons"><span class="tag is-info is-rounded">enum</span><span class="tag is-primary is-rounded">20</span></a></li>
+     
+     <li><a href="/tags/associated.html" class="tags has-addons"><span class="tag is-info is-rounded">associated</span><span class="tag is-primary is-rounded">14</span></a></li>
+     
+     <li><a href="/tags/tuples.html" class="tags has-addons"><span class="tag is-info is-rounded">tuples</span><span class="tag is-primary is-rounded">13</span></a></li>
+     
+     <li><a href="/tags/reflection.html" class="tags has-addons"><span class="tag is-info is-rounded">reflection</span><span class="tag is-primary is-rounded">12</span></a></li>
+     
+     <li><a href="/tags/reduce.html" class="tags has-addons"><span class="tag is-info is-rounded">reduce</span><span class="tag is-primary is-rounded">11</span></a></li>
+     
+     <li><a href="/tags/box.html" class="tags has-addons"><span class="tag is-info is-rounded">box</span><span class="tag is-primary is-rounded">10</span></a></li>
+     
+     <li><a href="/tags/generics.html" class="tags has-addons"><span class="tag is-info is-rounded">generics</span><span class="tag is-primary is-rounded">7</span></a></li>
+     
+     <li><a href="/tags/compactmap.html" class="tags has-addons"><span class="tag is-info is-rounded">compactMap</span><span class="tag is-primary is-rounded">6</span></a></li>
+     
+     <li><a href="/tags/filter.html" class="tags has-addons"><span class="tag is-info is-rounded">filter</span><span class="tag is-primary is-rounded">6</span></a></li>
+     
+     <li><a href="/tags/map.html" class="tags has-addons"><span class="tag is-info is-rounded">map</span><span class="tag is-primary is-rounded">6</span></a></li>
+     
+     <li><a href="/tags/mirror.html" class="tags has-addons"><span class="tag is-info is-rounded">mirror</span><span class="tag is-primary is-rounded">6</span></a></li>
+     
+     <li><a href="/tags/protocol.html" class="tags has-addons"><span class="tag is-info is-rounded">protocol</span><span class="tag is-primary is-rounded">6</span></a></li>
+     
+     <li><a href="/tags/optionals.html" class="tags has-addons"><span class="tag is-info is-rounded">optionals</span><span class="tag is-primary is-rounded">5</span></a></li>
+     
+     <li><a href="/tags/where.html" class="tags has-addons"><span class="tag is-info is-rounded">where</span><span class="tag is-primary is-rounded">5</span></a></li>
+     
+     <li><a href="/tags/erasure.html" class="tags has-addons"><span class="tag is-info is-rounded">erasure</span><span class="tag is-primary is-rounded">4</span></a></li>
+     
+     <li><a href="/tags/equatable.html" class="tags has-addons"><span class="tag is-info is-rounded">equatable</span><span class="tag is-primary is-rounded">3</span></a></li>
+     
+     <li><a href="/tags/destructure.html" class="tags has-addons"><span class="tag is-info is-rounded">destructure</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/error.html" class="tags has-addons"><span class="tag is-info is-rounded">error</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/extension.html" class="tags has-addons"><span class="tag is-info is-rounded">extension</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/guard.html" class="tags has-addons"><span class="tag is-info is-rounded">guard</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/if-let.html" class="tags has-addons"><span class="tag is-info is-rounded">if let</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/is.html" class="tags has-addons"><span class="tag is-info is-rounded">is</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/objc.html" class="tags has-addons"><span class="tag is-info is-rounded">objc</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/optional.html" class="tags has-addons"><span class="tag is-info is-rounded">optional</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/struct.html" class="tags has-addons"><span class="tag is-info is-rounded">struct</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/try.html" class="tags has-addons"><span class="tag is-info is-rounded">try</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/.html" class="tags has-addons"><span class="tag is-info is-rounded">?</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/caseiterable.html" class="tags has-addons"><span class="tag is-info is-rounded">CaseIterable</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/customreflectable.html" class="tags has-addons"><span class="tag is-info is-rounded">CustomReflectable</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/data.html" class="tags has-addons"><span class="tag is-info is-rounded">Data</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/expressiblebystringliteral.html" class="tags has-addons"><span class="tag is-info is-rounded">ExpressibleByStringLiteral</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/rawrepresentable.html" class="tags has-addons"><span class="tag is-info is-rounded">RawRepresentable</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/as.html" class="tags has-addons"><span class="tag is-info is-rounded">as</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/autoclosure.html" class="tags has-addons"><span class="tag is-info is-rounded">autoclosure</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/break.html" class="tags has-addons"><span class="tag is-info is-rounded">break</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/catch.html" class="tags has-addons"><span class="tag is-info is-rounded">catch</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/closure.html" class="tags has-addons"><span class="tag is-info is-rounded">closure</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/copyonwrite.html" class="tags has-addons"><span class="tag is-info is-rounded">copy-on-write</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/coredata.html" class="tags has-addons"><span class="tag is-info is-rounded">coredata</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/either.html" class="tags has-addons"><span class="tag is-info is-rounded">either</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/fallthrough.html" class="tags has-addons"><span class="tag is-info is-rounded">fallthrough</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/for.html" class="tags has-addons"><span class="tag is-info is-rounded">for</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/for-case.html" class="tags has-addons"><span class="tag is-info is-rounded">for case</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/groupby.html" class="tags has-addons"><span class="tag is-info is-rounded">groupby</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/guard-let.html" class="tags has-addons"><span class="tag is-info is-rounded">guard let</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/if-case.html" class="tags has-addons"><span class="tag is-info is-rounded">if case</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/indirect.html" class="tags has-addons"><span class="tag is-info is-rounded">indirect</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/init.html" class="tags has-addons"><span class="tag is-info is-rounded">init</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/init.html" class="tags has-addons"><span class="tag is-info is-rounded">init?</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/inout.html" class="tags has-addons"><span class="tag is-info is-rounded">inout</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/label.html" class="tags has-addons"><span class="tag is-info is-rounded">label</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/literal.html" class="tags has-addons"><span class="tag is-info is-rounded">literal</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/method.html" class="tags has-addons"><span class="tag is-info is-rounded">method</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/overload.html" class="tags has-addons"><span class="tag is-info is-rounded">overload</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/package.html" class="tags has-addons"><span class="tag is-info is-rounded">package</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/partition.html" class="tags has-addons"><span class="tag is-info is-rounded">partition</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/performance.html" class="tags has-addons"><span class="tag is-info is-rounded">performance</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/property.html" class="tags has-addons"><span class="tag is-info is-rounded">property</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/protocols.html" class="tags has-addons"><span class="tag is-info is-rounded">protocols</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/range.html" class="tags has-addons"><span class="tag is-info is-rounded">range</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/self.html" class="tags has-addons"><span class="tag is-info is-rounded">self</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/tupealias.html" class="tags has-addons"><span class="tag is-info is-rounded">tupealias</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/tuple.html" class="tags has-addons"><span class="tag is-info is-rounded">tuple</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/typealias.html" class="tags has-addons"><span class="tag is-info is-rounded">typealias</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/unique.html" class="tags has-addons"><span class="tag is-info is-rounded">unique</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/value-type.html" class="tags has-addons"><span class="tag is-info is-rounded">value type</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/valuetype.html" class="tags has-addons"><span class="tag is-info is-rounded">valuetype</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/vararg.html" class="tags has-addons"><span class="tag is-info is-rounded">vararg</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/wildcard.html" class="tags has-addons"><span class="tag is-info is-rounded">wildcard</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/zip.html" class="tags has-addons"><span class="tag is-info is-rounded">zip</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/.html" class="tags has-addons"><span class="tag is-info is-rounded">~=</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+
+        </ul>
+       </li>
+      </ul>
+
+
+     </aside> 
+
+
+    </div>
+   </div>
+  </div>
+ </section>
+
+ <div class="footer">
+  <article class="media" id="followme">
+   <figure class="media-left">
+    <p class="image is-64x64">
+     <img src="/img/terhechte.jpg" class="profile-image" />
+    </p>
+   </figure>
+   <div class="media-content">
+       <div class="columns">
+           <div class="column">
+               <div class="content">
+                   <p>
+                       <strong>Benedikt Terhechte</strong> <a href="https://twitter.com/terhechte"><small>@terhechte</small></a>
+                       <br />
+                       If you read this far, you should <a href="https://twitter.com/terhechte">follow Benedikt on Twitter</a>.<br />
+                       APPVENTURE is dedicated to providing articles about Swift, macOS, iOS &amp; Linux development.
+                   </p>
+                   <p>
+                       <strong>2011 - 2019 Benedikt Terhechte</strong>
+                   </p>
+               </div>
+           </div>
+           <div class="column">
+               <p>
+                   <a href="https://terhech.de">Benedikt's private blog can be found
+                       at <strong>terhech.de</strong></a>
+               </p>
+               <p>
+                   <br />
+                   <strong>Other Profiles</strong>
+               </p>
+               <p class="subtitle is-6">
+                   <a href="https://twitter.com/terhechte"><i class="fab fa-twitter"></i></a>
+                   <a href="https://www.xing.com/profile/Benedikt_Terhechte">
+                       <i class="fab fa-xing"></i>
+                   </a>
+                   <a href="https://twitter.com/terhechte">
+                       <i class="fab fa-github"></i>
+                   </a>
+                   <a href="https://news.ycombinator.com/user?id=terhechte">
+                       <i class="fab fa-hacker-news"></i>
+                   </a>
+               </p>
+           </div>
+       </div>
+   </div>
+   <div class="media-right">
+    <a href="https://twitter.com/terhechte" class="button is-info is-rounded">
+     <i class="fab fa-twitter"></i> 
+     Follow Me</a>
+   </div>
+  </article>
+ </div>
+
+
+
+</body>
+
+
+</html>

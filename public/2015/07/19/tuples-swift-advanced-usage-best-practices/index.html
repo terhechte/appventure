@@ -1,0 +1,1308 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tuples in Swift, Advanced Usage and Best Practices</title>
+  <link rel="stylesheet" href="/css/bulma.min.css" />
+  <link rel="stylesheet" href="/css/style.css" />
+
+  <meta content="" name="description" /><meta content="benedikt, c, clojure, clojurescript, cocoa, feature, generics, html, ios, javascript, mac, objective-c, photodesk, research, stylemac, swift, terhechte, tuples" name="keywords" /><meta content="Benedikt Terhechte" name="author" /><meta content="Tuples in Swift, Advanced Usage and Best Practices" property="og:title" /><meta content="" property="og:description" /><meta content="http://appventure.me/2015/07/19/tuples-swift-advanced-usage-best-practices/" property="og:url" /><meta content="Tuples in Swift, Advanced Usage and Best Practices" name="twitter:title" /><meta content="" name="twitter:description" /><meta content="summary" name="twitter:card" /><meta content="http://appventure.me/img/ez@2x.png" name="twitter:image" /><meta content="http://appventure.me/img/ez@2x.png" property="og:image" />
+  <meta name="twitter:site" content="@terhechte" />
+  <meta name="twitter:creator" content="@terhechte" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700,800" rel="stylesheet" />
+  <script defer="defer" src="/js/fontawesome-all.min.js"></script>
+  
+ </head>
+ <body>
+  <section class="section" id="head">
+   <div class="container" id="container">
+    <div>
+
+     <div class="columns">
+      <div class="column is-3">
+          <span id="brand"><a href="/index.html"><img src="/img/brand.png" srcset="/img/brand.png 1x, /img/brand@2x.png 2x" /></a></span>
+      </div>
+      <div class="column is-7">
+       <span id="subbrand">
+        Simple. Swift. Guides.</span>
+      </div>
+      <div class="column is-2">
+          <div class="field">
+
+          </div>
+      </div>
+     </div>
+    </div>
+   </div>
+  </section>
+
+
+  <section class="section" id="main">
+   <div class="container" id="container">
+    <div class="columns">
+     <div class="column">
+      <div class="columns">
+       <div class="column">
+        <div class="tabs">
+		 
+        </div>
+       </div>
+       <div class="column is-narrow">
+        <div class="buttons has-addons is-hidden-mobile">
+        </div>
+       </div>
+      </div>
+
+      <div class="box" style="margin-bottom: 250px;">
+            <h5 style="font-size: 38px; font-weight: bold;"><a class="xx-new-article" href="https://appventure.me/guides/tuples/introduction.html">AppVenture has been updated</a></h5>
+            <p style="padding-top: 10px; padding-bottom: 10px; font-size: 18px;">
+                All articles have been rewritten and improved. You will be forwarded
+                to the updated article.
+            </p>
+            <p style="font-size: 18px; font-weight: bold;">
+                <a class="xx-new-article" href="https://appventure.me/guides/tuples/introduction.html" id="xxx-new-article">Click here to go there directly.</a>
+            </p>
+            <script>
+                 setTimeout(function(){ 
+                    document.location.href=document.getElementById("xxx-new-article").href;
+                },
+                    0);
+            </script>
+      </div>
+
+
+
+
+      <div role="content" id="maincontent" style="opacity: 0.5"><article id="article--132652514" class="article-post content is-medium">
+
+
+ 
+          <h6><i class="fi-pencil"></i> Sun, 19 Jul 2015 <a href="/2015/07/19/tuples-swift-advanced-usage-best-practices/">#</a></h6>
+
+        <h3><a href="/2015/07/19/tuples-swift-advanced-usage-best-practices/">Tuples in Swift, Advanced Usage and Best Practices</a></h3>
+
+
+
+        <div class="actual-content"><div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org2a04896">1. The absolute basics</a>
+<ul>
+<li><a href="#org4f435c9">1.1. Creating and Accessing Tuples</a></li>
+<li><a href="#orgb2ab1fd">1.2. Tuples for pattern matching</a></li>
+<li><a href="#orgec1eff5">1.3. Tuples as return types</a></li>
+<li><a href="#orge76628a">1.4. Tuple Destructuring</a></li>
+</ul>
+</li>
+<li><a href="#org49b8142">2. Beyond the basics</a>
+<ul>
+<li><a href="#orgacd46f7">2.1. Tuples as anonymous structs</a></li>
+<li><a href="#orga80ff8b">2.2. Private State</a></li>
+<li><a href="#org41383df">2.3. Tuples as Fixed-Size Sequences</a></li>
+<li><a href="#org6246432">2.4. Tuples for Varargs Types</a></li>
+</ul>
+</li>
+<li><a href="#orgef82ae3">3. Advanced Tuples</a>
+<ul>
+<li><a href="#org2318313">3.1. Tuple Iteration</a></li>
+<li><a href="#org8862f31">3.2. Tuples and Generics</a></li>
+<li><a href="#org566852f">3.3. Define a Specific Tuple Type</a></li>
+<li><a href="#org0e7b8d7">3.4. Tuples as function parameters</a></li>
+<li><a href="#orgacb35e7">3.5. Tuples to reorder function parameters</a></li>
+</ul>
+</li>
+<li><a href="#orgb335e41">4. Tuple impossibilities</a>
+<ul>
+<li><a href="#org3237221">4.1. Tuples as Dictionary Keys</a></li>
+<li><a href="#orgb99bedb">4.2. Tuple Protocol Compliance</a></li>
+</ul>
+</li>
+<li><a href="#orge94adc8">5. Addendum</a></li>
+<li><a href="#org96e8e31">6. The code, suitable for use in a playground</a></li>
+<li><a href="#org4035808">7. Changes</a></li>
+</ul>
+</div>
+</div>
+<h6><a href="/2015/07/19/tuples-swift-advanced-usage-best-practices/">An older version of this post is also available in <b>🇨🇳Chinese</b></a><span> Thanks to </span><a href="/2015/07/19/tuples-swift-advanced-usage-best-practices/">SwiftGG</a></h6>
+
+<p>
+Tuples are one of Swift's less visible language features. They occupy a small space between Structs and Arrays. In addition, there's no comparable construct in Objective-C (or many other languages). Finally, the usage of tuples in the standard library and in Apple's example code is sparse. One could get the impression that their raison d'être in Swift is pattern matching, but I disgress.
+</p>
+
+<p>
+Most tuple explanations concentrate on three tuple use cases (pattern matching, return values, destructuring) and leave it at that. The following guide tries to give a more comprehensive overview of tuples with best practices of when to use them and when not to use them. I'll also try to list those things that you can't do with tuples, to spare you asking about them on stack overflow. Let's dive in.
+</p>
+
+<div id="outline-container-org2a04896" class="outline-2">
+<h2 id="org2a04896"><span class="section-number-2">1</span> The absolute basics</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+You probably already know most of this, so I'll keep it concise.
+</p>
+
+<p>
+A tuple can combine different types into one. Tuples are value types and even though they look like sequences they aren't sequences, as there's no direct way of looping over the contents. We'll start with a quick primer on how to create and use tuples.
+</p>
+</div>
+
+<div id="outline-container-org4f435c9" class="outline-3">
+<h3 id="org4f435c9"><span class="section-number-3">1.1</span> Creating and Accessing Tuples</h3>
+<div class="outline-text-3" id="text-1-1">
+<div class="org-src-container">
+<pre class="src src-Swift">// Constructing a simple tuple
+let tp1 = (2, 3)
+let tp2 = (2, 3, 4)
+
+// Constructing a named tuple
+let tp3 = (x: 5, y: 3)
+
+// Different types
+let tp4 = (name: "Carl", age: 78, pets: ["Bonny", "Houdon", "Miki"])
+
+// Accessing tuple elements
+let tp5 = (13, 21)
+tp5.0 // 13
+tp5.1 // 21
+
+let tp6 = (x: 21, y: 33)
+tp6.x // 21
+tp6.y // 33
+
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgb2ab1fd" class="outline-3">
+<h3 id="orgb2ab1fd"><span class="section-number-3">1.2</span> Tuples for pattern matching</h3>
+<div class="outline-text-3" id="text-1-2">
+<p>
+As already mentioned above, this feels like the strongest use case for tuples.
+Swift's <code>switch</code> statement offers a really powerful yet easy way to define complex conditionals without cluttering up the source code. You can then match for the type, existence, and value of multiple variables in one statement:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-Swift">
+// Contrived example
+// These would be return values from various functions.
+let age = 23
+let job: String? = "Operator"
+let payload: Any = ["cars": 1]
+
+</pre>
+</div>
+
+<p>
+In the code above, we want to find the persons younger than 30 with a job and a Dictionary payload. Imagine the payload as something from the Objective-C world, it could be a Dictionary or an Array or a Number, awful code somebody else wrote years ago, and you have to interact with it now.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-Swift">
+typealias AnyDictionary = Dictionary&lt;AnyHashable, Any&gt;
+
+switch (age, job, payload) {
+case (let age, _?, _ as AnyDictionary) where age &lt; 30:
+    print(age)
+default:
+    break
+}
+
+</pre>
+</div>
+
+<p>
+By constructing the switch argument as a tuple <code>(age, job, payload)</code> we can query for specific or nonspecific attributes of all tuple elements at once. This allows for elaborately constrained conditionals.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgec1eff5" class="outline-3">
+<h3 id="orgec1eff5"><span class="section-number-3">1.3</span> Tuples as return types</h3>
+<div class="outline-text-3" id="text-1-3">
+<p>
+Probably the next-best tuple use case. Since tuples can be constructed on the fly, they're a great way to easily return multiple values from a function. 
+</p>
+
+<div class="org-src-container">
+<pre class="src src-Swift">func abc() -&gt; (Int, Int, String) {
+    return (3, 5, "Carl")
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orge76628a" class="outline-3">
+<h3 id="orge76628a"><span class="section-number-3">1.4</span> Tuple Destructuring</h3>
+<div class="outline-text-3" id="text-1-4">
+<p>
+Swift took a lot of inspiration from different programming languages, and this is something that Python has been doing for years. While the previous examples mostly showed how to easily get something into a tuple, destructuring is a swifty way of getting something out of a tuple, and in line with the <code>abc</code> example above, it looks like this:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-Swift">let (a, b, c) = abc()
+print(a)
+</pre>
+</div>
+
+<p>
+Another example is getting several function calls into one line:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-Swift">let (a, b, c) = (a(), b(), c())
+</pre>
+</div>
+
+<p>
+Or, an easy way to swap two values:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-Swift">var v1: Int
+var v2: Int
+(v1, v2) = (5, 4)
+(a: v1, b: v2) = (a: v2, b: v1) // swapped: v1 == 4, v2 == 5
+(v1, v2) = (5, 4)
+(a: v1, b: v2) = (b: v1, a: v2) // swapped: v1 == 4, v2 == 5
+
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org49b8142" class="outline-2">
+<h2 id="org49b8142"><span class="section-number-2">2</span> Beyond the basics</h2>
+<div class="outline-text-2" id="text-2">
+</div>
+<div id="outline-container-orgacd46f7" class="outline-3">
+<h3 id="orgacd46f7"><span class="section-number-3">2.1</span> Tuples as anonymous structs</h3>
+<div class="outline-text-3" id="text-2-1">
+<p>
+Tuples as well as structs allow you to combine different types into one type:
+</p>
+<div class="org-src-container">
+<pre class="src src-Swift">let user1 = (name: "Carl", age: 40)
+// vs.
+struct User {
+    let name: String
+    let age: Int
+}
+let user2 = User(name: "Steve", age: 39)
+</pre>
+</div>
+
+<p>
+As you can see, these two types are similar, but whereas the tuple exists simply as an instance, the struct requires both a struct declaration and a struct initializer. This similarity can be leveraged whenever you have the need to define a temporary struct inside a function or method. As the Swift docs say:
+</p>
+
+<blockquote>
+<p>
+Tuples are useful for temporary groups of related values. (…) If your data structure is likely to persist beyond a temporary scope, model it as a class or structure (…)
+</p>
+</blockquote>
+
+<p>
+As an example of this, consider the following situation where the return values from several functions first need to be uniquely collected and then inserted:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-Swift">func zipForUser(userid: String) -&gt; String { return "12124" }
+func streetForUser(userid: String) -&gt; String { return "Charles Street" }
+let users = [user1]
+
+// Find all unique streets in our userbase
+var streets: [String: (zip: String, street: String, count: Int)] = [:]
+for user in users {
+    let zip = zipForUser(userid: user.name)
+    let street = streetForUser(userid: user.name)
+    let key = "\(zip)-\(street)"
+    if let (_, _, count) = streets[key] {
+	streets[key] = (zip, street, count + 1)
+    } else {
+	streets[key] = (zip, street, 1)
+    }
+}
+
+// drawStreetsOnMap(streets.values)
+for street in streets.values { print(street) }
+</pre>
+</div>
+
+<p>
+Here, the tuple is being used as a simple structure for a short-duration use case. Defining a struct would also be possible but not strictly necessary.
+</p>
+
+<p>
+Another example would be a class that handles algorithmic data, and you're moving a temporary result from one method to the next one. Defining an extra struct for something only used once (in between two or three methods) may not be required.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-Swift">// Made up algorithm
+func calculateInterim(values: [Int]) -&gt; (r: Int, alpha: CGFloat, chi: (CGFloat, CGFloat)) {
+    return (values[0], 2, (4, 8))
+}
+func expandInterim(interim: (r: Int, alpha: CGFloat, chi: (CGFloat, CGFloat))) -&gt; CGFloat {
+    return CGFloat(interim.r) + interim.alpha + interim.chi.0 + interim.chi.1
+}
+
+print(expandInterim(interim: calculateInterim(values: [1])))
+</pre>
+</div>
+
+<p>
+There is, of course, a fine line here. Defining a struct for one instance is overly complex; defining a tuple 4 times instead of one struct is overly complex too. Finding the sweet spot depends on various factors.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orga80ff8b" class="outline-3">
+<h3 id="orga80ff8b"><span class="section-number-3">2.2</span> Private State</h3>
+<div class="outline-text-3" id="text-2-2">
+<p>
+In addition to the previous example, there are also use cases where using tuples beyond a temporary scope is useful. Following Rich Hickey's "If a tree falls in the woods, does it make a sound?", as long as the scope is private and the tuple's type isn't littered all over the implementation, using tuples to store internal state can be fine.
+</p>
+
+<p>
+A simple and contrived example would be storing a static UITableView structure that displays various information from a user profile and contains the key path to the actual value as well as a flag noting whether the value can be edited when tapping on the cell.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-Swift">let tableViewValues = [
+    (title: "Age", value: "user.age", editable: true),
+    ("Name",           "user.name.combinedName",  true),
+    ("Username",       "user.name.username",      false),
+    ("ProfilePicture", "user.pictures.thumbnail", false)]
+</pre>
+</div>
+
+<p>
+The alternative would be to define a struct, but if the data is a purely private implementation detail, a tuple works just as well.
+</p>
+
+<p>
+A better example is when you define an object and want to add the ability to add multiple change listeners to your object. Each listener consists of a name and the closure to be called upon any change:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-Swift">typealias Action = (_ change: Any?) -&gt; Void
+func addListener(name: String, action: @escaping Action) { }
+func removeListener(name: String) { }
+</pre>
+</div>
+
+<p>
+How will you store these listeners in your object? The obvious solution would be to define a struct, but this is a very limited scope, and the struct will only be internal, and it will be used in only three cases. Here, using a tuple may even be the better solution, as the destructuring makes things simpler:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-Swift">
+class ListenerStuff {
+
+    typealias Action = (_ change: Any?) -&gt; Void
+
+    var listeners: [(String, Action)] = []
+
+    func addListener(name: String, action: @escaping Action) {
+	listeners.append((name, action))
+    }
+
+    func removeListener(name: String) {
+	if let idx = listeners.index(where: { $0.0 == name }) {
+	    listeners.remove(at: idx)
+	}
+    }
+
+    func execute(change: Int) {
+	for (_, listener) in listeners {
+	    listener(change as Any?)
+	}
+    }
+}
+
+var stuff = ListenerStuff()
+let ourAction: ListenerStuff.Action = { x in print("Change is \(x ?? "NONE").") }
+stuff.addListener(name: "xx", action: ourAction)
+stuff.execute(change: 17)
+</pre>
+</div>
+
+<p>
+As you can see in the <code>execute</code> function, the destructuring abilities make tuples especially useful in this case, as the contents are directly destructured into the local scope.
+</p>
+</div>
+</div>
+
+
+<div id="outline-container-org41383df" class="outline-3">
+<h3 id="org41383df"><span class="section-number-3">2.3</span> Tuples as Fixed-Size Sequences</h3>
+<div class="outline-text-3" id="text-2-3">
+<p>
+Another area where tuples can be used is when you intend to constrain a type to a fixed number of items. Imagine an object that calculates various statistics for each month in a year. You need to store a certain Integer value for each month separately. The solution that comes to mind first would of course be:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-Swift">var monthValuesArray: [Int]
+</pre>
+</div>
+
+<p>
+However, in this case we don't know whether the property indeed contains 12 elements. A user of our object could accidentally insert 13 values, or 11. We can't tell the type checker that this is a fixed size array of 12 items<sup><a id="fnr.1" class="footref" href="#fn.1">1</a></sup>. With a tuple, this specific constraint can easily be put into place:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-Swift">var monthValues: (Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int)
+</pre>
+</div>
+
+<p>
+The alternative would be to have the constraining logic in the object's functionality (say via a <code>guard</code> statement); however, this would be a run time check. The tuple check happens at compile time; your code won't even compile if you try to give 11 months to your object.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org6246432" class="outline-3">
+<h3 id="org6246432"><span class="section-number-3">2.4</span> Tuples for Varargs Types</h3>
+<div class="outline-text-3" id="text-2-4">
+<p>
+Varargs i.e. variable function arguments are a very useful technique for situations where the number of function parameters is unknown.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-Swift">// classic example
+func sum(of numbers: Int...) -&gt; Int {
+    // add up all numbers with the + operator
+    return numbers.reduce(0, +)
+}
+
+let theSum = sum(of: 1, 2, 5, 7, 9) // 24
+</pre>
+</div>
+
+<p>
+A tuple can be useful here if your requirement goes beyond simple integers. Take this function, which does a batch update of <code>n</code> entities in a database:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-Swift">func batchUpdate(updates: (String, Int)...) {
+    self.db.begin()
+    for (key, value) in updates {
+	self.db.set(key, value)
+    }
+    self.db.end()
+}
+
+// We're imagining a weird database
+batchUpdate(updates: ("tk1", 5), ("tk7", 9), ("tk21", 44), ("tk88", 12))
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgef82ae3" class="outline-2">
+<h2 id="orgef82ae3"><span class="section-number-2">3</span> Advanced Tuples</h2>
+<div class="outline-text-2" id="text-3">
+</div>
+<div id="outline-container-org2318313" class="outline-3">
+<h3 id="org2318313"><span class="section-number-3">3.1</span> Tuple Iteration</h3>
+<div class="outline-text-3" id="text-3-1">
+<p>
+In the above descriptions, I've tried to steer clear of calling tuples sequences or collections because they aren't. Since every element of a tuple can have a different type, there's no type-safe way of looping or mapping over the contents of a tuple. Well, no beautiful one, that is. 
+</p>
+
+<p>
+Swift does offer limited reflection capabilities, and these allow us to inspect the elements of a tuple and loop over them. The downside is that the type checker has no way to figure out what the type of each element is, and thus everything is typed as <code>Any</code>. It is your job then to cast and match this against your possible types to figure out what to do.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-Swift">let t = (a: 5, b: "String", c: Date())
+
+let mirror = Mirror(reflecting: t)
+for (label, value) in mirror.children {
+    switch value {
+    case is Int:
+	print("int")
+    case is String:
+	print("string")
+    case is NSDate:
+	print("nsdate")
+    default: ()
+    }
+}
+</pre>
+</div>
+
+<p>
+This is not as simple as array iteration, but it does work if you really need it.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org8862f31" class="outline-3">
+<h3 id="org8862f31"><span class="section-number-3">3.2</span> Tuples and Generics</h3>
+<div class="outline-text-3" id="text-3-2">
+<p>
+There's no <code>Tuple</code> type available in Swift. If you wonder why that is, think about it: every tuple is a totally different type, depending on the types within it. So instead of defining a generic tuple requirement, you define the specific but generic incarnation of the tuple you intend to use:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-Swift">func wantsTuple&lt;T1, T2&gt;(_ tuple: (T1, T2)) -&gt; T1 {
+    return tuple.0
+}
+
+wantsTuple(("a", "b")) // "a"
+wantsTuple((1, 2)) // 1
+</pre>
+</div>
+
+<p>
+You can also use tuples in <code>typealiases</code>, thus allowing subclasses to fill out your types with details. This looks fairly useless and complicated, but I've already had a use case where I need to do exactly this.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-Swift">class BaseClass&lt;A,B&gt; {
+    typealias Element = (A, B)
+    func add(_ elm: Element) {
+	print(elm)
+    }
+}
+class IntegerClass&lt;B&gt; : BaseClass&lt;Int, B&gt; {
+}
+let example = IntegerClass&lt;String&gt;()
+example.add((5, ""))
+// Prints (5, "")
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org566852f" class="outline-3">
+<h3 id="org566852f"><span class="section-number-3">3.3</span> Define a Specific Tuple Type</h3>
+<div class="outline-text-3" id="text-3-3">
+<p>
+In many of the earlier examples, we rewrote a certain tuple type like <code>(Int, Int, String)</code> multiple times. This, of course, is not necessary, as we could define a <code>typealias</code> for it:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-Swift">typealias Example = (Int, Int, String)
+func add(elm: Example) { }
+</pre>
+</div>
+
+<p>
+However, if you're using a certain tuple construction so often that you think about adding a typealias for it, you might really be better off defining a struct.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org0e7b8d7" class="outline-3">
+<h3 id="org0e7b8d7"><span class="section-number-3">3.4</span> Tuples as function parameters</h3>
+<div class="outline-text-3" id="text-3-4">
+<p>
+<a href="https://github.com/apple/swift-evolution/blob/master/proposals/0029-remove-implicit-tuple-splat.md">Swift 3 removed the tuple splat feature</a>, which used to be described in this section.
+</p>
+
+<p>
+If you pass a tuple as a parameter to a function, it always works as you would expect: the tuple is available as an immutable variable in the function.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgacb35e7" class="outline-3">
+<h3 id="orgacb35e7"><span class="section-number-3">3.5</span> Tuples to reorder function parameters</h3>
+<div class="outline-text-3" id="text-3-5">
+<p>
+<a href="https://github.com/apple/swift-evolution/blob/master/proposals/0029-remove-implicit-tuple-splat.md">Swift 3 removed the tuple splat feature</a>, which was the basis for tricks discussed in this section.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgb335e41" class="outline-2">
+<h2 id="orgb335e41"><span class="section-number-2">4</span> Tuple impossibilities</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+Finally, we reach the list of some of the things that are impossible to achieve with tuples. 
+</p>
+</div>
+
+<div id="outline-container-org3237221" class="outline-3">
+<h3 id="org3237221"><span class="section-number-3">4.1</span> Tuples as Dictionary Keys</h3>
+<div class="outline-text-3" id="text-4-1">
+<p>
+If you'd like to do the following:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-Swift">let p: [(Int, Int): String]
+</pre>
+</div>
+
+<p>
+Then this is not possible, because tuples don't conform to the Hashable protocol. Which is really a bummer, as the example above has a multitude of use cases. There may be a crazy type checker hack to extend tuples of varying arities to the Hashable protocol, but I haven't really looked into that. If you happen to know if this works, feel free to contact me via <a href="http://twitter.com/terhechte">twitter</a>.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgb99bedb" class="outline-3">
+<h3 id="orgb99bedb"><span class="section-number-3">4.2</span> Tuple Protocol Compliance</h3>
+<div class="outline-text-3" id="text-4-2">
+<p>
+Given the following protocol:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-Swift">protocol PointProtocol {
+    var x: Int { get }
+    var y: Int { get }
+}
+</pre>
+</div>
+
+<p>
+You can't get the type checker to accept the tuple <code>(x: 10, y: 20)</code> as implementing that protocol.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-Swift">func addPoint(point: PointProtocol)
+addPoint(point: (x: 10, y: 20) as PointProtocol) // doesn't work.
+</pre>
+</div>
+
+<p>
+The compiler complains,
+  "'(x: Int, y: Int)' is not convertible to 'PointProtocol'; did you mean to use 'as!' to force downcast?
+(Answer: no.)
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orge94adc8" class="outline-2">
+<h2 id="orge94adc8"><span class="section-number-2">5</span> Addendum</h2>
+<div class="outline-text-2" id="text-5">
+<p>
+That's it. I probably forgot one or another thing. Things may also be wrong. If you find a factual error, or if there's something else I forgot, feel free to <a href="http://twitter.com/terhechte">contact me</a>.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org96e8e31" class="outline-2">
+<h2 id="org96e8e31"><span class="section-number-2">6</span> The code, suitable for use in a playground</h2>
+<div class="outline-text-2" id="text-6">
+<div class="org-src-container">
+<pre class="src src-Swift">import AppKit
+
+// * Creating and Accessing Tuples
+
+// Constructing a simple tuple
+let tp1 = (2, 3)
+let tp2 = (2, 3, 4)
+
+// Constructing a named tuple
+let tp3 = (x: 5, y: 3)
+
+// Different types
+let tp4 = (name: "Carl", age: 78, pets: ["Bonny", "Houdon", "Miki"])
+
+// Accessing tuple elements
+let tp5 = (13, 21)
+tp5.0 // 13
+tp5.1 // 21
+
+let tp6 = (x: 21, y: 33)
+tp6.x // 21
+tp6.y // 33
+
+
+// * Tuples for pattern matching
+
+// Contrived example
+// These would be return values from various functions.
+let age = 23
+let job: String? = "Operator"
+let payload: Any = ["cars": 1]
+
+typealias AnyDictionary = Dictionary&lt;AnyHashable, Any&gt;
+
+switch (age, job, payload) {
+case (let age, _?, _ as AnyDictionary) where age &lt; 30:
+    print(age)
+default: ()
+}
+
+
+// * Tuples as return types
+
+func abc() -&gt; (Int, Int, String) {
+    return (3, 5, "Carl")
+}
+
+
+// * Tuple Destructuring
+
+let (a, b, c) = abc()
+print(a)
+
+func f1() -&gt; Int { return 1 }
+func f2() -&gt; Int { return 2 }
+func f3() -&gt; Int { return 3 }
+
+let (r1, r2, r3) = (f1(), f2(), f3())
+
+var v1: Int
+var v2: Int
+(v1, v2) = (5, 4)
+(a: v1, b: v2) = (a: v2, b: v1) // swapped: v1 == 4, v2 == 5
+(v1, v2) = (5, 4)
+(a: v1, b: v2) = (b: v1, a: v2) // swapped: v1 == 4, v2 == 5
+
+
+// * Tuples as anonymous structs
+
+let user1 = (name: "Carl", age: 40)
+// vs.
+struct User {
+    let name: String
+    let age: Int
+}
+let user2 = User(name: "Steve", age: 39)
+
+func zipForUser(userid: String) -&gt; String { return "12124" }
+func streetForUser(userid: String) -&gt; String { return "Charles Street" }
+let users = [user1]
+
+// Find all unique streets in our userbase
+var streets: [String: (zip: String, street: String, count: Int)] = [:]
+for user in users {
+    let zip = zipForUser(userid: user.name)
+    let street = streetForUser(userid: user.name)
+    let key = "\(zip)-\(street)"
+    if let (_, _, count) = streets[key] {
+	streets[key] = (zip, street, count + 1)
+    } else {
+	streets[key] = (zip, street, 1)
+    }
+}
+
+// drawStreetsOnMap(streets.values)
+for street in streets.values {
+    print(street)
+}
+
+
+// Made up algorithm
+func calculateInterim(values: [Int]) -&gt; (r: Int, alpha: CGFloat, chi: (CGFloat, CGFloat)) {
+    return (values[0], 2, (4, 8))
+}
+func expandInterim(interim: (r: Int, alpha: CGFloat, chi: (CGFloat, CGFloat))) -&gt; CGFloat {
+    return CGFloat(interim.r) + interim.alpha + interim.chi.0 + interim.chi.1
+}
+
+print(expandInterim(interim: calculateInterim(values: [1])))
+
+
+// * Private State
+
+let tableViewValues = [
+    (title: "Age", value: "user.age", editable: true),
+    ("Name",           "user.name.combinedName",  true),
+    ("Username",       "user.name.username",      false),
+    ("ProfilePicture", "user.pictures.thumbnail", false)]
+
+
+class ListenerStuff {
+
+    typealias Action = (_ change: Any?) -&gt; Void
+
+    var listeners: [(String, Action)] = []
+
+    func addListener(name: String, action: @escaping Action) {
+	listeners.append((name, action))
+    }
+
+    func removeListener(name: String) {
+	if let idx = listeners.index(where: { $0.0 == name }) {
+	    listeners.remove(at: idx)
+	}
+    }
+
+    func execute(change: Int) {
+	for (_, listener) in listeners {
+	    listener(change as Any?)
+	}
+    }
+}
+
+var stuff = ListenerStuff()
+let ourAction: ListenerStuff.Action = { x in print("Change is \(x ?? "NONE").") }
+stuff.addListener(name: "xx", action: ourAction)
+stuff.execute(change: 17)
+
+
+// * Tuples as Fixed-Size Sequences
+
+var monthValuesArray: [Int]
+
+
+var monthValues: (Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int, Int)
+
+
+// * Tuples for Varargs Types
+
+// classic example
+func sum(of numbers: Int...) -&gt; Int {
+    // add up all numbers with the + operator
+    return numbers.reduce(0, +)
+}
+
+let theSum = sum(of: 1, 2, 5, 7, 9) // 24
+print(theSum)
+
+func batchUpdate(updates: (String, Int)...) {
+    //self.db.begin()
+    for (key, value) in updates {
+	print("self.db.set(\"\(key)\", \(value))")
+	//self.db.set(key, value)
+    }
+    //self.db.end()
+}
+
+// We're imagining a weird database
+batchUpdate(updates: ("tk1", 5), ("tk7", 9), ("tk21", 44), ("tk88", 12))
+
+
+// * Advanced Tuples
+
+// ** Tuple Iteration
+
+let t = (a: 5, b: "String", c: Date())
+
+let mirror = Mirror(reflecting: t)
+for (label, value) in mirror.children {
+    switch value {
+    case is Int:
+	print("int")
+    case is String:
+	print("string")
+    case is NSDate:
+	print("nsdate")
+    default: ()
+    }
+}
+
+// ** Tuples and Generics
+
+func wantsTuple&lt;T1, T2&gt;(_ tuple: (T1, T2)) -&gt; T1 {
+    return tuple.0
+}
+
+let tr1 = wantsTuple(("a", "b")) // "a"
+let tr2 = wantsTuple((1, 2)) // 1
+
+
+class BaseClass&lt;A,B&gt; {
+    typealias Element = (A, B)
+    func add(_ elm: Element) {
+	print(elm)
+    }
+}
+class IntegerClass&lt;B&gt; : BaseClass&lt;Int, B&gt; {
+}
+let example = IntegerClass&lt;String&gt;()
+example.add((5, ""))
+// Prints (5, "")
+
+
+// ** Define a Specific Tuple Type
+
+typealias Example = (Int, Int, String)
+func add(elm: Example) { }
+
+
+// ** Tuples as Dictionary Keys
+
+
+// let p: [(Int, Int): String]  // doesn't compile
+
+
+// ** Tuple Protocol Compliance
+
+protocol PointProtocol {
+    var x: Int { get }
+    var y: Int { get }
+}
+
+func addPoint(point: PointProtocol) {
+    print(point)
+}
+
+// addPoint(point: (x: 10, y: 20) as PointProtocol) // doesn't work.
+// The compiler complains,
+//    "'(x: Int, y: Int)' is not convertible to 'PointProtocol'; did you mean to use 'as!' to force downcast?
+</pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org4035808" class="outline-2">
+<h2 id="org4035808"><span class="section-number-2">7</span> Changes</h2>
+<div class="outline-text-2" id="text-7">
+<p>
+<b><b>07/23/2015</b></b> Added section on tuples as function parameters
+</p>
+
+<p>
+<b><b>08/06/2015</b></b> Updated the Reflection example to the latest Swift beta 4. (It removes the <code>reflect</code> call)
+</p>
+
+<p>
+<b><b>08/12/2015</b></b> Updated the <b>Tuples as function parameters</b> with a couple more examples and more information.
+</p>
+
+<p>
+<b><b>08/13/2015</b></b> Fixed a couple of bugs..
+</p>
+
+<p>
+<b><b>10/28/2015</b></b> Fixed bugs and added a new section on parameter reordering.
+</p>
+</div>
+</div>
+<div id="footnotes">
+<h2 class="footnotes">Footnotes: </h2>
+<div id="text-footnotes">
+
+<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1">1</a></sup> <div class="footpara">Interestingly, something that C can do just fine</div></div>
+
+
+</div>
+</div></div>
+
+        <div id="followme">
+            <p>If you read this far, you should follow me (<a href="http://www.twitter.com/terhechte">@terhechte</a>) <br /> on <a href="http://www.twitter.com/terhechte"><i class="fi-social-twitter"></i> Twitter</a></p>
+            <br />
+        </div>
+        
+
+        <div class="footnotes">
+            <ol></ol>
+        </div>
+
+        <p class="anchor"><i class="fi-anchor"></i></p>
+ 
+      </article></div>
+
+
+    </div>
+
+    <div class="column is-narrow">
+
+     <aside class="menu">
+
+         
+
+
+
+      <br />
+      <ul class="menu-list">
+       <li>
+        <p class="menu-label">
+         <a>
+          <i class="fas fa-dove"></i>
+          Swift Topics
+         </a>
+        </p>
+        <ul>
+            <li><a href="/topics/all.html">All</a></li>
+           
+            
+            <li><a href="/topics/swift-tricks.html">Swift Tricks</a></li>
+            
+         
+            
+            <li><a href="/topics/language.html">Language</a></li>
+            
+         
+            
+            <li><a href="/topics/hands-on.html">Hands On</a></li>
+            
+         
+            
+            <li><a href="/topics/blog.html">Blog</a></li>
+            
+         
+            
+         
+        </ul>
+       </li>
+
+       <li>
+           <p class="menu-label">
+               <a>
+                   <i class="fas fa-book"></i>
+                   Guides
+               </a>
+           </p>
+           <ul>
+                 
+               <li><a href="/guides/pattern_matching/intro.html">🧩 Pattern Matching</a></li>
+                 
+               <li><a href="/guides/advanced_practical_enum_examples/introduction.html">🚦 Enums</a></li>
+                 
+               <li><a href="/guides/map_flatmap_reduce_more/intro.html">🗺 Map, Reduce &amp; more</a></li>
+                 
+               <li><a href="/guides/associated_types/associated_types.html">🧙🏻 Associated Types</a></li>
+                 
+               <li><a href="/guides/tuples/introduction.html">🍱 Tuples</a></li>
+                 
+               <li><a href="/guides/optionals/intro.html">⁉️ Optionals</a></li>
+                 
+               <li><a href="/guides/swift_reflection/introduction.html">🔮 Reflection</a></li>
+                 
+           </ul>
+       </li>
+      </ul>
+
+      <div class="sidebar-banner">
+          <a href="https://contravariance.rocks"><img src="/img/contravariance_banner.png" srcset="/img/contravariance_banner.png 1x, /img/contravariance_banner@2x.png 2x" /></a>
+      </div>
+
+      <ul class="menu-list">
+       <li>
+        <p class="menu-label">
+         <a>
+          <i class="fas fa-tags"></i>
+          Tags
+         </a>
+        </p>
+        <ul>
+
+     
+     <li><a href="/tags/pattern-matching.html" class="tags has-addons"><span class="tag is-info is-rounded">pattern matching</span><span class="tag is-primary is-rounded">25</span></a></li>
+     
+     <li><a href="/tags/switch.html" class="tags has-addons"><span class="tag is-info is-rounded">switch</span><span class="tag is-primary is-rounded">24</span></a></li>
+     
+     <li><a href="/tags/enum.html" class="tags has-addons"><span class="tag is-info is-rounded">enum</span><span class="tag is-primary is-rounded">20</span></a></li>
+     
+     <li><a href="/tags/associated.html" class="tags has-addons"><span class="tag is-info is-rounded">associated</span><span class="tag is-primary is-rounded">14</span></a></li>
+     
+     <li><a href="/tags/tuples.html" class="tags has-addons"><span class="tag is-info is-rounded">tuples</span><span class="tag is-primary is-rounded">13</span></a></li>
+     
+     <li><a href="/tags/reflection.html" class="tags has-addons"><span class="tag is-info is-rounded">reflection</span><span class="tag is-primary is-rounded">12</span></a></li>
+     
+     <li><a href="/tags/reduce.html" class="tags has-addons"><span class="tag is-info is-rounded">reduce</span><span class="tag is-primary is-rounded">11</span></a></li>
+     
+     <li><a href="/tags/box.html" class="tags has-addons"><span class="tag is-info is-rounded">box</span><span class="tag is-primary is-rounded">10</span></a></li>
+     
+     <li><a href="/tags/generics.html" class="tags has-addons"><span class="tag is-info is-rounded">generics</span><span class="tag is-primary is-rounded">7</span></a></li>
+     
+     <li><a href="/tags/compactmap.html" class="tags has-addons"><span class="tag is-info is-rounded">compactMap</span><span class="tag is-primary is-rounded">6</span></a></li>
+     
+     <li><a href="/tags/filter.html" class="tags has-addons"><span class="tag is-info is-rounded">filter</span><span class="tag is-primary is-rounded">6</span></a></li>
+     
+     <li><a href="/tags/map.html" class="tags has-addons"><span class="tag is-info is-rounded">map</span><span class="tag is-primary is-rounded">6</span></a></li>
+     
+     <li><a href="/tags/mirror.html" class="tags has-addons"><span class="tag is-info is-rounded">mirror</span><span class="tag is-primary is-rounded">6</span></a></li>
+     
+     <li><a href="/tags/protocol.html" class="tags has-addons"><span class="tag is-info is-rounded">protocol</span><span class="tag is-primary is-rounded">6</span></a></li>
+     
+     <li><a href="/tags/optionals.html" class="tags has-addons"><span class="tag is-info is-rounded">optionals</span><span class="tag is-primary is-rounded">5</span></a></li>
+     
+     <li><a href="/tags/where.html" class="tags has-addons"><span class="tag is-info is-rounded">where</span><span class="tag is-primary is-rounded">5</span></a></li>
+     
+     <li><a href="/tags/erasure.html" class="tags has-addons"><span class="tag is-info is-rounded">erasure</span><span class="tag is-primary is-rounded">4</span></a></li>
+     
+     <li><a href="/tags/equatable.html" class="tags has-addons"><span class="tag is-info is-rounded">equatable</span><span class="tag is-primary is-rounded">3</span></a></li>
+     
+     <li><a href="/tags/destructure.html" class="tags has-addons"><span class="tag is-info is-rounded">destructure</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/error.html" class="tags has-addons"><span class="tag is-info is-rounded">error</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/extension.html" class="tags has-addons"><span class="tag is-info is-rounded">extension</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/guard.html" class="tags has-addons"><span class="tag is-info is-rounded">guard</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/if-let.html" class="tags has-addons"><span class="tag is-info is-rounded">if let</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/is.html" class="tags has-addons"><span class="tag is-info is-rounded">is</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/objc.html" class="tags has-addons"><span class="tag is-info is-rounded">objc</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/optional.html" class="tags has-addons"><span class="tag is-info is-rounded">optional</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/struct.html" class="tags has-addons"><span class="tag is-info is-rounded">struct</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/try.html" class="tags has-addons"><span class="tag is-info is-rounded">try</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/.html" class="tags has-addons"><span class="tag is-info is-rounded">?</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/caseiterable.html" class="tags has-addons"><span class="tag is-info is-rounded">CaseIterable</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/customreflectable.html" class="tags has-addons"><span class="tag is-info is-rounded">CustomReflectable</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/data.html" class="tags has-addons"><span class="tag is-info is-rounded">Data</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/expressiblebystringliteral.html" class="tags has-addons"><span class="tag is-info is-rounded">ExpressibleByStringLiteral</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/rawrepresentable.html" class="tags has-addons"><span class="tag is-info is-rounded">RawRepresentable</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/as.html" class="tags has-addons"><span class="tag is-info is-rounded">as</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/autoclosure.html" class="tags has-addons"><span class="tag is-info is-rounded">autoclosure</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/break.html" class="tags has-addons"><span class="tag is-info is-rounded">break</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/catch.html" class="tags has-addons"><span class="tag is-info is-rounded">catch</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/closure.html" class="tags has-addons"><span class="tag is-info is-rounded">closure</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/copyonwrite.html" class="tags has-addons"><span class="tag is-info is-rounded">copy-on-write</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/coredata.html" class="tags has-addons"><span class="tag is-info is-rounded">coredata</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/either.html" class="tags has-addons"><span class="tag is-info is-rounded">either</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/fallthrough.html" class="tags has-addons"><span class="tag is-info is-rounded">fallthrough</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/for.html" class="tags has-addons"><span class="tag is-info is-rounded">for</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/for-case.html" class="tags has-addons"><span class="tag is-info is-rounded">for case</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/groupby.html" class="tags has-addons"><span class="tag is-info is-rounded">groupby</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/guard-let.html" class="tags has-addons"><span class="tag is-info is-rounded">guard let</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/if-case.html" class="tags has-addons"><span class="tag is-info is-rounded">if case</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/indirect.html" class="tags has-addons"><span class="tag is-info is-rounded">indirect</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/init.html" class="tags has-addons"><span class="tag is-info is-rounded">init</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/init.html" class="tags has-addons"><span class="tag is-info is-rounded">init?</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/inout.html" class="tags has-addons"><span class="tag is-info is-rounded">inout</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/label.html" class="tags has-addons"><span class="tag is-info is-rounded">label</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/literal.html" class="tags has-addons"><span class="tag is-info is-rounded">literal</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/method.html" class="tags has-addons"><span class="tag is-info is-rounded">method</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/overload.html" class="tags has-addons"><span class="tag is-info is-rounded">overload</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/package.html" class="tags has-addons"><span class="tag is-info is-rounded">package</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/partition.html" class="tags has-addons"><span class="tag is-info is-rounded">partition</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/performance.html" class="tags has-addons"><span class="tag is-info is-rounded">performance</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/property.html" class="tags has-addons"><span class="tag is-info is-rounded">property</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/protocols.html" class="tags has-addons"><span class="tag is-info is-rounded">protocols</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/range.html" class="tags has-addons"><span class="tag is-info is-rounded">range</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/self.html" class="tags has-addons"><span class="tag is-info is-rounded">self</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/tupealias.html" class="tags has-addons"><span class="tag is-info is-rounded">tupealias</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/tuple.html" class="tags has-addons"><span class="tag is-info is-rounded">tuple</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/typealias.html" class="tags has-addons"><span class="tag is-info is-rounded">typealias</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/unique.html" class="tags has-addons"><span class="tag is-info is-rounded">unique</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/value-type.html" class="tags has-addons"><span class="tag is-info is-rounded">value type</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/valuetype.html" class="tags has-addons"><span class="tag is-info is-rounded">valuetype</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/vararg.html" class="tags has-addons"><span class="tag is-info is-rounded">vararg</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/wildcard.html" class="tags has-addons"><span class="tag is-info is-rounded">wildcard</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/zip.html" class="tags has-addons"><span class="tag is-info is-rounded">zip</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/.html" class="tags has-addons"><span class="tag is-info is-rounded">~=</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+
+        </ul>
+       </li>
+      </ul>
+
+
+     </aside> 
+
+
+    </div>
+   </div>
+  </div>
+ </section>
+
+ <div class="footer">
+  <article class="media" id="followme">
+   <figure class="media-left">
+    <p class="image is-64x64">
+     <img src="/img/terhechte.jpg" class="profile-image" />
+    </p>
+   </figure>
+   <div class="media-content">
+       <div class="columns">
+           <div class="column">
+               <div class="content">
+                   <p>
+                       <strong>Benedikt Terhechte</strong> <a href="https://twitter.com/terhechte"><small>@terhechte</small></a>
+                       <br />
+                       If you read this far, you should <a href="https://twitter.com/terhechte">follow Benedikt on Twitter</a>.<br />
+                       APPVENTURE is dedicated to providing articles about Swift, macOS, iOS &amp; Linux development.
+                   </p>
+                   <p>
+                       <strong>2011 - 2019 Benedikt Terhechte</strong>
+                   </p>
+               </div>
+           </div>
+           <div class="column">
+               <p>
+                   <a href="https://terhech.de">Benedikt's private blog can be found
+                       at <strong>terhech.de</strong></a>
+               </p>
+               <p>
+                   <br />
+                   <strong>Other Profiles</strong>
+               </p>
+               <p class="subtitle is-6">
+                   <a href="https://twitter.com/terhechte"><i class="fab fa-twitter"></i></a>
+                   <a href="https://www.xing.com/profile/Benedikt_Terhechte">
+                       <i class="fab fa-xing"></i>
+                   </a>
+                   <a href="https://twitter.com/terhechte">
+                       <i class="fab fa-github"></i>
+                   </a>
+                   <a href="https://news.ycombinator.com/user?id=terhechte">
+                       <i class="fab fa-hacker-news"></i>
+                   </a>
+               </p>
+           </div>
+       </div>
+   </div>
+   <div class="media-right">
+    <a href="https://twitter.com/terhechte" class="button is-info is-rounded">
+     <i class="fab fa-twitter"></i> 
+     Follow Me</a>
+   </div>
+  </article>
+ </div>
+
+
+
+</body>
+
+
+</html>

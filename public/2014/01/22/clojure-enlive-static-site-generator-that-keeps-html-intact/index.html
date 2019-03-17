@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Clojure/Enlive Static Site Generator that keeps your HTML intact</title>
+  <link rel="stylesheet" href="/css/bulma.min.css" />
+  <link rel="stylesheet" href="/css/style.css" />
+
+  <meta content="" name="description" /><meta content="benedikt, blog, c, clojure, clojurescript, cocoa, enlive, generator, html, ios, javascript, jekyll, mac, objective-c, photodesk, research, site, static, stylemac, terhechte" name="keywords" /><meta content="Benedikt Terhechte" name="author" /><meta content="Clojure/Enlive Static Site Generator that keeps your HTML intact" property="og:title" /><meta content="" property="og:description" /><meta content="http://appventure.me/2014/01/22/clojure-enlive-static-site-generator-that-keeps-html-intact/" property="og:url" /><meta content="Clojure/Enlive Static Site Generator that keeps your HTML intact" name="twitter:title" /><meta content="" name="twitter:description" /><meta content="summary" name="twitter:card" /><meta content="http://appventure.me/img/ez@2x.png" name="twitter:image" /><meta content="http://appventure.me/img/ez@2x.png" property="og:image" />
+  <meta name="twitter:site" content="@terhechte" />
+  <meta name="twitter:creator" content="@terhechte" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700,800" rel="stylesheet" />
+  <script defer="defer" src="/js/fontawesome-all.min.js"></script>
+  
+ </head>
+ <body>
+  <section class="section" id="head">
+   <div class="container" id="container">
+    <div>
+
+     <div class="columns">
+      <div class="column is-3">
+          <span id="brand"><a href="/index.html"><img src="/img/brand.png" srcset="/img/brand.png 1x, /img/brand@2x.png 2x" /></a></span>
+      </div>
+      <div class="column is-7">
+       <span id="subbrand">
+        Simple. Swift. Guides.</span>
+      </div>
+      <div class="column is-2">
+          <div class="field">
+
+          </div>
+      </div>
+     </div>
+    </div>
+   </div>
+  </section>
+
+
+  <section class="section" id="main">
+   <div class="container" id="container">
+    <div class="columns">
+     <div class="column">
+      <div class="columns">
+       <div class="column">
+        <div class="tabs">
+		 
+        </div>
+       </div>
+       <div class="column is-narrow">
+        <div class="buttons has-addons is-hidden-mobile">
+        </div>
+       </div>
+      </div>
+
+      <div class="box" style="margin-bottom: 250px;">
+            <h5 style="font-size: 38px; font-weight: bold;"><a class="xx-new-article" href="https://terhech.de/posts/2014-01-22-clojure-enlive-static-site-generator-that-keeps-html-intact.html">AppVenture has been updated</a></h5>
+            <p style="padding-top: 10px; padding-bottom: 10px; font-size: 18px;">
+                All articles have been rewritten and improved. You will be forwarded
+                to the updated article.
+            </p>
+            <p style="font-size: 18px; font-weight: bold;">
+                <a class="xx-new-article" href="https://terhech.de/posts/2014-01-22-clojure-enlive-static-site-generator-that-keeps-html-intact.html" id="xxx-new-article">Click here to go there directly.</a>
+            </p>
+            <script>
+                 setTimeout(function(){ 
+                    document.location.href=document.getElementById("xxx-new-article").href;
+                },
+                    0);
+            </script>
+      </div>
+
+
+
+
+      <div role="content" id="maincontent" style="opacity: 0.5"><article id="article-1395022778" class="article-post content is-medium">
+
+
+ 
+          <h6><i class="fi-pencil"></i> Wed, 22 Jan 2014 <a href="/2014/01/22/clojure-enlive-static-site-generator-that-keeps-html-intact/">#</a></h6>
+
+        <h3><a href="/2014/01/22/clojure-enlive-static-site-generator-that-keeps-html-intact/">Clojure/Enlive Static Site Generator that keeps your HTML intact</a></h3>
+
+
+
+        <div class="actual-content"><p>
+Static is a Static Site Generator written in Clojure that I just released. It is a fork of the original static <a href="http://nakkaya.com/static.html">http://nakkaya.com/static.html</a> from Nurullah Akkaya. I chose Nurullah's Static because it had lots of great i/o features, but had to fork it because it differed in a couple of ways from what I wanted my blog to be:
+</p>
+
+<ul class="org-ul">
+<li>Have one (or several) html files as templates that I do not need to break up into parts and that are not plastered with weird template tags. So I'm using Enlive to define selectors and the generator uses theses selectors to fill the content into the html structure. That makes it really really easy to edit the html for the blog without having to go the html -&gt; haml/whatever -&gt; break up -&gt; … route.</li>
+<li>Implement a strong seperation between layout and code: The normal Static generator mixes design/layout with Clojure code (within the project files, and in the generator source itself). This makes it difficult to implement a new layout easily and use it for anything but the original envisioned layout. What's more, I wanted to define my layout in HTML and not have to edit multiple Clojure files to make it work.</li>
+<li>Allow different templates for the different possible views that A blog contains. I.e. a template for list views, a template for a blog post, and a template for multiple blog posts.</li>
+</ul>
+
+<div id="outline-container-org47ce7dd" class="outline-2">
+<h2 id="org47ce7dd"><span class="section-number-2">1</span> Features:</h2>
+<div class="outline-text-2" id="text-1">
+<ul class="org-ul">
+<li><b>Template are all html</b>: Without any templating language or breaking it into pieces in between. In fact, the html templates are stored in the public/ folder with all your CSS and images and Javascript, so just fire up a 'python -m SimpleHTTPServer' and you can edit your templates as if they were an actual site. Once you're done, simply run the build process and it is finished.</li>
+<li><b>Org Mode Support</b>: This may not be interesting for most people, but I really dig Emacs Org Mode for document editing. Static has terrific Org Mode support. For an example of how to set up your environment, see the <a href="http://github.com/terhechte/static">Github Repo</a></li>
+<li><b>Projects</b>: Every document put into the <code>site/</code> folder will be added to the list of projects that can be accessed in a template. This allows you to create a small document for any page you'd like to host on your blog. It can then be easily included into your navigation. Currently, this works only well for HTML, Markdown and Org Mode documents.</li>
+<li><b>Tags</b>: Every document can be tagged, and the tags can be listed on the site, and link to tag archives</li>
+<li><b>Archives</b>: An archive can automatically be generated for all content. You have the option of having a seperate archive page for each month or having just one huge archive list.</li>
+<li><b>Just two templates</b>: There're just two templates that need to be defined, a list template (for archives and tag lists) and a content template (for one or multiple posts). And they can even be the same if you wish.</li>
+<li><b>Footnotes in Markdown</b>: There's a bit of support for footnotes in Markdown, however since I'm mostly using Org Mode, which automatically inserts the markup for them, I never went beyond implementing the basics.</li>
+<li><b>Compilable to jar file</b>: This means that you can compile it once, and whether you update your operating system, or switch to a different platform, or re-install something or change your environment, the generator will work - as long as you have Java installed. I find this much better to generators like, say, Jekyll, where it (for me) <a href="http://appventure.me/2014/01/20/now-running-clojure/">often failed when I updated Ruby or installed a new Gem (or really changed anything)</a>.</li>
+</ul>
+</div>
+</div>
+
+
+<div id="outline-container-org2402f86" class="outline-2">
+<h2 id="org2402f86"><span class="section-number-2">2</span> Templates:</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+Templating is done by modifying the DOM of a html template through Clojure/Enlive scripts. This allows to layout / design in html and just bind the date by adding a couple of DOM selectors. I find this much easier than having to split a template into seperate pieces like in traditional templating languages.
+</p>
+
+<p>
+Templating consists out of multiple parts:
+</p>
+<ul class="org-ul">
+<li>The html template file, usually _index.html in public/. In this example we'll call it index.html.</li>
+<li>The base template file, that contains all the definitions, snippets, and more that you need in your templates</li>
+<li>The default and list templates which are lists of html selectors and actions which are then performed against the results.</li>
+</ul>
+
+<p>
+Since all templating is done via <a href="https://github.com/cgrand/enlive">Enlive</a> it may be beneficial to have a look at it first. <a href="https://github.com/swannodette/enlive-tutorial/">Here's a fantastic tutorial</a> from David Nolen. However, the example below should be simple enough to understand it even without having a look at Enlive first.
+</p>
+
+<p>
+With that in mind, lets see a simple example:
+</p>
+</div>
+
+<div id="outline-container-orgde0ff24" class="outline-4">
+<h4 id="orgde0ff24"><span class="section-number-4">2.0.1</span> public/index.html</h4>
+<div class="outline-text-4" id="text-2-0-1">
+<div class="org-src-container">
+<pre class="src src-html">&lt;<span style="font-weight: bold;">html</span>&gt;
+&lt;<span style="font-weight: bold;">head</span>&gt;&lt;<span style="font-weight: bold;">title</span>&gt;<span style="font-weight: bold; text-decoration: underline;">title</span>&lt;/<span style="font-weight: bold;">title</span>&gt;&lt;/<span style="font-weight: bold;">head</span>&gt;
+&lt;<span style="font-weight: bold;">body</span>&gt;
+    &lt;<span style="font-weight: bold;">div</span> <span style="font-weight: bold; font-style: italic;">id</span>='content'&gt;
+        &lt;<span style="font-weight: bold;">article</span>&gt;
+            &lt;<span style="font-weight: bold;">h1</span>&gt;<span style="font-weight: bold; text-decoration: underline;">text</span>&lt;/<span style="font-weight: bold;">h1</span>&gt;
+            &lt;<span style="font-weight: bold;">div</span>&gt;content&lt;/<span style="font-weight: bold;">div</span>&gt;
+        &lt;/<span style="font-weight: bold;">article</span>&gt;
+        &lt;<span style="font-weight: bold;">div</span> <span style="font-weight: bold; font-style: italic;">id</span>='list'&gt;
+            &lt;<span style="font-weight: bold;">h1</span>&gt;<span style="font-weight: bold; text-decoration: underline;">title</span>&lt;/<span style="font-weight: bold;">h1</span>&gt;
+            &lt;<span style="font-weight: bold;">div</span>&gt;entry&lt;/<span style="font-weight: bold;">div</span>&gt;
+        &lt;/<span style="font-weight: bold;">div</span>&gt;
+    &lt;/<span style="font-weight: bold;">div</span>&gt;
+&lt;/<span style="font-weight: bold;">body</span>&gt;
+&lt;/<span style="font-weight: bold;">html</span>&gt;
+</pre>
+</div>
+
+<p>
+This is straightforward html and a simple model to explain templating. When this is being used to render the <b>index.html</b> of our blog, we want the following to happen.
+</p>
+<ol class="org-ol">
+<li>Replace <code>&lt;title&gt;title&lt;/title&gt;</code> with the site title from our metadata</li>
+<li>Remove the <code>#list</code> element as the index is not a list page (unlike tag list or archives)</li>
+<li>Use the <code>&lt;article&gt;</code> entry and clone it for each of our posts replacing h1 with the title and <code>&lt;div&gt;content&lt;/div&gt;</code> with the content.</li>
+</ol>
+
+<p>
+Enlive selectors are a little bit different than CSS selectors, but still easy to graps, so first lets see which selectors we need:
+</p>
+
+<ol class="org-ol">
+<li><code>[:head :title]</code>: That's it, and in there we just want to replace everythign</li>
+<li><code>[:#list]</code>: That's it, and we just want to remove what we find</li>
+<li>This is a bit more tricky, we first want <code>[:div#content]</code> to select our container div, but then we want to fill it with an instance of our <code>&lt;article&gt;</code> html structure for each item we have in our post contents.</li>
+</ol>
+
+<p>
+Static always binds two variables to the template scope: <b>metadata</b> and <b>content</b>. 
+</p>
+
+<p>
+Enlive works in a way where you define a selector and then an operation that has to be performed on the result of that selector, so now we will create a simple base template to define snippets for the article entries. A snipped is a piece of html from a template that you can clone / use multiple times - just what we need for our article.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgda6fe06" class="outline-4">
+<h4 id="orgda6fe06"><span class="section-number-4">2.0.2</span> templates/base.clj</h4>
+<div class="outline-text-4" id="text-2-0-2">
+<div class="org-src-container">
+<pre class="src src-clojure">; template-path prefixes the name with the correct path
+; We bind this to a var so we can access it easily
+
+(def base-template-file (static.core/template-path "_index.html"))
+
+; This is the snipped for our article template. 
+; It will grab the releveant [:article] portion for us 
+; and apply the contents to the h1 and the div
+; the name of our snippet *article-template* is later available as a function
+
+(enlive/defsnippet article-template base-template-file [:article] 
+  ; This snippet will be called with a Post instance. 
+  ; Posts are Maps. We just need title and url here
+
+  [{:keys [title url]}] 
+
+    ; we tell enlive to replace the 'content' of the :h1 
+    ; tag with the contents of the title var
+
+    [:h1] (enlive/content title) 
+
+    ; we tell enive to replace the 'content' of 
+    ; the :div tag with the contents of the url var
+
+    [:div] (enlive/content url) 
+
+    )
+</pre>
+</div>
+
+<p>
+We're almost done. We have defined our article snippet, now we just need to maps this snippet against all the posts that we have.
+This is being done in our default template.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org609a0eb" class="outline-3">
+<h3 id="org609a0eb"><span class="section-number-3">2.1</span> templates/default.clj</h3>
+<div class="outline-text-3" id="text-2-1">
+<div class="org-src-container">
+<pre class="src src-clojure">; The define-template is a macro in core.clj 
+; that helps us define simple templates
+(define-template base-template-file
+
+  ; We replace the title contents with our site title
+  ; or, with the post title, if the author define one
+
+  [:head :title] (enlive/content (if-let [t (:title metadata)] t (:site-title metadata)))
+
+  ; We replace the contents of the #content node with the results of 
+  ; mapping our earlier-defined article function against our content
+
+  [:#content] (enlive/content (map #(article %) content))
+
+  ; And finally, we remove the list, as we don't need it. 
+  ; Returning nil for an element will get rid of it
+
+  [:#list] nil
+)
+</pre>
+</div>
+
+<p>
+That's it! Once these selectors are in place, you're done and your content will be written out. Here're some helpful tips on how to write good selectors:
+</p>
+
+<ul class="org-ul">
+<li>Try to be very specific, otherwise future changes in your html require you to re-write your selectors afterwards. I.e. rather use <code>[:#content]</code> instead of <code>[:body :&gt; :div#container :&gt; :div#content]</code>. In the later case, once you decide to remove the div#container at some point in the future, the selector will fail.</li>
+<li>The format of the selectors is always <code>[selector] (action)</code> so you can't just do a println for debugging. An easy way to do that, though, is by including it in a useless selector: <code>[:head] #(when "1" (println content) %)</code> will just replace <code>:head</code> with :head and print content as a side effect.</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org48a15e8" class="outline-2">
+<h2 id="org48a15e8"><span class="section-number-2">3</span> Caveats</h2>
+<div class="outline-text-2" id="text-3">
+<ul class="org-ul">
+<li>This is my first take on a big Clojure project after reading two books and dabbling around with the repl the code may not be good, so if you find something atrocious, just send a pull request.</li>
+<li>The way that I implemented the enlive templates with a base template and additional templates feels kinda awful. With my limited Clojure knowledge I couldn't really come up with anything else that would allow me to eval a template and allow it to import additional functions from another file to minimize repetition.</li>
+<li>This is only tested for my personal blog, it may be that if you're trying to do something else, it doesn't work for that, in that case, you're welcome to fork :)</li>
+<li>This started out as a proof-of-concept and turned out to be working so well that I decided to release it so maybe others can use it too. This means that the git commit history could certainly be cleaner. There's one huge commit that brings in a ton of changes.</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org13ca7bb" class="outline-2">
+<h2 id="org13ca7bb"><span class="section-number-2">4</span> Clone it, Fork it, Source:</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+<a href="http://github.com/terhechte/static">The source is available on Github</a>  
+</p>
+</div>
+</div>
+</div>
+
+        <div id="followme">
+            <p>If you read this far, you should follow me (<a href="http://www.twitter.com/terhechte">@terhechte</a>) <br /> on <a href="http://www.twitter.com/terhechte"><i class="fi-social-twitter"></i> Twitter</a></p>
+            <br />
+        </div>
+        
+
+        <div class="footnotes">
+            <ol></ol>
+        </div>
+
+        <p class="anchor"><i class="fi-anchor"></i></p>
+ 
+      </article></div>
+
+
+    </div>
+
+    <div class="column is-narrow">
+
+     <aside class="menu">
+
+         
+
+
+
+      <br />
+      <ul class="menu-list">
+       <li>
+        <p class="menu-label">
+         <a>
+          <i class="fas fa-dove"></i>
+          Swift Topics
+         </a>
+        </p>
+        <ul>
+            <li><a href="/topics/all.html">All</a></li>
+           
+            
+            <li><a href="/topics/swift-tricks.html">Swift Tricks</a></li>
+            
+         
+            
+            <li><a href="/topics/language.html">Language</a></li>
+            
+         
+            
+            <li><a href="/topics/hands-on.html">Hands On</a></li>
+            
+         
+            
+            <li><a href="/topics/blog.html">Blog</a></li>
+            
+         
+            
+         
+        </ul>
+       </li>
+
+       <li>
+           <p class="menu-label">
+               <a>
+                   <i class="fas fa-book"></i>
+                   Guides
+               </a>
+           </p>
+           <ul>
+                 
+               <li><a href="/guides/pattern_matching/intro.html">🧩 Pattern Matching</a></li>
+                 
+               <li><a href="/guides/advanced_practical_enum_examples/introduction.html">🚦 Enums</a></li>
+                 
+               <li><a href="/guides/map_flatmap_reduce_more/intro.html">🗺 Map, Reduce &amp; more</a></li>
+                 
+               <li><a href="/guides/associated_types/associated_types.html">🧙🏻 Associated Types</a></li>
+                 
+               <li><a href="/guides/tuples/introduction.html">🍱 Tuples</a></li>
+                 
+               <li><a href="/guides/optionals/intro.html">⁉️ Optionals</a></li>
+                 
+               <li><a href="/guides/swift_reflection/introduction.html">🔮 Reflection</a></li>
+                 
+           </ul>
+       </li>
+      </ul>
+
+      <div class="sidebar-banner">
+          <a href="https://contravariance.rocks"><img src="/img/contravariance_banner.png" srcset="/img/contravariance_banner.png 1x, /img/contravariance_banner@2x.png 2x" /></a>
+      </div>
+
+      <ul class="menu-list">
+       <li>
+        <p class="menu-label">
+         <a>
+          <i class="fas fa-tags"></i>
+          Tags
+         </a>
+        </p>
+        <ul>
+
+     
+     <li><a href="/tags/pattern-matching.html" class="tags has-addons"><span class="tag is-info is-rounded">pattern matching</span><span class="tag is-primary is-rounded">25</span></a></li>
+     
+     <li><a href="/tags/switch.html" class="tags has-addons"><span class="tag is-info is-rounded">switch</span><span class="tag is-primary is-rounded">24</span></a></li>
+     
+     <li><a href="/tags/enum.html" class="tags has-addons"><span class="tag is-info is-rounded">enum</span><span class="tag is-primary is-rounded">20</span></a></li>
+     
+     <li><a href="/tags/associated.html" class="tags has-addons"><span class="tag is-info is-rounded">associated</span><span class="tag is-primary is-rounded">14</span></a></li>
+     
+     <li><a href="/tags/tuples.html" class="tags has-addons"><span class="tag is-info is-rounded">tuples</span><span class="tag is-primary is-rounded">13</span></a></li>
+     
+     <li><a href="/tags/reflection.html" class="tags has-addons"><span class="tag is-info is-rounded">reflection</span><span class="tag is-primary is-rounded">12</span></a></li>
+     
+     <li><a href="/tags/reduce.html" class="tags has-addons"><span class="tag is-info is-rounded">reduce</span><span class="tag is-primary is-rounded">11</span></a></li>
+     
+     <li><a href="/tags/box.html" class="tags has-addons"><span class="tag is-info is-rounded">box</span><span class="tag is-primary is-rounded">10</span></a></li>
+     
+     <li><a href="/tags/generics.html" class="tags has-addons"><span class="tag is-info is-rounded">generics</span><span class="tag is-primary is-rounded">7</span></a></li>
+     
+     <li><a href="/tags/compactmap.html" class="tags has-addons"><span class="tag is-info is-rounded">compactMap</span><span class="tag is-primary is-rounded">6</span></a></li>
+     
+     <li><a href="/tags/filter.html" class="tags has-addons"><span class="tag is-info is-rounded">filter</span><span class="tag is-primary is-rounded">6</span></a></li>
+     
+     <li><a href="/tags/map.html" class="tags has-addons"><span class="tag is-info is-rounded">map</span><span class="tag is-primary is-rounded">6</span></a></li>
+     
+     <li><a href="/tags/mirror.html" class="tags has-addons"><span class="tag is-info is-rounded">mirror</span><span class="tag is-primary is-rounded">6</span></a></li>
+     
+     <li><a href="/tags/protocol.html" class="tags has-addons"><span class="tag is-info is-rounded">protocol</span><span class="tag is-primary is-rounded">6</span></a></li>
+     
+     <li><a href="/tags/optionals.html" class="tags has-addons"><span class="tag is-info is-rounded">optionals</span><span class="tag is-primary is-rounded">5</span></a></li>
+     
+     <li><a href="/tags/where.html" class="tags has-addons"><span class="tag is-info is-rounded">where</span><span class="tag is-primary is-rounded">5</span></a></li>
+     
+     <li><a href="/tags/erasure.html" class="tags has-addons"><span class="tag is-info is-rounded">erasure</span><span class="tag is-primary is-rounded">4</span></a></li>
+     
+     <li><a href="/tags/equatable.html" class="tags has-addons"><span class="tag is-info is-rounded">equatable</span><span class="tag is-primary is-rounded">3</span></a></li>
+     
+     <li><a href="/tags/destructure.html" class="tags has-addons"><span class="tag is-info is-rounded">destructure</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/error.html" class="tags has-addons"><span class="tag is-info is-rounded">error</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/extension.html" class="tags has-addons"><span class="tag is-info is-rounded">extension</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/guard.html" class="tags has-addons"><span class="tag is-info is-rounded">guard</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/if-let.html" class="tags has-addons"><span class="tag is-info is-rounded">if let</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/is.html" class="tags has-addons"><span class="tag is-info is-rounded">is</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/objc.html" class="tags has-addons"><span class="tag is-info is-rounded">objc</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/optional.html" class="tags has-addons"><span class="tag is-info is-rounded">optional</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/struct.html" class="tags has-addons"><span class="tag is-info is-rounded">struct</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/try.html" class="tags has-addons"><span class="tag is-info is-rounded">try</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/.html" class="tags has-addons"><span class="tag is-info is-rounded">?</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/caseiterable.html" class="tags has-addons"><span class="tag is-info is-rounded">CaseIterable</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/customreflectable.html" class="tags has-addons"><span class="tag is-info is-rounded">CustomReflectable</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/data.html" class="tags has-addons"><span class="tag is-info is-rounded">Data</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/expressiblebystringliteral.html" class="tags has-addons"><span class="tag is-info is-rounded">ExpressibleByStringLiteral</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/rawrepresentable.html" class="tags has-addons"><span class="tag is-info is-rounded">RawRepresentable</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/as.html" class="tags has-addons"><span class="tag is-info is-rounded">as</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/autoclosure.html" class="tags has-addons"><span class="tag is-info is-rounded">autoclosure</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/break.html" class="tags has-addons"><span class="tag is-info is-rounded">break</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/catch.html" class="tags has-addons"><span class="tag is-info is-rounded">catch</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/closure.html" class="tags has-addons"><span class="tag is-info is-rounded">closure</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/copyonwrite.html" class="tags has-addons"><span class="tag is-info is-rounded">copy-on-write</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/coredata.html" class="tags has-addons"><span class="tag is-info is-rounded">coredata</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/either.html" class="tags has-addons"><span class="tag is-info is-rounded">either</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/fallthrough.html" class="tags has-addons"><span class="tag is-info is-rounded">fallthrough</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/for.html" class="tags has-addons"><span class="tag is-info is-rounded">for</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/for-case.html" class="tags has-addons"><span class="tag is-info is-rounded">for case</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/groupby.html" class="tags has-addons"><span class="tag is-info is-rounded">groupby</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/guard-let.html" class="tags has-addons"><span class="tag is-info is-rounded">guard let</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/if-case.html" class="tags has-addons"><span class="tag is-info is-rounded">if case</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/indirect.html" class="tags has-addons"><span class="tag is-info is-rounded">indirect</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/init.html" class="tags has-addons"><span class="tag is-info is-rounded">init</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/init.html" class="tags has-addons"><span class="tag is-info is-rounded">init?</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/inout.html" class="tags has-addons"><span class="tag is-info is-rounded">inout</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/label.html" class="tags has-addons"><span class="tag is-info is-rounded">label</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/literal.html" class="tags has-addons"><span class="tag is-info is-rounded">literal</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/method.html" class="tags has-addons"><span class="tag is-info is-rounded">method</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/overload.html" class="tags has-addons"><span class="tag is-info is-rounded">overload</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/package.html" class="tags has-addons"><span class="tag is-info is-rounded">package</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/partition.html" class="tags has-addons"><span class="tag is-info is-rounded">partition</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/performance.html" class="tags has-addons"><span class="tag is-info is-rounded">performance</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/property.html" class="tags has-addons"><span class="tag is-info is-rounded">property</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/protocols.html" class="tags has-addons"><span class="tag is-info is-rounded">protocols</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/range.html" class="tags has-addons"><span class="tag is-info is-rounded">range</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/self.html" class="tags has-addons"><span class="tag is-info is-rounded">self</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/tupealias.html" class="tags has-addons"><span class="tag is-info is-rounded">tupealias</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/tuple.html" class="tags has-addons"><span class="tag is-info is-rounded">tuple</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/typealias.html" class="tags has-addons"><span class="tag is-info is-rounded">typealias</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/unique.html" class="tags has-addons"><span class="tag is-info is-rounded">unique</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/value-type.html" class="tags has-addons"><span class="tag is-info is-rounded">value type</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/valuetype.html" class="tags has-addons"><span class="tag is-info is-rounded">valuetype</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/vararg.html" class="tags has-addons"><span class="tag is-info is-rounded">vararg</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/wildcard.html" class="tags has-addons"><span class="tag is-info is-rounded">wildcard</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/zip.html" class="tags has-addons"><span class="tag is-info is-rounded">zip</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/.html" class="tags has-addons"><span class="tag is-info is-rounded">~=</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+
+        </ul>
+       </li>
+      </ul>
+
+
+     </aside> 
+
+
+    </div>
+   </div>
+  </div>
+ </section>
+
+ <div class="footer">
+  <article class="media" id="followme">
+   <figure class="media-left">
+    <p class="image is-64x64">
+     <img src="/img/terhechte.jpg" class="profile-image" />
+    </p>
+   </figure>
+   <div class="media-content">
+       <div class="columns">
+           <div class="column">
+               <div class="content">
+                   <p>
+                       <strong>Benedikt Terhechte</strong> <a href="https://twitter.com/terhechte"><small>@terhechte</small></a>
+                       <br />
+                       If you read this far, you should <a href="https://twitter.com/terhechte">follow Benedikt on Twitter</a>.<br />
+                       APPVENTURE is dedicated to providing articles about Swift, macOS, iOS &amp; Linux development.
+                   </p>
+                   <p>
+                       <strong>2011 - 2019 Benedikt Terhechte</strong>
+                   </p>
+               </div>
+           </div>
+           <div class="column">
+               <p>
+                   <a href="https://terhech.de">Benedikt's private blog can be found
+                       at <strong>terhech.de</strong></a>
+               </p>
+               <p>
+                   <br />
+                   <strong>Other Profiles</strong>
+               </p>
+               <p class="subtitle is-6">
+                   <a href="https://twitter.com/terhechte"><i class="fab fa-twitter"></i></a>
+                   <a href="https://www.xing.com/profile/Benedikt_Terhechte">
+                       <i class="fab fa-xing"></i>
+                   </a>
+                   <a href="https://twitter.com/terhechte">
+                       <i class="fab fa-github"></i>
+                   </a>
+                   <a href="https://news.ycombinator.com/user?id=terhechte">
+                       <i class="fab fa-hacker-news"></i>
+                   </a>
+               </p>
+           </div>
+       </div>
+   </div>
+   <div class="media-right">
+    <a href="https://twitter.com/terhechte" class="button is-info is-rounded">
+     <i class="fab fa-twitter"></i> 
+     Follow Me</a>
+   </div>
+  </article>
+ </div>
+
+
+
+</body>
+
+
+</html>

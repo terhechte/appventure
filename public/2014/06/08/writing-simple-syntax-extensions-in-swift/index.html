@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Creating a Swift syntax extension: the Lisp 'cond' function</title>
+  <link rel="stylesheet" href="/css/bulma.min.css" />
+  <link rel="stylesheet" href="/css/style.css" />
+
+  <meta content="" name="description" /><meta content="benedikt, c, clojure, clojurescript, cocoa, cond, extension, feature, html, ios, javascript, lisp, mac, macro, objective-c, photodesk, research, stylemac, swift, syntax, terhechte" name="keywords" /><meta content="Benedikt Terhechte" name="author" /><meta content="Creating a Swift syntax extension: the Lisp 'cond' function" property="og:title" /><meta content="" property="og:description" /><meta content="http://appventure.me/2014/06/08/writing-simple-syntax-extensions-in-swift/" property="og:url" /><meta content="Creating a Swift syntax extension: the Lisp 'cond' function" name="twitter:title" /><meta content="" name="twitter:description" /><meta content="summary" name="twitter:card" /><meta content="http://appventure.me/img/ez@2x.png" name="twitter:image" /><meta content="http://appventure.me/img/ez@2x.png" property="og:image" />
+  <meta name="twitter:site" content="@terhechte" />
+  <meta name="twitter:creator" content="@terhechte" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700,800" rel="stylesheet" />
+  <script defer="defer" src="/js/fontawesome-all.min.js"></script>
+  
+ </head>
+ <body>
+  <section class="section" id="head">
+   <div class="container" id="container">
+    <div>
+
+     <div class="columns">
+      <div class="column is-3">
+          <span id="brand"><a href="/index.html"><img src="/img/brand.png" srcset="/img/brand.png 1x, /img/brand@2x.png 2x" /></a></span>
+      </div>
+      <div class="column is-7">
+       <span id="subbrand">
+        Simple. Swift. Guides.</span>
+      </div>
+      <div class="column is-2">
+          <div class="field">
+
+          </div>
+      </div>
+     </div>
+    </div>
+   </div>
+  </section>
+
+
+  <section class="section" id="main">
+   <div class="container" id="container">
+    <div class="columns">
+     <div class="column">
+      <div class="columns">
+       <div class="column">
+        <div class="tabs">
+		 
+        </div>
+       </div>
+       <div class="column is-narrow">
+        <div class="buttons has-addons is-hidden-mobile">
+        </div>
+       </div>
+      </div>
+
+      <div class="box" style="margin-bottom: 250px;">
+            <h5 style="font-size: 38px; font-weight: bold;"><a class="xx-new-article" href="https://appventure.me/posts/2014-06-08-writing-simple-syntax-extensions-in-swift.html">AppVenture has been updated</a></h5>
+            <p style="padding-top: 10px; padding-bottom: 10px; font-size: 18px;">
+                All articles have been rewritten and improved. You will be forwarded
+                to the updated article.
+            </p>
+            <p style="font-size: 18px; font-weight: bold;">
+                <a class="xx-new-article" href="https://appventure.me/posts/2014-06-08-writing-simple-syntax-extensions-in-swift.html" id="xxx-new-article">Click here to go there directly.</a>
+            </p>
+            <script>
+                 setTimeout(function(){ 
+                    document.location.href=document.getElementById("xxx-new-article").href;
+                },
+                    0);
+            </script>
+      </div>
+
+
+
+
+      <div role="content" id="maincontent" style="opacity: 0.5"><article id="article-1816371732" class="article-post content is-medium">
+
+
+ 
+          <h6><i class="fi-pencil"></i> Sun, 8 Jun 2014 <a href="/2014/06/08/writing-simple-syntax-extensions-in-swift/">#</a></h6>
+
+        <h3><a href="/2014/06/08/writing-simple-syntax-extensions-in-swift/">Creating a Swift syntax extension: the Lisp 'cond' function</a></h3>
+
+
+
+        <div class="actual-content"><p>
+It has been less than a week since Apple announced Swift, and people are already writing libraries, snippet collections, or best practice posts. I suppose most did not even find the time to thouroughly read the Swift Book yet <sup><a id="fnr.1" class="footref" href="#fn.1">1</a></sup>.
+</p>
+
+<p>
+Some Examples are the <a href="https://github.com/grant/swift-cheat-sheet">Swift Cheatsheet</a>, <a href="https://github.com/maxpow4h/swiftz">Swiftz, a functional programming paradigm library for Swift</a>, or <a href="http://nategriswold.blogspot.com/2014/06/couple-swift-notes-from-wwdc.html">blog posts like this one.</a> 
+</p>
+
+<div id="outline-container-orgbf4a2ab" class="outline-2">
+<h2 id="orgbf4a2ab"><span class="section-number-2">1</span> Simple Custom Syntax</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+One Swift cricitism has been the lack of a macro system that would allow users to freely extend the language like Lisp (and other homoiconic) languages do. While this is indeed not possible, there is a hidden gem in the Swift language that gives us some flexibility in this domain. If you look at the Swift documentation for the various operators, you'll find this line:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-Javascript">func &amp;&amp;(lhs: LogicValue, rhs: @auto_closure () -&gt; LogicValue) -&gt; Bool
+</pre>
+</div>
+
+<p>
+The <code>&amp;&amp;</code> operator has two arguments: The left hand side and the right hand side. Swift first checks the left hand side. If this evaluates to true, only then will it evaluate the right hand side. This means that the right hand side expression will defer evaluation until the left hand side was evaluated. 
+</p>
+
+<p>
+How does Swift do this? Through the magic <code>@auto_closure</code> syntax. This tells Swift to wrap the expression into a closure and only evaluate it if explicitly told to do so. The full function might look something like this
+</p>
+
+<div class="org-src-container">
+<pre class="src src-Javascript">func &amp;&amp;(lhs: LogicValue, rhs: @auto_closure () -&gt; LogicValue) -&gt; Bool {
+  // Proof for left hand side
+  if lhs {
+    // Only then execute and thus proof right hand side
+    if rhs() == true {
+      return true
+    }
+  }
+  return false
+}
+</pre>
+</div>
+
+<p>
+This is an interesting feature and allows us to implement more complex constructs with a bit of tinkering. How about implementing something new, namely the <code>cond</code> expression from Lisp?
+</p>
+</div>
+</div>
+
+<div id="outline-container-org61d8fa3" class="outline-2">
+<h2 id="org61d8fa3"><span class="section-number-2">2</span> Writing a cond expression for Swift</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+In Lisp, <code>cond</code> works as follows:
+</p>
+<div class="org-src-container">
+<pre class="src src-Clojure">(cond ((= a 1) "a is one")
+      ((= a 2) "a is two")
+      ((= a 4) "a is four"))
+</pre>
+</div>
+
+<p>
+Much like a <code>switch</code> statement, different cases are being tested for. Each line defines a test and after that a expression result. So if a equals 2 the switch statement will return "a is two". If a equals 1, it will return "a is one". 
+In comparison to <code>switch</code>, <code>cond</code> also allows to test for different variables in one statement (i.e. is a 2 or is b 3). Another difference is that <code>cond</code> returns a value, while the Swift <code>switch</code> statement does not (<a href="http://nategriswold.blogspot.com/2014/06/couple-swift-notes-from-wwdc.html">there's actually a rdar bug for this</a>)
+</p>
+
+<p>
+Given the <code>@auto_closure</code> feature from above, we can actually implement <code>cond</code> in Swift ourselves. 
+</p>
+<ul class="org-ul">
+<li>We need an expression that evaluates to bool <code>() -&gt; Bool</code></li>
+<li>We need an expression that evaluates to Any result type <code>() -&gt; Any</code></li>
+</ul>
+
+<p>
+These should be wrapped into closures, so that they will be evaluated sequentially and only if necessary. Lets start with a simple implementation and build upon that.
+</p>
+
+<p>
+Imagine the following situation: You're processing user input, and you want to delete something from either the memory or the database, depending on what the user selected.
+</p>
+
+<p>
+We want something that works for the current theoretical code:
+</p>
+<div class="org-src-container">
+<pre class="src src-Javascript">var a = get_user_input()
+var b = get_current_entity()
+// delete fro memory or db depending on what user selected
+var result = cond(a == 1, delete_from_db(b),
+		  a == 2, delete_from_memory(b))
+// make sure we deleted the correct one
+if result != b ....
+</pre>
+</div>
+
+<p>
+The important part here is that <code>delete_from_db</code> and <code>delete_from_memory</code> are only being executed if the condition 'a == ?' is true for the selected case. Under no circumstance do we want our entity to be deleted from the db and the memory.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org342ecfd" class="outline-2">
+<h2 id="org342ecfd"><span class="section-number-2">3</span> A first version</h2>
+<div class="outline-text-2" id="text-3">
+<div class="org-src-container">
+<pre class="src src-Javascript">func cond_1 (a1: @auto_closure () -&gt; Bool, b1: @auto_closure () -&gt; Any,
+    a2: @auto_closure () -&gt; Bool, b2: @auto_closure () -&gt; Any,
+    bf: @auto_closure () -&gt; Any) -&gt; Any {
+	if a1() {
+	    return b1()
+	} else if a2() {
+	    return b2()
+	}
+	return bf()
+}
+</pre>
+</div>
+
+<p>
+There's our expression. We can hand it two different cases and a default expression (as a fallback). Lets see how it works. We will define two simple functions that perform side effects (imagine deleting a file, or writing to a file).
+</p>
+
+<div class="org-src-container">
+<pre class="src src-Javascript">func perform_side_effects1() -&gt; Any {
+    println("modify a state")
+    return 1
+}
+func perform_side_effects2() -&gt; Any {
+    println("modify another state")
+    return 2
+}
+
+var a = 1
+var ctest = cond_1(a == 1, 2 + perform_side_effects1(),
+		  a == 2, 3 + perform_side_effects2(),
+		  0)
+// ctest is 3 (2 + 1)
+// prints only "modify a state"
+ctest
+
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgd7aa579" class="outline-2">
+<h2 id="orgd7aa579"><span class="section-number-2">4</span> Handling more cases</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+This works fine, but it has a limitation in that it only works for two cases. This is clearly not optimal. Thankfully, Swift is pretty good at function overloading so we can simply define more functions with more cases and let swift do the hard work of figuring out which one to choose:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-Javascript">func cond_2 (a1: @auto_closure () -&gt; Bool, b1: @auto_closure () -&gt; Any,
+    a2: @auto_closure () -&gt; Bool, b2: @auto_closure () -&gt; Any,
+    bf: @auto_closure () -&gt; Any) -&gt; Any {
+	if a1() {
+	    return b1()
+	} else if a2() {
+	    return b2()
+	}
+	return bf()
+}
+
+func cond_2 (a1: @auto_closure () -&gt; Bool, b1: @auto_closure () -&gt; Any,
+    a2: @auto_closure () -&gt; Bool, b2: @auto_closure () -&gt; Any,
+    a3: @auto_closure () -&gt; Bool, b3: @auto_closure () -&gt; Any,
+    bf: @auto_closure () -&gt; Any) -&gt; Any {
+	if a1() {
+	    return b1()
+	} else if a2() {
+	    return b2()
+	} else if a3() {
+	    return a3()
+	}
+	return bf()
+}
+</pre>
+</div>
+
+<p>
+You can then extend this to ever more cases. Of course, this smells like code duplication and there is a way around this, but that currently crashes the Swift Compiler. I'll come back to how to (at least theoretically) do this at the end. First, there is another issue that we need to address.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgdb433b8" class="outline-2">
+<h2 id="orgdb433b8"><span class="section-number-2">5</span> Making it generic</h2>
+<div class="outline-text-2" id="text-5">
+<p>
+Our current version succumbs every variable down to the <code>Any</code> type which means that the compiler won't be able to perform advanced type inference for anything that comes out of this function. For example, the following will not work because even though we're clearly returning <code>Int</code> our actual function is set to return <code>Any</code>
+</p>
+
+<div class="org-src-container">
+<pre class="src src-Javascript">// Causes an error
+var b:Int = cond_2(0 == 1, 1, 0 == 2, 2, 3)
+// Works fine
+var b:Any = cond_2(0 == 1, 1, 0 == 2, 2, 3)
+</pre>
+</div>
+
+<p>
+Since types give us safety we'd rather have a funcion that tells us if we accidentally try to do something wrong here. Thankfully, Swift has support for <a href="http://en.wikipedia.org/wiki/Generic_programming">Generic Programming</a> and only a simple change is necessary for this:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-Javascript">func cond_3&lt;T&gt; (a1: @auto_closure () -&gt; Bool, b1: @auto_closure () -&gt; T,
+    a2: @auto_closure () -&gt; Bool, b2: @auto_closure () -&gt; T,
+    bf: @auto_closure () -&gt; T) -&gt; T {
+	if a1() {
+	    return b1()
+	} else if a2() {
+	    return b2()
+	}
+	return bf()
+}
+
+// Works fine!
+var b:Int = cond_3(0 == 1, 1, 0 == 2, 2, 3)
+</pre>
+</div>
+
+<p>
+That's it, now we're telling Swift that this function handles items of type T and that the very same type T is the return type of this funcion. 
+</p>
+
+<p>
+Through this, we can use our cond_3 function on types of any kind like String, Array, Int, or custom types.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org83863f9" class="outline-2">
+<h2 id="org83863f9"><span class="section-number-2">6</span> Wrap up</h2>
+<div class="outline-text-2" id="text-6">
+<p>
+That's it! We've implemented our own syntax extension for Swift! Now we can write code this as this
+</p>
+
+<div class="org-src-container">
+<pre class="src src-Javascript">var a = get_user_input()
+var b = get_current_entity()
+// delete fro memory or db depending on what user selected
+var result = cond(a == 1, delete_from_db(b),
+		  a == 2, delete_from_memory(b))
+// make sure we deelted the correct one
+if result != b ....
+</pre>
+</div>
+
+<p>
+Now, the entity would only be deleted from db or from memory if a contains the correct variable. Keep in mind that this was only a simple example. Much more is possible if you use this in a smart way.
+</p>
+
+<p>
+Even better if one combines this in a neat way with the first closure as body mechanism or with operators. I'm sure that we can already create some pretty stunning syntax extensions with this. However, this, only if it doesn't crash the compiler, which brings us to the next and final section.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org5762bb1" class="outline-2">
+<h2 id="org5762bb1"><span class="section-number-2">7</span> Limitations</h2>
+<div class="outline-text-2" id="text-7">
+<p>
+All current Swift projects suffer from the current slightly beta state of the build tools and the Swift compiler. This leads to much code that looks a bit cumbersome but can easily be improved in the future. In this case, here's some untested code, that wraps the complete logic in one big function and only defines additional lightweight wrappers to deal with the parameters variations. Still not optimal but much more readable. Sadly, this crashes the compiler (actually it kills Xcode the minute you type it in, which is pretty impressive.<sup><a id="fnr.2" class="footref" href="#fn.2">2</a></sup>).
+</p>
+
+<div class="org-src-container">
+<pre class="src src-Javascript">func _cond&lt;T&gt; (a1: @auto_closure () -&gt; Bool, b1: @auto_closure () -&gt; T?,
+    a2: @auto_closure () -&gt; Bool, b2: @auto_closure () -&gt; T?,
+    a3: @auto_closure () -&gt; Bool, b3: @auto_closure () -&gt; T?,
+    a4: @auto_closure () -&gt; Bool, b4: @auto_closure () -&gt; T?,
+    a5: @auto_closure () -&gt; Bool, b5: @auto_closure () -&gt; T?
+) -&gt; T? {
+	if a1() {
+	    return b1()
+	} else if a2() {
+	    return b2()
+	} else if a3() {
+	    return b3()
+	} else if a4() {
+	    return b4()
+	} else if a5() {
+	    return a5()
+	}
+	return nil
+}
+// two parameter implementation
+func cond&lt;T&gt;(a1: @auto_closure () -&gt; Bool, b1: @auto_closure () -&gt; T,
+    a2: @auto_closure () -&gt; Bool, b2: @auto_closure () -&gt; T,
+    bf: @auto_closure () -&gt; T) -&gt; T {
+	if let r = _cond(a1, b1, a2, b2, false, {}(), false, {}(), false, {}()) {
+	    return r
+	}
+	return bf()
+}
+// three parameter implementation
+func cond&lt;T&gt;(a1: @auto_closure () -&gt; Bool, b1: @auto_closure () -&gt; T,
+    a2: @auto_closure () -&gt; Bool, b2: @auto_closure () -&gt; T,
+    a3: @auto_closure () -&gt; Bool, b3: @auto_closure () -&gt; T,
+    bf: @auto_closure () -&gt; T) -&gt; T {
+	if let r = _cond(a1, b1, a2, b2, a3, b3, false, {}(), false, {}()) {
+	    return r
+	}
+	return bf()
+}
+</pre>
+</div>
+
+<p>
+I'm not sure if this would lead to correct results if it would work, but based on my current understanding of the language it should be fine.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgae31d58" class="outline-2">
+<h2 id="orgae31d58"><span class="section-number-2">8</span> Update</h2>
+<div class="outline-text-2" id="text-8">
+<p>
+<a href="https://news.ycombinator.com/user?id=bjustin">bjustin</a> offered <a href="https://news.ycombinator.com/item?id=7865603">this slight modification</a> that makes it easy to use unlimited cases. The only downside is that the fallback has to be the first item.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-Javascript">func cond&lt;T&gt;(#fallback: T, testsAndExprs: (test: @auto_closure () -&gt; Bool, expr: @auto_closure () -&gt; T)...) -&gt; T {
+    for (t, e) in testsAndExprs {
+	if t() {
+	    return e()
+	}
+    }
+    return fallback
+}
+
+// And in use:
+
+// y is assigned "0 == 0, of course"
+let y = cond(fallback: "fallback", (test: false, expr: "not this branch"), (test: 0 == 0, expr: "0 == 0, of course"))
+</pre>
+</div>
+</div>
+</div>
+<div id="footnotes">
+<h2 class="footnotes">Footnotes: </h2>
+<div id="text-footnotes">
+
+<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1">1</a></sup> <div class="footpara">I completely omitted the language reference. Impossible to work through something like that during a chronically sleep-deprived week like WWDC</div></div>
+
+<div class="footdef"><sup><a id="fn.2" class="footnum" href="#fnr.2">2</a></sup> <div class="footpara">Rdar 17224140</div></div>
+
+
+</div>
+</div></div>
+
+        <div id="followme">
+            <p>If you read this far, you should follow me (<a href="http://www.twitter.com/terhechte">@terhechte</a>) <br /> on <a href="http://www.twitter.com/terhechte"><i class="fi-social-twitter"></i> Twitter</a></p>
+            <br />
+        </div>
+        
+
+        <div class="footnotes">
+            <ol></ol>
+        </div>
+
+        <p class="anchor"><i class="fi-anchor"></i></p>
+ 
+      </article></div>
+
+
+    </div>
+
+    <div class="column is-narrow">
+
+     <aside class="menu">
+
+         
+
+
+
+      <br />
+      <ul class="menu-list">
+       <li>
+        <p class="menu-label">
+         <a>
+          <i class="fas fa-dove"></i>
+          Swift Topics
+         </a>
+        </p>
+        <ul>
+            <li><a href="/topics/all.html">All</a></li>
+           
+            
+            <li><a href="/topics/swift-tricks.html">Swift Tricks</a></li>
+            
+         
+            
+            <li><a href="/topics/language.html">Language</a></li>
+            
+         
+            
+            <li><a href="/topics/hands-on.html">Hands On</a></li>
+            
+         
+            
+            <li><a href="/topics/blog.html">Blog</a></li>
+            
+         
+            
+         
+        </ul>
+       </li>
+
+       <li>
+           <p class="menu-label">
+               <a>
+                   <i class="fas fa-book"></i>
+                   Guides
+               </a>
+           </p>
+           <ul>
+                 
+               <li><a href="/guides/pattern_matching/intro.html">🧩 Pattern Matching</a></li>
+                 
+               <li><a href="/guides/advanced_practical_enum_examples/introduction.html">🚦 Enums</a></li>
+                 
+               <li><a href="/guides/map_flatmap_reduce_more/intro.html">🗺 Map, Reduce &amp; more</a></li>
+                 
+               <li><a href="/guides/associated_types/associated_types.html">🧙🏻 Associated Types</a></li>
+                 
+               <li><a href="/guides/tuples/introduction.html">🍱 Tuples</a></li>
+                 
+               <li><a href="/guides/optionals/intro.html">⁉️ Optionals</a></li>
+                 
+               <li><a href="/guides/swift_reflection/introduction.html">🔮 Reflection</a></li>
+                 
+           </ul>
+       </li>
+      </ul>
+
+      <div class="sidebar-banner">
+          <a href="https://contravariance.rocks"><img src="/img/contravariance_banner.png" srcset="/img/contravariance_banner.png 1x, /img/contravariance_banner@2x.png 2x" /></a>
+      </div>
+
+      <ul class="menu-list">
+       <li>
+        <p class="menu-label">
+         <a>
+          <i class="fas fa-tags"></i>
+          Tags
+         </a>
+        </p>
+        <ul>
+
+     
+     <li><a href="/tags/pattern-matching.html" class="tags has-addons"><span class="tag is-info is-rounded">pattern matching</span><span class="tag is-primary is-rounded">25</span></a></li>
+     
+     <li><a href="/tags/switch.html" class="tags has-addons"><span class="tag is-info is-rounded">switch</span><span class="tag is-primary is-rounded">24</span></a></li>
+     
+     <li><a href="/tags/enum.html" class="tags has-addons"><span class="tag is-info is-rounded">enum</span><span class="tag is-primary is-rounded">20</span></a></li>
+     
+     <li><a href="/tags/associated.html" class="tags has-addons"><span class="tag is-info is-rounded">associated</span><span class="tag is-primary is-rounded">14</span></a></li>
+     
+     <li><a href="/tags/tuples.html" class="tags has-addons"><span class="tag is-info is-rounded">tuples</span><span class="tag is-primary is-rounded">13</span></a></li>
+     
+     <li><a href="/tags/reflection.html" class="tags has-addons"><span class="tag is-info is-rounded">reflection</span><span class="tag is-primary is-rounded">12</span></a></li>
+     
+     <li><a href="/tags/reduce.html" class="tags has-addons"><span class="tag is-info is-rounded">reduce</span><span class="tag is-primary is-rounded">11</span></a></li>
+     
+     <li><a href="/tags/box.html" class="tags has-addons"><span class="tag is-info is-rounded">box</span><span class="tag is-primary is-rounded">10</span></a></li>
+     
+     <li><a href="/tags/generics.html" class="tags has-addons"><span class="tag is-info is-rounded">generics</span><span class="tag is-primary is-rounded">7</span></a></li>
+     
+     <li><a href="/tags/compactmap.html" class="tags has-addons"><span class="tag is-info is-rounded">compactMap</span><span class="tag is-primary is-rounded">6</span></a></li>
+     
+     <li><a href="/tags/filter.html" class="tags has-addons"><span class="tag is-info is-rounded">filter</span><span class="tag is-primary is-rounded">6</span></a></li>
+     
+     <li><a href="/tags/map.html" class="tags has-addons"><span class="tag is-info is-rounded">map</span><span class="tag is-primary is-rounded">6</span></a></li>
+     
+     <li><a href="/tags/mirror.html" class="tags has-addons"><span class="tag is-info is-rounded">mirror</span><span class="tag is-primary is-rounded">6</span></a></li>
+     
+     <li><a href="/tags/protocol.html" class="tags has-addons"><span class="tag is-info is-rounded">protocol</span><span class="tag is-primary is-rounded">6</span></a></li>
+     
+     <li><a href="/tags/optionals.html" class="tags has-addons"><span class="tag is-info is-rounded">optionals</span><span class="tag is-primary is-rounded">5</span></a></li>
+     
+     <li><a href="/tags/where.html" class="tags has-addons"><span class="tag is-info is-rounded">where</span><span class="tag is-primary is-rounded">5</span></a></li>
+     
+     <li><a href="/tags/erasure.html" class="tags has-addons"><span class="tag is-info is-rounded">erasure</span><span class="tag is-primary is-rounded">4</span></a></li>
+     
+     <li><a href="/tags/equatable.html" class="tags has-addons"><span class="tag is-info is-rounded">equatable</span><span class="tag is-primary is-rounded">3</span></a></li>
+     
+     <li><a href="/tags/destructure.html" class="tags has-addons"><span class="tag is-info is-rounded">destructure</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/error.html" class="tags has-addons"><span class="tag is-info is-rounded">error</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/extension.html" class="tags has-addons"><span class="tag is-info is-rounded">extension</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/guard.html" class="tags has-addons"><span class="tag is-info is-rounded">guard</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/if-let.html" class="tags has-addons"><span class="tag is-info is-rounded">if let</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/is.html" class="tags has-addons"><span class="tag is-info is-rounded">is</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/objc.html" class="tags has-addons"><span class="tag is-info is-rounded">objc</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/optional.html" class="tags has-addons"><span class="tag is-info is-rounded">optional</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/struct.html" class="tags has-addons"><span class="tag is-info is-rounded">struct</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/try.html" class="tags has-addons"><span class="tag is-info is-rounded">try</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/.html" class="tags has-addons"><span class="tag is-info is-rounded">?</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/caseiterable.html" class="tags has-addons"><span class="tag is-info is-rounded">CaseIterable</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/customreflectable.html" class="tags has-addons"><span class="tag is-info is-rounded">CustomReflectable</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/data.html" class="tags has-addons"><span class="tag is-info is-rounded">Data</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/expressiblebystringliteral.html" class="tags has-addons"><span class="tag is-info is-rounded">ExpressibleByStringLiteral</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/rawrepresentable.html" class="tags has-addons"><span class="tag is-info is-rounded">RawRepresentable</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/as.html" class="tags has-addons"><span class="tag is-info is-rounded">as</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/autoclosure.html" class="tags has-addons"><span class="tag is-info is-rounded">autoclosure</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/break.html" class="tags has-addons"><span class="tag is-info is-rounded">break</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/catch.html" class="tags has-addons"><span class="tag is-info is-rounded">catch</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/closure.html" class="tags has-addons"><span class="tag is-info is-rounded">closure</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/copyonwrite.html" class="tags has-addons"><span class="tag is-info is-rounded">copy-on-write</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/coredata.html" class="tags has-addons"><span class="tag is-info is-rounded">coredata</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/either.html" class="tags has-addons"><span class="tag is-info is-rounded">either</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/fallthrough.html" class="tags has-addons"><span class="tag is-info is-rounded">fallthrough</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/for.html" class="tags has-addons"><span class="tag is-info is-rounded">for</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/for-case.html" class="tags has-addons"><span class="tag is-info is-rounded">for case</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/groupby.html" class="tags has-addons"><span class="tag is-info is-rounded">groupby</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/guard-let.html" class="tags has-addons"><span class="tag is-info is-rounded">guard let</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/if-case.html" class="tags has-addons"><span class="tag is-info is-rounded">if case</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/indirect.html" class="tags has-addons"><span class="tag is-info is-rounded">indirect</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/init.html" class="tags has-addons"><span class="tag is-info is-rounded">init</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/init.html" class="tags has-addons"><span class="tag is-info is-rounded">init?</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/inout.html" class="tags has-addons"><span class="tag is-info is-rounded">inout</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/label.html" class="tags has-addons"><span class="tag is-info is-rounded">label</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/literal.html" class="tags has-addons"><span class="tag is-info is-rounded">literal</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/method.html" class="tags has-addons"><span class="tag is-info is-rounded">method</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/overload.html" class="tags has-addons"><span class="tag is-info is-rounded">overload</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/package.html" class="tags has-addons"><span class="tag is-info is-rounded">package</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/partition.html" class="tags has-addons"><span class="tag is-info is-rounded">partition</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/performance.html" class="tags has-addons"><span class="tag is-info is-rounded">performance</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/property.html" class="tags has-addons"><span class="tag is-info is-rounded">property</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/protocols.html" class="tags has-addons"><span class="tag is-info is-rounded">protocols</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/range.html" class="tags has-addons"><span class="tag is-info is-rounded">range</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/self.html" class="tags has-addons"><span class="tag is-info is-rounded">self</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/tupealias.html" class="tags has-addons"><span class="tag is-info is-rounded">tupealias</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/tuple.html" class="tags has-addons"><span class="tag is-info is-rounded">tuple</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/typealias.html" class="tags has-addons"><span class="tag is-info is-rounded">typealias</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/unique.html" class="tags has-addons"><span class="tag is-info is-rounded">unique</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/value-type.html" class="tags has-addons"><span class="tag is-info is-rounded">value type</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/valuetype.html" class="tags has-addons"><span class="tag is-info is-rounded">valuetype</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/vararg.html" class="tags has-addons"><span class="tag is-info is-rounded">vararg</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/wildcard.html" class="tags has-addons"><span class="tag is-info is-rounded">wildcard</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/zip.html" class="tags has-addons"><span class="tag is-info is-rounded">zip</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/.html" class="tags has-addons"><span class="tag is-info is-rounded">~=</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+
+        </ul>
+       </li>
+      </ul>
+
+
+     </aside> 
+
+
+    </div>
+   </div>
+  </div>
+ </section>
+
+ <div class="footer">
+  <article class="media" id="followme">
+   <figure class="media-left">
+    <p class="image is-64x64">
+     <img src="/img/terhechte.jpg" class="profile-image" />
+    </p>
+   </figure>
+   <div class="media-content">
+       <div class="columns">
+           <div class="column">
+               <div class="content">
+                   <p>
+                       <strong>Benedikt Terhechte</strong> <a href="https://twitter.com/terhechte"><small>@terhechte</small></a>
+                       <br />
+                       If you read this far, you should <a href="https://twitter.com/terhechte">follow Benedikt on Twitter</a>.<br />
+                       APPVENTURE is dedicated to providing articles about Swift, macOS, iOS &amp; Linux development.
+                   </p>
+                   <p>
+                       <strong>2011 - 2019 Benedikt Terhechte</strong>
+                   </p>
+               </div>
+           </div>
+           <div class="column">
+               <p>
+                   <a href="https://terhech.de">Benedikt's private blog can be found
+                       at <strong>terhech.de</strong></a>
+               </p>
+               <p>
+                   <br />
+                   <strong>Other Profiles</strong>
+               </p>
+               <p class="subtitle is-6">
+                   <a href="https://twitter.com/terhechte"><i class="fab fa-twitter"></i></a>
+                   <a href="https://www.xing.com/profile/Benedikt_Terhechte">
+                       <i class="fab fa-xing"></i>
+                   </a>
+                   <a href="https://twitter.com/terhechte">
+                       <i class="fab fa-github"></i>
+                   </a>
+                   <a href="https://news.ycombinator.com/user?id=terhechte">
+                       <i class="fab fa-hacker-news"></i>
+                   </a>
+               </p>
+           </div>
+       </div>
+   </div>
+   <div class="media-right">
+    <a href="https://twitter.com/terhechte" class="button is-info is-rounded">
+     <i class="fab fa-twitter"></i> 
+     Follow Me</a>
+   </div>
+  </article>
+ </div>
+
+
+
+</body>
+
+
+</html>

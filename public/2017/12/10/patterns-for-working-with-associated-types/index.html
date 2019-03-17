@@ -1,0 +1,1039 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Patterns for Working With Associated Types</title>
+  <link rel="stylesheet" href="/css/bulma.min.css" />
+  <link rel="stylesheet" href="/css/style.css" />
+
+  <meta content="Understand how to model your way around some of the issues that arise when introducing associated typed" name="description" /><meta content="associated, associatedtype, benedikt, c, clojure, clojurescript, cocoa, html, ios, javascript, mac, objective-c, pat, pattern, photodesk, protocol, protocols, research, stylemac, swift, terhechte, typealias" name="keywords" /><meta content="Benedikt Terhechte" name="author" /><meta content="Patterns for Working With Associated Types" property="og:title" /><meta content="Understand how to model your way around some of the issues that arise when introducing associated typed" property="og:description" /><meta content="http://appventure.me/2017/12/10/patterns-for-working-with-associated-types/" property="og:url" /><meta content="Patterns for Working With Associated Types" name="twitter:title" /><meta content="Understand how to model your way around some of the issues that arise when introducing associated typed" name="twitter:description" /><meta content="summary_large_image" name="twitter:card" /><meta content="http://appventure.me/img-content/2017-12-10-patterns-for-working-with-associated-types-feature-image.jpg" name="twitter:image" /><meta content="http://appventure.me/img-content/2017-12-10-patterns-for-working-with-associated-types-feature-image.jpg" property="og:image" />
+  <meta name="twitter:site" content="@terhechte" />
+  <meta name="twitter:creator" content="@terhechte" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700,800" rel="stylesheet" />
+  <script defer="defer" src="/js/fontawesome-all.min.js"></script>
+  
+ </head>
+ <body>
+  <section class="section" id="head">
+   <div class="container" id="container">
+    <div>
+
+     <div class="columns">
+      <div class="column is-3">
+          <span id="brand"><a href="/index.html"><img src="/img/brand.png" srcset="/img/brand.png 1x, /img/brand@2x.png 2x" /></a></span>
+      </div>
+      <div class="column is-7">
+       <span id="subbrand">
+        Simple. Swift. Guides.</span>
+      </div>
+      <div class="column is-2">
+          <div class="field">
+
+          </div>
+      </div>
+     </div>
+    </div>
+   </div>
+  </section>
+
+
+  <section class="section" id="main">
+   <div class="container" id="container">
+    <div class="columns">
+     <div class="column">
+      <div class="columns">
+       <div class="column">
+        <div class="tabs">
+		 
+        </div>
+       </div>
+       <div class="column is-narrow">
+        <div class="buttons has-addons is-hidden-mobile">
+        </div>
+       </div>
+      </div>
+
+      <div class="box" style="margin-bottom: 250px;">
+            <h5 style="font-size: 38px; font-weight: bold;"><a class="xx-new-article" href="https://appventure.me/guides/associated-types/associated-types.html">AppVenture has been updated</a></h5>
+            <p style="padding-top: 10px; padding-bottom: 10px; font-size: 18px;">
+                All articles have been rewritten and improved. You will be forwarded
+                to the updated article.
+            </p>
+            <p style="font-size: 18px; font-weight: bold;">
+                <a class="xx-new-article" href="https://appventure.me/guides/associated-types/associated-types.html" id="xxx-new-article">Click here to go there directly.</a>
+            </p>
+            <script>
+                 setTimeout(function(){ 
+                    document.location.href=document.getElementById("xxx-new-article").href;
+                },
+                    0);
+            </script>
+      </div>
+
+
+
+
+      <div role="content" id="maincontent" style="opacity: 0.5"><article id="article-3390524" class="article-post content is-medium">
+
+
+ 
+          <h6><i class="fi-pencil"></i> Sun, 10 Dec 2017 <a href="/2017/12/10/patterns-for-working-with-associated-types/">#</a></h6>
+
+        <h3><a href="/2017/12/10/patterns-for-working-with-associated-types/">Patterns for Working With Associated Types</a></h3>
+
+
+
+        <div class="actual-content"><!-- #+feature-image: /img-content/2017-12-10-patterns-for-working-with-associated-types-feature-image.jpg -->
+
+
+<div id="outline-container-org126fe91" class="outline-2">
+<h2 id="org126fe91"><span class="section-number-2">1</span> Useful Patterns for Working Your Way Around Associated Types</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+This blog post is based <a href="https://www.youtube.com/watch?v=P_ifSjia9mE">on a talk I gave</a> at <a href="https://www.appbuilders.ch/">AppBuilders 2016</a> explaining protocols with associated types offering tips for using them. 
+</p>
+
+<p>
+Swift is a powerful language with a very powerful type system. Among the features that define said type system are <code>associated types</code>. They can be defined on a <code>protocol</code> to allow implementors of the <code>protocol</code> to specialize certain types in a generic way:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">protocol Example {
+  associatedtype Value
+  var value: Value { get }
+}
+</pre>
+</div>
+
+<p>
+In the snippet above, any type that implements the <code>Example</code> protocol has to define the <code>Value</code> type. Protocols with <code>associated types</code> can be understood as <b>unfinished types</b>. Compared to regular protocols, which can be used within Swift like normal types, those protocols can only be used as a generic constraint. This means that once your type requires an <code>associated type</code>, using it suddenly becomes much more complicated.
+</p>
+
+<p>
+The example below shows an example of <b><b>finishing</b></b> a type. By explicitly telling the compiler that the <code>Value</code> type is <code>Int</code> it is now able to understand <code>ImplementExample</code> fully.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">struct ImplementExample: Example {
+  typealias Value = Int
+}
+</pre>
+</div>
+
+<p>
+Associated types are useful for a certain kind of problems where subclassing and composition does allow you to <a href="https://www.appbuilders.ch/">build the right kind of abstractions</a>. However, this is a seperate topic. The topic of this article, on the other hand, is what to do when you end up with associated types trouble.
+</p>
+</div>
+</div>
+
+
+<div id="outline-container-org0e6e674" class="outline-2">
+<h2 id="org0e6e674"><span class="section-number-2">2</span> Associated Types Trouble</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+The classic example of <code>associated types</code> trouble certainly is the following Swift error message:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash">protocol <span style="font-style: italic;">'Bookmarkable'</span> can only be used as a generic constraint because it has Self 
+or associated type requirements
+var bookmarks: [Bookmarkable]
+</pre>
+</div>
+
+<p>
+This happens once your type conforms to a protocol which conforms to <code>Equatable</code>:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">protocol Bookmarkable: Equatable {
+}
+
+struct User {
+    var bookmarks: [Bookmarkable]
+}
+</pre>
+</div>
+
+<p>
+Here, the problem is that <code>Equatable</code> contains a method <code>==</code> which has two paramters of type <code>Self</code>. Protocol Methods with <code>Self</code> parameters automatically opt in to <code>associated types</code>.
+</p>
+
+<p>
+In this article, we will be investigating several patterns that allow you to work your way around the <code>associated type</code> requirement or that show how such a type can be handled.
+</p>
+</div>
+</div>
+
+
+<div id="outline-container-org8605389" class="outline-2">
+<h2 id="org8605389"><span class="section-number-2">3</span> Working Around Associated Types</h2>
+</div>
+
+
+<div id="outline-container-org5a4ab53" class="outline-2">
+<h2 id="org5a4ab53"><span class="section-number-2">4</span> Make Your Types Equatable</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+The first solution for the archetypical problem is also a really simple one. Instead of enforcing <code>Equatable</code> on your custom <code>protocol</code>, you can simply require your full fledged, final, types to conform to the <code>Equatable</code> protocol instead of your custom protocol. Consider the previously defined <code>Bookmarkable</code> protocol:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">protocol Bookmarkable {
+}
+
+struct Bookmark: Bookmarkable, Equatable {
+  var identifier: Int
+}
+
+func ==(lhs: Bookmark, rhs: Bookmark) -&gt; Bool {
+  return lhs.identifier == rhs.identifier
+}
+
+var myBookmarks: [Bookmark] = []
+</pre>
+</div>
+
+<p>
+In the example above, the <code>Equatable</code> requirement actually stems from the <code>Bookmark</code> type conforming to the <code>Equatable</code> protocol, not the <code>Bookmarkable</code> protocol itself. The actual <code>Equatable</code> information, however, lies in the new <code>identifier</code> property, which has been added to the <code>Bookmark</code> <code>struct</code>. As you can easily see, this also requires you to make the <code>myBookmarks</code> array require only elements of type <code>Bookmark</code>. A serious disgression if you're used to using protocols like partially anonymous types. A better solution, if your design allows for it, goes one step further by enforcing the new <code>property</code> which we introduced in this example.
+</p>
+</div>
+
+
+<div id="outline-container-orgc9e58af" class="outline-3">
+<h3 id="orgc9e58af"><span class="section-number-3">4.1</span> Equatable Properties</h3>
+<div class="outline-text-3" id="text-4-1">
+<p>
+Here, the idea is that we take one of the types that already implement <code>Equatable</code> in a proper way (i.e. <code>Int</code>, <code>String</code>, …) and add a new <code>property</code> requirement to our <code>Bookmarkable</code> protocol. Then, we can use this <code>property</code> to add <code>Equatable</code> support without actually implementing <code>Equatable</code>:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">protocol Bookmarkable {
+    var identifier: Int { get }
+}
+
+struct Bookmark: Bookmarkable {
+    var identifier: Int
+}
+
+var myBookmarks: [Bookmarkable] = []
+</pre>
+</div>
+
+<p>
+The main change, compared to the code above, is that the <code>var identifier</code> moved to the <code>Bookmarkable</code> protocol and that we removed the <code>func ==</code>.
+</p>
+
+<p>
+While this works better, it still has a major deficit. Since <code>Bookmarkable</code> does not directly comply with <code>Equatable</code>, you will not gain the standard library's methods that specifically deal with <code>Equatable</code> types. So instead of being able to call <code>Array.contains</code> like this:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">let ourBookmark = Bookmark(identifier: 0)
+let result = myBookmarks.contains(ourBookmark)
+</pre>
+</div>
+
+<p>
+You will have to use the more verbose closure-based version:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">let ourBookmark = Bookmark(identifier: 0)
+
+let result = myBookmarks.contains { (bookmark) -&gt; Bool in
+    return bookmark.identifier == ourBookmark.identifier
+}
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-orgf859353" class="outline-2">
+<h2 id="orgf859353"><span class="section-number-2">5</span> Associated Types and Self</h2>
+<div class="outline-text-2" id="text-5">
+<p>
+Another vector which can introduce <code>associated types</code> into your codebase is the usage of <code>Self</code>:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">protocol Example {
+  /// Indirect Associated Type
+  var builder: Self { get }
+  /// Indirect Associated Type
+  func makeSomething(with example: Self)
+}
+var myExamples: [Example] = []
+</pre>
+</div>
+
+<p>
+As you can see in the example above, using <code>Self</code> as a method parameter or using <code>Self</code> as a property type automatically introduces an <code>associated type</code> (like we saw with <code>Equatable</code>, earlier).
+</p>
+
+<p>
+The most helpful note here is that once you use a <code>method</code> instead of a <code>property</code> in order to return something of type <code>Self</code> you will not opt in to an <code>associated type</code>:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">protocol Example {
+  /// No Indirect Associated Type
+  func builder() -&gt; Self
+}
+var myExamples: [Example] = []
+</pre>
+</div>
+
+<p>
+This example works fine. No <code>indirect associated</code> type is introduced.
+</p>
+</div>
+</div>
+
+
+<div id="outline-container-org4704515" class="outline-2">
+<h2 id="org4704515"><span class="section-number-2">6</span> Method-Only Types</h2>
+<div class="outline-text-2" id="text-6">
+<p>
+If your <code>associated type</code> requirement doesn't come from <code>Equatable</code> conformance but instead from your own use, you can double-check if you actually need these associated types.
+</p>
+
+<p>
+Take this example of a validator type:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">protocol Validator {
+    associatedtype I
+    func validate(_ input: I) -&gt; Bool
+}
+</pre>
+</div>
+
+<p>
+As the <code>associated type</code> is only used in one method, you can alternatively just make it a <code>generic</code> method and thus save yourself from introducing unnecessary unfinished types:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">protocol Validator {
+    func validate&lt;I&gt;(_ input: I) -&gt; Bool
+}
+</pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org59eb2de" class="outline-2">
+<h2 id="org59eb2de"><span class="section-number-2">7</span> Hiding Behind Protocols</h2>
+<div class="outline-text-2" id="text-7">
+<p>
+This is an especially useful and flexible pattern. It can be used in many situations where you want to use protocols with <code>associated types</code> like a normal, full fledged type, but still be able to opt in to the generic part if necessary. The idea here is that you define two protocols that share common methods. Only one of those protocols contains <code>associated types</code>, the other does not. Your types conform to both protocols. This means that you can use the <b>normal</b> protocol as a type for all situations. If you, then, need to use the parts of the type that only affect the <code>associated type</code>, you can do so by means of a runtime cast.
+</p>
+
+<p>
+Begin by defining an <code>associated</code> Protocol <code>ExampleAssociatedProtocol</code> that is shadowed by a <code>normal</code> Protocol <code>ExampleProtocol</code>.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift" id="orgdf6bb15">/// The `Normal` Protocol
+protocol ExampleProtocol {
+  var anyValue: Any { get }
+}
+
+/// The Protocol with an associated type
+protocol ExampleAssociatedProtocol: ExampleProtocol {
+  associatedtype Value
+
+  /// Retrieving the actual associated type
+  var value: Value { get }
+}
+
+/// Conform to the `ExampleProtocol`
+extension ExampleAssociatedProtocol {
+  var anyValue: Any {
+    return value
+  }
+}
+</pre>
+</div>
+
+<p>
+Now, you can use the <code>ExampleProtocol</code> as a normal type throughout your app in all situations where a protocol with an <code>associated type</code> would otherwise fail:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">struct World {
+  var examples: [ExampleProtocol]
+
+  let example: ExampleProtocol
+
+  func generate() -&gt; ExampleProtocol { 
+    return example
+  }
+}
+</pre>
+</div>
+
+<p>
+However, if you need to access the property that is specific to the <code>ExampleAssociatedProtocol</code> (<code>value</code>) then you can do so through at runtime.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">/// Custom type implementing `ExampleAssociatedProtocol`
+struct IntExample: ExampleAssociatedProtocol {
+  var value: Int
+}
+
+/// Custom type implementing `ExampleAssociatedProtocol`
+struct StringExample: ExampleAssociatedProtocol {
+  var value: String
+}
+
+/// Shadowing via `ExampleProtocol`
+let myExamples: [ExampleProtocol] = 
+    [StringExample(value: "A"), IntExample(value: 10)]
+
+/// Runtime Casting
+for aNormalExample in myExamples {
+  if let anAssociatedExample = aNormalExample as? IntExample {
+    print(anAssociatedExample.value)
+  }
+  if let anAssociatedExample = aNormalExample as? StringExample {
+    print(anAssociatedExample.value)
+  }
+}
+</pre>
+</div>
+
+<p>
+This will print "A10" as both types (<code>IntExample</code> and <code>StringExample</code>) are being identified at runtime via a cast from <code>ExampleProtocol</code>.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org8b4d327" class="outline-2">
+<h2 id="org8b4d327"><span class="section-number-2">8</span> Type Erasure</h2>
+<div class="outline-text-2" id="text-8">
+</div>
+<div id="outline-container-orgf2fe44b" class="outline-3">
+<h3 id="orgf2fe44b"><span class="section-number-3">8.1</span> The Problem</h3>
+<div class="outline-text-3" id="text-8-1">
+<p>
+Quite often, when Swift's associated types are dicussed, <code>type erasure</code> is mentioned as another solution to the problem of handling the issues that <code>associated types</code> bring along.
+</p>
+
+<p>
+Type Erasure in the context of <code>associated types</code> solves one particular problem. We'll use computers as an example. Back in the golden age of desktop operating systems, you could buy a desktop computer with many non-X86 CPU architectures: PowerPC, Alpha, Sparc, 68000, and so on. One of the many differences were the <code>endianness</code> of the architecture. Lets model these computers in Swift:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">protocol CPU {
+    var littleEndian: Bool { get }
+}
+
+struct PowerPC: CPU {
+    let littleEndian = false
+}
+
+struct X86: CPU {
+    let littleEndian = true
+}
+</pre>
+</div>
+
+<p>
+Next up, we want to define a protocol for a computer. It could be a desktop computer or a phone or maybe a game console, so we use a protocol. In order to model the CPU, we're using an <code>associated type</code>, so that the actual type can define the CPU:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">protocol Computer {
+    associatedtype ProcessorType: CPU
+    var processor: ProcessorType { get }
+    var processorCount: Int { get }
+}
+</pre>
+</div>
+
+<p>
+Based on this, we can now define a couple of systems:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">struct PowerMacG5: Computer {
+    let processor = PowerPC()
+    let processorCount = 2
+}
+
+struct Xbox360: Computer {
+    let processor = PowerPC()
+    let processorCount = 1
+}
+
+struct MacPro: Computer {
+    let processor = X86()
+    let processorCount = 1
+}
+</pre>
+</div>
+
+<p>
+Now that we have all this, we'd like to perform a computation on all <b>PowerPC</b> based computers. I.e. something like:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">let powerComputers = [PowerMacG5(), Xbox360()]
+</pre>
+</div>
+
+<p>
+However, what would be the type of this? We can't use the <code>Computer</code> protocol, as it contains <code>associated types</code>. However, the <code>associated types</code> for the PowerMacG5 <b>and</b> the Xbox360 <b>are</b> the same, so in terms of types, Swift ought to understand that those things are kinda similar. However, there's no way to (easily) express this in the type system; both <b>PowerMacG5</b> and <b>Xbox360</b> are not the correct types for the array:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">// None of those work
+let powerComputers: [PowerMacG5] = [PowerMacG5(), Xbox360]
+let powerComputers: [Xbox360] = [PowerMacG5(), Xbox360]
+let powerComputers: [Computer] = [PowerMacG5(), Xbox360]
+</pre>
+</div>
+
+<p>
+Type erasure is a solution for this. The idea is to box the actual type into a generic wrapper so that Swift can coalesce around wrapper + type. The solution we're aiming for would look like this in the end:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">let powerComputers: [AnyComputer&lt;PowerPC&gt;] = [AnyComputer(PowerMacG5()), AnyComputer(Xbox360())]
+</pre>
+</div>
+
+<p>
+Now we would have our <b>shared</b> type, in this case it is <code>AnyComputer&lt;CPU&gt;</code>. Where does this mystic <code>AnyComputer</code> come from? We have to build it ourselves. This is a multi-step process, and requires quite a bit of boilerplate. We will start simple and expand step by step. This solution requires multiple types. 
+</p>
+</div>
+</div>
+
+
+<div id="outline-container-orgb3f3c73" class="outline-3">
+<h3 id="orgb3f3c73"><span class="section-number-3">8.2</span> An Abstract Class</h3>
+<div class="outline-text-3" id="text-8-2">
+<p>
+In essense, what we're going to build, is a generic wrapper (or box) that hosts a type conforming to a <code>protocol</code> with an <code>associated type</code>. It does so by implementing the requirements of the <code>protocol</code> and forwarding all invocations to the boxed type.
+</p>
+
+<p>
+The first new type we need for that is a base <code>class</code> that acts as a abstract class:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">class AnyComputerBase&lt;Processor: CPU&gt;: Computer {
+    var processor: Processor {
+	fatalError()
+    }
+    var processorCount: Int {
+	fatalError()
+    }
+}
+</pre>
+</div>
+
+<p>
+This <code>class</code> should never be initialized, as it only provides an abstract template of what subclasses should implement. While other languages (like Java) allow explicitly marking classes as abstract, Swift doesn't offer us a way to do so. One solution to this is adding a <code>fileprivate init</code> to this <code>class</code>. However as that requires subclasses to be in the same file as this superclass, we can also just make the whole <code>class</code> <code>private</code> with an even better result. Now, other parts of the code won't even know about the existence of <code>AnyComputerBase</code> or even <code>initialize</code> it:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">private class AnyComputerBase&lt;Processor: CPU&gt;: Computer {
+...
+}
+</pre>
+</div>
+
+<p>
+Why do we even need this, and what does it do? As you can see, it just implements the <code>Computer</code> <code>protocol</code> by implementing the requirements and doing nothing in there. The more important part is that it moves the <code>associated type</code> from the protocol into a generic type for the <code>class</code>: <code>AnyComputerBase&lt;Processor: CPU&gt;</code>.
+</p>
+
+<p>
+Swift automatically figures out that <code>Processor</code> is the <code>typealias</code> for <code>Computer.ProcessorType</code>. However, when in doubt you can also add an extra typealias:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">class AnyComputerBase&lt;Processor: CPU&gt;: Computer {
+  typealias ProcessorType = Processor
+  ...
+}
+</pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org049ce07" class="outline-3">
+<h3 id="org049ce07"><span class="section-number-3">8.3</span> A Box Type</h3>
+<div class="outline-text-3" id="text-8-3">
+<p>
+The next step is the most difficult to understand part of type erasure, which means that after this, it'll be easy. We will introduce another <code>private</code> type. This will be the actual box that houses our original type (the XBox360 or the PowerMac G5). Let's start by having a look at the code:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">private class AnyComputerBox&lt;ConcreteComputer: Computer&gt;: 
+	AnyComputerBase&lt;ConcreteComputer.ProcessorType&gt; 
+{
+    private let internalComputer: ConcreteComputer
+    override var processor: ConcreteComputer.ProcessorType {
+	return internalComputer.processor
+    }
+    override var processorCount: Int {
+	return internalComputer.processorCount
+    }
+    init(_ computer: ConcreteComputer) {
+	internalComputer = computer
+    }
+}
+</pre>
+</div>
+
+<p>
+The most important concept here can be found in the very first line:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">private class AnyComputerBox&lt;ConcreteComputer: Computer&gt;: 
+	AnyComputerBase&lt;ConcreteComputer.ProcessorType&gt;
+</pre>
+</div>
+
+<p>
+Here, we define a new type <code>AnyComputerBox</code> which is generic over <b>any</b> computer (<code>ConcreteComputer</code>). This new type, then, is a subclass of our earlier abstract class <code>AnyComputerBase</code>. Remember that <code>AnyComputerBase</code> made the original <code>ProcessorType</code> of the <code>Computer</code> protocol generic by adding it as a generic parameter <code>CPU</code>. Now, our new box has a <b>different</b> generic type (<code>Computer</code>) and provides only its <code>associated type</code> <b>ProcessorType</b> to the abstract superclass. In a simpler explanation, this is what happens (in a mock language):
+</p>
+
+<ol class="org-ol">
+<li><code>Computer&lt;CPU&gt;</code></li>
+<li><code>AnyComputerBase&lt;Processor: CPU&gt;: Computer&lt;CPU&gt; where Computer.CPU = Processor</code></li>
+<li><code>AnyComputerBox&lt;ConcreteComputer: Computer&gt;: AnyComputerBase&lt;ConcreteComputer.ProcessorType&gt;</code></li>
+</ol>
+
+<p>
+So the box (<code>AnyComputerBox</code>) subclasses the abstract class and forwards in the <code>Processor</code> type via its own generic <code>Computer</code> type which also has a <code>ProcessorType</code>.
+</p>
+
+<p>
+Why do we do this? It makes the box generic over any computer so that <b>any</b> computer can be boxed into it.
+</p>
+
+<p>
+The rest of the <code>class</code> is simple. There's an <code>internal</code> computer <code>internalComputer</code> which is the actual type conforming to the <code>Computer</code> <code>protocol</code>. We're also overriding the two classes that are required by the protocol and forwarding the implementations of the <code>internalComputer</code>. Finally we have an initializer with a new <code>ConcreteComputer</code> (i.e. the <code>Computer</code> protocol).
+</p>
+</div>
+</div>
+
+
+<div id="outline-container-orgbcd8b6f" class="outline-3">
+<h3 id="orgbcd8b6f"><span class="section-number-3">8.4</span> Putting it all together</h3>
+<div class="outline-text-3" id="text-8-4">
+<p>
+In the next and final step, we're building the actual type that will be used as the proverbial type eraser. Just as before, lets have a look at the code first:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">final class AnyComputer&lt;Processor: CPU&gt;: Computer {
+    private let box: AnyComputerBase&lt;Processor&gt;
+    var processor: Processor {
+	return box.processor
+    }
+    var processorCount: Int {
+	return box.processorCount
+    }
+    init&lt;Concrete: Computer&gt;(_ computer: Concrete) 
+	where Concrete.ProcessorType == Processor {
+      box = AnyComputerBox(computer)
+    }
+}
+</pre>
+</div>
+
+<p>
+This <code>AnyComputer</code> conforms to the <code>Computer</code> protocol and is generic over the <code>CPU</code> type that the protocol requires. Once again, we implement the protocol requirements (<code>processor</code>, and <code>processorCount</code>) and forward to a boxed type. This time we're forwarding to <code>private let box: AnyComputerBase&lt;Processor&gt;</code>. This <code>box</code> is set in the initializer where most of the magic happens:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">init&lt;Concrete: Computer&gt;(_ computer: Concrete) 
+    where Concrete.ProcessorType == Processor {
+  box = AnyComputerBox(computer)
+}
+</pre>
+</div>
+
+<p>
+The problem with protocols with <code>associated types</code> is that you can't use them as property types. Here, <code>init</code> requires any type conforming to the <code>Computer</code> protocol. This is done by having a method-generic type <code>Concrete</code> that requires <code>Computer</code> conformance. Even more, we also add a constraint that makes sure that the generic <code>Processor</code> type of the new <code>AnyComputer</code> class is the same type as the <code>associated type</code> of the <code>Concrete</code> <code>Computer</code> type. 
+</p>
+
+<p>
+And now comes the kicker: Since we cannot set a property as being of type <code>Computer</code> we, instead, have a property that is of <code>AnyComputerBase</code> with a generic type for the <code>Processor</code>. As our <code>AnyComputerBox</code> type is a subclass of <code>AnyComputerBase</code> we can literally put <b>any</b> box (that is a subclass of <code>AnyComputerBase</code> into this property. In this case, we're creating a new box with the <code>Concrete</code> <code>Computer</code>.
+</p>
+
+<p>
+Then we return the implementations of the contents of the box (i.e. the actual <code>Concrete</code> <code>Computer</code>) in our <code>Computer</code> implementations:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">var processorCount: Int {
+    return box.processorCount
+}
+</pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org31c0ad4" class="outline-3">
+<h3 id="org31c0ad4"><span class="section-number-3">8.5</span> Using It</h3>
+<div class="outline-text-3" id="text-8-5">
+<p>
+With all this machinery in place, we can finally use this in order to have different types (which share an associated type) in one container:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">let powerComputers: [AnyComputer&lt;PowerPC&gt;] = 
+    [AnyComputer(PowerMacG5()), AnyComputer(Xbox360())]
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org7f33657" class="outline-2">
+<h2 id="org7f33657"><span class="section-number-2">9</span> Conclusion</h2>
+<div class="outline-text-2" id="text-9">
+<p>
+<code>Associated types</code> are a powerful concept however they come with a fair share of difficulties. Most notably, as soon as you introduce an <code>associated type</code> you can't use it like you'd use normal full types. This article provided several patterns that make it a bit easier to handle <code>associated type</code> problems in your codebase. Each of these patterns has downsides though. In general, if you intend to use <code>associated types</code> in a <code>protocol</code>, one of the best solutions is to try to only use the types that implement this <code>protocol</code> instead of the <code>protocol</code> itself. Because then you don't even need those patterns.
+</p>
+</div>
+</div>
+</div>
+
+        <div id="followme">
+            <p>If you read this far, you should follow me (<a href="http://www.twitter.com/terhechte">@terhechte</a>) <br /> on <a href="http://www.twitter.com/terhechte"><i class="fi-social-twitter"></i> Twitter</a></p>
+            <br />
+        </div>
+        
+
+        <div class="footnotes">
+            <ol></ol>
+        </div>
+
+        <p class="anchor"><i class="fi-anchor"></i></p>
+ 
+      </article></div>
+
+
+    </div>
+
+    <div class="column is-narrow">
+
+     <aside class="menu">
+
+         
+
+
+
+      <br />
+      <ul class="menu-list">
+       <li>
+        <p class="menu-label">
+         <a>
+          <i class="fas fa-dove"></i>
+          Swift Topics
+         </a>
+        </p>
+        <ul>
+            <li><a href="/topics/all.html">All</a></li>
+           
+            
+            <li><a href="/topics/swift-tricks.html">Swift Tricks</a></li>
+            
+         
+            
+            <li><a href="/topics/language.html">Language</a></li>
+            
+         
+            
+            <li><a href="/topics/hands-on.html">Hands On</a></li>
+            
+         
+            
+            <li><a href="/topics/blog.html">Blog</a></li>
+            
+         
+            
+         
+        </ul>
+       </li>
+
+       <li>
+           <p class="menu-label">
+               <a>
+                   <i class="fas fa-book"></i>
+                   Guides
+               </a>
+           </p>
+           <ul>
+                 
+               <li><a href="/guides/pattern_matching/intro.html">🧩 Pattern Matching</a></li>
+                 
+               <li><a href="/guides/advanced_practical_enum_examples/introduction.html">🚦 Enums</a></li>
+                 
+               <li><a href="/guides/map_flatmap_reduce_more/intro.html">🗺 Map, Reduce &amp; more</a></li>
+                 
+               <li><a href="/guides/associated_types/associated_types.html">🧙🏻 Associated Types</a></li>
+                 
+               <li><a href="/guides/tuples/introduction.html">🍱 Tuples</a></li>
+                 
+               <li><a href="/guides/optionals/intro.html">⁉️ Optionals</a></li>
+                 
+               <li><a href="/guides/swift_reflection/introduction.html">🔮 Reflection</a></li>
+                 
+           </ul>
+       </li>
+      </ul>
+
+      <div class="sidebar-banner">
+          <a href="https://contravariance.rocks"><img src="/img/contravariance_banner.png" srcset="/img/contravariance_banner.png 1x, /img/contravariance_banner@2x.png 2x" /></a>
+      </div>
+
+      <ul class="menu-list">
+       <li>
+        <p class="menu-label">
+         <a>
+          <i class="fas fa-tags"></i>
+          Tags
+         </a>
+        </p>
+        <ul>
+
+     
+     <li><a href="/tags/pattern-matching.html" class="tags has-addons"><span class="tag is-info is-rounded">pattern matching</span><span class="tag is-primary is-rounded">25</span></a></li>
+     
+     <li><a href="/tags/switch.html" class="tags has-addons"><span class="tag is-info is-rounded">switch</span><span class="tag is-primary is-rounded">24</span></a></li>
+     
+     <li><a href="/tags/enum.html" class="tags has-addons"><span class="tag is-info is-rounded">enum</span><span class="tag is-primary is-rounded">20</span></a></li>
+     
+     <li><a href="/tags/associated.html" class="tags has-addons"><span class="tag is-info is-rounded">associated</span><span class="tag is-primary is-rounded">14</span></a></li>
+     
+     <li><a href="/tags/tuples.html" class="tags has-addons"><span class="tag is-info is-rounded">tuples</span><span class="tag is-primary is-rounded">13</span></a></li>
+     
+     <li><a href="/tags/reflection.html" class="tags has-addons"><span class="tag is-info is-rounded">reflection</span><span class="tag is-primary is-rounded">12</span></a></li>
+     
+     <li><a href="/tags/reduce.html" class="tags has-addons"><span class="tag is-info is-rounded">reduce</span><span class="tag is-primary is-rounded">11</span></a></li>
+     
+     <li><a href="/tags/box.html" class="tags has-addons"><span class="tag is-info is-rounded">box</span><span class="tag is-primary is-rounded">10</span></a></li>
+     
+     <li><a href="/tags/generics.html" class="tags has-addons"><span class="tag is-info is-rounded">generics</span><span class="tag is-primary is-rounded">7</span></a></li>
+     
+     <li><a href="/tags/compactmap.html" class="tags has-addons"><span class="tag is-info is-rounded">compactMap</span><span class="tag is-primary is-rounded">6</span></a></li>
+     
+     <li><a href="/tags/filter.html" class="tags has-addons"><span class="tag is-info is-rounded">filter</span><span class="tag is-primary is-rounded">6</span></a></li>
+     
+     <li><a href="/tags/map.html" class="tags has-addons"><span class="tag is-info is-rounded">map</span><span class="tag is-primary is-rounded">6</span></a></li>
+     
+     <li><a href="/tags/mirror.html" class="tags has-addons"><span class="tag is-info is-rounded">mirror</span><span class="tag is-primary is-rounded">6</span></a></li>
+     
+     <li><a href="/tags/protocol.html" class="tags has-addons"><span class="tag is-info is-rounded">protocol</span><span class="tag is-primary is-rounded">6</span></a></li>
+     
+     <li><a href="/tags/optionals.html" class="tags has-addons"><span class="tag is-info is-rounded">optionals</span><span class="tag is-primary is-rounded">5</span></a></li>
+     
+     <li><a href="/tags/where.html" class="tags has-addons"><span class="tag is-info is-rounded">where</span><span class="tag is-primary is-rounded">5</span></a></li>
+     
+     <li><a href="/tags/erasure.html" class="tags has-addons"><span class="tag is-info is-rounded">erasure</span><span class="tag is-primary is-rounded">4</span></a></li>
+     
+     <li><a href="/tags/equatable.html" class="tags has-addons"><span class="tag is-info is-rounded">equatable</span><span class="tag is-primary is-rounded">3</span></a></li>
+     
+     <li><a href="/tags/destructure.html" class="tags has-addons"><span class="tag is-info is-rounded">destructure</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/error.html" class="tags has-addons"><span class="tag is-info is-rounded">error</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/extension.html" class="tags has-addons"><span class="tag is-info is-rounded">extension</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/guard.html" class="tags has-addons"><span class="tag is-info is-rounded">guard</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/if-let.html" class="tags has-addons"><span class="tag is-info is-rounded">if let</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/is.html" class="tags has-addons"><span class="tag is-info is-rounded">is</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/objc.html" class="tags has-addons"><span class="tag is-info is-rounded">objc</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/optional.html" class="tags has-addons"><span class="tag is-info is-rounded">optional</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/struct.html" class="tags has-addons"><span class="tag is-info is-rounded">struct</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/try.html" class="tags has-addons"><span class="tag is-info is-rounded">try</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/.html" class="tags has-addons"><span class="tag is-info is-rounded">?</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/caseiterable.html" class="tags has-addons"><span class="tag is-info is-rounded">CaseIterable</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/customreflectable.html" class="tags has-addons"><span class="tag is-info is-rounded">CustomReflectable</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/data.html" class="tags has-addons"><span class="tag is-info is-rounded">Data</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/expressiblebystringliteral.html" class="tags has-addons"><span class="tag is-info is-rounded">ExpressibleByStringLiteral</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/rawrepresentable.html" class="tags has-addons"><span class="tag is-info is-rounded">RawRepresentable</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/as.html" class="tags has-addons"><span class="tag is-info is-rounded">as</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/autoclosure.html" class="tags has-addons"><span class="tag is-info is-rounded">autoclosure</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/break.html" class="tags has-addons"><span class="tag is-info is-rounded">break</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/catch.html" class="tags has-addons"><span class="tag is-info is-rounded">catch</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/closure.html" class="tags has-addons"><span class="tag is-info is-rounded">closure</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/copyonwrite.html" class="tags has-addons"><span class="tag is-info is-rounded">copy-on-write</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/coredata.html" class="tags has-addons"><span class="tag is-info is-rounded">coredata</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/either.html" class="tags has-addons"><span class="tag is-info is-rounded">either</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/fallthrough.html" class="tags has-addons"><span class="tag is-info is-rounded">fallthrough</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/for.html" class="tags has-addons"><span class="tag is-info is-rounded">for</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/for-case.html" class="tags has-addons"><span class="tag is-info is-rounded">for case</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/groupby.html" class="tags has-addons"><span class="tag is-info is-rounded">groupby</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/guard-let.html" class="tags has-addons"><span class="tag is-info is-rounded">guard let</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/if-case.html" class="tags has-addons"><span class="tag is-info is-rounded">if case</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/indirect.html" class="tags has-addons"><span class="tag is-info is-rounded">indirect</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/init.html" class="tags has-addons"><span class="tag is-info is-rounded">init</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/init.html" class="tags has-addons"><span class="tag is-info is-rounded">init?</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/inout.html" class="tags has-addons"><span class="tag is-info is-rounded">inout</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/label.html" class="tags has-addons"><span class="tag is-info is-rounded">label</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/literal.html" class="tags has-addons"><span class="tag is-info is-rounded">literal</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/method.html" class="tags has-addons"><span class="tag is-info is-rounded">method</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/overload.html" class="tags has-addons"><span class="tag is-info is-rounded">overload</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/package.html" class="tags has-addons"><span class="tag is-info is-rounded">package</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/partition.html" class="tags has-addons"><span class="tag is-info is-rounded">partition</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/performance.html" class="tags has-addons"><span class="tag is-info is-rounded">performance</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/property.html" class="tags has-addons"><span class="tag is-info is-rounded">property</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/protocols.html" class="tags has-addons"><span class="tag is-info is-rounded">protocols</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/range.html" class="tags has-addons"><span class="tag is-info is-rounded">range</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/self.html" class="tags has-addons"><span class="tag is-info is-rounded">self</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/tupealias.html" class="tags has-addons"><span class="tag is-info is-rounded">tupealias</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/tuple.html" class="tags has-addons"><span class="tag is-info is-rounded">tuple</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/typealias.html" class="tags has-addons"><span class="tag is-info is-rounded">typealias</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/unique.html" class="tags has-addons"><span class="tag is-info is-rounded">unique</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/value-type.html" class="tags has-addons"><span class="tag is-info is-rounded">value type</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/valuetype.html" class="tags has-addons"><span class="tag is-info is-rounded">valuetype</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/vararg.html" class="tags has-addons"><span class="tag is-info is-rounded">vararg</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/wildcard.html" class="tags has-addons"><span class="tag is-info is-rounded">wildcard</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/zip.html" class="tags has-addons"><span class="tag is-info is-rounded">zip</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/.html" class="tags has-addons"><span class="tag is-info is-rounded">~=</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+
+        </ul>
+       </li>
+      </ul>
+
+
+     </aside> 
+
+
+    </div>
+   </div>
+  </div>
+ </section>
+
+ <div class="footer">
+  <article class="media" id="followme">
+   <figure class="media-left">
+    <p class="image is-64x64">
+     <img src="/img/terhechte.jpg" class="profile-image" />
+    </p>
+   </figure>
+   <div class="media-content">
+       <div class="columns">
+           <div class="column">
+               <div class="content">
+                   <p>
+                       <strong>Benedikt Terhechte</strong> <a href="https://twitter.com/terhechte"><small>@terhechte</small></a>
+                       <br />
+                       If you read this far, you should <a href="https://twitter.com/terhechte">follow Benedikt on Twitter</a>.<br />
+                       APPVENTURE is dedicated to providing articles about Swift, macOS, iOS &amp; Linux development.
+                   </p>
+                   <p>
+                       <strong>2011 - 2019 Benedikt Terhechte</strong>
+                   </p>
+               </div>
+           </div>
+           <div class="column">
+               <p>
+                   <a href="https://terhech.de">Benedikt's private blog can be found
+                       at <strong>terhech.de</strong></a>
+               </p>
+               <p>
+                   <br />
+                   <strong>Other Profiles</strong>
+               </p>
+               <p class="subtitle is-6">
+                   <a href="https://twitter.com/terhechte"><i class="fab fa-twitter"></i></a>
+                   <a href="https://www.xing.com/profile/Benedikt_Terhechte">
+                       <i class="fab fa-xing"></i>
+                   </a>
+                   <a href="https://twitter.com/terhechte">
+                       <i class="fab fa-github"></i>
+                   </a>
+                   <a href="https://news.ycombinator.com/user?id=terhechte">
+                       <i class="fab fa-hacker-news"></i>
+                   </a>
+               </p>
+           </div>
+       </div>
+   </div>
+   <div class="media-right">
+    <a href="https://twitter.com/terhechte" class="button is-info is-rounded">
+     <i class="fab fa-twitter"></i> 
+     Follow Me</a>
+   </div>
+  </article>
+ </div>
+
+
+
+</body>
+
+
+</html>

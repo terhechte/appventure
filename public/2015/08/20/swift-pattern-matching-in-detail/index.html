@@ -1,0 +1,1640 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Match Me if you can: Swift Pattern Matching in Detail.</title>
+  <link rel="stylesheet" href="/css/bulma.min.css" />
+  <link rel="stylesheet" href="/css/style.css" />
+
+  <meta content="In this post, we'll have a look at Pattern Matching in Swift in terms of the 'switch', 'for', 'if', and 'guard' keywords. We'll have a look at the basic syntax and at best practices and helpful examples." name="description" /><meta content="benedikt, c, chaining, clojure, clojurescript, cocoa, feature, for, haskell, html, ios, javascript, lisp, mac, matching, objective-c, optional, optionals, pattern, photodesk, research, scala, simple, stylemac, swift, switch, terhechte" name="keywords" /><meta content="Benedikt Terhechte" name="author" /><meta content="Match Me if you can: Swift Pattern Matching in Detail." property="og:title" /><meta content="In this post, we'll have a look at Pattern Matching in Swift in terms of the 'switch', 'for', 'if', and 'guard' keywords. We'll have a look at the basic syntax and at best practices and helpful examples." property="og:description" /><meta content="http://appventure.me/2015/08/20/swift-pattern-matching-in-detail/" property="og:url" /><meta content="Match Me if you can: Swift Pattern Matching in Detail." name="twitter:title" /><meta content="In this post, we'll have a look at Pattern Matching in Swift in terms of the 'switch', 'for', 'if', and 'guard' keywords. We'll have a look at the basic syntax and at best practices and helpful examples." name="twitter:description" /><meta content="summary_large_image" name="twitter:card" /><meta content="http://appventure.me/img-content/2015-08-20-swift-pattern-matching-in-detail-feature-image.jpg" name="twitter:image" /><meta content="http://appventure.me/img-content/2015-08-20-swift-pattern-matching-in-detail-feature-image.jpg" property="og:image" />
+  <meta name="twitter:site" content="@terhechte" />
+  <meta name="twitter:creator" content="@terhechte" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700,800" rel="stylesheet" />
+  <script defer="defer" src="/js/fontawesome-all.min.js"></script>
+  
+ </head>
+ <body>
+  <section class="section" id="head">
+   <div class="container" id="container">
+    <div>
+
+     <div class="columns">
+      <div class="column is-3">
+          <span id="brand"><a href="/index.html"><img src="/img/brand.png" srcset="/img/brand.png 1x, /img/brand@2x.png 2x" /></a></span>
+      </div>
+      <div class="column is-7">
+       <span id="subbrand">
+        Simple. Swift. Guides.</span>
+      </div>
+      <div class="column is-2">
+          <div class="field">
+
+          </div>
+      </div>
+     </div>
+    </div>
+   </div>
+  </section>
+
+
+  <section class="section" id="main">
+   <div class="container" id="container">
+    <div class="columns">
+     <div class="column">
+      <div class="columns">
+       <div class="column">
+        <div class="tabs">
+		 
+        </div>
+       </div>
+       <div class="column is-narrow">
+        <div class="buttons has-addons is-hidden-mobile">
+        </div>
+       </div>
+      </div>
+
+      <div class="box" style="margin-bottom: 250px;">
+            <h5 style="font-size: 38px; font-weight: bold;"><a class="xx-new-article" href="https://appventure.me/guides/pattern_matching/intro.html">AppVenture has been updated</a></h5>
+            <p style="padding-top: 10px; padding-bottom: 10px; font-size: 18px;">
+                All articles have been rewritten and improved. You will be forwarded
+                to the updated article.
+            </p>
+            <p style="font-size: 18px; font-weight: bold;">
+                <a class="xx-new-article" href="https://appventure.me/guides/pattern_matching/intro.html" id="xxx-new-article">Click here to go there directly.</a>
+            </p>
+            <script>
+                 setTimeout(function(){ 
+                    document.location.href=document.getElementById("xxx-new-article").href;
+                },
+                    0);
+            </script>
+      </div>
+
+
+
+
+      <div role="content" id="maincontent" style="opacity: 0.5"><article id="article-655205247" class="article-post content is-medium">
+
+
+ 
+          <h6><i class="fi-pencil"></i> Thu, 20 Aug 2015 <a href="/2015/08/20/swift-pattern-matching-in-detail/">#</a></h6>
+
+        <h3><a href="/2015/08/20/swift-pattern-matching-in-detail/">Match Me if you can: Swift Pattern Matching in Detail.</a></h3>
+
+
+
+        <div class="actual-content"><!-- #+feature-image: /img-content/2015-08-20-swift-pattern-matching-in-detail-feature-image.jpg -->
+
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org20e1e78">1. Diving In</a></li>
+<li><a href="#orga78abb3">2. A Trading Engine</a>
+<ul>
+<li><a href="#orgd1a3444">2.1. First Draft</a></li>
+<li><a href="#org900fd76">2.2. Trader Types</a></li>
+<li><a href="#org97e92e4">2.3. Guards! Guards!</a></li>
+</ul>
+</li>
+<li><a href="#org27a659f">3. Advanced Pattern Matching</a>
+<ul>
+<li><a href="#orgf5b613c">3.1. 1. Wildcard Pattern</a></li>
+<li><a href="#org1b8bab0">3.2. 2. Identifier Pattern</a></li>
+<li><a href="#orgcc7c3f3">3.3. 3. Value-Binding Pattern</a></li>
+<li><a href="#org9373092">3.4. 4. Tuple Pattern</a></li>
+<li><a href="#org66ce7da">3.5. 5. Enumeration Case Pattern</a></li>
+<li><a href="#org9f29418">3.6. 6. Type-Casting Patterns</a></li>
+<li><a href="#org2b4343e">3.7. 7. Expression Pattern</a></li>
+<li><a href="#org504216a">3.8. Fallthrough, Break, and Labels</a></li>
+</ul>
+</li>
+<li><a href="#org120b7c2">4. Real World Examples</a>
+<ul>
+<li><a href="#orgbff7547">4.1. Optionals</a></li>
+<li><a href="#orgc363055">4.2. Type Matches</a></li>
+<li><a href="#org670d4ad">4.3. Applying ranges for grading</a></li>
+<li><a href="#orgca8ab34">4.4. Word Frequencies</a></li>
+<li><a href="#org2a79766">4.5. Directory Traversion</a></li>
+<li><a href="#org84a6478">4.6. Fibonacci</a></li>
+<li><a href="#org8439bb1">4.7. Legacy API and Value Extractions</a></li>
+</ul>
+</li>
+<li><a href="#org9734b04">5. Patterns with other Keywords</a></li>
+<li><a href="#org11135df">6. Using <b>for case</b></a></li>
+<li><a href="#org3191898">7. Using <b>guard case</b></a></li>
+<li><a href="#org2b25932">8. Using <b>if case</b></a></li>
+<li><a href="#org9a40aab">9. Limitations</a></li>
+<li><a href="#org83e2536">10. Changes</a></li>
+</ul>
+</div>
+</div>
+<h6><a href="/2015/08/20/swift-pattern-matching-in-detail/">This post is also available in <b>🇨🇳Chinese</b></a><span> Thanks to </span><a href="/2015/08/20/swift-pattern-matching-in-detail/">SwiftGG</a></h6>
+<h6><a href="/2015/08/20/swift-pattern-matching-in-detail/">This post is also available in <b>🇯🇵Japanese</b></a><span> Thanks to </span><a href="/2015/08/20/swift-pattern-matching-in-detail/">M Ono</a></h6>
+
+<p>
+Among the new features that Swift offers to Objective-C programmers is one that disguises itself like a boring old man while it offers huge potential for forming elegant solutions to otherwise unwieldy sets of nested branches. I'm, of course talking about the <code>switch</code> statement that many Objective-C programmers probably consider as a clunky syntax device which is most entertaining when used as <a href="http://en.wikipedia.org/wiki/Duff's_device">Duff's Device</a>, yet usually offers little to no advantages over multiple if statements.
+</p>
+
+<p>
+The <code>Switch</code> statement in Swift can do much more though. In the following tutorial, I will try to explain the various usages for these new features in more detail. I'll mostly ignore those solutions where there's no benefit over how <code>switch</code> works in Objective-C or C. The basics of this post were actually written in July 2014, but so many of my patterns crashed the compiler back then that I postponed writing it until there's better support.
+</p>
+
+<p>
+This Blog Post is also available in the following languages:
+</p>
+
+<div id="outline-container-org20e1e78" class="outline-2">
+<h2 id="org20e1e78"><span class="section-number-2">1</span> Diving In</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+The main feature of <code>switch</code> is of course pattern matching, the ability to destructure values and match different switch cases based on correct match of the values to the cases. 
+</p>
+
+<div class="org-src-container">
+<pre class="src src-Swift">// Example of the worst binary -&gt; decimal converter in history
+let bool1 = 1
+let bool2 = 0
+switch (bool1, bool2) {
+   case (0, 0): print("0")
+   case (0, 1): print("1")
+   case (1, 0): print("2")
+   case (1, 1): print("3")
+}
+</pre>
+</div>
+
+<p>
+Pattern matching has long existed in other languages like Haskell, Erlang, Scala, or Prolog. This is a boon, because it allows us to have a look at how those languages utilize pattern matching in order to solve their problems. We can even have a look at their examples to find the most practical ones that offer real world adaptability.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orga78abb3" class="outline-2">
+<h2 id="orga78abb3"><span class="section-number-2">2</span> A Trading Engine</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+So Wall Street contacted you, they need a new trading platform running on iOS devices. As it is a trading platform, you define an <code>enum</code> for trades.
+</p>
+</div>
+
+<div id="outline-container-orgd1a3444" class="outline-3">
+<h3 id="orgd1a3444"><span class="section-number-3">2.1</span> First Draft</h3>
+<div class="outline-text-3" id="text-2-1">
+<div class="org-src-container">
+<pre class="src src-swift">enum Trades {
+    case Buy(stock: String, amount: Int, stockPrice: Float)
+    case Sell(stock: String, amount: Int, stockPrice: Float)
+}
+</pre>
+</div>
+
+<p>
+You were also handed the following API to handle trades. <b>Notice how sell orders are just negative amounts</b>. And you're told the stock price is not important, their engine will take an internal one anyway.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">/**
+ - parameter stock: The stock name
+ - parameter amount: The amount, negative number = sell, positive = buy
+*/
+func process(stock: String, _ amount: Int) {
+    print ("\(amount) of \(stock)")
+}
+</pre>
+</div>
+
+<p>
+The next step is to process those trades. You see the potential for using pattern matching and write this:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">
+
+let aTrade = Trades.Buy(stock: "APPL", amount: 200, stockPrice: 115.5)
+
+switch aTrade {
+case .Buy(let stock, let amount, _):
+    process(stock, amount)
+case .Sell(let stock, let amount, _):
+    process(stock, amount * -1)
+}
+// Prints "buy 200 of APPL"
+</pre>
+</div>
+
+<p>
+Swift lets us conveniently only destructure / extract the information from the <code>enum</code> that we really want. In this case only the stock and the amount.
+</p>
+
+<p>
+Awesome, you visit Wall Street to show of your fantastic trading platform. However, as always, the reality is much more cumbersome than the beautiful theory. Trades aren't trades you learn. 
+</p>
+
+<ul class="org-ul">
+<li>You have to calculate in a fee which is different based on the trader type.</li>
+<li>The smaller the institution the higher the fee.</li>
+<li>Also, bigger institutions get a higher priority.</li>
+</ul>
+
+<p>
+They also realized that you'll need a new API for this, so you were handed this:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">func processSlow(stock: String, _ amount: Int, _ fee: Float) { print("slow") }
+func processFast(stock: String, _ amount: Int, _ fee: Float) { print("fast") }
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org900fd76" class="outline-3">
+<h3 id="org900fd76"><span class="section-number-3">2.2</span> Trader Types</h3>
+<div class="outline-text-3" id="text-2-2">
+<p>
+So you go back to the drawing board and add another <code>enum</code>. The trader type is part of every trade, too.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">enum TraderType {
+case SingleGuy
+case Company
+} 
+
+enum Trades {
+    case Buy(stock: String, amount: Int, stockPrice: Float, type: TraderType)
+    case Sell(stock: String, amount: Int, stockPrice: Float, type: TraderType)
+}
+
+</pre>
+</div>
+
+<p>
+So, how do you best implement this new restriction? You could just have an <code>if</code> / <code>else</code> switch for buy and for sell, but that would lead to nested code which quickly lacks clarity - and who knows maybe these Wall Street guys come up with further complications. So you define it instead as additional requirements on the pattern matches:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">
+
+
+let aTrade = Trades.Sell(stock: "GOOG", amount: 100, stockPrice: 666.0, type: TraderType.Company)
+
+switch aTrade {
+case let .Buy(stock, amount, _, TraderType.SingleGuy):
+    processSlow(stock, amount, 5.0)
+case let .Sell(stock, amount, _, TraderType.SingleGuy):
+    processSlow(stock, -1 * amount, 5.0)
+case let .Buy(stock, amount, _, TraderType.Company):
+    processFast(stock, amount, 2.0)
+case let .Sell(stock, amount, _, TraderType.Company):
+    processFast(stock, -1 * amount, 2.0)
+}
+</pre>
+</div>
+
+<p>
+The beauty of this is that there's a very succinct flow describing the different possible combinations.
+Also, note how we changed <code>.Buy(let stock, let amount)</code> into <code>let .Buy(stock, amount)</code> in order to keep things simpler. This will destructure the <code>enum</code> just as before, only with less syntax.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org97e92e4" class="outline-3">
+<h3 id="org97e92e4"><span class="section-number-3">2.3</span> Guards! Guards!</h3>
+<div class="outline-text-3" id="text-2-3">
+<p>
+Once again you present your development to your Wall Street customer, and once again a new issue pops up (you really should have asked for a more detailed project description). 
+</p>
+
+<ul class="org-ul">
+<li>Sell orders exceeding a total value of $1.000.000 do always get fast handling, even if it's just a single guy.</li>
+<li>Buy orders under a total value of $1.000 do always get slow handling.</li>
+</ul>
+
+<p>
+With traditional nested <code>if</code> syntax, this would already become a bit messy. Not so with <code>switch</code>. Swift includes guards for <code>switch cases</code> which allow you to further restrict the possible matching of those cases. 
+</p>
+
+<p>
+You only need to modify your <code>switch</code> a little bit to accommodate for those new changes
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">
+
+
+let aTrade = Trades.Buy(stock: "GOOG", amount: 1000, stockPrice: 666.0, type: TraderType.SingleGuy)
+
+switch aTrade {
+case let .Buy(stock, amount, _, TraderType.SingleGuy):
+    processSlow(stock, amount, 5.0)
+case let .Sell(stock, amount, price, TraderType.SingleGuy)
+    where price*Float(amount) &gt; 1000000:
+    processFast(stock, -1 * amount, 5.0)
+case let .Sell(stock, amount, _, TraderType.SingleGuy):
+    processSlow(stock, -1 * amount, 5.0)
+case let .Buy(stock, amount, price, TraderType.Company)
+    where price*Float(amount) &lt; 1000:
+    processSlow(stock, amount, 2.0)
+case let .Buy(stock, amount, _, TraderType.Company):
+    processFast(stock, amount, 2.0)
+case let .Sell(stock, amount, _, TraderType.Company):
+    processFast(stock, -1 * amount, 2.0)
+}
+</pre>
+</div>
+
+<p>
+This code is quite structured, still rather easy to read, and wraps up the complex cases quite well.
+</p>
+
+<p>
+That's it, we've successfully implemented our trading engine. However, this solution still has a bit of repetition; we wonder if there're pattern matching ways to improve upon that. So, let's look into pattern matching a bit more.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org27a659f" class="outline-2">
+<h2 id="org27a659f"><span class="section-number-2">3</span> Advanced Pattern Matching</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+So now we've seen several patterns in action. But what's the syntax here? Which other things can we match for? Swift distinguishes <b>7</b> different patterns. We're going to have a quick look at each of them.
+</p>
+
+<p>
+All of those patterns can not only be used with the <code>switch</code> keyword, but also with the <code>if</code>, <code>guard</code>, and <code>for</code> keywords. For details on this, see below.
+</p>
+</div>
+
+<div id="outline-container-orgf5b613c" class="outline-3">
+<h3 id="orgf5b613c"><span class="section-number-3">3.1</span> 1. Wildcard Pattern</h3>
+<div class="outline-text-3" id="text-3-1">
+<p>
+The wildcard pattern ignores the value to be matched against. In this case any value is possible. This is the same pattern as <code>let _ = fn()</code> where the <code>_</code> indicates that you don't wish to further use this value. The interesting part is that this matches all values including <code>nil</code> <sup><a id="fnr.1" class="footref" href="#fn.1">1</a></sup>. You can even match optionals by appending a <code>?</code>:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">let p: String? = nil
+switch p {
+case _?: print ("Has String")
+case nil: print ("No String")
+}
+</pre>
+</div>
+
+<p>
+As you've seen in the trading example, it also allows you to omit the data you don't need from matching <code>enums</code> or <code>tuples</code>:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">switch (15, "example", 3.14) {
+    case (_, _, let pi): print ("pi: \(pi)")
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org1b8bab0" class="outline-3">
+<h3 id="org1b8bab0"><span class="section-number-3">3.2</span> 2. Identifier Pattern</h3>
+<div class="outline-text-3" id="text-3-2">
+<p>
+Matches a concrete value. This is how things work in Objective-C's <code>switch</code> implementation:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">switch 5 {
+  case 5: print("5")
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgcc7c3f3" class="outline-3">
+<h3 id="orgcc7c3f3"><span class="section-number-3">3.3</span> 3. Value-Binding Pattern</h3>
+<div class="outline-text-3" id="text-3-3">
+<p>
+This is the very same as binding values to variables via <code>let</code> or <code>var</code>. Only in a switch statement. You've already seen this before, so I'll provide a very short example:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">switch (4, 5) {
+  case let (x, y): print("\(x) \(y)")
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org9373092" class="outline-3">
+<h3 id="org9373092"><span class="section-number-3">3.4</span> 4. Tuple Pattern</h3>
+<div class="outline-text-3" id="text-3-4">
+<p>
+<a href="http://appventure.me/2015/07/19/tuples-swift-advanced-usage-best-practices/">I've written a whole blog post about tuples,</a> which offer much more information than this, but here's a quick example:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">let age = 23
+let job: String? = "Operator"
+let payload: AnyObject = NSDictionary()
+
+switch (age, job, payload) {
+  case (let age, _?, _ as NSDictionary):
+  print(age)
+  default: ()
+}
+</pre>
+</div>
+
+<p>
+Here, we're combining three values into a tuple (imagine they're coming from different API calls) and matching them in one go. Note that the pattern achieves three things:
+</p>
+<ol class="org-ol">
+<li>It extracts the age</li>
+<li>It makes sure there is a job, even though we don't need it</li>
+<li>It makes sure that the payload is of kind <code>NSDictionary</code> even though we don't need the actual value either.</li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-org66ce7da" class="outline-3">
+<h3 id="org66ce7da"><span class="section-number-3">3.5</span> 5. Enumeration Case Pattern</h3>
+<div class="outline-text-3" id="text-3-5">
+<p>
+As you saw in our trading example, pattern matching works <b>really great</b> with Swift's <code>enums</code>. That's because <code>enum cases</code> are like sealed, immutable, destructable structs. Much like with <code>tuples</code>, you can unwrap the contents of an individual case right in the match and only extract the information you need <sup><a id="fnr.2" class="footref" href="#fn.2">2</a></sup>.
+</p>
+
+<p>
+Imagine you're writing a game in a functional style and you have a couple of entities that you need to define. You could use <code>structs</code> but as your entities will have very little state, you feel that that's a bit of an overkill.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">enum Entities {
+    case Soldier(x: Int, y: Int)
+    case Tank(x: Int, y: Int)
+    case Player(x: Int, y: Int)
+}
+</pre>
+</div>
+
+<p>
+Now you need to implement the drawing loop. Here, we only need the X and Y position:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">
+
+for e in entities() {
+    switch e {
+    case let .Soldier(x, y):
+      drawImage("soldier.png", x, y)
+    case let .Tank(x, y):
+      drawImage("tank.png", x, y)
+    case let .Player(x, y):
+      drawImage("player.png", x, y)
+    }
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org9f29418" class="outline-3">
+<h3 id="org9f29418"><span class="section-number-3">3.6</span> 6. Type-Casting Patterns</h3>
+<div class="outline-text-3" id="text-3-6">
+<p>
+As the name already implies, this pattern casts or matches types. It has two different keywords:
+</p>
+
+<ul class="org-ul">
+<li><code>is</code> <b>type</b>: Matches the runtime type (or a subclass of it) against the right hand side. This performs a type cast but disregards the returned type. So your <code>case</code> block won't know about the matched type.</li>
+<li>pattern <code>as</code> <b>type</b>: Performs the same match as the <code>is</code> pattern but for a successful match casts the type into the pattern specified on the left hand side.</li>
+</ul>
+
+<p>
+Here is an example of the two. 
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">let a: Any = 5 
+switch a {
+  // this fails because a is still anyobject
+  // error: binary operator '+' cannot be applied to operands of type 'Any' and 'Int'
+  case is Int: print (a + 1)
+  // This works and returns '6'
+  case let n as Int: print (n + 1)
+  default: ()
+}
+</pre>
+</div>
+
+<p>
+Note that there is no <code>pattern</code> before the <code>is</code>. It matches directly against <code>a</code>.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org2b4343e" class="outline-3">
+<h3 id="org2b4343e"><span class="section-number-3">3.7</span> 7. Expression Pattern</h3>
+<div class="outline-text-3" id="text-3-7">
+<p>
+The expression pattern is very powerful. It matches the <code>switch</code> value against an expression implementing the <code>~=</code> operator. There're default implementations for this operator, for example for ranges, so that you can do:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">switch 5 {
+ case 0..10: print("In range 0-10")
+}
+</pre>
+</div>
+
+<p>
+However, the much more interesting possibility is overloading the operator yourself in order to add matchability to your custom types. Let's say that you decided to rewrite the soldier game we wrote earlier and you want to use structs after all.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">struct Soldier {
+  let hp: Int
+  let x: Int
+  let y: Int
+}
+</pre>
+</div>
+
+<p>
+Now you'd like to easily match against all entities with a health of <b>0</b>. We can simply implement the <code>~=</code> operators as follows.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">
+func ~= (pattern: Int, value: Soldier) -&gt; Bool {
+    return pattern == value.hp
+}
+</pre>
+</div>
+
+<p>
+Now we can match against an entity:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">
+let soldier = Soldier(hp: 99, x: 10, y: 10)
+switch soldier {
+   case 0: print("dead soldier")
+   default: ()
+}
+</pre>
+</div>
+
+<p>
+Sadly, full matching with tuples does not seem to work. If you implement the code below, there'll be a type checker error.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">func ~= (pattern: (hp: Int, x: Int, y: Int), value: Soldier) -&gt; Bool {
+   let (hp, x, y) = pattern
+   return hp == value.hp &amp;&amp; x == value.x &amp;&amp; y == value.y
+}
+</pre>
+</div>
+
+<p>
+One possible way of implementing something akin to the above is by adding a <code>unapply</code> method to your <code>struct</code> and then matching against that:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">
+
+extension Soldier {
+   func unapply() -&gt; (Int, Int, Int) {
+      return (self.hp, self.x, self.y)
+   }
+}
+
+func ~= (p: (Int, Int, Int), t: (Int, Int, Int)) -&gt; Bool {
+   return p.0 == t.0 &amp;&amp; p.1 == t.1 &amp;&amp; p.2 == t.2 
+}
+
+let soldier = Soldier(hp: 99, x: 10, y: 10)
+print(soldier.unapply() ~= (99, 10, 10))
+
+</pre>
+</div>
+
+<p>
+But this is rather cumbersome and defeats the purpose of a lot of the magic behind pattern matching.
+</p>
+
+<p>
+In an earlier version of this post, I wrote that <code>~=</code> doesn't work with protocols, but I was wrong. I remember that I tried it in a Playground, and it didn't work. However, this example (<a href="https://www.reddit.com/r/swift/comments/3hq6id/match_me_if_you_can_swift_pattern_matching_in/cub187r">as kindly provided by latrodectus on reddit</a>) does work fine:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">protocol Entity {
+    var value: Int {get}
+}
+
+struct Tank: Entity {
+    var value: Int
+    init(_ value: Int) { self.value = value }
+}
+
+struct Peasant: Entity {
+    var value: Int
+    init(_ value: Int) { self.value = value }
+}
+
+func ~=(pattern: Entity, x: Entity) -&gt; Bool {
+    return pattern.value == x.value
+}
+
+switch Tank(42) {
+    case Peasant(42): print("Matched") // Does match
+    default: ()
+}
+</pre>
+</div>
+
+<p>
+There's a lot of things you can do with <code>Expression Patterns</code>. For a much more detailed explanation of Expression Patterns, <a href="http://austinzheng.com/2014/12/17/custom-pattern-matching/">have a look at this terrific blog post by Austin Zheng</a>.
+</p>
+
+<p>
+This completes list of possible switch patterns. Before we move on, there's one final thing to discuss.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org504216a" class="outline-3">
+<h3 id="org504216a"><span class="section-number-3">3.8</span> Fallthrough, Break, and Labels</h3>
+<div class="outline-text-3" id="text-3-8">
+<p>
+The following is not directly related to pattern matching but only affects the <code>switch</code> keyword, so I'll keep it brief. By default, and unlike C/C++/Objective-C, <code>switch</code> <code>cases</code> do not fall through into the next case which is why in Swift, you don't need to write <code>break</code> for every case. You can opt into traditional fallthrough behaviour with the <code>fallthrough</code> keyword.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">switch 5 {
+   case 5:
+    print("Is 5")
+    fallthrough
+   default:
+    print("Is a number")
+}
+// Will print: "Is 5" "Is a number"
+</pre>
+</div>
+
+<p>
+Alternatively, you can use <code>break</code> to break out of a switch statement early. Why would you do that if there's no default fallthrough? For example if you can only realize within the <code>case</code> that a certain requirement is not met and you can't execute the <code>case</code> any further:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">let userType = "system"
+let userID = 10
+switch (userType, userID)  {
+   case ("system", _):
+     guard let userData = getSystemUser(userID) else { break }
+     print("user info: \(userData)")
+     insertIntoRemoteDB(userData)
+   default: ()
+}
+... more code that needs to be executed
+</pre>
+</div>
+
+<p>
+Here, we don't want to call <code>insertIntoRemoteData</code> when the result from <code>getSystemUser</code> is <code>nil</code>. Of course, you could just use an <code>if let</code> here, but if multiple of those cases come together, you quickly end up with a bunch of horrifyingly ugly nested <code>if lets</code>. 
+</p>
+
+<p>
+But what if you execute your switch in a <code>while</code> loop and you want to break out of the loop, not the <code>switch</code>? For those cases, Swift allows you to define <code>labels</code> to <code>break</code> or <code>continue</code> to:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">gameLoop: while true {
+  switch state() {
+     case .Waiting: continue gameLoop
+     case .Done: calculateNextState()
+     case .GameOver: break gameLoop
+  }
+}
+</pre>
+</div>
+
+<p>
+We've discussed the syntax and implementation details of <code>switch</code> and pattern matching.
+Now, let us have a look at some interesting (more or less) real world examples.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org120b7c2" class="outline-2">
+<h2 id="org120b7c2"><span class="section-number-2">4</span> Real World Examples</h2>
+<div class="outline-text-2" id="text-4">
+</div>
+<div id="outline-container-orgbff7547" class="outline-3">
+<h3 id="orgbff7547"><span class="section-number-3">4.1</span> Optionals</h3>
+<div class="outline-text-3" id="text-4-1">
+<p>
+<a href="http://appventure.me/2014/06/13/swift-optionals-made-simple/">There're many ways to unwrap optionals,</a> and pattern matching is one of them. You've probably used that quite frequently by now, nevertheless, here's a short example:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">var result: String? = secretMethod()
+switch result {
+case .None:
+    println("is nothing")
+case let a:
+    println("\(a) is a value")
+}
+</pre>
+</div>
+
+<p>
+With Swift 2.0, this becomes even easier:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">
+var result: String? = secretMethod()
+switch result {
+case nil:
+    print("is nothing")
+case let a?:
+    print("\(a) is a value")
+}
+</pre>
+</div>
+
+<p>
+As you can see, <code>result</code> could be a string, but it could also be <code>nil</code>. It's an <code>optional</code>. By switching on result, we can figure out whether it is <code>.None</code> or whether it is an actual value. Even more, if it is a value, we can also bind this value to variable right away. In this case <code>a</code>. What's beautiful here, is the clearly visible distinction between the two states, that the variable <code>result</code> can be in.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgc363055" class="outline-3">
+<h3 id="orgc363055"><span class="section-number-3">4.2</span> Type Matches</h3>
+<div class="outline-text-3" id="text-4-2">
+<p>
+Given Swift's strong type system, there's usually no need for runtime type checks like it more often happens in Objective-C. However, when you interact with legacy Objective-C code <a href="https://netguru.co/blog/objective-c-generics">(which hasn't been updated to reflect simple generics yet)</a>, then you often end up with code that needs to check for types. Imagine getting an array of NSStrings and NSNumbers:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">let u = NSArray(array: [NSString(string: "String1"), NSNumber(int: 20), NSNumber(int: 40)])
+</pre>
+</div>
+
+<p>
+When you go through this NSArray, you never know what kind of type you get. However, <code>switch</code> statements allow you to easily test for types here:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">
+for x in u {
+    switch x {
+    case _ as NSString:
+	print("string")
+    case _ as NSNumber:
+	print("number")
+    default:
+	print("Unknown types")
+    }
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org670d4ad" class="outline-3">
+<h3 id="org670d4ad"><span class="section-number-3">4.3</span> Applying ranges for grading</h3>
+<div class="outline-text-3" id="text-4-3">
+<p>
+So you're writing the grading iOS app for your local Highschool. The teachers want to enter a number value from 0 to 100 and receive the grade character for it (A - F). Pattern Matching to the rescue:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">let aGrade = 84
+
+switch aGrade {
+case 90...100: print("A")
+case 80...90: print("B")
+case 70...80: print("C")
+case 60...70: print("D")
+case 0...60: print("F")
+default:
+    print("Incorrect Grade")
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgca8ab34" class="outline-3">
+<h3 id="orgca8ab34"><span class="section-number-3">4.4</span> Word Frequencies</h3>
+<div class="outline-text-3" id="text-4-4">
+<p>
+We have a sequence of pairs, each representing a word and its frequency in some text. Our goal is to filter out those pairs whose frequency is below or above a certain threshold, and then only return the remaining words, without their respective frequencies. 
+</p>
+
+<p>
+Here're our words:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">let wordFreqs = [("k", 5), ("a", 7), ("b", 3)]
+</pre>
+</div>
+
+<p>
+A simple solution would be to model this with <code>map</code> and <code>filter</code>:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">
+let res = wordFreqs.filter({ (e) -&gt; Bool in
+    if e.1 &gt; 3 {
+	return true
+    } else {
+	return false
+    }
+}).map { $0.0 }
+print(res)
+</pre>
+</div>
+
+<p>
+However, with <code>flatmap</code> a map that only returns the non-nil elements, we can improve a lot upon this solution. First and foremost, we can get rid of the <code>e.1</code> and instead have proper destructuring by utilizing (you guessed it) tuples. And then, we only need one call <code>flatmap</code> instead of <code>filter</code> and then <code>map</code> which adds unnecessary performance overhead.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">
+let res = wordFreqs.flatMap { (e) -&gt; String? in
+    switch e {
+    case let (s, t) where t &gt; 3: return s
+    default: return nil
+    }
+}
+print(res)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org2a79766" class="outline-3">
+<h3 id="org2a79766"><span class="section-number-3">4.5</span> Directory Traversion</h3>
+<div class="outline-text-3" id="text-4-5">
+<p>
+Imagine you want to traverse a file hierachy and find:
+</p>
+<ul class="org-ul">
+<li>all "psd" files from customer1 and customer2</li>
+<li>all "blend" files from customer2</li>
+<li>all "jpeg" files from all customers.</li>
+</ul>
+
+<div class="org-src-container">
+<pre class="src src-swift">guard let enumerator = NSFileManager.defaultManager().enumeratorAtPath("/customers/2014/")
+else { return }
+
+for url in enumerator {
+    switch (url.pathComponents, url.pathExtension) {
+
+    // psd files from customer1, customer2
+    case (let f, "psd") 
+	    where f.contains("customer1") 
+	    || f.contains("customer2"): print(url)
+
+    // blend files from customer2
+    case (let f, "blend") where f.contains("customer2"): print(url)
+
+    // all jpg files
+    case (_, "jpg"): print(url)
+
+    default: ()
+    }
+}
+</pre>
+</div>
+
+<p>
+Note that <code>contains</code> stops at the first match and doesn't traverse the complete path.
+Again, pattern matching lead to very succinct and readable code.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org84a6478" class="outline-3">
+<h3 id="org84a6478"><span class="section-number-3">4.6</span> Fibonacci</h3>
+<div class="outline-text-3" id="text-4-6">
+<p>
+Also, see how beautiful an implementation of the fibonacci algorithm looks with pattern matching <sup><a id="fnr.3" class="footref" href="#fn.3">3</a></sup>
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">func fibonacci(i: Int) -&gt; Int {
+    switch(i) {
+    case let n where n &lt;= 0: return 0
+    case 0, 1: return 1
+    case let n: return fibonacci(n - 1) + fibonacci(n - 2)
+    }
+}
+
+print(fibonacci(8))
+</pre>
+</div>
+
+<p>
+Of course, this will kill your stack with big numbers.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org8439bb1" class="outline-3">
+<h3 id="org8439bb1"><span class="section-number-3">4.7</span> Legacy API and Value Extractions</h3>
+<div class="outline-text-3" id="text-4-7">
+<p>
+Oftentimes, when you get data from an external source, like a library, or an API, it is not only good practice but usually even required that you check the data for consistency before interpreting it. You need to make sure that all keys exists or that the data is of the correct type, or the arrays have the required length. Not doing so can lead from buggy behaviour (missing key) to crash of the app (indexing non-existent array items). The classic way to do this is by nesting <code>if</code> statements. 
+</p>
+
+<p>
+Let's imagine an API that returns a user. However, there're two types of users: System users - like the administrator, or the postmaster - and local users - like "John B", "Bill Gates", etc. Due to the way the system was designed and grew, there're a couple of nuisances that API consumers have to deal with:
+</p>
+<ul class="org-ul">
+<li><code>system</code> and <code>local</code> users come via the same API call.</li>
+<li>the <code>department</code> key may not exist, since early versions of the db did not have that field and early employees never had to fill it out.</li>
+<li>the <code>name</code> array contains either 4 items (username, middlename, lastname, firstname) or 2 items (full name, username) depending on when the user was created.</li>
+<li>the <code>age</code> is an Integer with the age of the user</li>
+</ul>
+
+<p>
+Our system needs to create user accounts for all system users from this API with only the following information: username, department. We only need users born before 1980. If no department is given, "Corp" is assumed.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">func legacyAPI(id: Int) -&gt; [String: AnyObject] {
+    return ["type": "system", "department": "Dark Arts", "age": 57, 
+	   "name": ["voldemort", "Tom", "Marvolo", "Riddle"]] 
+}
+</pre>
+</div>
+
+<p>
+Given these constraints, let's develop a pattern match for it:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">
+
+let item = legacyAPI(4)
+switch (item["type"], item["department"], item["age"], item["name"]) {
+   case let (sys as String, dep as String, age as Int, name as [String]) where 
+      age &lt; 1980 &amp;&amp;
+      sys == "system":
+     createSystemUser(name.count == 2 ? name.last! : name.first!, dep: dep ?? "Corp")
+  default:()
+}
+
+// returns ("voldemort", "Dark Arts")
+</pre>
+</div>
+
+<p>
+Note that this code makes one dangerous assumption, which is that if the name array does not have 2 items, it <b>must</b> have 4 items. If that case doesn't hold, and we get a zero item name array, this would crash. 
+</p>
+
+<p>
+Other than that, it is a nice example of how pattern matching even with just one case can help you write cleaner code and simplify value extractions.
+</p>
+
+<p>
+Also, see how we're writing <code>let</code> at the beginning right after the case, and don't have to repeat it for each assignment within the case.
+</p>
+</div>
+</div>
+</div>
+
+
+
+<div id="outline-container-org9734b04" class="outline-2">
+<h2 id="org9734b04"><span class="section-number-2">5</span> Patterns with other Keywords</h2>
+<div class="outline-text-2" id="text-5">
+<p>
+The Swift documentation points out, that not all patterns can be used with the <code>if</code>, <code>for</code> or the <code>guard</code> statement. However, the docs seem to be outdated. All 7 patterns work for all three keywords.
+</p>
+
+<p>
+For those interested, I compiled an example Gist that has an example for each pattern for each keyword.
+</p>
+
+<p>
+<a href="https://gist.github.com/terhechte/6eaeb90276bbfcd1ea41">You can see the example patterns here.</a>
+</p>
+
+<p>
+As a shorter example, see the <b>Value Binding</b>, <b>Tuple</b>, and <b>Type Casting</b> pattern used for all three keywords in one example:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">// This is just a collection of keywords that compiles. This code makes no sense
+func valueTupleType(a: (Int, Any)) -&gt; Bool {
+    // guard case Example
+    guard case let (x, _ as String) = a else { return false}
+    print(x)
+
+    // for case example
+    for case let (a, _ as String) in [a] {
+	print(a)
+    }
+
+    // if case example
+    if case let (x, _ as String) = a {
+       print("if", x)
+    }
+
+    // switch case example
+    switch a {
+    case let (a, _ as String):
+	print(a)
+	return true
+    default: return false
+    }
+}
+let u: Any = "a"
+let b: Any = 5
+print(valueTupleType((5, u)))
+print(valueTupleType((5, b)))
+// 5, 5, "if 5", 5, true, false
+</pre>
+</div>
+
+<p>
+With this in mind, we will have a short look at each of those keywords in detail.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org11135df" class="outline-2">
+<h2 id="org11135df"><span class="section-number-2">6</span> Using <b>for case</b></h2>
+<div class="outline-text-2" id="text-6">
+<p>
+With Swift 2.0, pattern matching has become even more important in the language as the <code>switch</code> capabilities have been extended to other keywords as well. For example, let's write a simple array function which only returns the non-nil elements
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">func nonnil&lt;T&gt;(array: [T?]) -&gt; [T] {
+   var result: [T] = []
+   for case let x? in array {
+      result.append(x)
+   }
+   return result
+}
+
+print(nonnil(["a", nil, "b", "c", nil]))
+</pre>
+</div>
+
+<p>
+The <code>case</code> keyword can be used in for loops just like in <code>switch</code> cases. Here's another example. Remember the game we talked about earlier? Well, after the first refactoring, our entity system now looks like this:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">enum Entity {
+    enum EntityType {
+	case Soldier
+	case Player
+    }
+    case Entry(type: EntityType, x: Int, y: Int, hp: Int)
+}
+</pre>
+</div>
+
+<p>
+Fancy, this allows us to draw all items with even less code:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">
+
+for case let Entity.Entry(t, x, y, _) in gameEntities()
+where x &gt; 0 &amp;&amp; y &gt; 0 {
+    drawEntity(t, x, y)
+}
+</pre>
+</div>
+
+<p>
+Our one line unwraps all the necessary properties, makes sure we're not drawing beyond 0, and finally calls the render call (<code>drawEntity</code>).
+</p>
+
+<p>
+In order to see if the player won the game, we want to know if there is at least one Soldier with health &gt; 0
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">
+
+func gameOver() -&gt; Bool {
+    for case Entity.Entry(.Soldier, _, _, let hp) in gameEntities() 
+    where hp &gt; 0 {return false}
+    return true
+}
+print(gameOver())
+</pre>
+</div>
+
+<p>
+What's nice is that the <code>Soldier</code> match is part of the for query. This feels a bit like <code>SQL</code> and less like imperative loop programming. Also, this makes our intent clearer to the compiler, opening up the possibilities for dispatch enhancements down the road. Another nice touch is that we don't have to spell out <code>Entity.EntityType.Soldier</code>. Swift understands our intent even if we only write <code>.Soldier</code> as above.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org3191898" class="outline-2">
+<h2 id="org3191898"><span class="section-number-2">7</span> Using <b>guard case</b></h2>
+<div class="outline-text-2" id="text-7">
+<p>
+Another keyword which supports patterns is the newly introduced <code>guard</code> keyword. You know how it allows you to bind <code>optionals</code> into the local scope much like <code>if let</code> only without nesting things:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">func example(a: String?) {
+    guard let a = a else { return }
+    print(a)
+}
+example("yes")
+</pre>
+</div>
+
+<p>
+<code>guard let case</code> allows you to do something similar with the power that pattern matching introduces. Let's have a look at our soldiers again. We want to calculate the required HP until our player has full health again. Soldiers can't regain HP, so we should always return 0 for a soldier entity.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">
+
+let MAX_HP = 100
+
+func healthHP(entity: Entity) -&gt; Int {
+    guard case let Entity.Entry(.Player, _, _, hp) = entity 
+    where hp &lt; MAX_HP 
+    else { return 0 }
+    return MAX_HP - hp
+}
+
+print("Soldier", healthHP(Entity.Entry(type: .Soldier, x: 10, y: 10, hp: 79)))
+print("Player", healthHP(Entity.Entry(type: .Player, x: 10, y: 10, hp: 57)))
+
+// Prints:
+"Soldier 0"
+"Player 43"
+
+</pre>
+</div>
+
+<p>
+This is a beautiful example of the culmination of the various mechanisms we've discussed so far. 
+</p>
+
+<ul class="org-ul">
+<li>It is very clear, there is no nesting involved</li>
+<li>Logic and initialization of state are handled at the top of the <code>func</code> which improves readability</li>
+<li>Very terse.</li>
+</ul>
+
+<p>
+This can also be very successfully combined with <code>switch</code> and <code>for</code> to wrap complex logical constructs into an easy to read format. Of course, that won't make the logic any easier to understand, but at least it will be provided in a much saner package. Especially if you use <code>enums</code>.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org2b25932" class="outline-2">
+<h2 id="org2b25932"><span class="section-number-2">8</span> Using <b>if case</b></h2>
+<div class="outline-text-2" id="text-8">
+<p>
+<code>if case</code> can be used as the opposite of <code>guard case</code>. It is a great way to unwrap and match data within a branch. In line with our previous <code>guard</code> example. Obviously, we need an move function. Something that allows us to say that an entity moved in a direction. Since our entities are <code>enums</code>, we need to return an updated entity.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift" id="orgd16b166">func move(entity: Entity, xd: Int, yd: Int) -&gt; Entity {
+	if case Entity.Entry(let t, let x, let y, let hp) = entity
+	where (x + xd) &lt; 1000 &amp;&amp;
+	    (y + yd) &lt; 1000 {
+	return Entity.Entry(type: t, x: (x + xd), y: (y + yd), hp: hp)
+    }
+    return entity
+}
+print(move(Entity.Entry(type: .Soldier, x: 10, y: 10, hp: 79), xd: 30, yd: 500))
+// prints: Entry(main.Entity.EntityType.Soldier, 40, 510, 79)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org9a40aab" class="outline-2">
+<h2 id="org9a40aab"><span class="section-number-2">9</span> Limitations</h2>
+<div class="outline-text-2" id="text-9">
+<p>
+Some limitations were already mentioned in the text, such as the issues regarding <code>Expression Patterns</code>, which seem to not match against <code>tuples</code> (as would be really convenient). In Scala or Clojure, pattern matching can also work against collections, so you could match head, tail, parts, etc. <sup><a id="fnr.4" class="footref" href="#fn.4">4</a></sup> This doesn't work in Swift (<a href="http://austinzheng.com/2014/12/17/custom-pattern-matching/">although Austin Zheng kinda implemented this in the blog post I linked above</a>).
+</p>
+
+<p>
+Another thing which doesn't work (wich, again, Scala does just fine) is destructuring against classes or structs. Scala allows us to define an <code>unapply</code> method which does basically the opposite of <code>init</code>. Implementing this method, then, allows the type checker to match against classes. In Swift, this could look as follows:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">struct Imaginary {
+   let x: Int
+   let y: Int
+   func unapply() -&gt; (Int, Int) {
+     // implementing this method would then in theory provide all the details needed to destructure the vars
+     return (self.x, self.y)
+   }
+}
+// this, then, would unapply automatically and then match
+guard case let Imaginary(x, y) = anImaginaryObject else { break }
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org83e2536" class="outline-2">
+<h2 id="org83e2536"><span class="section-number-2">10</span> Changes</h2>
+<div class="outline-text-2" id="text-10">
+<p>
+<b><b>08/21/2015</b></b> Incorporated <a href="https://www.reddit.com/r/swift/comments/3hq6id/match_me_if_you_can_swift_pattern_matching_in/">helpful feedback from foBrowsing on Reddit</a>
+</p>
+<ul class="org-ul">
+<li>Added <code>guard case let</code></li>
+<li>Added simplified syntax for let (i.e. <code>let (x, y)</code> instead of <code>(let x, let y)</code></li>
+</ul>
+<p>
+<b><b>08/22/2015</b></b> <a href="https://www.reddit.com/r/swift/comments/3hq6id/match_me_if_you_can_swift_pattern_matching_in/">Apparently I didn't test some things properly enough.</a> Some of the limitations I listed do actually work, as another helpful Reddit commenter (latrodectus) pointed out.
+</p>
+<ul class="org-ul">
+<li>All patterns work for all three keywords. Changed that, and added a Gist with examples</li>
+<li>The limitations regarding protocols and the expression pattern were invalid. This works fine, too.</li>
+<li>Added "Pattern Availability" section</li>
+</ul>
+<p>
+<b><b>08/24/2015</b></b> 
+</p>
+<ul class="org-ul">
+<li>Added <code>if case</code> examples, renamed some sections.</li>
+<li>Fixed typos in the text. In particular, I accidentally wrote that <code>_</code> does not match <code>nil</code>. That's of course not true, <code>_</code> matches everything. (thanks to <a href="https://github.com/obecker">obecker</a>)</li>
+</ul>
+<p>
+<b><b>09/18/2015</b></b>
+</p>
+<ul class="org-ul">
+<li>Added link to Japanese Translation</li>
+</ul>
+</div>
+</div>
+<div id="footnotes">
+<h2 class="footnotes">Footnotes: </h2>
+<div id="text-footnotes">
+
+<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1">1</a></sup> <div class="footpara">Think of it like the <code>*</code> wildcard you use in the shell</div></div>
+
+<div class="footdef"><sup><a id="fn.2" class="footnum" href="#fnr.2">2</a></sup> <div class="footpara">I'm not sure whether the compiler optimizes for this, but theoretically, it should be able to calculate the correct position of the requested data and inline the address ignoring the other parts of the enum case</div></div>
+
+<div class="footdef"><sup><a id="fn.3" class="footnum" href="#fnr.3">3</a></sup> <div class="footpara">of course, no match for a Haskell implementation: <br />
+fib 0 = 0<br />
+fib 1 = 1<br />
+fib n = fib (n-1) + fib (n-2)</div></div>
+
+<div class="footdef"><sup><a id="fn.4" class="footnum" href="#fnr.4">4</a></sup> <div class="footpara">I.e. switch [1, 2, 4, 3] { <br />
+case [_, 2, _, 3]: <br />
+}</div></div>
+
+
+</div>
+</div></div>
+
+        <div id="followme">
+            <p>If you read this far, you should follow me (<a href="http://www.twitter.com/terhechte">@terhechte</a>) <br /> on <a href="http://www.twitter.com/terhechte"><i class="fi-social-twitter"></i> Twitter</a></p>
+            <br />
+        </div>
+        
+
+        <div class="footnotes">
+            <ol></ol>
+        </div>
+
+        <p class="anchor"><i class="fi-anchor"></i></p>
+ 
+      </article></div>
+
+
+    </div>
+
+    <div class="column is-narrow">
+
+     <aside class="menu">
+
+         
+
+
+
+      <br />
+      <ul class="menu-list">
+       <li>
+        <p class="menu-label">
+         <a>
+          <i class="fas fa-dove"></i>
+          Swift Topics
+         </a>
+        </p>
+        <ul>
+            <li><a href="/topics/all.html">All</a></li>
+           
+            
+            <li><a href="/topics/swift-tricks.html">Swift Tricks</a></li>
+            
+         
+            
+            <li><a href="/topics/language.html">Language</a></li>
+            
+         
+            
+            <li><a href="/topics/hands-on.html">Hands On</a></li>
+            
+         
+            
+            <li><a href="/topics/blog.html">Blog</a></li>
+            
+         
+            
+         
+        </ul>
+       </li>
+
+       <li>
+           <p class="menu-label">
+               <a>
+                   <i class="fas fa-book"></i>
+                   Guides
+               </a>
+           </p>
+           <ul>
+                 
+               <li><a href="/guides/pattern_matching/intro.html">🧩 Pattern Matching</a></li>
+                 
+               <li><a href="/guides/advanced_practical_enum_examples/introduction.html">🚦 Enums</a></li>
+                 
+               <li><a href="/guides/map_flatmap_reduce_more/intro.html">🗺 Map, Reduce &amp; more</a></li>
+                 
+               <li><a href="/guides/associated_types/associated_types.html">🧙🏻 Associated Types</a></li>
+                 
+               <li><a href="/guides/tuples/introduction.html">🍱 Tuples</a></li>
+                 
+               <li><a href="/guides/optionals/intro.html">⁉️ Optionals</a></li>
+                 
+               <li><a href="/guides/swift_reflection/introduction.html">🔮 Reflection</a></li>
+                 
+           </ul>
+       </li>
+      </ul>
+
+      <div class="sidebar-banner">
+          <a href="https://contravariance.rocks"><img src="/img/contravariance_banner.png" srcset="/img/contravariance_banner.png 1x, /img/contravariance_banner@2x.png 2x" /></a>
+      </div>
+
+      <ul class="menu-list">
+       <li>
+        <p class="menu-label">
+         <a>
+          <i class="fas fa-tags"></i>
+          Tags
+         </a>
+        </p>
+        <ul>
+
+     
+     <li><a href="/tags/pattern-matching.html" class="tags has-addons"><span class="tag is-info is-rounded">pattern matching</span><span class="tag is-primary is-rounded">25</span></a></li>
+     
+     <li><a href="/tags/switch.html" class="tags has-addons"><span class="tag is-info is-rounded">switch</span><span class="tag is-primary is-rounded">24</span></a></li>
+     
+     <li><a href="/tags/enum.html" class="tags has-addons"><span class="tag is-info is-rounded">enum</span><span class="tag is-primary is-rounded">20</span></a></li>
+     
+     <li><a href="/tags/associated.html" class="tags has-addons"><span class="tag is-info is-rounded">associated</span><span class="tag is-primary is-rounded">14</span></a></li>
+     
+     <li><a href="/tags/tuples.html" class="tags has-addons"><span class="tag is-info is-rounded">tuples</span><span class="tag is-primary is-rounded">13</span></a></li>
+     
+     <li><a href="/tags/reflection.html" class="tags has-addons"><span class="tag is-info is-rounded">reflection</span><span class="tag is-primary is-rounded">12</span></a></li>
+     
+     <li><a href="/tags/reduce.html" class="tags has-addons"><span class="tag is-info is-rounded">reduce</span><span class="tag is-primary is-rounded">11</span></a></li>
+     
+     <li><a href="/tags/box.html" class="tags has-addons"><span class="tag is-info is-rounded">box</span><span class="tag is-primary is-rounded">10</span></a></li>
+     
+     <li><a href="/tags/generics.html" class="tags has-addons"><span class="tag is-info is-rounded">generics</span><span class="tag is-primary is-rounded">7</span></a></li>
+     
+     <li><a href="/tags/compactmap.html" class="tags has-addons"><span class="tag is-info is-rounded">compactMap</span><span class="tag is-primary is-rounded">6</span></a></li>
+     
+     <li><a href="/tags/filter.html" class="tags has-addons"><span class="tag is-info is-rounded">filter</span><span class="tag is-primary is-rounded">6</span></a></li>
+     
+     <li><a href="/tags/map.html" class="tags has-addons"><span class="tag is-info is-rounded">map</span><span class="tag is-primary is-rounded">6</span></a></li>
+     
+     <li><a href="/tags/mirror.html" class="tags has-addons"><span class="tag is-info is-rounded">mirror</span><span class="tag is-primary is-rounded">6</span></a></li>
+     
+     <li><a href="/tags/protocol.html" class="tags has-addons"><span class="tag is-info is-rounded">protocol</span><span class="tag is-primary is-rounded">6</span></a></li>
+     
+     <li><a href="/tags/optionals.html" class="tags has-addons"><span class="tag is-info is-rounded">optionals</span><span class="tag is-primary is-rounded">5</span></a></li>
+     
+     <li><a href="/tags/where.html" class="tags has-addons"><span class="tag is-info is-rounded">where</span><span class="tag is-primary is-rounded">5</span></a></li>
+     
+     <li><a href="/tags/erasure.html" class="tags has-addons"><span class="tag is-info is-rounded">erasure</span><span class="tag is-primary is-rounded">4</span></a></li>
+     
+     <li><a href="/tags/equatable.html" class="tags has-addons"><span class="tag is-info is-rounded">equatable</span><span class="tag is-primary is-rounded">3</span></a></li>
+     
+     <li><a href="/tags/destructure.html" class="tags has-addons"><span class="tag is-info is-rounded">destructure</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/error.html" class="tags has-addons"><span class="tag is-info is-rounded">error</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/extension.html" class="tags has-addons"><span class="tag is-info is-rounded">extension</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/guard.html" class="tags has-addons"><span class="tag is-info is-rounded">guard</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/if-let.html" class="tags has-addons"><span class="tag is-info is-rounded">if let</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/is.html" class="tags has-addons"><span class="tag is-info is-rounded">is</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/objc.html" class="tags has-addons"><span class="tag is-info is-rounded">objc</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/optional.html" class="tags has-addons"><span class="tag is-info is-rounded">optional</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/struct.html" class="tags has-addons"><span class="tag is-info is-rounded">struct</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/try.html" class="tags has-addons"><span class="tag is-info is-rounded">try</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/.html" class="tags has-addons"><span class="tag is-info is-rounded">?</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/caseiterable.html" class="tags has-addons"><span class="tag is-info is-rounded">CaseIterable</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/customreflectable.html" class="tags has-addons"><span class="tag is-info is-rounded">CustomReflectable</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/data.html" class="tags has-addons"><span class="tag is-info is-rounded">Data</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/expressiblebystringliteral.html" class="tags has-addons"><span class="tag is-info is-rounded">ExpressibleByStringLiteral</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/rawrepresentable.html" class="tags has-addons"><span class="tag is-info is-rounded">RawRepresentable</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/as.html" class="tags has-addons"><span class="tag is-info is-rounded">as</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/autoclosure.html" class="tags has-addons"><span class="tag is-info is-rounded">autoclosure</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/break.html" class="tags has-addons"><span class="tag is-info is-rounded">break</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/catch.html" class="tags has-addons"><span class="tag is-info is-rounded">catch</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/closure.html" class="tags has-addons"><span class="tag is-info is-rounded">closure</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/copyonwrite.html" class="tags has-addons"><span class="tag is-info is-rounded">copy-on-write</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/coredata.html" class="tags has-addons"><span class="tag is-info is-rounded">coredata</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/either.html" class="tags has-addons"><span class="tag is-info is-rounded">either</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/fallthrough.html" class="tags has-addons"><span class="tag is-info is-rounded">fallthrough</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/for.html" class="tags has-addons"><span class="tag is-info is-rounded">for</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/for-case.html" class="tags has-addons"><span class="tag is-info is-rounded">for case</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/groupby.html" class="tags has-addons"><span class="tag is-info is-rounded">groupby</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/guard-let.html" class="tags has-addons"><span class="tag is-info is-rounded">guard let</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/if-case.html" class="tags has-addons"><span class="tag is-info is-rounded">if case</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/indirect.html" class="tags has-addons"><span class="tag is-info is-rounded">indirect</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/init.html" class="tags has-addons"><span class="tag is-info is-rounded">init</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/init.html" class="tags has-addons"><span class="tag is-info is-rounded">init?</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/inout.html" class="tags has-addons"><span class="tag is-info is-rounded">inout</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/label.html" class="tags has-addons"><span class="tag is-info is-rounded">label</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/literal.html" class="tags has-addons"><span class="tag is-info is-rounded">literal</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/method.html" class="tags has-addons"><span class="tag is-info is-rounded">method</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/overload.html" class="tags has-addons"><span class="tag is-info is-rounded">overload</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/package.html" class="tags has-addons"><span class="tag is-info is-rounded">package</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/partition.html" class="tags has-addons"><span class="tag is-info is-rounded">partition</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/performance.html" class="tags has-addons"><span class="tag is-info is-rounded">performance</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/property.html" class="tags has-addons"><span class="tag is-info is-rounded">property</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/protocols.html" class="tags has-addons"><span class="tag is-info is-rounded">protocols</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/range.html" class="tags has-addons"><span class="tag is-info is-rounded">range</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/self.html" class="tags has-addons"><span class="tag is-info is-rounded">self</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/tupealias.html" class="tags has-addons"><span class="tag is-info is-rounded">tupealias</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/tuple.html" class="tags has-addons"><span class="tag is-info is-rounded">tuple</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/typealias.html" class="tags has-addons"><span class="tag is-info is-rounded">typealias</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/unique.html" class="tags has-addons"><span class="tag is-info is-rounded">unique</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/value-type.html" class="tags has-addons"><span class="tag is-info is-rounded">value type</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/valuetype.html" class="tags has-addons"><span class="tag is-info is-rounded">valuetype</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/vararg.html" class="tags has-addons"><span class="tag is-info is-rounded">vararg</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/wildcard.html" class="tags has-addons"><span class="tag is-info is-rounded">wildcard</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/zip.html" class="tags has-addons"><span class="tag is-info is-rounded">zip</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/.html" class="tags has-addons"><span class="tag is-info is-rounded">~=</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+
+        </ul>
+       </li>
+      </ul>
+
+
+     </aside> 
+
+
+    </div>
+   </div>
+  </div>
+ </section>
+
+ <div class="footer">
+  <article class="media" id="followme">
+   <figure class="media-left">
+    <p class="image is-64x64">
+     <img src="/img/terhechte.jpg" class="profile-image" />
+    </p>
+   </figure>
+   <div class="media-content">
+       <div class="columns">
+           <div class="column">
+               <div class="content">
+                   <p>
+                       <strong>Benedikt Terhechte</strong> <a href="https://twitter.com/terhechte"><small>@terhechte</small></a>
+                       <br />
+                       If you read this far, you should <a href="https://twitter.com/terhechte">follow Benedikt on Twitter</a>.<br />
+                       APPVENTURE is dedicated to providing articles about Swift, macOS, iOS &amp; Linux development.
+                   </p>
+                   <p>
+                       <strong>2011 - 2019 Benedikt Terhechte</strong>
+                   </p>
+               </div>
+           </div>
+           <div class="column">
+               <p>
+                   <a href="https://terhech.de">Benedikt's private blog can be found
+                       at <strong>terhech.de</strong></a>
+               </p>
+               <p>
+                   <br />
+                   <strong>Other Profiles</strong>
+               </p>
+               <p class="subtitle is-6">
+                   <a href="https://twitter.com/terhechte"><i class="fab fa-twitter"></i></a>
+                   <a href="https://www.xing.com/profile/Benedikt_Terhechte">
+                       <i class="fab fa-xing"></i>
+                   </a>
+                   <a href="https://twitter.com/terhechte">
+                       <i class="fab fa-github"></i>
+                   </a>
+                   <a href="https://news.ycombinator.com/user?id=terhechte">
+                       <i class="fab fa-hacker-news"></i>
+                   </a>
+               </p>
+           </div>
+       </div>
+   </div>
+   <div class="media-right">
+    <a href="https://twitter.com/terhechte" class="button is-info is-rounded">
+     <i class="fab fa-twitter"></i> 
+     Follow Me</a>
+   </div>
+  </article>
+ </div>
+
+
+
+</body>
+
+
+</html>

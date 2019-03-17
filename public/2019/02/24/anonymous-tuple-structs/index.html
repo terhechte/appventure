@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cleaner Classes with Structs and Tuples</title>
+  <link rel="stylesheet" href="/css/bulma.min.css" />
+  <link rel="stylesheet" href="/css/style.css" />
+
+  <meta content="An easy way to add more structure to your classes by leveraging structs and enums" name="description" /><meta content="benedikt, c, classes, clojure, clojurescript, cocoa, html, ios, javascript, mac, macos, objective-c, photodesk, research, structs, stylemac, swift, terhechte, tuples" name="keywords" /><meta content="Benedikt Terhechte" name="author" /><meta content="Cleaner Classes with Structs and Tuples" property="og:title" /><meta content="An easy way to add more structure to your classes by leveraging structs and enums" property="og:description" /><meta content="http://appventure.me/2019/02/24/anonymous-tuple-structs/" property="og:url" /><meta content="Cleaner Classes with Structs and Tuples" name="twitter:title" /><meta content="An easy way to add more structure to your classes by leveraging structs and enums" name="twitter:description" /><meta content="summary_large_image" name="twitter:card" /><meta content="http://appventure.me/img-content/2019-02-24-anonymous-tuple-structs.jpg" name="twitter:image" /><meta content="http://appventure.me/img-content/2019-02-24-anonymous-tuple-structs.jpg" property="og:image" />
+  <meta name="twitter:site" content="@terhechte" />
+  <meta name="twitter:creator" content="@terhechte" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700,800" rel="stylesheet" />
+  <script defer="defer" src="/js/fontawesome-all.min.js"></script>
+  
+ </head>
+ <body>
+  <section class="section" id="head">
+   <div class="container" id="container">
+    <div>
+
+     <div class="columns">
+      <div class="column is-3">
+          <span id="brand"><a href="/index.html"><img src="/img/brand.png" srcset="/img/brand.png 1x, /img/brand@2x.png 2x" /></a></span>
+      </div>
+      <div class="column is-7">
+       <span id="subbrand">
+        Simple. Swift. Guides.</span>
+      </div>
+      <div class="column is-2">
+          <div class="field">
+
+          </div>
+      </div>
+     </div>
+    </div>
+   </div>
+  </section>
+
+
+  <section class="section" id="main">
+   <div class="container" id="container">
+    <div class="columns">
+     <div class="column">
+      <div class="columns">
+       <div class="column">
+        <div class="tabs">
+		 
+        </div>
+       </div>
+       <div class="column is-narrow">
+        <div class="buttons has-addons is-hidden-mobile">
+        </div>
+       </div>
+      </div>
+
+      <div class="box" style="margin-bottom: 250px;">
+            <h5 style="font-size: 38px; font-weight: bold;"><a class="xx-new-article" href="https://appventure.me/posts/2019-02-24-anonymous-tuple-structs.html">AppVenture has been updated</a></h5>
+            <p style="padding-top: 10px; padding-bottom: 10px; font-size: 18px;">
+                All articles have been rewritten and improved. You will be forwarded
+                to the updated article.
+            </p>
+            <p style="font-size: 18px; font-weight: bold;">
+                <a class="xx-new-article" href="https://appventure.me/posts/2019-02-24-anonymous-tuple-structs.html" id="xxx-new-article">Click here to go there directly.</a>
+            </p>
+            <script>
+                 setTimeout(function(){ 
+                    document.location.href=document.getElementById("xxx-new-article").href;
+                },
+                    0);
+            </script>
+      </div>
+
+
+
+
+      <div role="content" id="maincontent" style="opacity: 0.5"><article id="article--892167750" class="article-post content is-medium">
+
+
+ 
+          <h6><i class="fi-pencil"></i> Sun, 24 Feb 2019 <a href="/2019/02/24/anonymous-tuple-structs/">#</a></h6>
+
+        <h3><a href="/2019/02/24/anonymous-tuple-structs/">Cleaner Classes with Structs and Tuples</a></h3>
+
+
+
+        <div class="actual-content"><p>
+Imagine you're working on a social networking app and you have a controller that is responsible for displaying a user image with a follow and a like button. Imagine also, that - in line with the single responsibility principle and view controller composition - the <b><b>like</b></b> and <b><b>follow</b></b> functionality is handled somewhere else. Our social network does have premium user accounts as well as corporate user accounts (companies) and so there're a couple of configuration options available for your <code>InteractiveUserImageController</code> (naming was never my strong suit). One possible option of our class could look (partially) like this (for demonstration purposes, there're obviously a lot of things that we can change here):
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">final class InteractiveUserImageController: UIView {
+    /// Should the Premium Layout be used
+    var isPremium: Bool
+    /// What kind of account do we have
+    var accountType: AccountType
+    /// Tapping the view will highlight it
+    var isHighlighted: Bool
+    /// The username to display
+    var username: String
+    /// The profile image to display
+    var profileImage: UIImage
+    /// Can the current user like this user
+    var canLike: Bool
+    /// Can the current user follow this user
+    var canFollow: Bool
+    /// Should the big like button be used
+    var bigLikeButton: Bool
+    /// For some containers we need a special background color
+    var alternativeBackgroundColor: Bool
+
+    init(...) {}
+}
+</pre>
+</div>
+
+<p>
+Now, these are a lot of properties. As our app grows, we might end up adding even more properties here. Of course, we can refactor and group them by responsibility, but sometimes single responsibility still leads to quite a few properties. So how can we possibly structure this a bit better?
+</p>
+
+<div id="outline-container-org78bdaf8" class="outline-2">
+<h2 id="org78bdaf8"><span class="section-number-2">1</span> Swift Struct Structure</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+Swift's <code>struct</code> types can actually be really helpful here. What we can do is group these properties by their type by moving them into <b>one-time</b> structs:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">final class InteractiveUserImageController: UIView {
+    struct DisplayOptions {
+	/// Should the big like button be used
+	var bigLikeButton: Bool
+	/// For some containers we need a special background color
+	var alternativeBackgroundColor: Bool
+	/// Should the Premium Layout be used
+	var isPremium: Bool
+    }
+    struct UserOptions {
+	/// What kind of account do we have
+	var accountType: AccountType
+	/// The username to display
+	var username: String
+	/// The profile image to display
+	var profileImage: UIImage
+    }
+    struct State {
+	/// Tapping the view will highlight it
+	var isHighlighted: Bool
+	/// Can the current user like this user
+	var canLike: Bool
+	/// Can the current user follow this user
+	var canFollow: Bool
+    }
+
+    var displayOptions = DisplayOptions(...)
+    var userOptions = UserOptions(...)
+    var state = State(...)
+
+    init(...) {}
+}
+</pre>
+</div>
+
+<p>
+As you can see, what we've done here is we moved the state into seperate <code>struct</code> types. Not only does this make the class cleaner, it also makes it easier for new developers to find related options. 
+</p>
+
+<p>
+This is already a very nice improvement, but we can do even better! 
+</p>
+
+<p>
+The issue we have here is that there is an additional step involved when looking up a property. 
+</p>
+
+<p>
+Since we're using one-time struct types we have to define them somewhere, (i.e. <code>struct DisplayOptions</code>), but we also have to instantiate them somewhere (i.e. <code>let displayOptions = DisplayOptions(...)</code>. This is in general <b>ok</b>, but in larger classes this might still require an additional lookup to figure out the type of <code>displayOptions</code>. However, there is no way in Swift to create anonymous <code>struct</code> types like this <sup><a id="fnr.1" class="footref" href="#fn.1">1</a></sup>:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">let displayOptions = struct {
+    /// Should the big like button be used
+    var bigLikeButton: Bool
+    /// For some containers we need a special background color
+    var alternativeBackgroundColor: Bool
+    /// Should the Premium Layout be used
+    var isPremium: Bool
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgc9eee9b" class="outline-2">
+<h2 id="orgc9eee9b"><span class="section-number-2">2</span> Anonymous Structs nee Tuples</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+Actually, there is such a type in Swift. It is our good old friend, the <code>tuple</code>. See for yourself:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">var displayOptions: (
+  bigLikeButton: Bool,
+  alternativeBackgroundColor: Bool,
+  isPremium: Bool
+)
+</pre>
+</div>
+
+<p>
+This defines a new type <code>displayOptions</code> that has three properties (<code>bigLikeButton</code>, <code>alternativeBackgroundColor</code>, <code>isPremium</code>) and can be accessed just like our <code>struct</code> from earlier:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">user.displayOptions.alternativeBackgroundColor = true
+</pre>
+</div>
+
+<p>
+Even better, the defintion does not need an additional initialization, so everything is in the same place. 
+</p>
+</div>
+</div>
+
+<div id="outline-container-org5a97d2e" class="outline-2">
+<h2 id="org5a97d2e"><span class="section-number-2">3</span> Enforced Immutability</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+Finally, the whole <code>tuple</code> is either <code>mutable</code> or <code>immutable</code>. You can see that in the first line: We're defining <code>var displayOptions</code> but no <code>var</code> or <code>let</code> <code>bigLikeButton</code>. <code>bigLikeButton</code> is also a <code>var</code> just like <code>displayOptions</code>. The advantage of this is that this enforces moving static constant properties (i.e. line height, header height) into a different (<code>let</code>) group than mutable properties.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org479afa9" class="outline-2">
+<h2 id="org479afa9"><span class="section-number-2">4</span> Add some data</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+As a nice addition, you can also use this feature when you need to initialize these properties with values:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">var displayOptions = (
+  bigLikeButton: true,
+  alternativeBackgroundColor: false,
+  isPremium: false,
+  defaultUsername: "Anonymous"
+)
+</pre>
+</div>
+
+<p>
+Very similar to the earlier code, this defines a tuple of options but also initializes them with the correct values right away.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org31c3f23" class="outline-2">
+<h2 id="org31c3f23"><span class="section-number-2">5</span> Nesting</h2>
+<div class="outline-text-2" id="text-5">
+<p>
+Naturally, you can also nest these tuple options easily, which makes it even easier compared to our original struct approach:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">class UserFollowComponent {
+    var displayOptions = (
+	likeButton: (
+	    bigButton: true,
+	    alternativeBackgroundColor: true
+	    ),
+	imageView: (
+	    highlightLineWidth: 2.0,
+	    defaultColor: "#33854"
+	)
+    )
+}
+</pre>
+</div>
+
+<p>
+I hope you found this article useful. I'm using this simple pattern quit a lot in order to give my code more structure. Sometimes only for 2-3 properties, but even then it is already beneficial.
+</p>
+</div>
+</div>
+<div id="footnotes">
+<h2 class="footnotes">Footnotes: </h2>
+<div id="text-footnotes">
+
+<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1">1</a></sup> <div class="footpara">Unlike C</div></div>
+
+
+</div>
+</div></div>
+
+        <div id="followme">
+            <p>If you read this far, you should follow me (<a href="http://www.twitter.com/terhechte">@terhechte</a>) <br /> on <a href="http://www.twitter.com/terhechte"><i class="fi-social-twitter"></i> Twitter</a></p>
+            <br />
+        </div>
+        
+
+        <div class="footnotes">
+            <ol></ol>
+        </div>
+
+        <p class="anchor"><i class="fi-anchor"></i></p>
+ 
+      </article></div>
+
+
+    </div>
+
+    <div class="column is-narrow">
+
+     <aside class="menu">
+
+         
+
+
+
+      <br />
+      <ul class="menu-list">
+       <li>
+        <p class="menu-label">
+         <a>
+          <i class="fas fa-dove"></i>
+          Swift Topics
+         </a>
+        </p>
+        <ul>
+            <li><a href="/topics/all.html">All</a></li>
+           
+            
+            <li><a href="/topics/swift-tricks.html">Swift Tricks</a></li>
+            
+         
+            
+            <li><a href="/topics/language.html">Language</a></li>
+            
+         
+            
+            <li><a href="/topics/hands-on.html">Hands On</a></li>
+            
+         
+            
+            <li><a href="/topics/blog.html">Blog</a></li>
+            
+         
+            
+         
+        </ul>
+       </li>
+
+       <li>
+           <p class="menu-label">
+               <a>
+                   <i class="fas fa-book"></i>
+                   Guides
+               </a>
+           </p>
+           <ul>
+                 
+               <li><a href="/guides/pattern_matching/intro.html">🧩 Pattern Matching</a></li>
+                 
+               <li><a href="/guides/advanced_practical_enum_examples/introduction.html">🚦 Enums</a></li>
+                 
+               <li><a href="/guides/map_flatmap_reduce_more/intro.html">🗺 Map, Reduce &amp; more</a></li>
+                 
+               <li><a href="/guides/associated_types/associated_types.html">🧙🏻 Associated Types</a></li>
+                 
+               <li><a href="/guides/tuples/introduction.html">🍱 Tuples</a></li>
+                 
+               <li><a href="/guides/optionals/intro.html">⁉️ Optionals</a></li>
+                 
+               <li><a href="/guides/swift_reflection/introduction.html">🔮 Reflection</a></li>
+                 
+           </ul>
+       </li>
+      </ul>
+
+      <div class="sidebar-banner">
+          <a href="https://contravariance.rocks"><img src="/img/contravariance_banner.png" srcset="/img/contravariance_banner.png 1x, /img/contravariance_banner@2x.png 2x" /></a>
+      </div>
+
+      <ul class="menu-list">
+       <li>
+        <p class="menu-label">
+         <a>
+          <i class="fas fa-tags"></i>
+          Tags
+         </a>
+        </p>
+        <ul>
+
+     
+     <li><a href="/tags/pattern-matching.html" class="tags has-addons"><span class="tag is-info is-rounded">pattern matching</span><span class="tag is-primary is-rounded">25</span></a></li>
+     
+     <li><a href="/tags/switch.html" class="tags has-addons"><span class="tag is-info is-rounded">switch</span><span class="tag is-primary is-rounded">24</span></a></li>
+     
+     <li><a href="/tags/enum.html" class="tags has-addons"><span class="tag is-info is-rounded">enum</span><span class="tag is-primary is-rounded">20</span></a></li>
+     
+     <li><a href="/tags/associated.html" class="tags has-addons"><span class="tag is-info is-rounded">associated</span><span class="tag is-primary is-rounded">14</span></a></li>
+     
+     <li><a href="/tags/tuples.html" class="tags has-addons"><span class="tag is-info is-rounded">tuples</span><span class="tag is-primary is-rounded">13</span></a></li>
+     
+     <li><a href="/tags/reflection.html" class="tags has-addons"><span class="tag is-info is-rounded">reflection</span><span class="tag is-primary is-rounded">12</span></a></li>
+     
+     <li><a href="/tags/reduce.html" class="tags has-addons"><span class="tag is-info is-rounded">reduce</span><span class="tag is-primary is-rounded">11</span></a></li>
+     
+     <li><a href="/tags/box.html" class="tags has-addons"><span class="tag is-info is-rounded">box</span><span class="tag is-primary is-rounded">10</span></a></li>
+     
+     <li><a href="/tags/generics.html" class="tags has-addons"><span class="tag is-info is-rounded">generics</span><span class="tag is-primary is-rounded">7</span></a></li>
+     
+     <li><a href="/tags/compactmap.html" class="tags has-addons"><span class="tag is-info is-rounded">compactMap</span><span class="tag is-primary is-rounded">6</span></a></li>
+     
+     <li><a href="/tags/filter.html" class="tags has-addons"><span class="tag is-info is-rounded">filter</span><span class="tag is-primary is-rounded">6</span></a></li>
+     
+     <li><a href="/tags/map.html" class="tags has-addons"><span class="tag is-info is-rounded">map</span><span class="tag is-primary is-rounded">6</span></a></li>
+     
+     <li><a href="/tags/mirror.html" class="tags has-addons"><span class="tag is-info is-rounded">mirror</span><span class="tag is-primary is-rounded">6</span></a></li>
+     
+     <li><a href="/tags/protocol.html" class="tags has-addons"><span class="tag is-info is-rounded">protocol</span><span class="tag is-primary is-rounded">6</span></a></li>
+     
+     <li><a href="/tags/optionals.html" class="tags has-addons"><span class="tag is-info is-rounded">optionals</span><span class="tag is-primary is-rounded">5</span></a></li>
+     
+     <li><a href="/tags/where.html" class="tags has-addons"><span class="tag is-info is-rounded">where</span><span class="tag is-primary is-rounded">5</span></a></li>
+     
+     <li><a href="/tags/erasure.html" class="tags has-addons"><span class="tag is-info is-rounded">erasure</span><span class="tag is-primary is-rounded">4</span></a></li>
+     
+     <li><a href="/tags/equatable.html" class="tags has-addons"><span class="tag is-info is-rounded">equatable</span><span class="tag is-primary is-rounded">3</span></a></li>
+     
+     <li><a href="/tags/destructure.html" class="tags has-addons"><span class="tag is-info is-rounded">destructure</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/error.html" class="tags has-addons"><span class="tag is-info is-rounded">error</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/extension.html" class="tags has-addons"><span class="tag is-info is-rounded">extension</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/guard.html" class="tags has-addons"><span class="tag is-info is-rounded">guard</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/if-let.html" class="tags has-addons"><span class="tag is-info is-rounded">if let</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/is.html" class="tags has-addons"><span class="tag is-info is-rounded">is</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/objc.html" class="tags has-addons"><span class="tag is-info is-rounded">objc</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/optional.html" class="tags has-addons"><span class="tag is-info is-rounded">optional</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/struct.html" class="tags has-addons"><span class="tag is-info is-rounded">struct</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/try.html" class="tags has-addons"><span class="tag is-info is-rounded">try</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/.html" class="tags has-addons"><span class="tag is-info is-rounded">?</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/caseiterable.html" class="tags has-addons"><span class="tag is-info is-rounded">CaseIterable</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/customreflectable.html" class="tags has-addons"><span class="tag is-info is-rounded">CustomReflectable</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/data.html" class="tags has-addons"><span class="tag is-info is-rounded">Data</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/expressiblebystringliteral.html" class="tags has-addons"><span class="tag is-info is-rounded">ExpressibleByStringLiteral</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/rawrepresentable.html" class="tags has-addons"><span class="tag is-info is-rounded">RawRepresentable</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/as.html" class="tags has-addons"><span class="tag is-info is-rounded">as</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/autoclosure.html" class="tags has-addons"><span class="tag is-info is-rounded">autoclosure</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/break.html" class="tags has-addons"><span class="tag is-info is-rounded">break</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/catch.html" class="tags has-addons"><span class="tag is-info is-rounded">catch</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/closure.html" class="tags has-addons"><span class="tag is-info is-rounded">closure</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/copyonwrite.html" class="tags has-addons"><span class="tag is-info is-rounded">copy-on-write</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/coredata.html" class="tags has-addons"><span class="tag is-info is-rounded">coredata</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/either.html" class="tags has-addons"><span class="tag is-info is-rounded">either</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/fallthrough.html" class="tags has-addons"><span class="tag is-info is-rounded">fallthrough</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/for.html" class="tags has-addons"><span class="tag is-info is-rounded">for</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/for-case.html" class="tags has-addons"><span class="tag is-info is-rounded">for case</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/groupby.html" class="tags has-addons"><span class="tag is-info is-rounded">groupby</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/guard-let.html" class="tags has-addons"><span class="tag is-info is-rounded">guard let</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/if-case.html" class="tags has-addons"><span class="tag is-info is-rounded">if case</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/indirect.html" class="tags has-addons"><span class="tag is-info is-rounded">indirect</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/init.html" class="tags has-addons"><span class="tag is-info is-rounded">init</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/init.html" class="tags has-addons"><span class="tag is-info is-rounded">init?</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/inout.html" class="tags has-addons"><span class="tag is-info is-rounded">inout</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/label.html" class="tags has-addons"><span class="tag is-info is-rounded">label</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/literal.html" class="tags has-addons"><span class="tag is-info is-rounded">literal</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/method.html" class="tags has-addons"><span class="tag is-info is-rounded">method</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/overload.html" class="tags has-addons"><span class="tag is-info is-rounded">overload</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/package.html" class="tags has-addons"><span class="tag is-info is-rounded">package</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/partition.html" class="tags has-addons"><span class="tag is-info is-rounded">partition</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/performance.html" class="tags has-addons"><span class="tag is-info is-rounded">performance</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/property.html" class="tags has-addons"><span class="tag is-info is-rounded">property</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/protocols.html" class="tags has-addons"><span class="tag is-info is-rounded">protocols</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/range.html" class="tags has-addons"><span class="tag is-info is-rounded">range</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/self.html" class="tags has-addons"><span class="tag is-info is-rounded">self</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/tupealias.html" class="tags has-addons"><span class="tag is-info is-rounded">tupealias</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/tuple.html" class="tags has-addons"><span class="tag is-info is-rounded">tuple</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/typealias.html" class="tags has-addons"><span class="tag is-info is-rounded">typealias</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/unique.html" class="tags has-addons"><span class="tag is-info is-rounded">unique</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/value-type.html" class="tags has-addons"><span class="tag is-info is-rounded">value type</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/valuetype.html" class="tags has-addons"><span class="tag is-info is-rounded">valuetype</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/vararg.html" class="tags has-addons"><span class="tag is-info is-rounded">vararg</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/wildcard.html" class="tags has-addons"><span class="tag is-info is-rounded">wildcard</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/zip.html" class="tags has-addons"><span class="tag is-info is-rounded">zip</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/.html" class="tags has-addons"><span class="tag is-info is-rounded">~=</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+
+        </ul>
+       </li>
+      </ul>
+
+
+     </aside> 
+
+
+    </div>
+   </div>
+  </div>
+ </section>
+
+ <div class="footer">
+  <article class="media" id="followme">
+   <figure class="media-left">
+    <p class="image is-64x64">
+     <img src="/img/terhechte.jpg" class="profile-image" />
+    </p>
+   </figure>
+   <div class="media-content">
+       <div class="columns">
+           <div class="column">
+               <div class="content">
+                   <p>
+                       <strong>Benedikt Terhechte</strong> <a href="https://twitter.com/terhechte"><small>@terhechte</small></a>
+                       <br />
+                       If you read this far, you should <a href="https://twitter.com/terhechte">follow Benedikt on Twitter</a>.<br />
+                       APPVENTURE is dedicated to providing articles about Swift, macOS, iOS &amp; Linux development.
+                   </p>
+                   <p>
+                       <strong>2011 - 2019 Benedikt Terhechte</strong>
+                   </p>
+               </div>
+           </div>
+           <div class="column">
+               <p>
+                   <a href="https://terhech.de">Benedikt's private blog can be found
+                       at <strong>terhech.de</strong></a>
+               </p>
+               <p>
+                   <br />
+                   <strong>Other Profiles</strong>
+               </p>
+               <p class="subtitle is-6">
+                   <a href="https://twitter.com/terhechte"><i class="fab fa-twitter"></i></a>
+                   <a href="https://www.xing.com/profile/Benedikt_Terhechte">
+                       <i class="fab fa-xing"></i>
+                   </a>
+                   <a href="https://twitter.com/terhechte">
+                       <i class="fab fa-github"></i>
+                   </a>
+                   <a href="https://news.ycombinator.com/user?id=terhechte">
+                       <i class="fab fa-hacker-news"></i>
+                   </a>
+               </p>
+           </div>
+       </div>
+   </div>
+   <div class="media-right">
+    <a href="https://twitter.com/terhechte" class="button is-info is-rounded">
+     <i class="fab fa-twitter"></i> 
+     Follow Me</a>
+   </div>
+  </article>
+ </div>
+
+
+
+</body>
+
+
+</html>

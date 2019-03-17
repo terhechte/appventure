@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Fast NSDictionary traversal in Objective-C</title>
+  <link rel="stylesheet" href="/css/bulma.min.css" />
+  <link rel="stylesheet" href="/css/style.css" />
+
+  <meta content="" name="description" /><meta content="benedikt, c, clojure, clojurescript, cocoa, html, ios, javascript, mac, objective-c, photodesk, research, stylemac, terhechte" name="keywords" /><meta content="Benedikt Terhechte" name="author" /><meta content="Fast NSDictionary traversal in Objective-C" property="og:title" /><meta content="" property="og:description" /><meta content="http://appventure.me/2011/12/07/fast-nsdictionary-traversal-in-objective-c/" property="og:url" /><meta content="Fast NSDictionary traversal in Objective-C" name="twitter:title" /><meta content="" name="twitter:description" /><meta content="summary" name="twitter:card" /><meta content="http://appventure.me/img/ez@2x.png" name="twitter:image" /><meta content="http://appventure.me/img/ez@2x.png" property="og:image" />
+  <meta name="twitter:site" content="@terhechte" />
+  <meta name="twitter:creator" content="@terhechte" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700,800" rel="stylesheet" />
+  <script defer="defer" src="/js/fontawesome-all.min.js"></script>
+  
+ </head>
+ <body>
+  <section class="section" id="head">
+   <div class="container" id="container">
+    <div>
+
+     <div class="columns">
+      <div class="column is-3">
+          <span id="brand"><a href="/index.html"><img src="/img/brand.png" srcset="/img/brand.png 1x, /img/brand@2x.png 2x" /></a></span>
+      </div>
+      <div class="column is-7">
+       <span id="subbrand">
+        Simple. Swift. Guides.</span>
+      </div>
+      <div class="column is-2">
+          <div class="field">
+
+          </div>
+      </div>
+     </div>
+    </div>
+   </div>
+  </section>
+
+
+  <section class="section" id="main">
+   <div class="container" id="container">
+    <div class="columns">
+     <div class="column">
+      <div class="columns">
+       <div class="column">
+        <div class="tabs">
+		 
+        </div>
+       </div>
+       <div class="column is-narrow">
+        <div class="buttons has-addons is-hidden-mobile">
+        </div>
+       </div>
+      </div>
+
+   <div class="actual-content"><div class="box" style="margin-bottom: 250px;">
+<h5 style="font-size: 38px; font-weight: bold;"><a class="xx-new-article" href="https://terhech.de/posts/2011-12-7-fast-nsdictionary-traversal-in-objectivec.html">AppVenture has been updated</a></h5>
+<p style="padding-top: 10px; padding-bottom: 10px; font-size: 18px;">
+All articles have been rewritten and improved. You will be forwarded
+to the updated article.
+</p>
+<p style="font-size: 18px; font-weight: bold;">
+<a class="xx-new-article" href="https://terhech.de/posts/2011-12-7-fast-nsdictionary-traversal-in-objectivec.html" id="xxx-new-article">Click here to go there directly.</a>
+</p>
+<script>
+setTimeout(function(){ 
+		document.location.href=document.getElementById("xxx-new-article").href;
+		},
+		0);
+</script>
+</div>
+
+
+
+
+      <div role="content" id="maincontent" style="opacity: 0.5"><article id="article--255341641" class="article-post content is-medium">
+
+
+ 
+          <h6><i class="fi-pencil"></i> Wed, 7 Dec 2011 <a href="/2011/12/07/fast-nsdictionary-traversal-in-objective-c/">#</a></h6>
+
+        <h3><a href="/2011/12/07/fast-nsdictionary-traversal-in-objective-c/">Fast NSDictionary traversal in Objective-C</a></h3>
+
+
+
+     <p><a href="http://developer.apple.com/library/mac/#documentation/Cocoa/Reference/Foundation/Classes/nsdictionary_Class/Reference/Reference.html">Dictionaries</a> in Cocoa are really powerful objects that offer a solid base of useful methods, are easy to expand, and fast - especially due to the framework-wide distinction between mutable and immutable classes. One can really see the benefits of nurturing and enhancing a single API over the course of more than 18 years <sup><a name="fn1" href="#foot1">1</a></sup>.</p><p>Nowadays, as soon as your application receives data from any of the various web APIs, you oftentimes and up with a huge JSON file that contains various properties and subproperties of an entity that you intend to display or process in a specific way. In short, it is more and more the case that you end up with an structure that bears resemblance to well known Russian Dolls.</p><p>Take, for example, the data returned from the <a href="http://instagram.com/developer/endpoints/media/">Instagram API</a> for a media item (I shortened the data a bit)</p>
+<pre><code>{
+    "data": [{
+        "location": {
+            "id": "833",
+            "latitude": 37.77956816727314,
+            "longitude": -122.41387367248539,
+            "name": "Civic Center BART"
+        },
+        "comments": {
+            "count": 16,
+            "data": [ ... ]
+        },
+        "caption": null,
+        "link": "http://instagr.am/p/BXsFz/",
+        "likes": {
+            "count": 190,
+            "data": [{
+                "username": "shayne",
+                "full_name": "Shayne Sweeney",
+                "id": "20",
+                "profile_picture": "..."
+            }, {...subset of likers...}]
+        }}]
+}
+</code></pre><h4>Classical Lookup</h4><p>Now, if you utilize this structure from Instagram in your Objective-C app, and want to access all the ‘likes’ for this entity, you’d need to write something like this <sup><a name="fn2" href="#foot2">2</a></sup>:</p>
+<pre><code>[[[aDictionary objectForKey:@"data"] objectForKey:@"likes"]
+ objectForKey: @"data"]
+</code></pre><p>Since sending a message to nil objects is allowed in Objective-C, this would run fine even if one of the keys does not exist. Instead, the main problem here is a visual one: due to Objective-C’s very elaborate syntax, adding one or two more hierarchies quickly results in a very cluttered appearance:</p>
+<pre><code>[[[[[aDictionary objectForKey:@"data"] objectForKey:@"likes"]
+ objectForKey: @"data"] objectForKey: @"anotherLevel"]
+ objectForKey: @"andanotherLevel"]
+</code></pre><p>This certainly looks like it could get out of hand. So, which other options do we have? As it turns out, <a href="http://developer.apple.com/library/mac/#documentation/Cocoa/Conceptual/KeyValueObserving/KeyValueObserving.html">KVO (Key-Value-Coding)</a> offers a terrific alternative:</p><h4>KVO Lookup</h4><p>KVO lets you access any property on an object through a key or keypath. If, for example, you had a Car object with a Trunk property which is a trunk object with a color property, you could access it like this:</p>
+<pre><code>[Car valueForKeyPath:@"trunk.color"];
+</code></pre><p>As the Apple Docs state, NSDictionaries contain a KVO extension which registers all dictionary keys as KVO properties. This allows us to lookup our beloved ‘like’ value from Instagram as follows:</p>
+<pre><code>[aDictionary valueForKeyPath: @"data.likes.data"];
+</code></pre><p>Fantastic isn’t it? In fact, that’s how I did most of my more complex dictionary lookups in <a href="http://www.instadesk-app.com">InstaDesk</a> until I recently realized that that could be a terrible performance hog. You see, KVO allows to do fantastic things, but that comes at a certain implementation overhead since much of it’s magic is added dynamically at runtime. So I wondered how much worse KVO access is against raw dictionary access. To find that out, <a href="https://gist.github.com/1444444">I wrote this benchmark</a>.</p>
+<script extsrc="https://gist.github.com/1444444.js?file=slow_kvo_dictionary_example1.m">//</script>
+<table>
+  <thead>
+    <tr>
+      <th align="right">Time </th>
+      <th align="left">Implementation </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="right">11.93 </td>
+      <td align="left">KVO Access </td>
+    </tr>
+    <tr>
+      <td align="right">1.53 </td>
+      <td align="left">Direct Dictionary </td>
+    </tr>
+  </tbody>
+</table><p>Shocking! 12 seconds against 1.5 seconds is roughly 8 times as fast. This is a situation in which the added syntax advantages of KVO loose hands down against the performance disadvantages.</p><p>Which is kinda sad though, as the KVO access really looks cleaner and is easier to write. This got me thinking. Would it be possible, using the C preprocessor, to write a bit of macro magic that takes in a list of keys and outputs the complex and cluttered Objective-C NSDictionary code? </p><h4>C Preprocessor Magic</h4><p>This is a tough problem. The <a href="http://gcc.gnu.org/onlinedocs/cpp/">C preprocessor</a> is not turing complete and thus rather limited if you want to do more than replace code or conduct simple logical branching <sup><a name="fn3" href="#foot3">3</a></sup>. One could, of course, write a macro that spits out C code that does the nitty gritty. But that was not what I wanted. I wanted the end result to be unrolled ‘objectForKey:’ messages and not calls to a C function that iterates over a string or list. </p><p>Even though the preprocessor doesn’t allow us to iterate or loop over lists or strings, it does have support for variadic argument lists (__VA_ARGS__), and, through a neat little hack, allows to count the <a href="http://groups.google.com/group/comp.std.c/browse_thread/thread/77ee8c8f92e4a3fb/346fc464319b1ee5?pli=1">number of items in such a variadic list</a>. Given these constraints <a href="https://gist.github.com/1444513">I had this idea on how solve the problem at hand</a>.</p>
+<script extsrc="https://gist.github.com/1444513.js?file=slow_kvo_dictionary_example2.m">//</script><p>As you can see, the C preprocessor code is rather long. But that’s only so it can support up to 8 NSDictionary levels. The usage is incredibly simple. Writing:</p>
+<pre><code>KeyPathDictionary(aDictionary, "data", "likes", "data", "friend",
+ "voldemort", "wand");
+</code></pre><p>Expands to:</p>
+<pre><code>[[[[[aDictionary objectForKey:@"data"] objectForKey:@"likes"]
+ objectForKey: @"data"] objectForKey: @"friend"]
+ objectForKey: @"voldemort"] objectForKey: @"wand"];
+</code></pre><p>Isn’t that fantastic?</p><p>What I did was that I created 8 different main macros, each responsible for one NSDictionary lookup hierarchy (AKeyPathDictionary - HKeyPathDictionary). The ‘KeyPathDictionary’ macro then gets the argument list and counts the amount of entries in there (the PP_ macros). Based on the result of this, it will call one of the aforementioned 8 main macros and will expand the arguments into it.</p><h4>Category Approach (Update)</h4><p><a href="http://news.ycombinator.org/item?id=3326606">Mayoff on HN</a> suggests using a category with a va_list approach to solve this problem. I like his solution, so I’m including it here as a reference. It has the added benefit that one could extend it to also support retrieving individual NSArray entities during traversal. I.e.: ‘data.friends.data.0.name’ to access the first friends name. So, without further ado:</p>
+<pre><code>@interface NSDictionary (objectForKeyList)
+- (id)objectForKeyList:(id)key, ...;
+@end
+
+@implementation NSDictionary (objectForKeyList)
+
+- (id)objectForKeyList:(id)key, ...
+{
+  id object = self;
+  va_list ap;
+  va_start(ap, key);
+  for ( ; key; key = va_arg(ap, id))
+      object = [object objectForKey:key];
+
+  va_end(ap);
+  return object;
+}
+@end
+</code></pre><h4>Benchmarks</h4><p>I also tried these implementations on an eight-level dictionary with the following benchmarks:</p>
+<table>
+  <thead>
+    <tr>
+      <th align="right">Time </th>
+      <th align="left">Implementation </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="right">30.69 </td>
+      <td align="left">KVO Access </td>
+    </tr>
+    <tr>
+      <td align="right">2.79 </td>
+      <td align="left">Category Approach </td>
+    </tr>
+    <tr>
+      <td align="right">2.35 </td>
+      <td align="left">Direct Dictionary </td>
+    </tr>
+    <tr>
+      <td align="right">2.28 </td>
+      <td align="left">Preprocessor Macro </td>
+    </tr>
+  </tbody>
+</table><p>As you can see, the gap only widens with more levels in your dictionaries.</p><h4>Outlook</h4><p>I switched almost all multilevel dictionary access in the upcoming <a href="http://www.instadesk-app.com">InstaDesk</a> <del>1.3.8</del> <a href="http://www.instadesk-app.com">1.4</a> with this code and it increased the overall speed in a tangible manner. Especially during object creation.</p></div>
+
+        <div id="followme">
+            <p>If you read this far, you should follow me (<a href="http://www.twitter.com/terhechte">@terhechte</a>) <br /> on <a href="http://www.twitter.com/terhechte"><i class="fi-social-twitter"></i> Twitter</a></p>
+            <br />
+        </div>
+        
+
+        <div class="footnotes">
+            <ol><li id="foot1">
+                    <p> At least the NSDictionary.h header says 1994-2009, though I think that development of it began even earlier at [NeXTSTEP](http://en.wikipedia.org/wiki/NeXTSTEP).
+<a href="#fn1" rev="footnote">↩</a></p>
+                </li><li id="foot2">
+                    <p> Actually, in many situations you'd probably abstract the data in a real object with ivars and properties which invalidate most of what I'm explaining here since, property access in Objective-C is far faster than dictionary access. However, there're quite a lot of situations where you need to access multilevel dictionaries, and in these cases the solution outlined here will help you a lot (performance-wise).
+<a href="#fn2" rev="footnote">↩</a></p>
+                </li><li id="foot3">
+                    <p> In C++, there's the [Boost](http://www.boost.org) preprocessor which offers more functionality and is actually turing-complete.
+<a href="#fn3" rev="footnote">↩</a></p>
+                </li></ol>
+        </div>
+
+        <p class="anchor"><i class="fi-anchor"></i></p>
+ 
+      </article></div>
+
+
+    </div>
+
+    <div class="column is-narrow">
+
+     <aside class="menu">
+
+         
+
+
+
+      <br />
+      <ul class="menu-list">
+       <li>
+        <p class="menu-label">
+         <a>
+          <i class="fas fa-dove"></i>
+          Swift Topics
+         </a>
+        </p>
+        <ul>
+            <li><a href="/topics/all.html">All</a></li>
+           
+            
+            <li><a href="/topics/swift-tricks.html">Swift Tricks</a></li>
+            
+         
+            
+            <li><a href="/topics/language.html">Language</a></li>
+            
+         
+            
+            <li><a href="/topics/hands-on.html">Hands On</a></li>
+            
+         
+            
+            <li><a href="/topics/blog.html">Blog</a></li>
+            
+         
+            
+         
+        </ul>
+       </li>
+
+       <li>
+           <p class="menu-label">
+               <a>
+                   <i class="fas fa-book"></i>
+                   Guides
+               </a>
+           </p>
+           <ul>
+                 
+               <li><a href="/guides/pattern_matching/intro.html">🧩 Pattern Matching</a></li>
+                 
+               <li><a href="/guides/advanced_practical_enum_examples/introduction.html">🚦 Enums</a></li>
+                 
+               <li><a href="/guides/map_flatmap_reduce_more/intro.html">🗺 Map, Reduce &amp; more</a></li>
+                 
+               <li><a href="/guides/associated_types/associated_types.html">🧙🏻 Associated Types</a></li>
+                 
+               <li><a href="/guides/tuples/introduction.html">🍱 Tuples</a></li>
+                 
+               <li><a href="/guides/optionals/intro.html">⁉️ Optionals</a></li>
+                 
+               <li><a href="/guides/swift_reflection/introduction.html">🔮 Reflection</a></li>
+                 
+           </ul>
+       </li>
+      </ul>
+
+      <div class="sidebar-banner">
+          <a href="https://contravariance.rocks"><img src="/img/contravariance_banner.png" srcset="/img/contravariance_banner.png 1x, /img/contravariance_banner@2x.png 2x" /></a>
+      </div>
+
+      <ul class="menu-list">
+       <li>
+        <p class="menu-label">
+         <a>
+          <i class="fas fa-tags"></i>
+          Tags
+         </a>
+        </p>
+        <ul>
+
+     
+     <li><a href="/tags/pattern-matching.html" class="tags has-addons"><span class="tag is-info is-rounded">pattern matching</span><span class="tag is-primary is-rounded">25</span></a></li>
+     
+     <li><a href="/tags/switch.html" class="tags has-addons"><span class="tag is-info is-rounded">switch</span><span class="tag is-primary is-rounded">24</span></a></li>
+     
+     <li><a href="/tags/enum.html" class="tags has-addons"><span class="tag is-info is-rounded">enum</span><span class="tag is-primary is-rounded">20</span></a></li>
+     
+     <li><a href="/tags/associated.html" class="tags has-addons"><span class="tag is-info is-rounded">associated</span><span class="tag is-primary is-rounded">14</span></a></li>
+     
+     <li><a href="/tags/tuples.html" class="tags has-addons"><span class="tag is-info is-rounded">tuples</span><span class="tag is-primary is-rounded">13</span></a></li>
+     
+     <li><a href="/tags/reflection.html" class="tags has-addons"><span class="tag is-info is-rounded">reflection</span><span class="tag is-primary is-rounded">12</span></a></li>
+     
+     <li><a href="/tags/reduce.html" class="tags has-addons"><span class="tag is-info is-rounded">reduce</span><span class="tag is-primary is-rounded">11</span></a></li>
+     
+     <li><a href="/tags/box.html" class="tags has-addons"><span class="tag is-info is-rounded">box</span><span class="tag is-primary is-rounded">10</span></a></li>
+     
+     <li><a href="/tags/generics.html" class="tags has-addons"><span class="tag is-info is-rounded">generics</span><span class="tag is-primary is-rounded">7</span></a></li>
+     
+     <li><a href="/tags/compactmap.html" class="tags has-addons"><span class="tag is-info is-rounded">compactMap</span><span class="tag is-primary is-rounded">6</span></a></li>
+     
+     <li><a href="/tags/filter.html" class="tags has-addons"><span class="tag is-info is-rounded">filter</span><span class="tag is-primary is-rounded">6</span></a></li>
+     
+     <li><a href="/tags/map.html" class="tags has-addons"><span class="tag is-info is-rounded">map</span><span class="tag is-primary is-rounded">6</span></a></li>
+     
+     <li><a href="/tags/mirror.html" class="tags has-addons"><span class="tag is-info is-rounded">mirror</span><span class="tag is-primary is-rounded">6</span></a></li>
+     
+     <li><a href="/tags/protocol.html" class="tags has-addons"><span class="tag is-info is-rounded">protocol</span><span class="tag is-primary is-rounded">6</span></a></li>
+     
+     <li><a href="/tags/optionals.html" class="tags has-addons"><span class="tag is-info is-rounded">optionals</span><span class="tag is-primary is-rounded">5</span></a></li>
+     
+     <li><a href="/tags/where.html" class="tags has-addons"><span class="tag is-info is-rounded">where</span><span class="tag is-primary is-rounded">5</span></a></li>
+     
+     <li><a href="/tags/erasure.html" class="tags has-addons"><span class="tag is-info is-rounded">erasure</span><span class="tag is-primary is-rounded">4</span></a></li>
+     
+     <li><a href="/tags/equatable.html" class="tags has-addons"><span class="tag is-info is-rounded">equatable</span><span class="tag is-primary is-rounded">3</span></a></li>
+     
+     <li><a href="/tags/destructure.html" class="tags has-addons"><span class="tag is-info is-rounded">destructure</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/error.html" class="tags has-addons"><span class="tag is-info is-rounded">error</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/extension.html" class="tags has-addons"><span class="tag is-info is-rounded">extension</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/guard.html" class="tags has-addons"><span class="tag is-info is-rounded">guard</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/if-let.html" class="tags has-addons"><span class="tag is-info is-rounded">if let</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/is.html" class="tags has-addons"><span class="tag is-info is-rounded">is</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/objc.html" class="tags has-addons"><span class="tag is-info is-rounded">objc</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/optional.html" class="tags has-addons"><span class="tag is-info is-rounded">optional</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/struct.html" class="tags has-addons"><span class="tag is-info is-rounded">struct</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/try.html" class="tags has-addons"><span class="tag is-info is-rounded">try</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/.html" class="tags has-addons"><span class="tag is-info is-rounded">?</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/caseiterable.html" class="tags has-addons"><span class="tag is-info is-rounded">CaseIterable</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/customreflectable.html" class="tags has-addons"><span class="tag is-info is-rounded">CustomReflectable</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/data.html" class="tags has-addons"><span class="tag is-info is-rounded">Data</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/expressiblebystringliteral.html" class="tags has-addons"><span class="tag is-info is-rounded">ExpressibleByStringLiteral</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/rawrepresentable.html" class="tags has-addons"><span class="tag is-info is-rounded">RawRepresentable</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/as.html" class="tags has-addons"><span class="tag is-info is-rounded">as</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/autoclosure.html" class="tags has-addons"><span class="tag is-info is-rounded">autoclosure</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/break.html" class="tags has-addons"><span class="tag is-info is-rounded">break</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/catch.html" class="tags has-addons"><span class="tag is-info is-rounded">catch</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/closure.html" class="tags has-addons"><span class="tag is-info is-rounded">closure</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/copyonwrite.html" class="tags has-addons"><span class="tag is-info is-rounded">copy-on-write</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/coredata.html" class="tags has-addons"><span class="tag is-info is-rounded">coredata</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/either.html" class="tags has-addons"><span class="tag is-info is-rounded">either</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/fallthrough.html" class="tags has-addons"><span class="tag is-info is-rounded">fallthrough</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/for.html" class="tags has-addons"><span class="tag is-info is-rounded">for</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/for-case.html" class="tags has-addons"><span class="tag is-info is-rounded">for case</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/groupby.html" class="tags has-addons"><span class="tag is-info is-rounded">groupby</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/guard-let.html" class="tags has-addons"><span class="tag is-info is-rounded">guard let</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/if-case.html" class="tags has-addons"><span class="tag is-info is-rounded">if case</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/indirect.html" class="tags has-addons"><span class="tag is-info is-rounded">indirect</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/init.html" class="tags has-addons"><span class="tag is-info is-rounded">init</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/init.html" class="tags has-addons"><span class="tag is-info is-rounded">init?</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/inout.html" class="tags has-addons"><span class="tag is-info is-rounded">inout</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/label.html" class="tags has-addons"><span class="tag is-info is-rounded">label</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/literal.html" class="tags has-addons"><span class="tag is-info is-rounded">literal</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/method.html" class="tags has-addons"><span class="tag is-info is-rounded">method</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/overload.html" class="tags has-addons"><span class="tag is-info is-rounded">overload</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/package.html" class="tags has-addons"><span class="tag is-info is-rounded">package</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/partition.html" class="tags has-addons"><span class="tag is-info is-rounded">partition</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/performance.html" class="tags has-addons"><span class="tag is-info is-rounded">performance</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/property.html" class="tags has-addons"><span class="tag is-info is-rounded">property</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/protocols.html" class="tags has-addons"><span class="tag is-info is-rounded">protocols</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/range.html" class="tags has-addons"><span class="tag is-info is-rounded">range</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/self.html" class="tags has-addons"><span class="tag is-info is-rounded">self</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/tupealias.html" class="tags has-addons"><span class="tag is-info is-rounded">tupealias</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/tuple.html" class="tags has-addons"><span class="tag is-info is-rounded">tuple</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/typealias.html" class="tags has-addons"><span class="tag is-info is-rounded">typealias</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/unique.html" class="tags has-addons"><span class="tag is-info is-rounded">unique</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/value-type.html" class="tags has-addons"><span class="tag is-info is-rounded">value type</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/valuetype.html" class="tags has-addons"><span class="tag is-info is-rounded">valuetype</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/vararg.html" class="tags has-addons"><span class="tag is-info is-rounded">vararg</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/wildcard.html" class="tags has-addons"><span class="tag is-info is-rounded">wildcard</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/zip.html" class="tags has-addons"><span class="tag is-info is-rounded">zip</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/.html" class="tags has-addons"><span class="tag is-info is-rounded">~=</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+
+        </ul>
+       </li>
+      </ul>
+
+
+     </aside> 
+
+
+    </div>
+   </div>
+  </div>
+ </section>
+
+ <div class="footer">
+  <article class="media" id="followme">
+   <figure class="media-left">
+    <p class="image is-64x64">
+     <img src="/img/terhechte.jpg" class="profile-image" />
+    </p>
+   </figure>
+   <div class="media-content">
+       <div class="columns">
+           <div class="column">
+               <div class="content">
+                   <p>
+                       <strong>Benedikt Terhechte</strong> <a href="https://twitter.com/terhechte"><small>@terhechte</small></a>
+                       <br />
+                       If you read this far, you should <a href="https://twitter.com/terhechte">follow Benedikt on Twitter</a>.<br />
+                       APPVENTURE is dedicated to providing articles about Swift, macOS, iOS &amp; Linux development.
+                   </p>
+                   <p>
+                       <strong>2011 - 2019 Benedikt Terhechte</strong>
+                   </p>
+               </div>
+           </div>
+           <div class="column">
+               <p>
+                   <a href="https://terhech.de">Benedikt's private blog can be found
+                       at <strong>terhech.de</strong></a>
+               </p>
+               <p>
+                   <br />
+                   <strong>Other Profiles</strong>
+               </p>
+               <p class="subtitle is-6">
+                   <a href="https://twitter.com/terhechte"><i class="fab fa-twitter"></i></a>
+                   <a href="https://www.xing.com/profile/Benedikt_Terhechte">
+                       <i class="fab fa-xing"></i>
+                   </a>
+                   <a href="https://twitter.com/terhechte">
+                       <i class="fab fa-github"></i>
+                   </a>
+                   <a href="https://news.ycombinator.com/user?id=terhechte">
+                       <i class="fab fa-hacker-news"></i>
+                   </a>
+               </p>
+           </div>
+       </div>
+   </div>
+   <div class="media-right">
+    <a href="https://twitter.com/terhechte" class="button is-info is-rounded">
+     <i class="fab fa-twitter"></i> 
+     Follow Me</a>
+   </div>
+  </article>
+ </div>
+
+
+
+</body>
+
+
+</html>

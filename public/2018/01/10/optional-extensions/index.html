@@ -1,0 +1,1149 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Useful Optional Extensions</title>
+  <link rel="stylesheet" href="/css/bulma.min.css" />
+  <link rel="stylesheet" href="/css/style.css" />
+
+  <meta content="Several helpful extensions to the Optional type in order to simplify using it." name="description" /><meta content="benedikt, c, clojure, clojurescript, cocoa, extensions, html, ios, javascript, mac, objective-c, optional, optionals, photodesk, protocol, research, stylemac, swift, terhechte" name="keywords" /><meta content="Benedikt Terhechte" name="author" /><meta content="Useful Optional Extensions" property="og:title" /><meta content="Several helpful extensions to the Optional type in order to simplify using it." property="og:description" /><meta content="http://appventure.me/2018/01/10/optional-extensions/" property="og:url" /><meta content="Useful Optional Extensions" name="twitter:title" /><meta content="Several helpful extensions to the Optional type in order to simplify using it." name="twitter:description" /><meta content="summary_large_image" name="twitter:card" /><meta content="http://appventure.me/img-content/2018-01-10-optional-extensions-feature-image.jpg" name="twitter:image" /><meta content="http://appventure.me/img-content/2018-01-10-optional-extensions-feature-image.jpg" property="og:image" />
+  <meta name="twitter:site" content="@terhechte" />
+  <meta name="twitter:creator" content="@terhechte" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700,800" rel="stylesheet" />
+  <script defer="defer" src="/js/fontawesome-all.min.js"></script>
+  
+ </head>
+ <body>
+  <section class="section" id="head">
+   <div class="container" id="container">
+    <div>
+
+     <div class="columns">
+      <div class="column is-3">
+          <span id="brand"><a href="/index.html"><img src="/img/brand.png" srcset="/img/brand.png 1x, /img/brand@2x.png 2x" /></a></span>
+      </div>
+      <div class="column is-7">
+       <span id="subbrand">
+        Simple. Swift. Guides.</span>
+      </div>
+      <div class="column is-2">
+          <div class="field">
+
+          </div>
+      </div>
+     </div>
+    </div>
+   </div>
+  </section>
+
+
+  <section class="section" id="main">
+   <div class="container" id="container">
+    <div class="columns">
+     <div class="column">
+      <div class="columns">
+       <div class="column">
+        <div class="tabs">
+		 
+        </div>
+       </div>
+       <div class="column is-narrow">
+        <div class="buttons has-addons is-hidden-mobile">
+        </div>
+       </div>
+      </div>
+
+      <div class="box" style="margin-bottom: 250px;">
+            <h5 style="font-size: 38px; font-weight: bold;"><a class="xx-new-article" href="https://appventure.me/guides/optionals/intro.html">AppVenture has been updated</a></h5>
+            <p style="padding-top: 10px; padding-bottom: 10px; font-size: 18px;">
+                All articles have been rewritten and improved. You will be forwarded
+                to the updated article.
+            </p>
+            <p style="font-size: 18px; font-weight: bold;">
+                <a class="xx-new-article" href="https://appventure.me/guides/optionals/intro.html" id="xxx-new-article">Click here to go there directly.</a>
+            </p>
+            <script>
+                 setTimeout(function(){ 
+                    document.location.href=document.getElementById("xxx-new-article").href;
+                },
+                    0);
+            </script>
+      </div>
+
+
+
+
+      <div role="content" id="maincontent" style="opacity: 0.5"><article id="article--737992091" class="article-post content is-medium">
+
+
+ 
+          <h6><i class="fi-pencil"></i> Wed, 10 Jan 2018 <a href="/2018/01/10/optional-extensions/">#</a></h6>
+
+        <h3><a href="/2018/01/10/optional-extensions/">Useful Optional Extensions</a></h3>
+
+
+
+        <div class="actual-content"><!-- #+feature-image: /img-content/2018-01-10-optional-extensions-feature-image.jpg -->
+
+<p>
+<code>Optionals</code> are a staple of Swift. I guess everybody will agree that they are a huge boon insofar as they force us to properly handle edge cases. The <code>Optional</code> language feature alone removes a whole category of bugs from the development process.
+</p>
+
+<p>
+However, the API surface of Swift's optional is rather limited. The <a href="https://developer.apple.com/documentation/swift/optional#topics">Swift documentation lists just a couple</a> of methods / properties on <code>Optional</code> - if we ignore <code>customMirror</code> and <code>debugDescription</code>:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">var unsafelyUnwrapped: Wrapped { get } 
+func map&lt;U&gt;(_ transform: (Wrapped) throws -&gt; U) rethrows -&gt; U? 
+func flatMap&lt;U&gt;(_ transform: (Wrapped) throws -&gt; U?) rethrows -&gt; U? 
+</pre>
+</div>
+
+<p>
+The reason why optionals are still very useful even though they have such a small amount of methods is that the Swift syntax makes up for it via features such as <a href="http://appventure.me/2014/06/13/swift-optionals-made-simple/">optional chaining</a>, <a href="http://appventure.me/2015/08/20/swift-pattern-matching-in-detail/">pattern matching</a>, <code>if let</code> or <code>guard let</code>. In some situations, though, this manifests itself in unnecessary line noise. Sometimes, a very succinct method will let you express a concept in one short line of code instead of multiple lines of combined <code>if let</code> statements.
+</p>
+
+<p>
+I've sifted through Swift Projects on Github as well as the optional implementations of other languages such as Rust, Scala, or C# in order to find a couple of useful additions to <code>Optional</code>. Below are 14 useful <code>Optional</code> extensions. I'll describe them by category and then give a couple of examples per category. Finally, I'll write a more involved example that uses several extensions at once.
+</p>
+
+
+<div id="outline-container-orgd1f0761" class="outline-2">
+<h2 id="orgd1f0761"><span class="section-number-2">1</span> Emptiness</h2>
+<div class="outline-text-2" id="text-1">
+<div class="org-src-container">
+<pre class="src src-swift">extension Optional {
+    /// Returns true if the optional is empty
+    var isNone: Bool {
+	return self == .none
+    }
+
+    /// Returns true if the optional is not empty
+    var isSome: Bool {
+	return self != .none
+    }
+}
+</pre>
+</div>
+
+<p>
+Those are the most basic additions to the optional type. The implementation could also use a <code>switch</code> pattern match instead, but the <code>nil</code> comparison is much shorter. What I like about these additions is that they move the concept of an empty optional being nil away from your code. This might just as well be an implementation detail. Using <code>optional.isSome</code> feels much cleaner and less noisy than <code>if optional == nil</code>:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">// Compare
+guard leftButton != nil, rightButton != nil else { fatalError("Missing Interface Builder connections") }
+
+// With
+guard leftButton.isSome, rightButton.isSome else { fatalError("Missing Interface Builder connections") }
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org0330d46" class="outline-2">
+<h2 id="org0330d46"><span class="section-number-2">2</span> Or</h2>
+<div class="outline-text-2" id="text-2">
+<div class="org-src-container">
+<pre class="src src-swift">extension Optional {
+    /// Return the value of the Optional or the `default` parameter
+    /// - param: The value to return if the optional is empty
+    func or(_ default: Wrapped) -&gt; Wrapped {
+	return self ?? `default`
+    }
+
+    /// Returns the unwrapped value of the optional *or*
+    /// the result of an expression `else`
+    /// I.e. optional.or(else: print("Arrr"))
+    func or(else: @autoclosure () -&gt; Wrapped) -&gt; Wrapped {
+	return self ?? `else`()
+    }
+
+    /// Returns the unwrapped value of the optional *or*
+    /// the result of calling the closure `else`
+    /// I.e. optional.or(else: { 
+    /// ... do a lot of stuff
+    /// })
+    func or(else: () -&gt; Wrapped) -&gt; Wrapped {
+	return self ?? `else`()
+    }
+
+    /// Returns the unwrapped contents of the optional if it is not empty
+    /// If it is empty, throws exception `throw`
+    func or(throw exception: Error) throws -&gt; Wrapped {
+	guard let unwrapped = self else { throw exception }
+	return unwrapped
+    }
+}
+
+extension Optional where Wrapped == Error {
+    /// Only perform `else` if the optional has a non-empty error value
+    func or(_ else: (Error) -&gt; Void) {
+	guard let error = self else { return }
+	`else`(error)
+    }
+}
+</pre>
+</div>
+
+<p>
+Another abstraction on the <code>isNone / isSome</code> concept is being able to specify instructions to be performed when the invariant doesn't hold. This saves us from having to write out <code>if</code> or <code>guard</code> branches and instead codifies the logic into a simple-to-understand method. 
+</p>
+
+<p>
+This concept is so useful, that it is defined in three distinct functions.
+</p>
+</div>
+
+<div id="outline-container-org07fea0a" class="outline-3">
+<h3 id="org07fea0a"><span class="section-number-3">2.1</span> Default Value</h3>
+<div class="outline-text-3" id="text-2-1">
+<p>
+The first one returns the wrapped value of the optional or a default value:
+</p>
+<div class="org-src-container">
+<pre class="src src-swift">let optional: Int? = nil
+print(optional.or(10)) // Prints 10
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org6ad1f44" class="outline-3">
+<h3 id="org6ad1f44"><span class="section-number-3">2.2</span> Default Closure</h3>
+<div class="outline-text-3" id="text-2-2">
+<p>
+The second one is very similar to the first one, however it allows to return a default value from a closure instead.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">let optional: Int? = nil
+optional.or(else: secretValue * 32) 
+</pre>
+</div>
+
+<p>
+Since this uses the <code>@autoclosure</code> parameter we could actually use just the second <code>or</code> implementation. Then, using a just a default value would automatically be converted into a closure returning the value. However, I prefer having two separate implementations as that allows users to also write closures with more complex logic.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">let cachedUserCount: Int? = nil
+...
+return cachedUserCount.or(else: {
+   let db = database()
+   db.prefetch()
+   guard db.failures.isEmpty else { return 0 }
+   return db.amountOfUsers
+})
+</pre>
+</div>
+
+<p>
+A really nice use case for <code>or</code> is code where you only want to set a value on an optional if it is empty:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">if databaseController == nil {
+  databaseController = DatabaseController(config: config)
+}
+</pre>
+</div>
+
+<p>
+This can be replaced with the much nicer:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">databaseController = databaseController.or(DatabaseController(config: config)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org25b4efe" class="outline-3">
+<h3 id="org25b4efe"><span class="section-number-3">2.3</span> Throw an error</h3>
+<div class="outline-text-3" id="text-2-3">
+<p>
+This is a very useful addition as it allows to merge the chasm between Optionals and Error Handling in Swift. Depending on the code that you're using, a method or function may express invalid behaviour by returning an empty optional (imagine accessing a non-existing key in a <code>Dictionary</code>) or by throwing an <code>Error</code>. Combining these two oftentimes leads to a lot of unnecessary line noise:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">func buildCar() throws -&gt; Car {
+  let tires = try machine1.createTires()
+  let windows = try machine2.createWindows()
+  guard let motor = externalMachine.deliverMotor() else {
+    throw MachineError.motor
+  }
+  let trunk = try machine3.createTrunk()
+  if let car = manufacturer.buildCar(tires, windows,  motor, trunk) {
+    return car
+  } else {
+    throw MachineError.manufacturer
+  }
+}
+</pre>
+</div>
+
+<p>
+In this example, we're building a car by combining internal and external code. The external code (<code>external_machine</code> and <code>manufacturer</code>) choose to use optionals instead of error handling. This makes the code unnecessary complicated. Our <code>or(throw:)</code> function makes this much more readable:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">func build_car() throws -&gt; Car {
+  let tires = try machine1.createTires()
+  let windows = try machine2.createWindows()
+  let motor = try externalMachine.deliverMotor().or(throw: MachineError.motor)
+  let trunk = try machine3.createTrunk()
+  return try manufacturer.buildCar(tires, windows,  motor, trunk).or(throw: MachineError.manufacturer)
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgab5b94f" class="outline-3">
+<h3 id="orgab5b94f"><span class="section-number-3">2.4</span> Handling Errors</h3>
+<div class="outline-text-3" id="text-2-4">
+<p>
+The code from the <b>Throw an error</b> section above becomes even more useful when you include the following free function that was proposed by <a href="https://github.com/doozMen">Stijn Willems on Github</a>. Thanks for the suggestion!
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">func should(_ do: () throws -&gt; Void) -&gt; Error? {
+    do {
+	try `do`()
+	return nil
+    } catch let error {
+	return error
+    }
+}
+</pre>
+</div>
+
+<p>
+This free function (alternatively, you could make it a class method on optional) will perform a <code>do {} catch {}</code> block and return an error if and only if the closure `do` resulted in an error. Take, the following Swift code as an example:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">do {
+  try throwingFunction()
+} catch let error {
+  print(error)
+}
+</pre>
+</div>
+
+<p>
+This is one of the basic tennets of error handling in Swift, and it introduces quite a lot of line noise. With the free function above, you can reduce it to this simple on-liner:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">should { try throwingFunction) }.or(print($0))
+</pre>
+</div>
+
+<p>
+I feel that there're many situations where such a one-liner for error handling would be very beneficient.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org22ea420" class="outline-3">
+<h3 id="org22ea420"><span class="section-number-3">2.5</span> Map</h3>
+<div class="outline-text-3" id="text-2-5">
+<p>
+As we saw above, <code>map</code> and <code>flatMap</code> are the only methods that Swift offers on Optionals. However, even those can be improved a bit to be more versatile in many situations. There're two additional variations on <code>map</code> that allow defining a default value similar to how the <code>or</code> variants above are implemented:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">extension Optional {
+    /// Maps the output *or* returns the default value if the optional is nil
+    /// - parameter fn: The function to map over the value
+    /// - parameter or: The value to use if the optional is empty
+    func map&lt;T&gt;(_ fn: (Wrapped) throws -&gt; T, default: T) rethrows -&gt; T {
+	return try map(fn) ?? `default`
+    }
+
+    /// Maps the output *or* returns the result of calling `else`
+    /// - parameter fn: The function to map over the value
+    /// - parameter else: The function to call if the optional is empty
+    func map&lt;T&gt;(_ fn: (Wrapped) throws -&gt; T, else: () throws -&gt; T) rethrows -&gt; T {
+	return try map(fn) ?? `else`()
+    }
+}
+</pre>
+</div>
+
+<p>
+The first one will allow you to <code>map</code> the contents of an optional to a new type <code>T</code>. If the optional is empty, you can define a <code>default</code> value that should be used instead:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">let optional1: String? = "appventure"
+let optional2: String? = nil
+
+// Without
+print(optional1.map({ $0.count }) ?? 0)
+print(optional2.map({ $0.count }) ?? 0)
+
+// With 
+print(optional1.map({ $0.count }, default: 0)) // prints 10
+print(optional2.map({ $0.count }, default: 0)) // prints 0
+</pre>
+</div>
+
+<p>
+The changes are minimal, but we're moving away from having to use the <code>??</code> operator and can instead express the operation more clearly with the <code>default</code> keyword.
+</p>
+
+<p>
+The second variant is very similar. The main difference is that it accepts (again) a closure returning value <code>T</code> instead of value <code>T</code>. Here's a brief example:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">let optional: String? = nil
+print(optional.map({ $0.count }, else: { "default".count })
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgb015edc" class="outline-2">
+<h2 id="orgb015edc"><span class="section-number-2">3</span> Combining Optionals</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+This category contains four functions that allow you to define relations between multiple optionals.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift" id="org4c85158">extension Optional {
+    /// Tries to unwrap `self` and if that succeeds continues to unwrap the parameter `optional`
+    /// and returns the result of that.
+    func and&lt;B&gt;(_ optional: B?) -&gt; B? {
+	guard self != nil else { return nil }
+	return optional
+    }
+
+    /// Executes a closure with the unwrapped result of an optional.
+    /// This allows chaining optionals together.
+    func and&lt;T&gt;(then: (Wrapped) throws -&gt; T?) rethrows -&gt; T? {
+	guard let unwrapped = self else { return nil }
+	return try then(unwrapped)
+    }
+
+    /// Zips the content of this optional with the content of another
+    /// optional `other` only if both optionals are not empty
+    func zip2&lt;A&gt;(with other: Optional&lt;A&gt;) -&gt; (Wrapped, A)? {
+	guard let first = self, let second = other else { return nil }
+	return (first, second)
+    }
+
+    /// Zips the content of this optional with the content of another
+    /// optional `other` only if both optionals are not empty
+    func zip3&lt;A, B&gt;(with other: Optional&lt;A&gt;, another: Optional&lt;B&gt;) -&gt; (Wrapped, A, B)? {
+	guard let first = self,
+	      let second = other,
+	      let third = another else { return nil }
+	return (first, second, third)
+    }
+}
+</pre>
+</div>
+
+<p>
+These four functions all share that they take an additional optional as a parameter and return another optional value. However, they're all quite different in what they achieve.
+</p>
+</div>
+
+<div id="outline-container-org8e3e62e" class="outline-3">
+<h3 id="org8e3e62e"><span class="section-number-3">3.1</span> Dependencies</h3>
+<div class="outline-text-3" id="text-3-1">
+<p>
+<code>and&lt;B&gt;(_ optional)</code> is useful if the unpacking of an optional is only required as a invariant for
+unpacking another optional:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">// Compare
+if user != nil, let account = userAccount() ...
+
+// With
+if let account = user.and(userAccount()) ...
+</pre>
+</div>
+
+<p>
+In the example above, we're not interested in the unwrapped contents of the <code>user</code> optional. We just need to make sure that there <b>is</b> a valid user before we call the <code>userAccount</code> function. While this relationship is kinda codified in the <code>user != nil</code> line, I personally feel that the <code>and</code> makes it more clear.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgcc8e188" class="outline-3">
+<h3 id="orgcc8e188"><span class="section-number-3">3.2</span> Chaining</h3>
+<div class="outline-text-3" id="text-3-2">
+<p>
+<code>and&lt;T&gt;(then:)</code> is another very useful function. It allows to chain optionals together so that the output of unpacking optional <code>A</code> becomes the input of producing optional <code>B</code>. Lets start with a simple example:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">protocol UserDatabase {
+  func current() -&gt; User?
+  func spouse(of user: User) -&gt; User?
+  func father(of user: User) -&gt; User?
+  func childrenCount(of user: User) -&gt; Int
+}
+
+let database: UserDatabase = ...
+
+// Imagine we want to know the children of the following relationship:
+// Man -&gt; Spouse -&gt; Father -&gt; Father -&gt; Spouse -&gt; children
+
+// Without
+let childrenCount: Int
+if let user = database.current(), 
+   let father1 = database.father(user),
+   let father2 = database.father(father1),
+   let spouse = database.spouse(father2),
+   let children = database.childrenCount(father2) {
+  childrenCount = children
+} else {
+  childrenCount = 0
+}
+
+// With
+let children = database.current().and(then: { database.spouse($0) })
+     .and(then: { database.father($0) })
+     .and(then: { database.spouse($0) })
+     .and(then: { database.childrenCount($0) })
+     .or(0)
+</pre>
+</div>
+
+<p>
+There're a lot of improvements when using the version with <code>and(then)</code>. First of all, you don't have to come up with superfluous temporary variable names (user, father1, father2, spouse, children). Second, we clearly have less code. Also, using the <code>or(0)</code> instead of a complicated <code>let childrenCount</code> is so much easier to read.
+</p>
+
+<p>
+Finally, the original Swift example can easily lead to logic errors. You may not have noticed, but there's a bug in the example. When writing lines like that, copy paste errors can easily be introduced. Do you see the error?
+</p>
+
+<p>
+Yeah, the <code>children</code> property should be created by calling <code>database.childrenCount(spouse)</code> but I wrote <code>database.childrenCount(father2)</code> instead. It is difficult to spot errors like that. The <code>and(then:)</code> example makes it much easier because it always relies on the same variable name <code>$0</code>.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgee53fb9" class="outline-3">
+<h3 id="orgee53fb9"><span class="section-number-3">3.3</span> Zipping</h3>
+<div class="outline-text-3" id="text-3-3">
+<p>
+This is another variation on an existing Swift concept. The <code>zip</code> method on optional will allow us to combine multiple optionals and unwrap them together or not at all. I've just provided implementations for <code>zip2</code> and <code>zip3</code> but nothing prevents you from going up to <code>zip22</code> (Well, maybe sanity and compiler speed).
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">// Lets start again with a normal Swift example
+func buildProduct() -&gt; Product? {
+  if let var1 = machine1.makeSomething(),
+    let var2 = machine2.makeAnotherThing(),
+    let var3 = machine3.createThing() {
+    return finalMachine.produce(var1, var2, var3)
+  } else {
+    return nil
+  }
+}
+
+// The alternative using our extensions
+func buildProduct() -&gt; Product? {
+  return machine1.makeSomething()
+     .zip3(machine2.makeAnotherThing(), machine3.createThing())
+     .map { finalMachine.produce($0.1, $0.2, $0.3) }
+}
+</pre>
+</div>
+
+<p>
+Less code, clearer code, more beautiful code. However, as a downside, this code is also more involved. The reader has to know and understand <code>zip</code> in order to easily grasp it. 
+</p>
+</div>
+</div>
+
+<div id="outline-container-org4be10eb" class="outline-3">
+<h3 id="org4be10eb"><span class="section-number-3">3.4</span> On</h3>
+<div class="outline-text-3" id="text-3-4">
+<div class="org-src-container">
+<pre class="src src-swift">extension Optional {
+    /// Executes the closure `some` if and only if the optional has a value
+    func on(some: () throws -&gt; Void) rethrows {
+	if self != nil { try some() }
+    }
+
+    /// Executes the closure `none` if and only if the optional has no value
+    func on(none: () throws -&gt; Void) rethrows {
+	if self == nil { try none() }
+    }
+}
+</pre>
+</div>
+
+<p>
+These two short methods will allow you to perform side effects if an optional is empty or not. In contrast to the already discussed methods, these ignore the contents of the optional. So <code>on(some:)</code> will only execute the closure <code>some</code> if the optional is not empty but the closure <code>some</code> will not get the unwrapped contents of the optional.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">/// Logout if there is no user anymore
+self.user.on(none: { AppCoordinator.shared.logout() })
+
+/// self.user is not empty when we are connected to the network
+self.user.on(some: { AppCoordinator.shared.unlock() })
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org2493445" class="outline-3">
+<h3 id="org2493445"><span class="section-number-3">3.5</span> Various</h3>
+<div class="outline-text-3" id="text-3-5">
+<div class="org-src-container">
+<pre class="src src-swift">extension Optional {
+    /// Returns the unwrapped value of the optional only if
+    /// - The optional has a value
+    /// - The value satisfies the predicate `predicate`
+    func filter(_ predicate: (Wrapped) -&gt; Bool) -&gt; Wrapped? {
+	guard let unwrapped = self,
+	    predicate(unwrapped) else { return nil }
+	return self
+    }
+
+    /// Returns the wrapped value or crashes with `fatalError(message)`
+    func expect(_ message: String) -&gt; Wrapped {
+	guard let value = self else { fatalError(message) }
+	return value
+    }
+}
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orga00fc9f" class="outline-4">
+<h4 id="orga00fc9f"><span class="section-number-4">3.5.1</span> Filter</h4>
+<div class="outline-text-4" id="text-3-5-1">
+<p>
+This is a simple method which works like an additional guard to only unwrap the optional if it satisfies a predictate. Here's an example. Imagine we want to upgrade all our old users to a premium account for sticking with us for a long time:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">// Only affect old users with id &lt; 1000
+// Normal Swift
+if let aUser = user, user.id &lt; 1000 { aUser.upgradeToPremium() }
+
+// Using `filter`
+user.filter({ $0.id &lt; 1000 })?.upgradeToPremium()
+</pre>
+</div>
+
+<p>
+Here, <code>user.filter</code> feels like a much more natural implementation. Also, it only implements what already exists for Swift's collections.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org7831398" class="outline-4">
+<h4 id="org7831398"><span class="section-number-4">3.5.2</span> Expect</h4>
+<div class="outline-text-4" id="text-3-5-2">
+<p>
+This is one of my favorites. Also, I shamelessly stole it from Rust. I'm trying very hard to never force unwrap anything in my codebase. Similar for implicitly unwrapped optionals.
+</p>
+
+<p>
+However, this is tricky when working with interface builder outlets. A common pattern that I observed can be seen in the following function:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">func updateLabel() {
+  guard let label = valueLabel else {
+    fatalError("valueLabel not connected in IB")
+  }
+  label.text = state.title
+}
+</pre>
+</div>
+
+<p>
+The alternative solution, obviously, would be to just to force unwrap the label, as that leads to a crash just like <code>fatalError</code>. Then, I'd have to insert <code>!</code> though, also it wouldn't give me a nice succinct description of what actually is wrong. The better alternative here is to use <code>expect</code> as implemented above:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">func updateLabel() {
+  valueLabel.expect("valueLabel not connected in IB").text = state.title
+}
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org595e041" class="outline-2">
+<h2 id="org595e041"><span class="section-number-2">4</span> Example</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+So now that we've seen a couple of (hopefully) useful <code>Optional</code> extensions, I'll set up an example to better see how some of these extensions can be combined to simplify optional handling. First, we need a bit of context. Forgive me for the rather unconventional and impossible example:
+</p>
+
+<p>
+You're working in the 80s at a shareware distributor. A lot of student programmers are working for you and writing new shareware apps and games every month. You need to keep track of how many were sold. For that, you recieve an XML file from accounting and you need to parse it and insert it into the database (isn't it awesome how in this version of the 80s there's Swift to love but also XML to hate?). Your software system has an XML parser and a database (both written in 6502 ASM of course) that implement the following protocols:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">protocol XMLImportNode {
+    func firstChild(with tag: String) -&gt; XMLImportNode?
+    func children(with tag: String) -&gt; [XMLImportNode]
+    func attribute(with name: String) -&gt; String?
+}
+
+typealias DatabaseUser = String
+typealias DatabaseSoftware = String
+protocol Database {
+    func user(for id: String) throws -&gt; DatabaseUser
+    func software(for id: String) throws -&gt; DatabaseSoftware
+    func insertSoftware(user: DatabaseUser, name: String, id: String, type: String, amount: Int) throws
+    func updateSoftware(software: DatabaseSoftware, amount: Int) throws
+}
+</pre>
+</div>
+
+<p>
+A typical file looks like this (behold the almighty XML):
+</p>
+
+<div class="org-src-container">
+<pre class="src src-xml">&lt;<span style="font-weight: bold;">users</span>&gt;
+ &lt;<span style="font-weight: bold;">user</span> <span style="font-weight: bold; font-style: italic;">name</span>=<span style="font-style: italic;">""</span> <span style="font-weight: bold; font-style: italic;">id</span>=<span style="font-style: italic;">"158"</span>&gt;
+  &lt;<span style="font-weight: bold;">software</span>&gt;
+   &lt;<span style="font-weight: bold;">package</span> <span style="font-weight: bold; font-style: italic;">type</span>=<span style="font-style: italic;">"game"</span> <span style="font-weight: bold; font-style: italic;">name</span>=<span style="font-style: italic;">"Maniac Mansion"</span> <span style="font-weight: bold; font-style: italic;">id</span>=<span style="font-style: italic;">"4332"</span> <span style="font-weight: bold; font-style: italic;">amount</span>=<span style="font-style: italic;">"30"</span> /&gt;
+   &lt;<span style="font-weight: bold;">package</span> <span style="font-weight: bold; font-style: italic;">type</span>=<span style="font-style: italic;">"game"</span> <span style="font-weight: bold; font-style: italic;">name</span>=<span style="font-style: italic;">"Doom"</span> <span style="font-weight: bold; font-style: italic;">id</span>=<span style="font-style: italic;">"1337"</span> <span style="font-weight: bold; font-style: italic;">amount</span>=<span style="font-style: italic;">"50"</span> /&gt;
+   &lt;<span style="font-weight: bold;">package</span> <span style="font-weight: bold; font-style: italic;">type</span>=<span style="font-style: italic;">"game"</span> <span style="font-weight: bold; font-style: italic;">name</span>=<span style="font-style: italic;">"Warcraft 2"</span> <span style="font-weight: bold; font-style: italic;">id</span>=<span style="font-style: italic;">"1000"</span> <span style="font-weight: bold; font-style: italic;">amount</span>=<span style="font-style: italic;">"10"</span> /&gt;
+  &lt;/<span style="font-weight: bold;">software</span>&gt;
+ &lt;/<span style="font-weight: bold;">user</span>&gt;
+&lt;/<span style="font-weight: bold;">users</span>&gt;
+</pre>
+</div>
+
+<p>
+Our original Swift code to parse the XML looks like this:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">enum ParseError: Error {
+    case msg(String)
+}
+
+func parseGamesFromXML(from root: XMLImportNode, into database: Database) throws {
+    guard let users = root.firstChild(with: "users")?.children(with: "user") else {
+	throw ParseError.msg("No Users")
+    }
+    for user in users {
+	guard let software = user.firstChild(with: "software")?
+		.children(with: "package"),
+	    let userId = user.attribute(with: "id"),
+	    let dbUser = try? database.user(for: userId)
+	    else { throw ParseError.msg("Invalid User") }
+	for package in software {
+	    guard let type = package.attribute(with: "type"),
+	    type == "game",
+	    let name = package.attribute(with: "name"),
+	    let softwareId = package.attribute(with: "id"),
+	    let amountString = package.attribute(with: "amount")
+	    else { throw ParseError.msg("Invalid Package") }
+	    if let existing = try? database.software(for: softwareId) {
+		try database.updateSoftware(software: existing, 
+					      amount: Int(amountString) ?? 0)
+	    } else {
+		try database.insertSoftware(user: dbUser, name: name, 
+					      id: softwareId, 
+					    type: type, 
+					  amount: Int(amountString) ?? 0)
+	    }
+	}
+    }
+}
+</pre>
+</div>
+
+<p>
+Lets apply what we learned above:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">func parseGamesFromXML(from root: XMLImportNode, into database: Database) throws {
+    for user in try root.firstChild(with: "users")
+		    .or(throw: ParseError.msg("No Users")).children(with: "user") {
+	let dbUser = try user.attribute(with: "id")
+		    .and(then: { try? database.user(for: $0) })
+		    .or(throw: ParseError.msg("Invalid User"))
+	for package in (user.firstChild(with: "software")?
+		    .children(with: "package")).or([]) {
+	    guard (package.attribute(with: "type")).filter({ $0 == "game" }).isSome
+		else { continue }
+	    try package.attribute(with: "name")
+		.zip3(with: package.attribute(with: "id"), 
+		   another: package.attribute(with: "amount"))
+		.map({ (tuple) -&gt; Void in
+		    switch try? database.software(for: tuple.1) {
+		    case let e?: try database.updateSoftware(software: e, 
+							       amount: Int(tuple.2).or(0))
+		    default: try database.insertSoftware(user: dbUser, name: tuple.0, 
+							   id: tuple.1, type: "game", 
+						       amount: Int(tuple.2).or(0))
+		    }
+		}, or: { throw ParseError.msg("Invalid Package") })
+	}
+    }
+}
+</pre>
+</div>
+
+<p>
+If we look at this, then there're two things that immediately come to mind:
+</p>
+<ol class="org-ol">
+<li>Less Code</li>
+<li>More Complicated Looking Code</li>
+</ol>
+
+<p>
+I deliberately went into overdrive when utilizing the various <code>Optional</code> extensions. Some of them fit better while others seem to be a bit misplaced. However, the key is not to solely rely on these extensions (like I did above) when using optionals but instead to mix and match where it makes most sense. Compare the two implementations and consider which from the second example you'd rather implement with Swift's native features and which feel better when using the <code>Optional</code> extensions.
+</p>
+
+<p>
+That's all for today, thanks for reading!
+</p>
+</div>
+</div>
+</div>
+
+        <div id="followme">
+            <p>If you read this far, you should follow me (<a href="http://www.twitter.com/terhechte">@terhechte</a>) <br /> on <a href="http://www.twitter.com/terhechte"><i class="fi-social-twitter"></i> Twitter</a></p>
+            <br />
+        </div>
+        
+
+        <div class="footnotes">
+            <ol></ol>
+        </div>
+
+        <p class="anchor"><i class="fi-anchor"></i></p>
+ 
+      </article></div>
+
+
+    </div>
+
+    <div class="column is-narrow">
+
+     <aside class="menu">
+
+         
+
+
+
+      <br />
+      <ul class="menu-list">
+       <li>
+        <p class="menu-label">
+         <a>
+          <i class="fas fa-dove"></i>
+          Swift Topics
+         </a>
+        </p>
+        <ul>
+            <li><a href="/topics/all.html">All</a></li>
+           
+            
+            <li><a href="/topics/swift-tricks.html">Swift Tricks</a></li>
+            
+         
+            
+            <li><a href="/topics/language.html">Language</a></li>
+            
+         
+            
+            <li><a href="/topics/hands-on.html">Hands On</a></li>
+            
+         
+            
+            <li><a href="/topics/blog.html">Blog</a></li>
+            
+         
+            
+         
+        </ul>
+       </li>
+
+       <li>
+           <p class="menu-label">
+               <a>
+                   <i class="fas fa-book"></i>
+                   Guides
+               </a>
+           </p>
+           <ul>
+                 
+               <li><a href="/guides/pattern_matching/intro.html">🧩 Pattern Matching</a></li>
+                 
+               <li><a href="/guides/advanced_practical_enum_examples/introduction.html">🚦 Enums</a></li>
+                 
+               <li><a href="/guides/map_flatmap_reduce_more/intro.html">🗺 Map, Reduce &amp; more</a></li>
+                 
+               <li><a href="/guides/associated_types/associated_types.html">🧙🏻 Associated Types</a></li>
+                 
+               <li><a href="/guides/tuples/introduction.html">🍱 Tuples</a></li>
+                 
+               <li><a href="/guides/optionals/intro.html">⁉️ Optionals</a></li>
+                 
+               <li><a href="/guides/swift_reflection/introduction.html">🔮 Reflection</a></li>
+                 
+           </ul>
+       </li>
+      </ul>
+
+      <div class="sidebar-banner">
+          <a href="https://contravariance.rocks"><img src="/img/contravariance_banner.png" srcset="/img/contravariance_banner.png 1x, /img/contravariance_banner@2x.png 2x" /></a>
+      </div>
+
+      <ul class="menu-list">
+       <li>
+        <p class="menu-label">
+         <a>
+          <i class="fas fa-tags"></i>
+          Tags
+         </a>
+        </p>
+        <ul>
+
+     
+     <li><a href="/tags/pattern-matching.html" class="tags has-addons"><span class="tag is-info is-rounded">pattern matching</span><span class="tag is-primary is-rounded">25</span></a></li>
+     
+     <li><a href="/tags/switch.html" class="tags has-addons"><span class="tag is-info is-rounded">switch</span><span class="tag is-primary is-rounded">24</span></a></li>
+     
+     <li><a href="/tags/enum.html" class="tags has-addons"><span class="tag is-info is-rounded">enum</span><span class="tag is-primary is-rounded">20</span></a></li>
+     
+     <li><a href="/tags/associated.html" class="tags has-addons"><span class="tag is-info is-rounded">associated</span><span class="tag is-primary is-rounded">14</span></a></li>
+     
+     <li><a href="/tags/tuples.html" class="tags has-addons"><span class="tag is-info is-rounded">tuples</span><span class="tag is-primary is-rounded">13</span></a></li>
+     
+     <li><a href="/tags/reflection.html" class="tags has-addons"><span class="tag is-info is-rounded">reflection</span><span class="tag is-primary is-rounded">12</span></a></li>
+     
+     <li><a href="/tags/reduce.html" class="tags has-addons"><span class="tag is-info is-rounded">reduce</span><span class="tag is-primary is-rounded">11</span></a></li>
+     
+     <li><a href="/tags/box.html" class="tags has-addons"><span class="tag is-info is-rounded">box</span><span class="tag is-primary is-rounded">10</span></a></li>
+     
+     <li><a href="/tags/generics.html" class="tags has-addons"><span class="tag is-info is-rounded">generics</span><span class="tag is-primary is-rounded">7</span></a></li>
+     
+     <li><a href="/tags/compactmap.html" class="tags has-addons"><span class="tag is-info is-rounded">compactMap</span><span class="tag is-primary is-rounded">6</span></a></li>
+     
+     <li><a href="/tags/filter.html" class="tags has-addons"><span class="tag is-info is-rounded">filter</span><span class="tag is-primary is-rounded">6</span></a></li>
+     
+     <li><a href="/tags/map.html" class="tags has-addons"><span class="tag is-info is-rounded">map</span><span class="tag is-primary is-rounded">6</span></a></li>
+     
+     <li><a href="/tags/mirror.html" class="tags has-addons"><span class="tag is-info is-rounded">mirror</span><span class="tag is-primary is-rounded">6</span></a></li>
+     
+     <li><a href="/tags/protocol.html" class="tags has-addons"><span class="tag is-info is-rounded">protocol</span><span class="tag is-primary is-rounded">6</span></a></li>
+     
+     <li><a href="/tags/optionals.html" class="tags has-addons"><span class="tag is-info is-rounded">optionals</span><span class="tag is-primary is-rounded">5</span></a></li>
+     
+     <li><a href="/tags/where.html" class="tags has-addons"><span class="tag is-info is-rounded">where</span><span class="tag is-primary is-rounded">5</span></a></li>
+     
+     <li><a href="/tags/erasure.html" class="tags has-addons"><span class="tag is-info is-rounded">erasure</span><span class="tag is-primary is-rounded">4</span></a></li>
+     
+     <li><a href="/tags/equatable.html" class="tags has-addons"><span class="tag is-info is-rounded">equatable</span><span class="tag is-primary is-rounded">3</span></a></li>
+     
+     <li><a href="/tags/destructure.html" class="tags has-addons"><span class="tag is-info is-rounded">destructure</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/error.html" class="tags has-addons"><span class="tag is-info is-rounded">error</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/extension.html" class="tags has-addons"><span class="tag is-info is-rounded">extension</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/guard.html" class="tags has-addons"><span class="tag is-info is-rounded">guard</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/if-let.html" class="tags has-addons"><span class="tag is-info is-rounded">if let</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/is.html" class="tags has-addons"><span class="tag is-info is-rounded">is</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/objc.html" class="tags has-addons"><span class="tag is-info is-rounded">objc</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/optional.html" class="tags has-addons"><span class="tag is-info is-rounded">optional</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/struct.html" class="tags has-addons"><span class="tag is-info is-rounded">struct</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/try.html" class="tags has-addons"><span class="tag is-info is-rounded">try</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/.html" class="tags has-addons"><span class="tag is-info is-rounded">?</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/caseiterable.html" class="tags has-addons"><span class="tag is-info is-rounded">CaseIterable</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/customreflectable.html" class="tags has-addons"><span class="tag is-info is-rounded">CustomReflectable</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/data.html" class="tags has-addons"><span class="tag is-info is-rounded">Data</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/expressiblebystringliteral.html" class="tags has-addons"><span class="tag is-info is-rounded">ExpressibleByStringLiteral</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/rawrepresentable.html" class="tags has-addons"><span class="tag is-info is-rounded">RawRepresentable</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/as.html" class="tags has-addons"><span class="tag is-info is-rounded">as</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/autoclosure.html" class="tags has-addons"><span class="tag is-info is-rounded">autoclosure</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/break.html" class="tags has-addons"><span class="tag is-info is-rounded">break</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/catch.html" class="tags has-addons"><span class="tag is-info is-rounded">catch</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/closure.html" class="tags has-addons"><span class="tag is-info is-rounded">closure</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/copyonwrite.html" class="tags has-addons"><span class="tag is-info is-rounded">copy-on-write</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/coredata.html" class="tags has-addons"><span class="tag is-info is-rounded">coredata</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/either.html" class="tags has-addons"><span class="tag is-info is-rounded">either</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/fallthrough.html" class="tags has-addons"><span class="tag is-info is-rounded">fallthrough</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/for.html" class="tags has-addons"><span class="tag is-info is-rounded">for</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/for-case.html" class="tags has-addons"><span class="tag is-info is-rounded">for case</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/groupby.html" class="tags has-addons"><span class="tag is-info is-rounded">groupby</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/guard-let.html" class="tags has-addons"><span class="tag is-info is-rounded">guard let</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/if-case.html" class="tags has-addons"><span class="tag is-info is-rounded">if case</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/indirect.html" class="tags has-addons"><span class="tag is-info is-rounded">indirect</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/init.html" class="tags has-addons"><span class="tag is-info is-rounded">init</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/init.html" class="tags has-addons"><span class="tag is-info is-rounded">init?</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/inout.html" class="tags has-addons"><span class="tag is-info is-rounded">inout</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/label.html" class="tags has-addons"><span class="tag is-info is-rounded">label</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/literal.html" class="tags has-addons"><span class="tag is-info is-rounded">literal</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/method.html" class="tags has-addons"><span class="tag is-info is-rounded">method</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/overload.html" class="tags has-addons"><span class="tag is-info is-rounded">overload</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/package.html" class="tags has-addons"><span class="tag is-info is-rounded">package</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/partition.html" class="tags has-addons"><span class="tag is-info is-rounded">partition</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/performance.html" class="tags has-addons"><span class="tag is-info is-rounded">performance</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/property.html" class="tags has-addons"><span class="tag is-info is-rounded">property</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/protocols.html" class="tags has-addons"><span class="tag is-info is-rounded">protocols</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/range.html" class="tags has-addons"><span class="tag is-info is-rounded">range</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/self.html" class="tags has-addons"><span class="tag is-info is-rounded">self</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/tupealias.html" class="tags has-addons"><span class="tag is-info is-rounded">tupealias</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/tuple.html" class="tags has-addons"><span class="tag is-info is-rounded">tuple</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/typealias.html" class="tags has-addons"><span class="tag is-info is-rounded">typealias</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/unique.html" class="tags has-addons"><span class="tag is-info is-rounded">unique</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/value-type.html" class="tags has-addons"><span class="tag is-info is-rounded">value type</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/valuetype.html" class="tags has-addons"><span class="tag is-info is-rounded">valuetype</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/vararg.html" class="tags has-addons"><span class="tag is-info is-rounded">vararg</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/wildcard.html" class="tags has-addons"><span class="tag is-info is-rounded">wildcard</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/zip.html" class="tags has-addons"><span class="tag is-info is-rounded">zip</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/.html" class="tags has-addons"><span class="tag is-info is-rounded">~=</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+
+        </ul>
+       </li>
+      </ul>
+
+
+     </aside> 
+
+
+    </div>
+   </div>
+  </div>
+ </section>
+
+ <div class="footer">
+  <article class="media" id="followme">
+   <figure class="media-left">
+    <p class="image is-64x64">
+     <img src="/img/terhechte.jpg" class="profile-image" />
+    </p>
+   </figure>
+   <div class="media-content">
+       <div class="columns">
+           <div class="column">
+               <div class="content">
+                   <p>
+                       <strong>Benedikt Terhechte</strong> <a href="https://twitter.com/terhechte"><small>@terhechte</small></a>
+                       <br />
+                       If you read this far, you should <a href="https://twitter.com/terhechte">follow Benedikt on Twitter</a>.<br />
+                       APPVENTURE is dedicated to providing articles about Swift, macOS, iOS &amp; Linux development.
+                   </p>
+                   <p>
+                       <strong>2011 - 2019 Benedikt Terhechte</strong>
+                   </p>
+               </div>
+           </div>
+           <div class="column">
+               <p>
+                   <a href="https://terhech.de">Benedikt's private blog can be found
+                       at <strong>terhech.de</strong></a>
+               </p>
+               <p>
+                   <br />
+                   <strong>Other Profiles</strong>
+               </p>
+               <p class="subtitle is-6">
+                   <a href="https://twitter.com/terhechte"><i class="fab fa-twitter"></i></a>
+                   <a href="https://www.xing.com/profile/Benedikt_Terhechte">
+                       <i class="fab fa-xing"></i>
+                   </a>
+                   <a href="https://twitter.com/terhechte">
+                       <i class="fab fa-github"></i>
+                   </a>
+                   <a href="https://news.ycombinator.com/user?id=terhechte">
+                       <i class="fab fa-hacker-news"></i>
+                   </a>
+               </p>
+           </div>
+       </div>
+   </div>
+   <div class="media-right">
+    <a href="https://twitter.com/terhechte" class="button is-info is-rounded">
+     <i class="fab fa-twitter"></i> 
+     Follow Me</a>
+   </div>
+  </article>
+ </div>
+
+
+
+</body>
+
+
+</html>

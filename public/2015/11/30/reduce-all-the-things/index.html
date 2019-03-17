@@ -1,0 +1,1052 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Reduce all the things</title>
+  <link rel="stylesheet" href="/css/bulma.min.css" />
+  <link rel="stylesheet" href="/css/style.css" />
+
+  <meta content="An introduction into the reduce function as an alternative to map, flatMap or filter for collection transformation" name="description" /><meta content="benedikt, c, chunk, clojure, clojurescript, cocoa, feature, filter, flatMap, functional, group, html, interpose, ios, javascript, mac, map, objective-c, partition, photodesk, programming, reduce, research, split, stylemac, swift, terhechte" name="keywords" /><meta content="Benedikt Terhechte" name="author" /><meta content="Reduce all the things" property="og:title" /><meta content="An introduction into the reduce function as an alternative to map, flatMap or filter for collection transformation" property="og:description" /><meta content="http://appventure.me/2015/11/30/reduce-all-the-things/" property="og:url" /><meta content="Reduce all the things" name="twitter:title" /><meta content="An introduction into the reduce function as an alternative to map, flatMap or filter for collection transformation" name="twitter:description" /><meta content="summary_large_image" name="twitter:card" /><meta content="http://appventure.me/img-content/2015-11-30-reduce-all-the-things-feature-image.jpg" name="twitter:image" /><meta content="http://appventure.me/img-content/2015-11-30-reduce-all-the-things-feature-image.jpg" property="og:image" />
+  <meta name="twitter:site" content="@terhechte" />
+  <meta name="twitter:creator" content="@terhechte" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700,800" rel="stylesheet" />
+  <script defer="defer" src="/js/fontawesome-all.min.js"></script>
+  
+ </head>
+ <body>
+  <section class="section" id="head">
+   <div class="container" id="container">
+    <div>
+
+     <div class="columns">
+      <div class="column is-3">
+          <span id="brand"><a href="/index.html"><img src="/img/brand.png" srcset="/img/brand.png 1x, /img/brand@2x.png 2x" /></a></span>
+      </div>
+      <div class="column is-7">
+       <span id="subbrand">
+        Simple. Swift. Guides.</span>
+      </div>
+      <div class="column is-2">
+          <div class="field">
+
+          </div>
+      </div>
+     </div>
+    </div>
+   </div>
+  </section>
+
+
+  <section class="section" id="main">
+   <div class="container" id="container">
+    <div class="columns">
+     <div class="column">
+      <div class="columns">
+       <div class="column">
+        <div class="tabs">
+		 
+        </div>
+       </div>
+       <div class="column is-narrow">
+        <div class="buttons has-addons is-hidden-mobile">
+        </div>
+       </div>
+      </div>
+
+      <div class="box" style="margin-bottom: 250px;">
+            <h5 style="font-size: 38px; font-weight: bold;"><a class="xx-new-article" href="https://appventure.me/guides/map_flatmap_reduce_more/intro.html">AppVenture has been updated</a></h5>
+            <p style="padding-top: 10px; padding-bottom: 10px; font-size: 18px;">
+                All articles have been rewritten and improved. You will be forwarded
+                to the updated article.
+            </p>
+            <p style="font-size: 18px; font-weight: bold;">
+                <a class="xx-new-article" href="https://appventure.me/guides/map_flatmap_reduce_more/intro.html" id="xxx-new-article">Click here to go there directly.</a>
+            </p>
+            <script>
+                 setTimeout(function(){ 
+                    document.location.href=document.getElementById("xxx-new-article").href;
+                },
+                    0);
+            </script>
+      </div>
+
+
+
+
+      <div role="content" id="maincontent" style="opacity: 0.5"><article id="article--233864685" class="article-post content is-medium">
+
+
+ 
+          <h6><i class="fi-pencil"></i> Mon, 30 Nov 2015 <a href="/2015/11/30/reduce-all-the-things/">#</a></h6>
+
+        <h3><a href="/2015/11/30/reduce-all-the-things/">Reduce all the things</a></h3>
+
+
+
+        <div class="actual-content"><!-- #+feature-image: /img-content/2015-11-30-reduce-all-the-things-feature-image.jpg -->
+
+<h6><a href="/2015/11/30/reduce-all-the-things/">This post is also available in <b>🇨🇳Chinese</b></a><span> Thanks to </span><a href="/2015/11/30/reduce-all-the-things/">SwiftGG</a></h6>
+
+<p>
+Even before Swift was released, iOS / Cocoa developers could use third party frameworks like ObjectiveSugar or ReactiveCocoa in order to gain functional programming constructs like <code>map</code>, <code>flatMap</code> or <code>filter</code>. With Swift, they have become first class language citizens. There are many advantages to using them over a standard <code>for</code> loop. They typically express your intent better, they require less code, and they can be chained together in order to build up complex logic in a clear way. 
+</p>
+
+<p>
+In this post, I'd like to show another very cool functional addition to Swift which can sometimes be a better solution than <code>map</code> / <code>filter</code> constructs: <code>reduce</code>.
+</p>
+
+<div id="outline-container-orgb29b6fd" class="outline-2">
+<h2 id="orgb29b6fd"><span class="section-number-2">1</span> A simple Problem</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+Consider this problem: You're getting a list of persons from a JSON endpoint. You'd like to know the average age from all people living in California. The parsed data looks like this:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">let persons: [[String: AnyObject]] = [["name": "Carl Saxon", "city": "New York, NY", "age": 44],
+ ["name": "Travis Downing", "city": "El Segundo, CA", "age": 34],
+ ["name": "Liz Parker", "city": "San Francisco, CA", "age": 32],
+ ["name": "John Newden", "city": "New Jersey, NY", "age": 21],
+ ["name": "Hector Simons", "city": "San Diego, CA", "age": 37],
+ ["name": "Brian Neo", "age": 27]]
+</pre>
+</div>
+
+<p>
+Note the last entry, which omits a <code>city</code> for the person in question. Those cases have to be silently ignored.
+</p>
+
+<p>
+The expected result in the example would be 3 persons , as we have three persons from California. Let's try to implement this in Swift in terms of <code>flatMap</code> and <code>filter</code>. The <code>flatMap</code> is used instead of <code>map</code> as <code>flatMap</code> automatically ignores empty optionals. So <code>flatMap([0, nil, 1, 2, nil])</code> results in <code>[0, 1, 2]</code>. This eases the handling of persons without a proper city.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">
+func infoFromState(state state: String, persons: [[String: AnyObject]]) 
+     -&gt; Int {
+    return persons.flatMap( { $0["city"]?.componentsSeparatedByString(", ").last })
+	   .filter({$0 == state})
+	   .count
+}
+infoFromState(state: "CA", persons: persons)
+//#+RESULTS:
+//: 3
+</pre>
+</div>
+
+<p>
+That's simple enough. 
+</p>
+
+<p>
+However, now consider the following complication:
+You'd like to know how many of those persons live in California, and you'd like to know their average age. If we try upgrading the above example, we soon realize that his is a slightly harder problem. There are various solutions, but they all seem to not fit well with functional constructs. A loop-based approach feels much simpler. 
+</p>
+
+<p>
+When we think about why this does fit, we realize it is because the shape of the data changes. <code>map</code>, <code>flatMap</code>, and <code>filter</code> all keep the shape of the data similar. Array goes in, array goes out. The amount and the contents of the array may change, but the array-shape stays. The problem above, however, requires us to change the shape to a <code>struct</code> or <code>tuple</code> with an <b>Integer average</b> and an <b>Integer sum</b>.
+</p>
+
+<p>
+These are the kind of problems where you can apply <code>reduce</code>.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org654e0f9" class="outline-2">
+<h2 id="org654e0f9"><span class="section-number-2">2</span> Reduce</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+Reduce is sort of a generalized version of <code>map</code>, <code>flatMap</code>, or <code>filter</code>. The basic idea is to <b>reduce</b> a sequence into a different shape utilizing an <b>accumulator</b> that can keep incremental state. To do this, we hand the function a <b>combinator</b> closure/function/method which is called once for each item in the sequence. This may sound complicated but becomes really easy with a couple of examples. 
+</p>
+
+<p>
+It is a method on <code>SequenceType</code> and looks like this (simplified):
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">func reduce&lt;T&gt;(initial: T, combine: (T, Self.Generator.Element) -&gt; T) -&gt; T
+</pre>
+</div>
+
+<p>
+So we have an initial value, and we have a closure which expects us to return the same type as the initial value. The final value of the operation is also of the same type as the initial value. 
+</p>
+
+<p>
+If we take a very simple reduce operation - adding up a list of integers, the evaluation will look like this:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">func combinator(accumulator: Int, current: Int) -&gt; Int {
+   return accumulator + current
+}
+[1, 2, 3].reduce(0, combine: combinator)
+// The following steps will be performed
+combinator(0, 1) { return 0 + 1 } = 1
+combinator(1, 2) { return 1 + 2 } = 3
+combinator(3, 3) { return 3 + 3 } = 6
+= 6
+</pre>
+</div>
+
+<p>
+The <b>combinator</b> function will be called once for each item in the list <code>[1, 2, 3]</code>. The state will be kept in the <b>accumulator</b> variable which is just an Integer.
+</p>
+
+<p>
+Let's start re-implementing some of our other, trusted, functional programming friends. In order to keep things simple for now, all these functions will operate on <code>Int</code> or <code>Optional&lt;Int&gt;</code>; i.e. we will ignore generics in here. Also, keep in mind that the implementations below exist to explain the behaviour of <code>reduce</code>. The native Swift implementations are usually much faster compared to the reduce versions below<sup><a id="fnr.1" class="footref" href="#fn.1">1</a></sup>. Reduce shines in a different set of problems, which will be explained further below.
+</p>
+</div>
+
+<div id="outline-container-org11a061e" class="outline-3">
+<h3 id="org11a061e"><span class="section-number-3">2.1</span> Map</h3>
+<div class="outline-text-3" id="text-2-1">
+<div class="org-src-container">
+<pre class="src src-swift">func rmap(elements: [Int], transform: (Int) -&gt; Int) -&gt; [Int] {
+    return elements.reduce([Int](), combine: { (var acc: [Int], obj: Int) -&gt; [Int] in
+       acc.append(transform(obj))
+       return acc
+    })
+}
+print(rmap([1, 2, 3, 4], transform: { $0 * 2}))
+// [2, 4, 6, 8]
+</pre>
+</div>
+
+<p>
+This is a good example to understand the basics of <code>reduce</code>. 
+</p>
+<ul class="org-ul">
+<li>First, we're calling reduce on a sequence of elements <code>elements.reduce...</code>.</li>
+<li>Next, We're giving it the accumulator, i.e. an empty Int array, which will form or return type / result <code>[Int]()</code></li>
+<li>After that, we're handing in the <code>combinator</code> which takes two parameters. The first is the accumulator which we just provided <code>acc: [Int]</code>, the second is the current object from our sequence <code>obj: Int</code>.</li>
+<li>The actual code in the <code>combinator</code> is simple. We simply transform the obj and append it onto the accumulator. We then return the accumulator.</li>
+</ul>
+
+<p>
+This looks like much more code than just calling <code>map</code>. That's indeed true, but the version above is extra detailed in order to better explain how <code>reduce</code> works. We can simplify it.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">func rmap(elements: [Int], transform: (Int) -&gt; Int) -&gt; [Int] {
+    return elements.reduce([Int](), combine: {$0 + [transform($1)]})
+}
+print(rmap([1, 2, 3, 4], transform: { $0 * 2}))
+// [2, 4, 6, 8]
+</pre>
+</div>
+
+<p>
+This still works fine. What happened here? We're using the convenient fact that in Swift, the <code>+</code> operator also works for two sequences. So <code>[0, 1, 2] + [transform(4)]</code> takes the left sequence and adds the right sequence, consisting out of the transformed element, to it.
+</p>
+
+<p>
+It should be noted that, as of right now, <code>[1, 2, 3] + [4]</code> is slower than <code>[1, 2, 3].append(4)</code>. If you operate on huge lists, instead of using collection + collection, you should have a mutable accumulator and mutate it in place:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">func rmap(elements: [Int], transform: (Int) -&gt; Int) -&gt; [Int] {
+    return elements.reduce([Int](), combine: { (var ac: [Int], b: Int) -&gt; [Int] in 
+	ac.append(transform(b))
+	return ac
+    })
+}
+</pre>
+</div>
+
+<p>
+In order to better understand <code>reduce</code> we will now go on and also implement <code>flatMap</code> and <code>filter</code>.
+</p>
+<div class="org-src-container">
+<pre class="src src-swift">func rflatMap(elements: [Int], transform: (Int) -&gt; Int?) -&gt; [Int] {
+    return elements.reduce([Int](), 
+       combine: { guard let m = transform($1) else { return $0 } 
+		  return $0 + [m]})
+}
+print(rflatMap([1, 3, 4], transform: { guard $0 != 3 else { return nil }; return $0 * 2}))
+// [2, 8]
+</pre>
+</div>
+
+<p>
+The main difference is that we're adding a <code>guard</code> to make sure the optional contains a value.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org78885d0" class="outline-3">
+<h3 id="org78885d0"><span class="section-number-3">2.2</span> Filter</h3>
+<div class="outline-text-3" id="text-2-2">
+<div class="org-src-container">
+<pre class="src src-swift">func rFilter(elements: [Int], filter: (Int) -&gt; Bool) -&gt; [Int] {
+    return elements.reduce([Int](), 
+       combine: { guard filter($1) else { return $0 } 
+		  return $0 + [$1]})
+}
+print(rFilter([1, 3, 4, 6], filter: { $0 % 2 == 0}))
+// [4, 6]
+</pre>
+</div>
+
+<p>
+Again, a simple operation. We're leveraging guard again to make sure our filter condition holds.
+</p>
+
+<p>
+Up until now, <code>reduce</code> may feel like a more complicated version of <code>map</code> or <code>filter</code> without any major advantages. However, the combinator does not need to be an array. It can be anything. This makes it easy for us to implement various reduction operations in a very simple way.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgfe2109a" class="outline-2">
+<h2 id="orgfe2109a"><span class="section-number-2">3</span> Reduce Examples</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+Let's start with a favorite of mine, the sum of a list of numbers:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">[0, 1, 2, 3, 4].reduce(0, combine: +)
+// 10
+</pre>
+</div>
+
+<p>
+<code>+</code> is a valid <code>combinator</code> function as it will just add the <code>lhs</code> and the <code>rhs</code> and return the result, which is specifically the requirement <code>reduce</code> has.
+</p>
+
+<p>
+Another example is building the product of a list of numbers:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">[1, 2, 3, 4].reduce(1, combine: *)
+// 24
+</pre>
+</div>
+
+<p>
+Or what about reversing a list:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">[1, 2, 3, 4, 5].reduce([Int](), combine: { [$1] + $0 })
+// 5, 4, 3, 2, 1
+</pre>
+</div>
+
+<p>
+Finally, something a tad more complicated. We'd like to partition a list based on a division criteria
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">typealias Acc = (l: [Int], r: [Int])
+func partition(lst: [Int], criteria: (Int) -&gt; Bool) -&gt; Acc {
+   return lst.reduce((l: [Int](), r: [Int]()), combine: { (ac: Acc, o: Int) -&gt; Acc in 
+      if criteria(o) {
+	return (l: ac.l + [o], r: ac.r)
+      } else {
+	return (r: ac.r + [o], l: ac.l)
+      }
+   })
+}
+partition([1, 2, 3, 4, 5, 6, 7, 8, 9], criteria: { $0 % 2 == 0 })
+//: ([2, 4, 6, 8], [1, 3, 5, 7, 9])
+</pre>
+</div>
+
+<p>
+The most interesting thing we're doing above is using a <code>tuple</code> as the accumulator. As you'll find out, once you start trying to incorporate <code>reduce</code> into your daily work-flow, <code>tuples</code> are a great way of quickly combining related data during a reduce operation.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org5f5b916" class="outline-2">
+<h2 id="org5f5b916"><span class="section-number-2">4</span> Reduce vs. Chaining Performance</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+Apart from the higher flexibility that <code>reduce</code> offers, it has another advantage: Oftentimes, chaining <code>map</code> and <code>filter</code> induces a performance penalty as Swift has to iterate over your collection multiple times in order to generate the required data. Imagine the following code:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">[0, 1, 2, 3, 4].map({ $0 + 3}).filter({ $0 % 2 == 0}).reduce(0, combine: +)
+</pre>
+</div>
+
+<p>
+Apart from being nonsensical, it is also wasting CPU cycles. The initial sequence will be iterated over 3 times. First to map it, then to filter it, and finally to sum up the contents. Instead, all of this can just as well be implemented as one reduce call, which greatly improves the performance:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">[0, 1, 2, 3, 4].reduce(0, combine: { (ac: Int, r: Int) -&gt; Int in 
+   if (r + 3) % 2 == 0 {
+     return ac + r + 3
+   } else {
+     return ac
+   }
+})
+</pre>
+</div>
+
+<p>
+Here's a quick benchmark of running both versions and the for-loop version below over an list with 100.000 items:
+</p>
+<div class="org-src-container">
+<pre class="src src-swift">var ux = 0
+for i in Array(0...100000) {
+    if (i + 3) % 2 == 0 {
+	ux += (i + 3)
+    }
+}
+</pre>
+</div>
+
+
+        <style type="text/css">
+         .linechart {
+             border: 3px solid white;
+             border-radius: 32px;
+             font-family: Sans-Serif;
+             color: white;
+             font-weight: normal;
+             padding: 4px;
+             margin-bottom: 20px;
+         }
+         .redxx {
+             background-color: red;
+         }
+         .greenxx {
+             background-color: green;
+         }
+         .linechart > span {
+             padding: 4px;
+         }
+         h3.ggx {
+             font-family: Sans-Serif;
+font-weight: normal;
+         }
+         .orangexx {
+             background-color: orange;
+         }
+        </style>
+        <div style="background-color: #ccc; padding: 20px; border-radius: 16px;">
+
+        <div class="linechart greenxx" style="width: 41%">
+            <span>For Loop: 0.030 seconds</span>
+        </div>
+        <div class="linechart orangexx" style="width: 47%">
+            <span>Reduce: 0.034 seconds</span>
+        </div>
+        <div class="linechart redxx">
+            <span>Map/Filter: 0.072 seconds</span>
+        </div>
+        </div>
+
+<p>
+As you can see, the <code>reduce</code> version' performance is very close to the mutating for loop and more than twice as fast as the chaining operation.
+</p>
+
+<p>
+However, in other situations, chained operation can greatly outperform <code>reduce</code>. Consider the following example:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">Array(0...100000).map({ $0 + 3}).reverse().prefix(3)
+// 0.027 Seconds
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-swift">Array(0...100000).reduce([], combine: { (var ac: [Int], r: Int) -&gt; [Int] in
+    ac.insert(r + 3, atIndex: 0)
+    return ac
+}).prefix(3)
+// 2.927 Seconds
+</pre>
+</div>
+
+<p>
+Here, we have a stark performance difference of 0.027s for the chained operation vs. 2.927s for the reduce operation, what's happening here?<sup><a id="fnr.2" class="footref" href="#fn.2">2</a></sup>
+</p>
+
+<p>
+foBrowsing on Reddit points out that reduce's semantics means that the parameters to the closure (if mutated) are copied once for every element in the underlying sequence. In our case, this means that the <b>accumulator</b> parameter <code>ac</code> will be copied for each item in our 0…100000 range. A better, more detailed explanation of this can be <a href="http://airspeedvelocity.net/2015/08/03/arrays-linked-lists-and-performance/">found in this Airspeedvelocity blog post</a>.
+</p>
+
+<p>
+So, when you're replacing a set of operations with <code>reduce</code>, always keep mind whether reduction is indeed a good use case for the situation in question.
+</p>
+
+<p>
+We can now go back to our initial count &amp; average problem and try to solve it with <code>reduce</code>.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orga9822c9" class="outline-2">
+<h2 id="orga9822c9"><span class="section-number-2">5</span> InfoFromState, take two</h2>
+<div class="outline-text-2" id="text-5">
+<div class="org-src-container">
+<pre class="src src-swift">
+
+  func infoFromState(state state: String, persons: [[String: AnyObject]]) 
+      -&gt; (count: Int, age: Float) {
+
+      // The type alias in the function will keep the code cleaner
+      typealias Acc = (count: Int, age: Float)
+
+      // reduce into a temporary variable
+      let u = persons.reduce((count: 0, age: 0.0)) {
+	  (ac: Acc, p) -&gt; Acc in
+
+	  // Retrive the state and the age
+	  guard let personState = (p["city"] as? String)?.componentsSeparatedByString(", ").last,
+		personAge = p["age"] as? Int
+
+	    // make sure the person is from the correct state
+	    where personState == state
+
+	    // if age or state are missing, or personState!=state, leave
+	    else { return ac }
+
+	  // Finally, accumulate the acount and the age
+	  return (count: ac.count + 1, age: ac.age + Float(personAge))
+      }
+
+  // our result is the count and the age divided by count
+  return (age: u.age / Float(u.count), count: u.count)
+}
+print(infoFromState(state: "CA", persons: persons))
+// prints: (count: 3, age: 34.3333)
+</pre>
+</div>
+
+<p>
+As in earlier examples above, we're once again using a <code>tuple</code> to share state in the accumulator. Apart from that, the code is easy to understand.
+</p>
+
+<p>
+We also defined a <code>typealias</code> <b>Acc</b> within the <code>func</code> in order to simplify the type annotations a bit.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org3793c51" class="outline-2">
+<h2 id="org3793c51"><span class="section-number-2">6</span> Summary</h2>
+<div class="outline-text-2" id="text-6">
+<p>
+This was a short overview of the power behind the <code>reduce</code> method. It is particularly helpful if you end up chaining a lot of functional methods together, <b>or</b> when output shape of your data differs from the input shape. I'll end this post with more reduce examples to give you inspirations for various use cases where reduce can easily be applied:
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgbde3dc0" class="outline-2">
+<h2 id="orgbde3dc0"><span class="section-number-2">7</span> More Examples</h2>
+<div class="outline-text-2" id="text-7">
+<p>
+The following examples display additional <code>reduce</code> use cases. Keep in mind that they're educational in nature. I.e. they exist to stress the usage of reduce, not to be general solutions for your codebase. Most of the examples can be written in a better and faster way (i.e. by using extensions or generics). There are better implementations of these examples in various Swift libraries such as <a href="https://github.com/oisdk/SwiftSequence">SwiftSequence</a> or <a href="https://github.com/ankurp/Dollar.swift">Dollar.swift</a>
+</p>
+</div>
+
+<div id="outline-container-org2c775b9" class="outline-3">
+<h3 id="org2c775b9"><span class="section-number-3">7.1</span> Minimum</h3>
+<div class="outline-text-3" id="text-7-1">
+<p>
+Return the minimum entry in a given list. Obviously, <code>[1, 5, 2, 9, 4].minElement()</code> would be a better solution.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">[1, 5, 2, 9, 4].reduce(Int.max, combine: min)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org95ac980" class="outline-3">
+<h3 id="org95ac980"><span class="section-number-3">7.2</span> Unique</h3>
+<div class="outline-text-3" id="text-7-2">
+<p>
+Return a list with all duplicates removed. The better solution would be to use a <code>Set</code>.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">[1, 2, 5, 1, 7].reduce([], combine: { (a: [Int], b: Int) -&gt; [Int] in
+if a.contains(b) {
+   return a
+} else {
+   return a + [b]
+}
+})
+// prints: 1, 2, 5, 7
+</pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org06dfae9" class="outline-3">
+<h3 id="org06dfae9"><span class="section-number-3">7.3</span> Group By</h3>
+<div class="outline-text-3" id="text-7-3">
+<p>
+Go over a list and return a new list with the previous list' items grouped by a discriminator function. The function in question needs to return a <code>Hashable</code> type so that we can differentiate keys. The order of the items will be preserved while the order of the groups won't necessarily be preserved.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">func groupby&lt;T, H: Hashable&gt;(items: [T], f: (T) -&gt; H) -&gt; [H: [T]] {
+   return items.reduce([:], combine: { (var ac: [H: [T]], o: T) -&gt; [H: [T]] in 
+       let h = f(o)
+       if var c = ac[h] {
+	   c.append(o)
+	   ac.updateValue(c, forKey: h)
+       } else {
+	   ac.updateValue([o], forKey: h)
+       }
+       return ac
+   })
+}
+print(groupby([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], f: { $0 % 3 }))
+// prints: [2: [2, 5, 8, 11], 0: [3, 6, 9, 12], 1: [1, 4, 7, 10]]
+print(groupby(["Carl", "Cozy", "Bethlehem", "Belem", "Brand", "Zara"], f: { $0.characters.first! }))
+// prints: ["C" : ["Carl" , "Cozy"] , "B" : ["Bethlehem" , "Belem" , "Brand"] , "Z" : ["Zara"]]
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org9eb6cd7" class="outline-3">
+<h3 id="org9eb6cd7"><span class="section-number-3">7.4</span> Interpose</h3>
+<div class="outline-text-3" id="text-7-4">
+<p>
+This function returns the given <code>items</code>, with <code>element</code> inserted between every <code>count</code> items. The implementation below  makes sure that the elements are only interposed and not appended at the end.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">func interpose&lt;T&gt;(items: [T], element: T, count: Int = 1) -&gt; [T] {
+   typealias Acc = (ac: [T], cur: Int, cnt: Int)
+   return items.reduce((ac: [], cur: 0, cnt: 1), combine: { (a: Acc, o: T) -&gt; Acc in 
+       switch a {
+	  // the last item will not have any interposition
+	  case let (ac, cur, _) where (cur+1) == items.count: return (ac + [o], 0, 0)
+	  // interpose
+	  case let (ac, cur, c) where c == count:
+	     return (ac + [o, element], cur + 1, 1)
+	  // next
+	  case let (ac, cur, c):
+	     return (ac + [o], cur + 1, c + 1)
+       }
+   }).ac
+}
+print(interpose([1, 2, 3, 4, 5], element: 9))
+// : [1, 9, 2, 9, 3, 9, 4, 9, 5]
+print(interpose([1, 2, 3, 4, 5], element: 9, count: 2))
+// : [1, 2, 9, 3, 4, 9, 5]
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orga53460c" class="outline-3">
+<h3 id="orga53460c"><span class="section-number-3">7.5</span> Interdig</h3>
+<div class="outline-text-3" id="text-7-5">
+<p>
+This function allows you to combine two sequences by alternately selecting elements from each.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift">func interdig&lt;T&gt;(list1: [T], list2: [T]) -&gt; [T] {
+   return Zip2Sequence(list1, list2).reduce([], combine: { (ac: [T], o: (T, T)) -&gt; [T] in 
+	return ac + [o.0, o.1]
+   })
+}
+print(interdig([1, 3, 5], list2: [2, 4, 6]))
+// : [1, 2, 3, 4, 5, 6]
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org54cb42a" class="outline-3">
+<h3 id="org54cb42a"><span class="section-number-3">7.6</span> Chunk</h3>
+<div class="outline-text-3" id="text-7-6">
+<p>
+This function returns self, broken up into non-overlapping arrays of length <code>n</code>:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-swift" id="org1e13aa0">func chunk&lt;T&gt;(list: [T], length: Int) -&gt; [[T]] {
+   typealias Acc = (stack: [[T]], cur: [T], cnt: Int)
+   let l = list.reduce((stack: [], cur: [], cnt: 0), combine: { (ac: Acc, o: T) -&gt; Acc in
+      if ac.cnt == length {
+	  return (stack: ac.stack + [ac.cur], cur: [o], cnt: 1)
+      } else {
+	  return (stack: ac.stack, cur: ac.cur + [o], cnt: ac.cnt + 1)
+      }
+   })
+   return l.stack + [l.cur]
+}
+print(chunk([1, 2, 3, 4, 5, 6, 7], length: 2))
+// : [[1, 2], [3, 4], [5, 6], [7]]
+</pre>
+</div>
+
+<p>
+This function uses a more complicated <code>accumulator</code> consisting out of a stack, the current list, and the count.
+</p>
+</div>
+</div>
+</div>
+
+
+
+
+
+<div id="outline-container-org3eac601" class="outline-2">
+<h2 id="org3eac601"><span class="section-number-2">8</span> Changes</h2>
+<div class="outline-text-2" id="text-8">
+<p>
+<b><b>12/01/2015</b></b>
+</p>
+<ul class="org-ul">
+<li>Fixed the <code>rFlatMap</code> type signature</li>
+<li>Added additional explanations for the code examples</li>
+<li>Fixed issue where performance differences were attributed to laziness</li>
+</ul>
+</div>
+</div>
+<div id="footnotes">
+<h2 class="footnotes">Footnotes: </h2>
+<div id="text-footnotes">
+
+<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1">1</a></sup> <div class="footpara">For reasons why, <a href="http://airspeedvelocity.net/2015/08/03/arrays-linked-lists-and-performance/">have a look at this blog post</a></div></div>
+
+<div class="footdef"><sup><a id="fn.2" class="footnum" href="#fnr.2">2</a></sup> <div class="footpara">In an earlier version of this post I was falsely assuming Swift's laziness feature to be the culprit of the difference. <a href="https://www.reddit.com/r/swift/comments/3uv1hy/reduce_all_the_things_alternatives_to_mapfilter/">Thanks to this Reddit thread for pointing out my mistake</a></div></div>
+
+
+</div>
+</div></div>
+
+        <div id="followme">
+            <p>If you read this far, you should follow me (<a href="http://www.twitter.com/terhechte">@terhechte</a>) <br /> on <a href="http://www.twitter.com/terhechte"><i class="fi-social-twitter"></i> Twitter</a></p>
+            <br />
+        </div>
+        
+
+        <div class="footnotes">
+            <ol></ol>
+        </div>
+
+        <p class="anchor"><i class="fi-anchor"></i></p>
+ 
+      </article></div>
+
+
+    </div>
+
+    <div class="column is-narrow">
+
+     <aside class="menu">
+
+         
+
+
+
+      <br />
+      <ul class="menu-list">
+       <li>
+        <p class="menu-label">
+         <a>
+          <i class="fas fa-dove"></i>
+          Swift Topics
+         </a>
+        </p>
+        <ul>
+            <li><a href="/topics/all.html">All</a></li>
+           
+            
+            <li><a href="/topics/swift-tricks.html">Swift Tricks</a></li>
+            
+         
+            
+            <li><a href="/topics/language.html">Language</a></li>
+            
+         
+            
+            <li><a href="/topics/hands-on.html">Hands On</a></li>
+            
+         
+            
+            <li><a href="/topics/blog.html">Blog</a></li>
+            
+         
+            
+         
+        </ul>
+       </li>
+
+       <li>
+           <p class="menu-label">
+               <a>
+                   <i class="fas fa-book"></i>
+                   Guides
+               </a>
+           </p>
+           <ul>
+                 
+               <li><a href="/guides/pattern_matching/intro.html">🧩 Pattern Matching</a></li>
+                 
+               <li><a href="/guides/advanced_practical_enum_examples/introduction.html">🚦 Enums</a></li>
+                 
+               <li><a href="/guides/map_flatmap_reduce_more/intro.html">🗺 Map, Reduce &amp; more</a></li>
+                 
+               <li><a href="/guides/associated_types/associated_types.html">🧙🏻 Associated Types</a></li>
+                 
+               <li><a href="/guides/tuples/introduction.html">🍱 Tuples</a></li>
+                 
+               <li><a href="/guides/optionals/intro.html">⁉️ Optionals</a></li>
+                 
+               <li><a href="/guides/swift_reflection/introduction.html">🔮 Reflection</a></li>
+                 
+           </ul>
+       </li>
+      </ul>
+
+      <div class="sidebar-banner">
+          <a href="https://contravariance.rocks"><img src="/img/contravariance_banner.png" srcset="/img/contravariance_banner.png 1x, /img/contravariance_banner@2x.png 2x" /></a>
+      </div>
+
+      <ul class="menu-list">
+       <li>
+        <p class="menu-label">
+         <a>
+          <i class="fas fa-tags"></i>
+          Tags
+         </a>
+        </p>
+        <ul>
+
+     
+     <li><a href="/tags/pattern-matching.html" class="tags has-addons"><span class="tag is-info is-rounded">pattern matching</span><span class="tag is-primary is-rounded">25</span></a></li>
+     
+     <li><a href="/tags/switch.html" class="tags has-addons"><span class="tag is-info is-rounded">switch</span><span class="tag is-primary is-rounded">24</span></a></li>
+     
+     <li><a href="/tags/enum.html" class="tags has-addons"><span class="tag is-info is-rounded">enum</span><span class="tag is-primary is-rounded">20</span></a></li>
+     
+     <li><a href="/tags/associated.html" class="tags has-addons"><span class="tag is-info is-rounded">associated</span><span class="tag is-primary is-rounded">14</span></a></li>
+     
+     <li><a href="/tags/tuples.html" class="tags has-addons"><span class="tag is-info is-rounded">tuples</span><span class="tag is-primary is-rounded">13</span></a></li>
+     
+     <li><a href="/tags/reflection.html" class="tags has-addons"><span class="tag is-info is-rounded">reflection</span><span class="tag is-primary is-rounded">12</span></a></li>
+     
+     <li><a href="/tags/reduce.html" class="tags has-addons"><span class="tag is-info is-rounded">reduce</span><span class="tag is-primary is-rounded">11</span></a></li>
+     
+     <li><a href="/tags/box.html" class="tags has-addons"><span class="tag is-info is-rounded">box</span><span class="tag is-primary is-rounded">10</span></a></li>
+     
+     <li><a href="/tags/generics.html" class="tags has-addons"><span class="tag is-info is-rounded">generics</span><span class="tag is-primary is-rounded">7</span></a></li>
+     
+     <li><a href="/tags/compactmap.html" class="tags has-addons"><span class="tag is-info is-rounded">compactMap</span><span class="tag is-primary is-rounded">6</span></a></li>
+     
+     <li><a href="/tags/filter.html" class="tags has-addons"><span class="tag is-info is-rounded">filter</span><span class="tag is-primary is-rounded">6</span></a></li>
+     
+     <li><a href="/tags/map.html" class="tags has-addons"><span class="tag is-info is-rounded">map</span><span class="tag is-primary is-rounded">6</span></a></li>
+     
+     <li><a href="/tags/mirror.html" class="tags has-addons"><span class="tag is-info is-rounded">mirror</span><span class="tag is-primary is-rounded">6</span></a></li>
+     
+     <li><a href="/tags/protocol.html" class="tags has-addons"><span class="tag is-info is-rounded">protocol</span><span class="tag is-primary is-rounded">6</span></a></li>
+     
+     <li><a href="/tags/optionals.html" class="tags has-addons"><span class="tag is-info is-rounded">optionals</span><span class="tag is-primary is-rounded">5</span></a></li>
+     
+     <li><a href="/tags/where.html" class="tags has-addons"><span class="tag is-info is-rounded">where</span><span class="tag is-primary is-rounded">5</span></a></li>
+     
+     <li><a href="/tags/erasure.html" class="tags has-addons"><span class="tag is-info is-rounded">erasure</span><span class="tag is-primary is-rounded">4</span></a></li>
+     
+     <li><a href="/tags/equatable.html" class="tags has-addons"><span class="tag is-info is-rounded">equatable</span><span class="tag is-primary is-rounded">3</span></a></li>
+     
+     <li><a href="/tags/destructure.html" class="tags has-addons"><span class="tag is-info is-rounded">destructure</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/error.html" class="tags has-addons"><span class="tag is-info is-rounded">error</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/extension.html" class="tags has-addons"><span class="tag is-info is-rounded">extension</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/guard.html" class="tags has-addons"><span class="tag is-info is-rounded">guard</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/if-let.html" class="tags has-addons"><span class="tag is-info is-rounded">if let</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/is.html" class="tags has-addons"><span class="tag is-info is-rounded">is</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/objc.html" class="tags has-addons"><span class="tag is-info is-rounded">objc</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/optional.html" class="tags has-addons"><span class="tag is-info is-rounded">optional</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/struct.html" class="tags has-addons"><span class="tag is-info is-rounded">struct</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/try.html" class="tags has-addons"><span class="tag is-info is-rounded">try</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/.html" class="tags has-addons"><span class="tag is-info is-rounded">?</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/caseiterable.html" class="tags has-addons"><span class="tag is-info is-rounded">CaseIterable</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/customreflectable.html" class="tags has-addons"><span class="tag is-info is-rounded">CustomReflectable</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/data.html" class="tags has-addons"><span class="tag is-info is-rounded">Data</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/expressiblebystringliteral.html" class="tags has-addons"><span class="tag is-info is-rounded">ExpressibleByStringLiteral</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/rawrepresentable.html" class="tags has-addons"><span class="tag is-info is-rounded">RawRepresentable</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/as.html" class="tags has-addons"><span class="tag is-info is-rounded">as</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/autoclosure.html" class="tags has-addons"><span class="tag is-info is-rounded">autoclosure</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/break.html" class="tags has-addons"><span class="tag is-info is-rounded">break</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/catch.html" class="tags has-addons"><span class="tag is-info is-rounded">catch</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/closure.html" class="tags has-addons"><span class="tag is-info is-rounded">closure</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/copyonwrite.html" class="tags has-addons"><span class="tag is-info is-rounded">copy-on-write</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/coredata.html" class="tags has-addons"><span class="tag is-info is-rounded">coredata</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/either.html" class="tags has-addons"><span class="tag is-info is-rounded">either</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/fallthrough.html" class="tags has-addons"><span class="tag is-info is-rounded">fallthrough</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/for.html" class="tags has-addons"><span class="tag is-info is-rounded">for</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/for-case.html" class="tags has-addons"><span class="tag is-info is-rounded">for case</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/groupby.html" class="tags has-addons"><span class="tag is-info is-rounded">groupby</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/guard-let.html" class="tags has-addons"><span class="tag is-info is-rounded">guard let</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/if-case.html" class="tags has-addons"><span class="tag is-info is-rounded">if case</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/indirect.html" class="tags has-addons"><span class="tag is-info is-rounded">indirect</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/init.html" class="tags has-addons"><span class="tag is-info is-rounded">init</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/init.html" class="tags has-addons"><span class="tag is-info is-rounded">init?</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/inout.html" class="tags has-addons"><span class="tag is-info is-rounded">inout</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/label.html" class="tags has-addons"><span class="tag is-info is-rounded">label</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/literal.html" class="tags has-addons"><span class="tag is-info is-rounded">literal</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/method.html" class="tags has-addons"><span class="tag is-info is-rounded">method</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/overload.html" class="tags has-addons"><span class="tag is-info is-rounded">overload</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/package.html" class="tags has-addons"><span class="tag is-info is-rounded">package</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/partition.html" class="tags has-addons"><span class="tag is-info is-rounded">partition</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/performance.html" class="tags has-addons"><span class="tag is-info is-rounded">performance</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/property.html" class="tags has-addons"><span class="tag is-info is-rounded">property</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/protocols.html" class="tags has-addons"><span class="tag is-info is-rounded">protocols</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/range.html" class="tags has-addons"><span class="tag is-info is-rounded">range</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/self.html" class="tags has-addons"><span class="tag is-info is-rounded">self</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/tupealias.html" class="tags has-addons"><span class="tag is-info is-rounded">tupealias</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/tuple.html" class="tags has-addons"><span class="tag is-info is-rounded">tuple</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/typealias.html" class="tags has-addons"><span class="tag is-info is-rounded">typealias</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/unique.html" class="tags has-addons"><span class="tag is-info is-rounded">unique</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/value-type.html" class="tags has-addons"><span class="tag is-info is-rounded">value type</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/valuetype.html" class="tags has-addons"><span class="tag is-info is-rounded">valuetype</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/vararg.html" class="tags has-addons"><span class="tag is-info is-rounded">vararg</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/wildcard.html" class="tags has-addons"><span class="tag is-info is-rounded">wildcard</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/zip.html" class="tags has-addons"><span class="tag is-info is-rounded">zip</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/.html" class="tags has-addons"><span class="tag is-info is-rounded">~=</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+
+        </ul>
+       </li>
+      </ul>
+
+
+     </aside> 
+
+
+    </div>
+   </div>
+  </div>
+ </section>
+
+ <div class="footer">
+  <article class="media" id="followme">
+   <figure class="media-left">
+    <p class="image is-64x64">
+     <img src="/img/terhechte.jpg" class="profile-image" />
+    </p>
+   </figure>
+   <div class="media-content">
+       <div class="columns">
+           <div class="column">
+               <div class="content">
+                   <p>
+                       <strong>Benedikt Terhechte</strong> <a href="https://twitter.com/terhechte"><small>@terhechte</small></a>
+                       <br />
+                       If you read this far, you should <a href="https://twitter.com/terhechte">follow Benedikt on Twitter</a>.<br />
+                       APPVENTURE is dedicated to providing articles about Swift, macOS, iOS &amp; Linux development.
+                   </p>
+                   <p>
+                       <strong>2011 - 2019 Benedikt Terhechte</strong>
+                   </p>
+               </div>
+           </div>
+           <div class="column">
+               <p>
+                   <a href="https://terhech.de">Benedikt's private blog can be found
+                       at <strong>terhech.de</strong></a>
+               </p>
+               <p>
+                   <br />
+                   <strong>Other Profiles</strong>
+               </p>
+               <p class="subtitle is-6">
+                   <a href="https://twitter.com/terhechte"><i class="fab fa-twitter"></i></a>
+                   <a href="https://www.xing.com/profile/Benedikt_Terhechte">
+                       <i class="fab fa-xing"></i>
+                   </a>
+                   <a href="https://twitter.com/terhechte">
+                       <i class="fab fa-github"></i>
+                   </a>
+                   <a href="https://news.ycombinator.com/user?id=terhechte">
+                       <i class="fab fa-hacker-news"></i>
+                   </a>
+               </p>
+           </div>
+       </div>
+   </div>
+   <div class="media-right">
+    <a href="https://twitter.com/terhechte" class="button is-info is-rounded">
+     <i class="fab fa-twitter"></i> 
+     Follow Me</a>
+   </div>
+  </article>
+ </div>
+
+
+
+</body>
+
+
+</html>

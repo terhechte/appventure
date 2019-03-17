@@ -2,6 +2,7 @@
  take the old generated html, and insert a header at the top "APPVENTURE RELAUNCHED" with a link to the new versions of the article,
   and then re-generate it and just keep the old /2015, /2016 etc folders as "copy folders" in (for search engine links and for posterity)
 * Write inout article, then generate the old html a last time for inclusion
+* The two new articles have wrong syntax highlighting
 * Make sure have no websocket code in release build
 * RawRepresentable article
 * About page

@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>An interactive Git Status client, written in C</title>
+  <link rel="stylesheet" href="/css/bulma.min.css" />
+  <link rel="stylesheet" href="/css/style.css" />
+
+  <meta content="An interactive Git Status client, written in C" name="description" /><meta content="benedikt, c, clojure, clojurescript, cocoa, git, html, ios, javascript, libgit, linux, mac, macos, ncurses, objective-c, photodesk, research, stylemac, terhechte" name="keywords" /><meta content="Benedikt Terhechte" name="author" /><meta content="An interactive Git Status client, written in C" property="og:title" /><meta content="An interactive Git Status client, written in C" property="og:description" /><meta content="http://appventure.me/2019/01/24/interactive-git-status-written-in-c/" property="og:url" /><meta content="An interactive Git Status client, written in C" name="twitter:title" /><meta content="An interactive Git Status client, written in C" name="twitter:description" /><meta content="summary" name="twitter:card" /><meta content="http://appventure.me/img/ez@2x.png" name="twitter:image" /><meta content="http://appventure.me/img/ez@2x.png" property="og:image" />
+  <meta name="twitter:site" content="@terhechte" />
+  <meta name="twitter:creator" content="@terhechte" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700,800" rel="stylesheet" />
+  <script defer="defer" src="/js/fontawesome-all.min.js"></script>
+  
+ </head>
+ <body>
+  <section class="section" id="head">
+   <div class="container" id="container">
+    <div>
+
+     <div class="columns">
+      <div class="column is-3">
+          <span id="brand"><a href="/index.html"><img src="/img/brand.png" srcset="/img/brand.png 1x, /img/brand@2x.png 2x" /></a></span>
+      </div>
+      <div class="column is-7">
+       <span id="subbrand">
+        Simple. Swift. Guides.</span>
+      </div>
+      <div class="column is-2">
+          <div class="field">
+
+          </div>
+      </div>
+     </div>
+    </div>
+   </div>
+  </section>
+
+
+  <section class="section" id="main">
+   <div class="container" id="container">
+    <div class="columns">
+     <div class="column">
+      <div class="columns">
+       <div class="column">
+        <div class="tabs">
+		 
+        </div>
+       </div>
+       <div class="column is-narrow">
+        <div class="buttons has-addons is-hidden-mobile">
+        </div>
+       </div>
+      </div>
+
+      <div class="box" style="margin-bottom: 250px;">
+            <h5 style="font-size: 38px; font-weight: bold;"><a class="xx-new-article" href="https://terhech.de/posts/2019-01-24-interactive-git-status-written-in-c.html">AppVenture has been updated</a></h5>
+            <p style="padding-top: 10px; padding-bottom: 10px; font-size: 18px;">
+                All articles have been rewritten and improved. You will be forwarded
+                to the updated article.
+            </p>
+            <p style="font-size: 18px; font-weight: bold;">
+                <a class="xx-new-article" href="https://terhech.de/posts/2019-01-24-interactive-git-status-written-in-c.html" id="xxx-new-article">Click here to go there directly.</a>
+            </p>
+            <script>
+                 setTimeout(function(){ 
+                    document.location.href=document.getElementById("xxx-new-article").href;
+                },
+                    0);
+            </script>
+      </div>
+
+
+
+
+      <div role="content" id="maincontent" style="opacity: 0.5"><article id="article--1794912213" class="article-post content is-medium">
+
+
+ 
+          <h6><i class="fi-pencil"></i> Thu, 24 Jan 2019 <a href="/2019/01/24/interactive-git-status-written-in-c/">#</a></h6>
+
+        <h3><a href="/2019/01/24/interactive-git-status-written-in-c/">An interactive Git Status client, written in C</a></h3>
+
+
+
+        <div class="actual-content">
+<div class="figure">
+<p><img src="https://j.gifs.com/JyDPZy.gif" alt="JyDPZy.gif" />
+</p>
+</div>
+<a href="https://github.com/terhechte/gitsi" class="button round small">
+<i class="fi-social-github"></i>
+Gitsi On GitHub</a>
+
+<a href="https://www.youtube.com/watch?v=pAxquqis56I&amp;feature=youtu.be" class="button round small">
+Youtube Video</a>
+
+<p>
+Over Christmas I decided on a whim to solve a workflow-related problem that I've had for some time and to also go back and write a small-scale project in C. The result is <code>Gitsi</code> a small, lightweight, interactive git status client that offers fast shortcuts to quickly manage the git status output. Let me go back to the actual problem I had.
+</p>
+
+<div id="outline-container-org416f543" class="outline-2">
+<h2 id="org416f543"><span class="section-number-2">1</span> Using Git on the Commandline</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+Over the years I've tried and used many different git clients. <code>SourceTree</code>, <code>GitUp</code>, <code>Gitk</code>, <code>Magit</code>, to name a few. <code>Magit</code> (a Git client build into Emacs) is the one I still use the  most, but over the years I've more and more moved towards plain git on the terminal for most of my daily activities. However, one thing always bugged me: If I have an output from git status (say the following one):
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash">On branch master
+Your branch is up to date with <span style="font-style: italic;">'origin/master'</span>.
+
+Changes to be committed:
+  (use <span style="font-style: italic;">"git reset HEAD &lt;file&gt;..."</span> to unstage)
+
+        modified:   Readme.md
+
+Changes not staged for commit:
+  (use <span style="font-style: italic;">"git add &lt;file&gt;..."</span> to update what will be committed)
+  (use <span style="font-style: italic;">"git checkout -- &lt;file&gt;..."</span> to discard changes<span style="font-weight: bold;"> in</span> working directory)
+
+        modified:   component_stats.db
+        modified:   q.sql
+
+Untracked files:
+  (use <span style="font-style: italic;">"git add &lt;file&gt;..."</span> to include<span style="font-weight: bold;"> in</span> what will be committed)
+
+        documentation/README.md
+        api_design/design_draft.md
+</pre>
+</div>
+
+<p>
+Then if I want to add the two untracked files and the q.sql to the index (in order to commit them) I'd have to write:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash">git add documentation/README.md
+git add pi_design/design_draft.md
+git add q.sql
+</pre>
+</div>
+
+<p>
+That's a lot of typing. Usually I go about copy pasting with the mouse. That also takes forever. Surely using a git GUI tool (like SourceTree) is much faster but as I don't need it for any of the other tasks I usually do, I'd need to start it first, which also takes forever. What I envisioned was an easy way to add, stage, unstage files in the git index, workspace and untracked files. Bonus points for also allowing <code>git checkout --</code> to remove changes to a specific file.
+</p>
+
+<p>
+I know there're tools for that (such as <code>tig</code>) but I wanted something that only did one thing, status management. No logging, no pushing or pulling, etc. This felt to me like a great opportunity to write a small scale C project, something I hadn't done for at least more than 10 years.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orge51cb70" class="outline-2">
+<h2 id="orge51cb70"><span class="section-number-2">2</span> Gitsi</h2>
+<div class="outline-text-2" id="text-2">
+<img src="/cimg/logo_gitsi.svg" height="150" />
+
+<p>
+This is how gitsi was born. Have a <a href="https://github.com/terhechte/gitsi">look at the project if you're interested</a>, it offers a nice handful of features such as all of the above plus: VIM Keybindings, filtering, diffing, interactive <code>git add</code> and more.
+</p>
+
+<p>
+<a href="https://www.youtube.com/watch?v=pAxquqis56I&amp;feature=youtu.be">Here's a short video that shows it in action</a>
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgc213a92" class="outline-2">
+<h2 id="orgc213a92"><span class="section-number-2">3</span> Writing in C</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+As a iOS developer I've had my fair share of Objective-C, however all the nice abstractions that Apple put in place actually mean that usually I don't really touch C code. So, writing something bigger in C was really interesting when comparing it to developing something in Swift (doh, obviously).
+</p>
+
+<p>
+It relies on two libraries:
+</p>
+<ul class="org-ul">
+<li><a href="https://libgit2.org/">libgit2</a>: The interface to <code>git</code>. Interestingly <code>git</code> (the commandline tool) and <code>libgit2</code> are separate entities. Meaning <code>git</code> does not use libgit. This means that for some things that git does, there is  no easy equivalent in libgit. This makes some things very hard.</li>
+<li><a href="https://en.wikipedia.org/wiki/Ncurses">ncurses</a>: This is <i>the</i> library to use when developing TUI (terminal UI) applications. It allows you to move the cursor around in the terminal, color it, draw windows, etc.</li>
+</ul>
+</div>
+
+<div id="outline-container-orgd1669de" class="outline-3">
+<h3 id="orgd1669de"><span class="section-number-3">3.1</span> The fun parts</h3>
+<div class="outline-text-3" id="text-3-1">
+<ul class="org-ul">
+<li>Compile times were beyond beautiful</li>
+<li>The limited featureset of the language made it surprisingly fun to work on a project of this size. There's no questioning which abstraction to use, there's usually only one that fits. If there're more, they require more indepth knowledge of the language.</li>
+<li>This is not particular to C, but the reactive approach of writing a TUI app by just rendering over a mainloop (also like most games) feels very refreshing compared to <i>normal</i> iOS work (obvious comparison to React, etc)</li>
+<li>Getting it to work on a different platform (Linux) was also kinda easy, though I struggled more with it than I would have expected. In particular there're several useful functions that are not part of C99 (the 99 C standard). Using them requires the correct compile flag (<code>-std=gnu11</code>). However, some functions are also not part of the C standard, but specific GNU extensions, though they're also supported on all the platforms I care about. Using these requires adding a <code>#define _GNU_SOURCE</code> at the top of your source file. However, not on macOS, but on Linux. This was tricky to figure out.</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgbdab486" class="outline-3">
+<h3 id="orgbdab486"><span class="section-number-3">3.2</span> The less fun parts</h3>
+<div class="outline-text-3" id="text-3-2">
+<ul class="org-ul">
+<li>Memory management. This was totally expected, but it consumed more time than I'd have expected. Thankfully, <code>valgrind</code> is a great tool to find these issues. Sadly, valgrind seems to not run on macOS right now, so I ran it via Docker. That worked great though. I had a lot of small issues that seem to be (mostly) fixed now. This experience alone makes me so grateful for Swift's Arc and Rust's Borrow Checker.</li>
+<li>Documentation. This was terrible. The <code>libgit</code> documentation is mostly ok, but for the C <code>stdlib</code> and epecially <code>ncurses</code>, the documentation is just awful. Since they all differ platform by platform, implementation by implementation, there's no <i>one</i> reference. Sometimes it would take me forever to just figure out what the parameters to a certain function would do. Getting this done involved a lot of googling.</li>
+<li>Lack of tooling suite. Sure, almost every editor supports C, but almost everything in tooling requires choices, research and pain. There's no one package manager / ecosystem. How to handle building, there're a ton of build systems, how to handle tests, there're a ton of solutions. Since everything is so free and open, everything is also a mess. It is probably much easier when you're working on a pre-existing, pre-defined project, but there's a huge overhead of things just to get started. I tried to keep it as simple as possible. System Package Manager (<code>homebrew</code> / <code>apt-get</code>), <code>vim</code>, <code>cmake</code> and no tests.</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org41139f8" class="outline-2">
+<h2 id="org41139f8"><span class="section-number-2">4</span> Using it with Xcode</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+Working on a project like this from <code>Xcode</code> works surprisingly well. I set up an Xcode project, added the required libraries (<code>ncurses</code> and <code>libgit</code>) imported the <code>main.c</code> file and I could compile it. Debugging was a wee bit more work. Since Xcode can't run ncurses executables (i.e. it can't run them in a terminal) we have to tell Xcode to compile the app and then wait for the process to start and then to attach to it. After that, I can head to a terminal and run the just-compiled app and then Xcode will attach to it and all the breakpoints etc work. It is a wee bit more cumbersome but works fine. I had to introduce a particular command line flag though that makes sure that attaching via Xcode doesn't break things. 
+</p>
+</div>
+</div>
+
+<div id="outline-container-orge93bdd3" class="outline-2">
+<h2 id="orge93bdd3"><span class="section-number-2">5</span> Testing</h2>
+<div class="outline-text-2" id="text-5">
+<p>
+There're no tests. Yet. I've started on the necessary prerequisites to run integration tests but I wanted to release it first. The idea is to start the binary in a special mode and give it a string of tasks (i.e. go down 2 lines, do a git add, go up one line, etc) and then make sure that the end result is what's expected.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgbc67a24" class="outline-2">
+<h2 id="orgbc67a24"><span class="section-number-2">6</span> Recap</h2>
+<div class="outline-text-2" id="text-6">
+<p>
+This was a fun project, but now I'm also done with C for the rest of this year (except for small additions to gitsi, of course). I'm already longing to do something in Swift or Rust again.
+</p>
+</div>
+</div>
+</div>
+
+        <div id="followme">
+            <p>If you read this far, you should follow me (<a href="http://www.twitter.com/terhechte">@terhechte</a>) <br /> on <a href="http://www.twitter.com/terhechte"><i class="fi-social-twitter"></i> Twitter</a></p>
+            <br />
+        </div>
+        
+
+        <div class="footnotes">
+            <ol></ol>
+        </div>
+
+        <p class="anchor"><i class="fi-anchor"></i></p>
+ 
+      </article></div>
+
+
+    </div>
+
+    <div class="column is-narrow">
+
+     <aside class="menu">
+
+         
+
+
+
+      <br />
+      <ul class="menu-list">
+       <li>
+        <p class="menu-label">
+         <a>
+          <i class="fas fa-dove"></i>
+          Swift Topics
+         </a>
+        </p>
+        <ul>
+            <li><a href="/topics/all.html">All</a></li>
+           
+            
+            <li><a href="/topics/swift-tricks.html">Swift Tricks</a></li>
+            
+         
+            
+            <li><a href="/topics/language.html">Language</a></li>
+            
+         
+            
+            <li><a href="/topics/hands-on.html">Hands On</a></li>
+            
+         
+            
+            <li><a href="/topics/blog.html">Blog</a></li>
+            
+         
+            
+         
+        </ul>
+       </li>
+
+       <li>
+           <p class="menu-label">
+               <a>
+                   <i class="fas fa-book"></i>
+                   Guides
+               </a>
+           </p>
+           <ul>
+                 
+               <li><a href="/guides/pattern_matching/intro.html">🧩 Pattern Matching</a></li>
+                 
+               <li><a href="/guides/advanced_practical_enum_examples/introduction.html">🚦 Enums</a></li>
+                 
+               <li><a href="/guides/map_flatmap_reduce_more/intro.html">🗺 Map, Reduce &amp; more</a></li>
+                 
+               <li><a href="/guides/associated_types/associated_types.html">🧙🏻 Associated Types</a></li>
+                 
+               <li><a href="/guides/tuples/introduction.html">🍱 Tuples</a></li>
+                 
+               <li><a href="/guides/optionals/intro.html">⁉️ Optionals</a></li>
+                 
+               <li><a href="/guides/swift_reflection/introduction.html">🔮 Reflection</a></li>
+                 
+           </ul>
+       </li>
+      </ul>
+
+      <div class="sidebar-banner">
+          <a href="https://contravariance.rocks"><img src="/img/contravariance_banner.png" srcset="/img/contravariance_banner.png 1x, /img/contravariance_banner@2x.png 2x" /></a>
+      </div>
+
+      <ul class="menu-list">
+       <li>
+        <p class="menu-label">
+         <a>
+          <i class="fas fa-tags"></i>
+          Tags
+         </a>
+        </p>
+        <ul>
+
+     
+     <li><a href="/tags/pattern-matching.html" class="tags has-addons"><span class="tag is-info is-rounded">pattern matching</span><span class="tag is-primary is-rounded">25</span></a></li>
+     
+     <li><a href="/tags/switch.html" class="tags has-addons"><span class="tag is-info is-rounded">switch</span><span class="tag is-primary is-rounded">24</span></a></li>
+     
+     <li><a href="/tags/enum.html" class="tags has-addons"><span class="tag is-info is-rounded">enum</span><span class="tag is-primary is-rounded">20</span></a></li>
+     
+     <li><a href="/tags/associated.html" class="tags has-addons"><span class="tag is-info is-rounded">associated</span><span class="tag is-primary is-rounded">14</span></a></li>
+     
+     <li><a href="/tags/tuples.html" class="tags has-addons"><span class="tag is-info is-rounded">tuples</span><span class="tag is-primary is-rounded">13</span></a></li>
+     
+     <li><a href="/tags/reflection.html" class="tags has-addons"><span class="tag is-info is-rounded">reflection</span><span class="tag is-primary is-rounded">12</span></a></li>
+     
+     <li><a href="/tags/reduce.html" class="tags has-addons"><span class="tag is-info is-rounded">reduce</span><span class="tag is-primary is-rounded">11</span></a></li>
+     
+     <li><a href="/tags/box.html" class="tags has-addons"><span class="tag is-info is-rounded">box</span><span class="tag is-primary is-rounded">10</span></a></li>
+     
+     <li><a href="/tags/generics.html" class="tags has-addons"><span class="tag is-info is-rounded">generics</span><span class="tag is-primary is-rounded">7</span></a></li>
+     
+     <li><a href="/tags/compactmap.html" class="tags has-addons"><span class="tag is-info is-rounded">compactMap</span><span class="tag is-primary is-rounded">6</span></a></li>
+     
+     <li><a href="/tags/filter.html" class="tags has-addons"><span class="tag is-info is-rounded">filter</span><span class="tag is-primary is-rounded">6</span></a></li>
+     
+     <li><a href="/tags/map.html" class="tags has-addons"><span class="tag is-info is-rounded">map</span><span class="tag is-primary is-rounded">6</span></a></li>
+     
+     <li><a href="/tags/mirror.html" class="tags has-addons"><span class="tag is-info is-rounded">mirror</span><span class="tag is-primary is-rounded">6</span></a></li>
+     
+     <li><a href="/tags/protocol.html" class="tags has-addons"><span class="tag is-info is-rounded">protocol</span><span class="tag is-primary is-rounded">6</span></a></li>
+     
+     <li><a href="/tags/optionals.html" class="tags has-addons"><span class="tag is-info is-rounded">optionals</span><span class="tag is-primary is-rounded">5</span></a></li>
+     
+     <li><a href="/tags/where.html" class="tags has-addons"><span class="tag is-info is-rounded">where</span><span class="tag is-primary is-rounded">5</span></a></li>
+     
+     <li><a href="/tags/erasure.html" class="tags has-addons"><span class="tag is-info is-rounded">erasure</span><span class="tag is-primary is-rounded">4</span></a></li>
+     
+     <li><a href="/tags/equatable.html" class="tags has-addons"><span class="tag is-info is-rounded">equatable</span><span class="tag is-primary is-rounded">3</span></a></li>
+     
+     <li><a href="/tags/destructure.html" class="tags has-addons"><span class="tag is-info is-rounded">destructure</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/error.html" class="tags has-addons"><span class="tag is-info is-rounded">error</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/extension.html" class="tags has-addons"><span class="tag is-info is-rounded">extension</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/guard.html" class="tags has-addons"><span class="tag is-info is-rounded">guard</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/if-let.html" class="tags has-addons"><span class="tag is-info is-rounded">if let</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/is.html" class="tags has-addons"><span class="tag is-info is-rounded">is</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/objc.html" class="tags has-addons"><span class="tag is-info is-rounded">objc</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/optional.html" class="tags has-addons"><span class="tag is-info is-rounded">optional</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/struct.html" class="tags has-addons"><span class="tag is-info is-rounded">struct</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/try.html" class="tags has-addons"><span class="tag is-info is-rounded">try</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/.html" class="tags has-addons"><span class="tag is-info is-rounded">?</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/caseiterable.html" class="tags has-addons"><span class="tag is-info is-rounded">CaseIterable</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/customreflectable.html" class="tags has-addons"><span class="tag is-info is-rounded">CustomReflectable</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/data.html" class="tags has-addons"><span class="tag is-info is-rounded">Data</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/expressiblebystringliteral.html" class="tags has-addons"><span class="tag is-info is-rounded">ExpressibleByStringLiteral</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/rawrepresentable.html" class="tags has-addons"><span class="tag is-info is-rounded">RawRepresentable</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/as.html" class="tags has-addons"><span class="tag is-info is-rounded">as</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/autoclosure.html" class="tags has-addons"><span class="tag is-info is-rounded">autoclosure</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/break.html" class="tags has-addons"><span class="tag is-info is-rounded">break</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/catch.html" class="tags has-addons"><span class="tag is-info is-rounded">catch</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/closure.html" class="tags has-addons"><span class="tag is-info is-rounded">closure</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/copyonwrite.html" class="tags has-addons"><span class="tag is-info is-rounded">copy-on-write</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/coredata.html" class="tags has-addons"><span class="tag is-info is-rounded">coredata</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/either.html" class="tags has-addons"><span class="tag is-info is-rounded">either</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/fallthrough.html" class="tags has-addons"><span class="tag is-info is-rounded">fallthrough</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/for.html" class="tags has-addons"><span class="tag is-info is-rounded">for</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/for-case.html" class="tags has-addons"><span class="tag is-info is-rounded">for case</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/groupby.html" class="tags has-addons"><span class="tag is-info is-rounded">groupby</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/guard-let.html" class="tags has-addons"><span class="tag is-info is-rounded">guard let</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/if-case.html" class="tags has-addons"><span class="tag is-info is-rounded">if case</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/indirect.html" class="tags has-addons"><span class="tag is-info is-rounded">indirect</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/init.html" class="tags has-addons"><span class="tag is-info is-rounded">init</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/init.html" class="tags has-addons"><span class="tag is-info is-rounded">init?</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/inout.html" class="tags has-addons"><span class="tag is-info is-rounded">inout</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/label.html" class="tags has-addons"><span class="tag is-info is-rounded">label</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/literal.html" class="tags has-addons"><span class="tag is-info is-rounded">literal</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/method.html" class="tags has-addons"><span class="tag is-info is-rounded">method</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/overload.html" class="tags has-addons"><span class="tag is-info is-rounded">overload</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/package.html" class="tags has-addons"><span class="tag is-info is-rounded">package</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/partition.html" class="tags has-addons"><span class="tag is-info is-rounded">partition</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/performance.html" class="tags has-addons"><span class="tag is-info is-rounded">performance</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/property.html" class="tags has-addons"><span class="tag is-info is-rounded">property</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/protocols.html" class="tags has-addons"><span class="tag is-info is-rounded">protocols</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/range.html" class="tags has-addons"><span class="tag is-info is-rounded">range</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/self.html" class="tags has-addons"><span class="tag is-info is-rounded">self</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/tupealias.html" class="tags has-addons"><span class="tag is-info is-rounded">tupealias</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/tuple.html" class="tags has-addons"><span class="tag is-info is-rounded">tuple</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/typealias.html" class="tags has-addons"><span class="tag is-info is-rounded">typealias</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/unique.html" class="tags has-addons"><span class="tag is-info is-rounded">unique</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/value-type.html" class="tags has-addons"><span class="tag is-info is-rounded">value type</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/valuetype.html" class="tags has-addons"><span class="tag is-info is-rounded">valuetype</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/vararg.html" class="tags has-addons"><span class="tag is-info is-rounded">vararg</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/wildcard.html" class="tags has-addons"><span class="tag is-info is-rounded">wildcard</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/zip.html" class="tags has-addons"><span class="tag is-info is-rounded">zip</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/.html" class="tags has-addons"><span class="tag is-info is-rounded">~=</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+
+        </ul>
+       </li>
+      </ul>
+
+
+     </aside> 
+
+
+    </div>
+   </div>
+  </div>
+ </section>
+
+ <div class="footer">
+  <article class="media" id="followme">
+   <figure class="media-left">
+    <p class="image is-64x64">
+     <img src="/img/terhechte.jpg" class="profile-image" />
+    </p>
+   </figure>
+   <div class="media-content">
+       <div class="columns">
+           <div class="column">
+               <div class="content">
+                   <p>
+                       <strong>Benedikt Terhechte</strong> <a href="https://twitter.com/terhechte"><small>@terhechte</small></a>
+                       <br />
+                       If you read this far, you should <a href="https://twitter.com/terhechte">follow Benedikt on Twitter</a>.<br />
+                       APPVENTURE is dedicated to providing articles about Swift, macOS, iOS &amp; Linux development.
+                   </p>
+                   <p>
+                       <strong>2011 - 2019 Benedikt Terhechte</strong>
+                   </p>
+               </div>
+           </div>
+           <div class="column">
+               <p>
+                   <a href="https://terhech.de">Benedikt's private blog can be found
+                       at <strong>terhech.de</strong></a>
+               </p>
+               <p>
+                   <br />
+                   <strong>Other Profiles</strong>
+               </p>
+               <p class="subtitle is-6">
+                   <a href="https://twitter.com/terhechte"><i class="fab fa-twitter"></i></a>
+                   <a href="https://www.xing.com/profile/Benedikt_Terhechte">
+                       <i class="fab fa-xing"></i>
+                   </a>
+                   <a href="https://twitter.com/terhechte">
+                       <i class="fab fa-github"></i>
+                   </a>
+                   <a href="https://news.ycombinator.com/user?id=terhechte">
+                       <i class="fab fa-hacker-news"></i>
+                   </a>
+               </p>
+           </div>
+       </div>
+   </div>
+   <div class="media-right">
+    <a href="https://twitter.com/terhechte" class="button is-info is-rounded">
+     <i class="fab fa-twitter"></i> 
+     Follow Me</a>
+   </div>
+  </article>
+ </div>
+
+
+
+</body>
+
+
+</html>

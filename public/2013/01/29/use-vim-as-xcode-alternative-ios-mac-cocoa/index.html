@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Use VIM as an Xcode alternative</title>
+  <link rel="stylesheet" href="/css/bulma.min.css" />
+  <link rel="stylesheet" href="/css/style.css" />
+
+  <meta content="" name="description" /><meta content="benedikt, c, clojure, clojurescript, cocoa, html, ios, javascript, mac, objective-c, photodesk, research, stylemac, terhechte" name="keywords" /><meta content="Benedikt Terhechte" name="author" /><meta content="Use VIM as an Xcode alternative" property="og:title" /><meta content="" property="og:description" /><meta content="http://appventure.me/2013/01/29/use-vim-as-xcode-alternative-ios-mac-cocoa/" property="og:url" /><meta content="Use VIM as an Xcode alternative" name="twitter:title" /><meta content="" name="twitter:description" /><meta content="summary" name="twitter:card" /><meta content="http://appventure.me/img/ez@2x.png" name="twitter:image" /><meta content="http://appventure.me/img/ez@2x.png" property="og:image" />
+  <meta name="twitter:site" content="@terhechte" />
+  <meta name="twitter:creator" content="@terhechte" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700,800" rel="stylesheet" />
+  <script defer="defer" src="/js/fontawesome-all.min.js"></script>
+  
+ </head>
+ <body>
+  <section class="section" id="head">
+   <div class="container" id="container">
+    <div>
+
+     <div class="columns">
+      <div class="column is-3">
+          <span id="brand"><a href="/index.html"><img src="/img/brand.png" srcset="/img/brand.png 1x, /img/brand@2x.png 2x" /></a></span>
+      </div>
+      <div class="column is-7">
+       <span id="subbrand">
+        Simple. Swift. Guides.</span>
+      </div>
+      <div class="column is-2">
+          <div class="field">
+
+          </div>
+      </div>
+     </div>
+    </div>
+   </div>
+  </section>
+
+
+  <section class="section" id="main">
+   <div class="container" id="container">
+    <div class="columns">
+     <div class="column">
+      <div class="columns">
+       <div class="column">
+        <div class="tabs">
+		 
+        </div>
+       </div>
+       <div class="column is-narrow">
+        <div class="buttons has-addons is-hidden-mobile">
+        </div>
+       </div>
+      </div>
+
+<h5 style="font-size: 38px; font-weight: bold;"><a class="xx-new-article" href="https://terhech.de/posts/2013-1-29-use-vim-as-an-xcode-alternative.html">AppVenture has been updated</a></h5>
+<p style="padding-top: 10px; padding-bottom: 10px; font-size: 18px;">
+All articles have been rewritten and improved. You will be forwarded
+to the updated article.
+</p>
+<p style="font-size: 18px; font-weight: bold;">
+<a class="xx-new-article" href="https://terhech.de/posts/2013-1-29-use-vim-as-an-xcode-alternative.html" id="xxx-new-article">Click here to go there directly.</a>
+</p>
+<script>
+setTimeout(function(){ 
+		document.location.href=document.getElementById("xxx-new-article").href;
+		},
+		0);
+</script>
+</div>
+
+
+
+
+      <div role="content" id="maincontent" style="opacity: 0.5"><article id="article-2081112410" class="article-post content is-medium">
+
+
+ 
+          <h6><i class="fi-pencil"></i> Tue, 29 Jan 2013 <a href="/2013/01/29/use-vim-as-xcode-alternative-ios-mac-cocoa/">#</a></h6>
+
+        <h3><a href="/2013/01/29/use-vim-as-xcode-alternative-ios-mac-cocoa/">Use VIM as an Xcode alternative</a></h3>
+
+
+
+        <div class="actual-content"><div class="box" style="margin-bottom: 250px;">
+<p>I really like <a href="http://www.vim.org">Vim</a>. I’ve been using it for many years now. However, since I do most of my coding in Objective-C, I could oftentimes only use Vim for HTML / Javascript / Python / Script projects. This is because I got so used to the fantastic auto completion in XCode. </p><p>Objective-C is a rather verbose and elaborate language, so the XCode completion is very valuable in everyday coding. Consider this line of code:</p>
+<pre><code>[NSThread detachNewThreadSelector:@selector(example:) toTarget:anObject withObject:anotherObject]
+</code></pre><p>Without completion, it is easy to forget the detailed syntax (was it onTarget: or toTarget: or withTarget:), it is cumbersome and slow to type the whole line, and it is error prone. Even worse, when you define lots of custom objects, it takes a lot longer as soon as you don’t remember the exact name of that specific property anymore. </p><p>XCode’s code completion helps in all these cases, which is why using Vim for Objective-C coding is by far not as good as in XCode. I’ve tried to remedy this by using <a href="http://www.jetbrains.com/objc/">AppCode</a> with its <a href="http://plugins.jetbrains.net/plugin/?id=164">IdeaVim</a> plugin, but the plugin lacked too many Vim commands that I use everyday. I used <a href="https://github.com/JugglerShu/XVim">XVim</a> a plugin that extends XCode to have Vim bindings, but I couldn’t live without a couple of Vim extensions and commands. In the end, event he slightest difference between one of these solutions and original Vim behaviour would bring me off track.</p><p>So yesterday I decided to try to tackle <a href="https://github.com/Rip-Rip/clang_complete">Clang Complete</a>, a completion plugin for Vim that utilizes the very same Clang engine that XCode uses, too. I had tried installing it before, but it never worked for me. This time, I got lucky though.</p><p>In addition to Clang Complete, I also installed a couple of other plugins to deal with other important XCode features. My current Objective-C Vim setup is a pleasure to work with, but there’re still some things that irk me and which I will try to remedy in the future:</p>
+<ul>
+  <li>It is currently not really possible to build your project and run it on the device or in the simulator. I’ve actually started working on this, but it is not done.</li>
+  <li>There is no way to look up the documentation for an entity. This seems to be possible with Cocoa.vim, but I haven’t looked into it yet.</li>
+  <li>Debugging, of course, does not work. Here, I think, I’ll just continue to use XCode.</li>
+  <li>Interface Builder stuff does not work either - of course.</li>
+  <li>Your Vim needs to be compiled with Python and Ruby support.</li>
+</ul><p>That said, let me go through the steps required to get Vim up to par with XCode</p><h4>Installing Packages</h4><p>In order to get Vim to behave nice with XCode, a couple of plugins are necessary. In order to install them, I’d recommend using a package manager like <a href="https://github.com/tpope/vim-pathogen">Pathogen</a> or <a href="https://github.com/gmarik/vundle">Vundle</a>. I’m using Vundle. This means that whenever you see something like “Bundle ‘name/plugin’” in my Vim configuration, it is a Vundle command that will look up the Vim plugin on Github, download it, and include it - all in one step.</p><h3>Clang</h3><p>First of all, you’ll need a recent version of Clang. The Clang Complete Wiki argues to not use the built-into-xcode one, but instead install the most recent version. I used <a href="http://mxcl.github.com/homebrew/">Homebrew</a> to install version 3.3:</p>
+<pre><code>brew install --HEAD llvm --with-clang
+</code></pre><p>Next up, is the actual Clang Complete Vim plugin. If you manually installed clang, you should know where it is now. If you installed with homebrew, it is probably in /usr/local/bin. </p><h3>Clang Complete</h3><p>You can <a href="https://github.com/Rip-Rip/clang_complete">download it here</a>. Below is my configuration to make it work.</p>
+<pre><code>" Tell Vundle to download &amp; import the clang complete plugin
+Bundle 'Rip-Rip/clang_complete'
+
+" Disable auto completion, always &lt;c-x&gt; &lt;c-o&gt; to complete
+let g:clang_complete_auto = 0 
+let g:clang_use_library = 1
+let g:clang_periodic_quickfix = 0
+let g:clang_close_preview = 1
+
+" For Objective-C, this needs to be active, otherwise multi-parameter methods won't be completed correctly
+let g:clang_snippets = 1
+
+" Snipmate does not work anymore, ultisnips is the recommended plugin
+let g:clang_snippets_engine = 'ultisnips'
+
+" This might change depending on your installation
+let g:clang_exec = '/usr/local/bin/clang'
+let g:clang_library_path = '/usr/local/lib/libclang.dylib'
+</code></pre>
+<table>
+  <thead>
+    <tr>
+      <th align="right">Cmd </th>
+      <th align="left">Behaviour </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="right">&lt;c-x&gt; &lt;c-o&gt; </td>
+      <td align="left">Show list of completions </td>
+    </tr>
+  </tbody>
+</table><h3>Ultisnips</h3><p>For the actual completion, Clang Complete has its own code but can also work with different completion plugins. I found the Clang Complete solution to not work very well, so I tested the others. Ultisnips comes closest to the XCode experience. It also includes a <a href="https://github.com/SirVer/ultisnips/blob/master/UltiSnips/objc.snippets">set of readymade snippets for common Objective-C patterns</a>.</p><p>So next up you need to <a href="https://github.com/SirVer/ultisnips">install ultisnips</a>:</p>
+<pre><code>Bundle 'guns/ultisnips'
+</code></pre><p>In XCode, when you want to switch between several parameters on a selector (doSomething:&lt;&gt; toObject:&lt;&gt; withObject:&lt;&gt;) you can just hit <tab> or <shift>+<tab>. This does not work with ultisnips, instead you have to type <c-j> or <c-k>.</c-k></c-j></tab></shift></tab></p>
+<table>
+  <thead>
+    <tr>
+      <th align="right">Cmd </th>
+      <th align="left">Behaviour </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="right">&lt;c-j&gt; </td>
+      <td align="left">Go to next parameter in completion</td>
+    </tr>
+    <tr>
+      <td align="right">&lt;c-k&gt; </td>
+      <td align="left">Go to previous parameter </td>
+    </tr>
+  </tbody>
+</table>
+<table>
+  <thead>
+    <tr>
+      <th align="right">Snippet </th>
+      <th align="left">Behaviour </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="right">cl&lt;tab&gt; </td>
+      <td align="left">Define Class </td>
+    </tr>
+    <tr>
+      <td align="right">sel&lt;tab&gt; </td>
+      <td align="left">@selector(example:) </td>
+    </tr>
+    <tr>
+      <td align="right">log&lt;tab&gt; </td>
+      <td align="left">NSLog(…) </td>
+    </tr>
+    <tr>
+      <td align="right">format&lt;tab&gt; </td>
+      <td align="left">NSString stringWithFormat </td>
+    </tr>
+  </tbody>
+</table><p><a href="https://github.com/SirVer/ultisnips/blob/master/UltiSnips/objc.snippets">More</a></p><h3>Syntastic</h3><p>XCode also shows you errors in your files and makes it easy to see when there’s an unused variable, or when you’re trying to call a selector that does not exist. Clang Complete has support for displaying these errors, but I found the overall integration in Vim sub par. I might be spoiled by <a href="https://github.com/scrooloose/syntastic">Syntastic</a> which is a multi language syntax checker with fantastic Vim integration. It shows sidebar signs, can be embedded into the status bar, and displays the errors in the bottom bar when you’re in the affected lines. </p><p>The syntax checker for Objective-C in Syntastic uses gcc though. So I spend some time and ported it over to Clang and so that it can read the same .clang_complete project definition file, that Clang Complete uses. These changes are not yet in Syntastic master (I did issue a pull request) so you’ll need to <a href="https://github.com/terhechte/syntastic">check out my fork for now</a>:</p>
+<pre><code>Bundle 'terhechte/syntastic'
+
+" Show sidebar signs.
+let g:syntastic_enable_signs=1
+
+" Read the clang complete file
+let g:syntastic_objc_config_file = '.clang_complete'
+
+" Status line configuration
+set statusline+=%#warningmsg#  " Add Error ruler.
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+nnoremap &lt;silent&gt; ` :Errors&lt;CR&gt;
+
+" Tell it to use clang instead of gcc
+let g:syntastic_objc_checker = 'clang'
+</code></pre>
+<table>
+  <thead>
+    <tr>
+      <th align="right">Cmd </th>
+      <th align="left">Behaviour </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="right">:Errors </td>
+      <td align="left">See the current errors in the file</td>
+    </tr>
+  </tbody>
+</table><h3>Indentation</h3><p>Vim’s default Objective-C indent is not very functional. Thankfully, Björn Winckler, a main contributor to MacVim, <a href="https://github.com/b4winckler/vim-objc">released a very good plugin for this</a>, that fixes all the issues I had:</p>
+<pre><code>Bundle "b4winckler/vim-objc"
+</code></pre><h3>Switching Header Files</h3><p>Another feature of XCode that I could not live without is the easy way to switch between header and implementation. <a href="https://github.com/eraserhd/vim-ios">Vim-iOS</a> adds commands for this. With :A you can switch to the alternate file. In addition to that it also offers :XBuild for building your project and :Xinstall for installing it on a device.</p>
+<pre><code>Bundle 'eraserhd/vim-ios.git'
+</code></pre>
+<table>
+  <thead>
+    <tr>
+      <th align="right">Cmd </th>
+      <th align="left">Behaviour </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="right">:A </td>
+      <td align="left">Switch to alternate file </td>
+    </tr>
+    <tr>
+      <td align="right">:XBuild </td>
+      <td align="left">Compile Project </td>
+    </tr>
+    <tr>
+      <td align="right">:Xinstall </td>
+      <td align="left">Install on device </td>
+    </tr>
+  </tbody>
+</table><h3>Additional Recommendations</h3><p>That’s it! These are all the packages you need for a pleasant Vim Objective-C experience. i would also recommend <a href="https://github.com/tpope/vim-surround">Vim-Surround</a> for fast navigation in methods, and <a href="https://github.com/tpope/vim-fugitive">Fugitive</a> for git integration like XCode and <a href="https://github.com/kien/ctrlp.vim">ctrlp</a> for fast file opening like the XCode cmd+shift+o command:</p>
+<pre><code>Bundle 'tpope/vim-fugitive'
+Bundle 'tpope/vim-surround'
+Bundle 'kien/ctrlp.vim'
+</code></pre>
+<table>
+  <thead>
+    <tr>
+      <th align="right">Cmd </th>
+      <th align="left">Behaviour </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="right">:Gcommit </td>
+      <td align="left">Commit whats in staging </td>
+    </tr>
+    <tr>
+      <td align="right">:Gdiff </td>
+      <td align="left">Do a diff </td>
+    </tr>
+    <tr>
+      <td align="right">:Gstatus </td>
+      <td align="left">Current status </td>
+    </tr>
+  </tbody>
+</table><p><a href="https://github.com/tpope/vim-fugitive/blob/master/doc/fugitive.txt">More</a></p><h4>Project Configuration: .clang_complete</h4><p>Now that your Vim is all set up, you will need to define a .clang_complete file in the home directory of your project that tells Clang Complete where your files are and how to compile. I plan on writing a tool that generates this definition out of your XCode Project file, but haven’t done so.</p><p>Here is an example file. If you intend to use this, please make sure that the paths to SDK’s and more fit your system.</p>
+<pre><code>-isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator6.0.sdk
+-isystem /usr/local/lib/clang/3.3
+-F/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator6.0.sdk/System/Library/Frameworks
+-I/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator6.0.sdk/usr/include
+-D __MACH__
+-D __IPHONE_OS_VERSION_MIN_REQUIRED=40300
+-fblocks
+-fobjc-nonfragile-abi
+-fno-builtin
+-m32
+-include ./MyFantasticProject/Prefix.pch
+-Wall
+-Wextra
+-Wno-unknown-pragmas
+-Wno-unused-parameter
+-Wno-sign-compare
+-I./MyFantasticProject/Classes
+-I./MyFantasticProject/ThirdParty/FacebookSDK
+-I./MyFantasticProject/ThirdParty/AFNetworking
+</code></pre><p>Basically, what you do is, at the bottom you go through all your directories that contain code and add them to the project. <a href="https://gist.github.com/4665223">I’ve written a small and handy Python script</a> that does this and prints out the list of directories.</p><h4>Closing Notes</h4><p>Now, when you start Vim from within the directory that contains the .clang_complete file, you should get completion for all symbols by pressing <c-x> <c-o>. You can switch between the different parameters of a selector with <c-j> and <c-k>.</c-k></c-j></c-o></c-x></p><p>My current Vim configuration (which contains a lot more) can be found <a href="https://github.com/terhechte/VimConfiguration">here</a>.</p></div>
+
+        <div id="followme">
+            <p>If you read this far, you should follow me (<a href="http://www.twitter.com/terhechte">@terhechte</a>) <br /> on <a href="http://www.twitter.com/terhechte"><i class="fi-social-twitter"></i> Twitter</a></p>
+            <br />
+        </div>
+        
+
+        <div class="footnotes">
+            <ol></ol>
+        </div>
+
+        <p class="anchor"><i class="fi-anchor"></i></p>
+ 
+      </article></div>
+
+
+    </div>
+
+    <div class="column is-narrow">
+
+     <aside class="menu">
+
+         
+
+
+
+      <br />
+      <ul class="menu-list">
+       <li>
+        <p class="menu-label">
+         <a>
+          <i class="fas fa-dove"></i>
+          Swift Topics
+         </a>
+        </p>
+        <ul>
+            <li><a href="/topics/all.html">All</a></li>
+           
+            
+            <li><a href="/topics/swift-tricks.html">Swift Tricks</a></li>
+            
+         
+            
+            <li><a href="/topics/language.html">Language</a></li>
+            
+         
+            
+            <li><a href="/topics/hands-on.html">Hands On</a></li>
+            
+         
+            
+            <li><a href="/topics/blog.html">Blog</a></li>
+            
+         
+            
+         
+        </ul>
+       </li>
+
+       <li>
+           <p class="menu-label">
+               <a>
+                   <i class="fas fa-book"></i>
+                   Guides
+               </a>
+           </p>
+           <ul>
+                 
+               <li><a href="/guides/pattern_matching/intro.html">🧩 Pattern Matching</a></li>
+                 
+               <li><a href="/guides/advanced_practical_enum_examples/introduction.html">🚦 Enums</a></li>
+                 
+               <li><a href="/guides/map_flatmap_reduce_more/intro.html">🗺 Map, Reduce &amp; more</a></li>
+                 
+               <li><a href="/guides/associated_types/associated_types.html">🧙🏻 Associated Types</a></li>
+                 
+               <li><a href="/guides/tuples/introduction.html">🍱 Tuples</a></li>
+                 
+               <li><a href="/guides/optionals/intro.html">⁉️ Optionals</a></li>
+                 
+               <li><a href="/guides/swift_reflection/introduction.html">🔮 Reflection</a></li>
+                 
+           </ul>
+       </li>
+      </ul>
+
+      <div class="sidebar-banner">
+          <a href="https://contravariance.rocks"><img src="/img/contravariance_banner.png" srcset="/img/contravariance_banner.png 1x, /img/contravariance_banner@2x.png 2x" /></a>
+      </div>
+
+      <ul class="menu-list">
+       <li>
+        <p class="menu-label">
+         <a>
+          <i class="fas fa-tags"></i>
+          Tags
+         </a>
+        </p>
+        <ul>
+
+     
+     <li><a href="/tags/pattern-matching.html" class="tags has-addons"><span class="tag is-info is-rounded">pattern matching</span><span class="tag is-primary is-rounded">25</span></a></li>
+     
+     <li><a href="/tags/switch.html" class="tags has-addons"><span class="tag is-info is-rounded">switch</span><span class="tag is-primary is-rounded">24</span></a></li>
+     
+     <li><a href="/tags/enum.html" class="tags has-addons"><span class="tag is-info is-rounded">enum</span><span class="tag is-primary is-rounded">20</span></a></li>
+     
+     <li><a href="/tags/associated.html" class="tags has-addons"><span class="tag is-info is-rounded">associated</span><span class="tag is-primary is-rounded">14</span></a></li>
+     
+     <li><a href="/tags/tuples.html" class="tags has-addons"><span class="tag is-info is-rounded">tuples</span><span class="tag is-primary is-rounded">13</span></a></li>
+     
+     <li><a href="/tags/reflection.html" class="tags has-addons"><span class="tag is-info is-rounded">reflection</span><span class="tag is-primary is-rounded">12</span></a></li>
+     
+     <li><a href="/tags/reduce.html" class="tags has-addons"><span class="tag is-info is-rounded">reduce</span><span class="tag is-primary is-rounded">11</span></a></li>
+     
+     <li><a href="/tags/box.html" class="tags has-addons"><span class="tag is-info is-rounded">box</span><span class="tag is-primary is-rounded">10</span></a></li>
+     
+     <li><a href="/tags/generics.html" class="tags has-addons"><span class="tag is-info is-rounded">generics</span><span class="tag is-primary is-rounded">7</span></a></li>
+     
+     <li><a href="/tags/compactmap.html" class="tags has-addons"><span class="tag is-info is-rounded">compactMap</span><span class="tag is-primary is-rounded">6</span></a></li>
+     
+     <li><a href="/tags/filter.html" class="tags has-addons"><span class="tag is-info is-rounded">filter</span><span class="tag is-primary is-rounded">6</span></a></li>
+     
+     <li><a href="/tags/map.html" class="tags has-addons"><span class="tag is-info is-rounded">map</span><span class="tag is-primary is-rounded">6</span></a></li>
+     
+     <li><a href="/tags/mirror.html" class="tags has-addons"><span class="tag is-info is-rounded">mirror</span><span class="tag is-primary is-rounded">6</span></a></li>
+     
+     <li><a href="/tags/protocol.html" class="tags has-addons"><span class="tag is-info is-rounded">protocol</span><span class="tag is-primary is-rounded">6</span></a></li>
+     
+     <li><a href="/tags/optionals.html" class="tags has-addons"><span class="tag is-info is-rounded">optionals</span><span class="tag is-primary is-rounded">5</span></a></li>
+     
+     <li><a href="/tags/where.html" class="tags has-addons"><span class="tag is-info is-rounded">where</span><span class="tag is-primary is-rounded">5</span></a></li>
+     
+     <li><a href="/tags/erasure.html" class="tags has-addons"><span class="tag is-info is-rounded">erasure</span><span class="tag is-primary is-rounded">4</span></a></li>
+     
+     <li><a href="/tags/equatable.html" class="tags has-addons"><span class="tag is-info is-rounded">equatable</span><span class="tag is-primary is-rounded">3</span></a></li>
+     
+     <li><a href="/tags/destructure.html" class="tags has-addons"><span class="tag is-info is-rounded">destructure</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/error.html" class="tags has-addons"><span class="tag is-info is-rounded">error</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/extension.html" class="tags has-addons"><span class="tag is-info is-rounded">extension</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/guard.html" class="tags has-addons"><span class="tag is-info is-rounded">guard</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/if-let.html" class="tags has-addons"><span class="tag is-info is-rounded">if let</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/is.html" class="tags has-addons"><span class="tag is-info is-rounded">is</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/objc.html" class="tags has-addons"><span class="tag is-info is-rounded">objc</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/optional.html" class="tags has-addons"><span class="tag is-info is-rounded">optional</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/struct.html" class="tags has-addons"><span class="tag is-info is-rounded">struct</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/try.html" class="tags has-addons"><span class="tag is-info is-rounded">try</span><span class="tag is-primary is-rounded">2</span></a></li>
+     
+     <li><a href="/tags/.html" class="tags has-addons"><span class="tag is-info is-rounded">?</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/caseiterable.html" class="tags has-addons"><span class="tag is-info is-rounded">CaseIterable</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/customreflectable.html" class="tags has-addons"><span class="tag is-info is-rounded">CustomReflectable</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/data.html" class="tags has-addons"><span class="tag is-info is-rounded">Data</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/expressiblebystringliteral.html" class="tags has-addons"><span class="tag is-info is-rounded">ExpressibleByStringLiteral</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/rawrepresentable.html" class="tags has-addons"><span class="tag is-info is-rounded">RawRepresentable</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/as.html" class="tags has-addons"><span class="tag is-info is-rounded">as</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/autoclosure.html" class="tags has-addons"><span class="tag is-info is-rounded">autoclosure</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/break.html" class="tags has-addons"><span class="tag is-info is-rounded">break</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/catch.html" class="tags has-addons"><span class="tag is-info is-rounded">catch</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/closure.html" class="tags has-addons"><span class="tag is-info is-rounded">closure</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/copyonwrite.html" class="tags has-addons"><span class="tag is-info is-rounded">copy-on-write</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/coredata.html" class="tags has-addons"><span class="tag is-info is-rounded">coredata</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/either.html" class="tags has-addons"><span class="tag is-info is-rounded">either</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/fallthrough.html" class="tags has-addons"><span class="tag is-info is-rounded">fallthrough</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/for.html" class="tags has-addons"><span class="tag is-info is-rounded">for</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/for-case.html" class="tags has-addons"><span class="tag is-info is-rounded">for case</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/groupby.html" class="tags has-addons"><span class="tag is-info is-rounded">groupby</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/guard-let.html" class="tags has-addons"><span class="tag is-info is-rounded">guard let</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/if-case.html" class="tags has-addons"><span class="tag is-info is-rounded">if case</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/indirect.html" class="tags has-addons"><span class="tag is-info is-rounded">indirect</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/init.html" class="tags has-addons"><span class="tag is-info is-rounded">init</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/init.html" class="tags has-addons"><span class="tag is-info is-rounded">init?</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/inout.html" class="tags has-addons"><span class="tag is-info is-rounded">inout</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/label.html" class="tags has-addons"><span class="tag is-info is-rounded">label</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/literal.html" class="tags has-addons"><span class="tag is-info is-rounded">literal</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/method.html" class="tags has-addons"><span class="tag is-info is-rounded">method</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/overload.html" class="tags has-addons"><span class="tag is-info is-rounded">overload</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/package.html" class="tags has-addons"><span class="tag is-info is-rounded">package</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/partition.html" class="tags has-addons"><span class="tag is-info is-rounded">partition</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/performance.html" class="tags has-addons"><span class="tag is-info is-rounded">performance</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/property.html" class="tags has-addons"><span class="tag is-info is-rounded">property</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/protocols.html" class="tags has-addons"><span class="tag is-info is-rounded">protocols</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/range.html" class="tags has-addons"><span class="tag is-info is-rounded">range</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/self.html" class="tags has-addons"><span class="tag is-info is-rounded">self</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/tupealias.html" class="tags has-addons"><span class="tag is-info is-rounded">tupealias</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/tuple.html" class="tags has-addons"><span class="tag is-info is-rounded">tuple</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/typealias.html" class="tags has-addons"><span class="tag is-info is-rounded">typealias</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/unique.html" class="tags has-addons"><span class="tag is-info is-rounded">unique</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/value-type.html" class="tags has-addons"><span class="tag is-info is-rounded">value type</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/valuetype.html" class="tags has-addons"><span class="tag is-info is-rounded">valuetype</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/vararg.html" class="tags has-addons"><span class="tag is-info is-rounded">vararg</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/wildcard.html" class="tags has-addons"><span class="tag is-info is-rounded">wildcard</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/zip.html" class="tags has-addons"><span class="tag is-info is-rounded">zip</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+     <li><a href="/tags/.html" class="tags has-addons"><span class="tag is-info is-rounded">~=</span><span class="tag is-primary is-rounded">1</span></a></li>
+     
+
+        </ul>
+       </li>
+      </ul>
+
+
+     </aside> 
+
+
+    </div>
+   </div>
+  </div>
+ </section>
+
+ <div class="footer">
+  <article class="media" id="followme">
+   <figure class="media-left">
+    <p class="image is-64x64">
+     <img src="/img/terhechte.jpg" class="profile-image" />
+    </p>
+   </figure>
+   <div class="media-content">
+       <div class="columns">
+           <div class="column">
+               <div class="content">
+                   <p>
+                       <strong>Benedikt Terhechte</strong> <a href="https://twitter.com/terhechte"><small>@terhechte</small></a>
+                       <br />
+                       If you read this far, you should <a href="https://twitter.com/terhechte">follow Benedikt on Twitter</a>.<br />
+                       APPVENTURE is dedicated to providing articles about Swift, macOS, iOS &amp; Linux development.
+                   </p>
+                   <p>
+                       <strong>2011 - 2019 Benedikt Terhechte</strong>
+                   </p>
+               </div>
+           </div>
+           <div class="column">
+               <p>
+                   <a href="https://terhech.de">Benedikt's private blog can be found
+                       at <strong>terhech.de</strong></a>
+               </p>
+               <p>
+                   <br />
+                   <strong>Other Profiles</strong>
+               </p>
+               <p class="subtitle is-6">
+                   <a href="https://twitter.com/terhechte"><i class="fab fa-twitter"></i></a>
+                   <a href="https://www.xing.com/profile/Benedikt_Terhechte">
+                       <i class="fab fa-xing"></i>
+                   </a>
+                   <a href="https://twitter.com/terhechte">
+                       <i class="fab fa-github"></i>
+                   </a>
+                   <a href="https://news.ycombinator.com/user?id=terhechte">
+                       <i class="fab fa-hacker-news"></i>
+                   </a>
+               </p>
+           </div>
+       </div>
+   </div>
+   <div class="media-right">
+    <a href="https://twitter.com/terhechte" class="button is-info is-rounded">
+     <i class="fab fa-twitter"></i> 
+     Follow Me</a>
+   </div>
+  </article>
+ </div>
+
+
+
+</body>
+
+
+</html>
