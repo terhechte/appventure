@@ -10,7 +10,7 @@ category = ["Hands On", "All"]
 
 [meta]
 swift_version = "3.0"
-thumbnail = "/content/thumb-doom.png"
+thumbnail = "/img-content/thumb-doom.png"
 toc = "true"
 ---
 

@@ -6,7 +6,7 @@ renderOnePageBooks = true
 
 [Folders]
 # The file and folders that should be copied over from within the public folder
-publicCopyFolders = ["css", "img", "js", "content"]
+publicCopyFolders = ["css", "img", "js", "content", "img-content"]
 booksFolder = "guides"
 booksFolderName = "guides"
 categoryFolderName = "topics"

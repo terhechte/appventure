@@ -134,7 +134,7 @@ the actual String value out of the `Optional`.
 If we do it this way, it will not blow up whtn the contents of the
 reference are, say, a `CFDate` or a `CFBoolean`. This is particularly
 easy with [Swift\'s Pattern Matching
-syntax](http://appventure.me/2015/08/20/swift-pattern-matching-in-detail/):
+syntax](lnk::switch):
 
 ``` Swift
 guard let chipInfo = MGCopyAnswer("HardwarePlatform")
