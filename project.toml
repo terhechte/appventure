@@ -20,6 +20,18 @@ books = [
   "swift_reflection/summary.toml",
 ]
 
+[Shortlinks]
+switch = "/guides/pattern_matching/intro.html"
+enum-custom-data-types = "/guides/advanced_practical_enum_examples/advanced_enum_usage/custom_data_types.html"
+failable-initializer = "https://docs.swift.org/swift-book/LanguageGuide/Initialization.html"
+type-erase = "/guides/associated_types/type_erasure/intro.html"
+optional = "/guides/optionals/intro.html"
+tuple = "/guides/tuples/introduction.html"
+map-filter-reduce = "/guides/map_flatmap_reduce_more/intro.html"
+reflection = "/guides/swift_reflection/introduction.html"
+match-operator = "/guides/pattern_matching/advanced_pattern_matching/expressionpattern.html"
+enum = "/guides/advanced_practical_enum_examples/introduction.html"
+
 [RSS]
 title = "AppVenture. Simple Swift Guides"
 feedAddress = "feed.rss"

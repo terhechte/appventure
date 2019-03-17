@@ -92,7 +92,7 @@ let rightMovement = Movement(rawValue: 1)
 
 If you use the `rawValue` initializer, keep in mind that it is a
 [failable
-initializer](swi::failable-initializer),
+initializer](apv::failable-initializer),
 i.e. you get back an
 [Optional](apv::optional),
 as the value you\'re using may not map to any case at all, say if you

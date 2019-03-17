@@ -1,28 +1,28 @@
 * The terhech.de articles still need to receive the *move* flag
 * Write inout article, then generate the old html a last time for inclusion
 * Have 'released' and 'updated' flag for the posts, articles, etc
-* favicon
-* Generate a 'full page' version of each guide
-* Links in the footer of the website / base.html
 * Make sure have no websocket code in release build
-* Updated chapters get a "updated" bubble
-* support `published` in chapters
 * new chapters in RSSFeed
-* updated chapters in RSSFeed
-* Link to contravariance
-* `ez.png` image
-* Tags in books/guides are not counted in
 * the ref-links need to be implemented
-* Guide-box stronger borders
-* Top border (for the white area, see sketch)
-* updated magic logo
 * RawRepresentable article
 * About page
 * Debug reponsiveness (guides right sidebar has to disappear earlier)
 * Clicking a guide image doesn't work. only headline works
+* TODO Fix links
+some guides still contain links to other guides (either via https://appventure or if it was within one post via #lala) this has to be fixed
+* TODO Auto-inject keyword links for 'tuple', 'enum', 'optional', etc with the nice macappblog popup    
+* TODO Add backwards compatible links to the old content:
+ take the old generated html, and insert a header at the top "APPVENTURE RELAUNCHED" with a link to the new versions of the article,
+  and then re-generate it and just keep the old /2015, /2016 etc folders as "copy folders" in (for search engine links and for posterity)
+
+
+   
   
 * After tokyo-launch
 ** next / prev button on list.html doesn't work
+** Updated chapters get a "updated" bubble
+** updated chapters in RSSFeed
+** TODO Add "Generics" Guide
 
 * Keywords for ref-links
 ** `apv::switch` => pattern matching in detail
@@ -43,57 +43,3 @@ pattern matching article
 !! Updated `Enums in the Standard Library Chapter + Links`
 !! search all for `apple.com` links (apple docs) to update to the most recent
 
-* Brief
-** TODO tags from guide chapters should also be listed in the tag-content list
-** DONE have the article left image only display if there is one (doom)
-** DONE use the pagination footer from the chapters
-** TODO there're sometimes org markdown tags in the desc (=lala=) etc
-** DONE related articles
-** TODO HTML in content did not survive the conversion
-** TODO Use more 'monokai'i background color for code
-* Design
-** DONE Reconsider the "Articles" layout. Maybe something with more whitespace?
-** TODO update the "guides" section on the start page
-** TODO "list view" for all chapters in a guide
-** DONE "list view" for all posts for a tag
-** DONE Maybe change font to open sans, I really like that here: 
-  https://intellij-rust.github.io/2019/03/04/changelog-93.html
-
-* Content
-** TODO Use emoji for each guide
-** TODO use the keywords for the "Swift Topics"
-** TODO alternative to the screenshots
-** TODO New sections
-Language => My tuple, pattern matching, etc posts
-Projects / Examples / Tutorials => Go by example, apps, etc (maybe even stuff like how to read with iPhone 6s what the CPU is)
-Tooling = > Swift Package Manager, etc
-Blog => Stuff like Expanding Swift's Reach
-** TODO add swift version of article (i.e. 4.2 or 5.0) to meta of article so I can display it
-** TODO Fix links
-some guides still contain links to other guides (either via https://appventure or if it was within one post via #lala) this has to be fixed
-** TODO advanced_tuples/intro.md no content yet
-** TODO Make sure all code compiles
-** TODO The rest ends up in the "Articles" section => Value Types, Useful Optional Extensions
-Maybe write a tool that spits out code which doesn't compile?
-** TODO Auto-inject keyword links for 'tuple', 'enum', 'optional', etc with the nice macappblog popup    
-** TODO Add backwards compatible links to the old content:
- take the old generated html, and insert a header at the top "APPVENTURE RELAUNCHED" with a link to the new versions of the article,
-  and then re-generate it and just keep the old /2015, /2016 etc folders as "copy folders" in (for search engine links and for posterity)
-
-
-* HTML Stuff
-** TODO Debug Responsiveness
-** TODO Headline / logo
-** TODO About
-** TODO social interaction (follow on twitter, etc)
-
-* Future
-** TODO Add "Generics" Guide
-   
-* Done
-** DONE Search guides / books / chapters
-** DONE Have markdown tag for books for "prev_chapter" and "next_chapter" maybe it is just a js function that is injected into the template.. that would be easier
-** DONE Split posts up into multiple smaller posts and make them into books (i.e. pattern matching guide)
-** DONE fix syntax highlighting
-
-   

@@ -3,7 +3,7 @@ title = "RawRepresentable"
 tags = ["enum", "RawRepresentable"]
 created = "2019-03-01 16:29:51"
 description = ""
-published = true
+published = false
 
 [meta]
 swift_version = "5.1"
