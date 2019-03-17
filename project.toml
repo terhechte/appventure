@@ -3,6 +3,7 @@ baseURL = "https://appventure.me"
 keywords = ["swift", "objective-c", "ios", "macos", "tvos", "watch", "xcode", "iphone", "linux", "open source"]
 postsPerIndex = 20
 renderOnePageBooks = true
+codeClassPrefix = "apv"
 
 [Folders]
 # The file and folders that should be copied over from within the public folder

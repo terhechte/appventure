@@ -47,7 +47,7 @@ function prev() {
                         {% endif %}
                             href="/{{ chapter.slug }}">{{ chapter.name }}
                         {% if chapter.document.info.meta.updated %}
-                        *
+                        🆕
                         {% endif %}
                     </a>
 
@@ -58,8 +58,8 @@ function prev() {
                             {% if content.chapter.slug == sub_chapter.slug %} class="is-active"
                             {% endif %}
                                 href="/{{ sub_chapter.slug }}">{{ sub_chapter.name }}
-                            {% if chapter.document.info.meta.updated %}
-                            *
+                            {% if sub_chapter.document.info.meta.updated %}
+                            🆕
                             {% endif %}
                         </a></li>
                         {% endfor %}

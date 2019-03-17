@@ -1,19 +1,14 @@
-* The terhech.de articles still need to receive the *move* flag
-* Write inout article, then generate the old html a last time for inclusion
-* Have 'released' and 'updated' flag for the posts, articles, etc
-* Make sure have no websocket code in release build
-* new chapters in RSSFeed
-* the ref-links need to be implemented
-* RawRepresentable article
-* About page
-* Debug reponsiveness (guides right sidebar has to disappear earlier)
-* Clicking a guide image doesn't work. only headline works
-* TODO Fix links
-some guides still contain links to other guides (either via https://appventure or if it was within one post via #lala) this has to be fixed
-* TODO Auto-inject keyword links for 'tuple', 'enum', 'optional', etc with the nice macappblog popup    
 * TODO Add backwards compatible links to the old content:
  take the old generated html, and insert a header at the top "APPVENTURE RELAUNCHED" with a link to the new versions of the article,
   and then re-generate it and just keep the old /2015, /2016 etc folders as "copy folders" in (for search engine links and for posterity)
+* The pattenr matching article on old appventure has the wrong link. check the others if links are correct
+* terhech.de does syntax work?
+* The terhech.de articles still need to receive the *move* flag
+* Write inout article, then generate the old html a last time for inclusion
+* Make sure have no websocket code in release build
+* RawRepresentable article
+* About page
+* Clicking a guide image doesn't work. only headline works
 
 
    
@@ -23,23 +18,6 @@ some guides still contain links to other guides (either via https://appventure o
 ** Updated chapters get a "updated" bubble
 ** updated chapters in RSSFeed
 ** TODO Add "Generics" Guide
-
-* Keywords for ref-links
-** `apv::switch` => pattern matching in detail
-** `apv::enum-custom-data-types => Enum / Custom Data Types`
-** `swi::failable-initializer` => Swift docs, failable initializer
-** `apv::type-erase` => type erasure
- ** `apv::optional`
-* TODO `apv::tuple` => tuple article
-apv::map-filter-reduce
-apv::reflection
-apply swift-link or swift-format to all code examples?
-reflinks between guide-chapters?
-[`~=`](apv::match-operator)
-
-pattern matching article
-!! add new chapter on custom match operator ~=
-  
-!! Updated `Enums in the Standard Library Chapter + Links`
-!! search all for `apple.com` links (apple docs) to update to the most recent
-
+** Have 'released' and 'updated' flag for the posts, articles, etc
+** TODO Auto-inject keyword links for 'tuple', 'enum', 'optional', etc with the nice macappblog popup    
+** new chapters in RSSFeed

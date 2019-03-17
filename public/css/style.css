@@ -254,7 +254,7 @@ article > .content > pre * {
     font-weight: bold;
 }
 
-.content > p > code, .content li > code, .content > h1 > code, .content > h2 > code, .content > h3 > code, .content > h4 > code, .content > h5 > code, .content > h6 > code, .article-post > h2 code, .article-post > h4 code .content p a code  {
+.content > p > code, .content li > code, .content > h1 > code, .content > h2 > code, .content > h3 > code, .content > h4 > code, .content > h5 > code, .content > h6 > code, .article-post > h2 code, .article-post > h4 code .content p a code, .content p a code  {
     color: rgb(9, 36, 78);
     background-color: white;
     border-radius: 6px;
