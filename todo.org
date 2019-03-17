@@ -1,19 +1,36 @@
 * TODO Add backwards compatible links to the old content:
  take the old generated html, and insert a header at the top "APPVENTURE RELAUNCHED" with a link to the new versions of the article,
   and then re-generate it and just keep the old /2015, /2016 etc folders as "copy folders" in (for search engine links and for posterity)
-* The pattenr matching article on old appventure has the wrong link. check the others if links are correct
-* terhech.de does syntax work?
-* The terhech.de articles still need to receive the *move* flag
 * Write inout article, then generate the old html a last time for inclusion
 * Make sure have no websocket code in release build
 * RawRepresentable article
 * About page
 * Clicking a guide image doesn't work. only headline works
+Support the old static-feature-image
+  #+static-feature-image: http://appventure.me/img-content/2019-02-24-anonymous-tuple-structs.jpg
+* Include the weird twitter envelope
+#+BEGIN_SRC 
+<meta content="Documenting my technology research" name="description" />
+<meta content="benedikt, c, clojure, clojurescript, cocoa, html, ios, javascript, mac, objective-c, photodesk, research, stylemac, terhechte" name="keywords" />
+<meta content="Benedikt Terhechte" name="author" />
+<meta content="Appventure" property="og:title" />
+<meta content="Documenting my technology research" property="og:description" />
+<meta content="http://appventure.me" property="og:url" />
+<meta content="Appventure" name="twitter:title" />
+<meta content="Documenting my technology research" name="twitter:description" />
+<meta content="summary" name="twitter:card" />
+<meta content="http://appventure.me/img-content/2015-10-17-advanced-practical-enum-examples-feature-image.jpg" name="twitter:image">
+<meta content="http://appventure.me/img-content/2015-10-17-advanced-practical-enum-examples-feature-image.jpg" name="og:image">
+<meta name="twitter:site" content="@terhechte" />
+<meta name="twitter:creator" content="@terhechte" />
+#+END_SRC
 
 
-   
-  
 * After tokyo-launch
+** Add a blob like John does to the bottom of the article
+#+BEGIN_SRC 
+https://www.swiftbysundell.com/posts/string-parsing-in-swift
+#+END_SRC
 ** next / prev button on list.html doesn't work
 ** Updated chapters get a "updated" bubble
 ** updated chapters in RSSFeed
