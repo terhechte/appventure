@@ -57,7 +57,7 @@ let trade = Trade.buy("APPL", 500)
 
 If you want to access this information, again, [pattern matching comes
 to the
-rescue](apv::switch):
+rescue](lnk::switch):
 
 ``` Swift
 let trade = Trade.buy(stock: "AAPL", amount: 500)

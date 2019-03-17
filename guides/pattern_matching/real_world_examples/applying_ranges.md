@@ -29,7 +29,7 @@ default: print("Incorrect Grade")
 ```
 
 You can also always have ranges as parts of nested types, such as tuples or even
-`struct` types, when you implement the [`~=`](apv::match-operator) operator.
+`struct` types, when you implement the [`~=`](lnk::match-operator) operator.
 
 ``` Swift
 let student = (name: "John Donar", grades: (english: 77, chemistry: 21, math: 60, sociology: 42))

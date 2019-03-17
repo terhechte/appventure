@@ -11,7 +11,7 @@ swift_version = "5.1"
 
 # Tuple Pattern
 
-[We have a full article on tuples](apv::tuple), but here is a quick overview:
+[We have a full article on tuples](lnk::tuple), but here is a quick overview:
 
 ``` Swift
 let age = 23

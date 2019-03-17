@@ -13,7 +13,7 @@ swift_version = "5.1"
 
 Enums can also be defined over generic parameters. You\'d use them to
 adapt the associated values of an enum. The simplest example comes
-straight from the Swift standard library, namely the [`Optional` type](apv::optional).
+straight from the Swift standard library, namely the [`Optional` type](lnk::optional).
 You probably mostly use it with **optional chaining** (`?`), `if let`,
 `guard let`, or `switch`, but syntactically you can also use Optionals
 like so:

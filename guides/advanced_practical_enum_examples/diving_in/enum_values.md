@@ -64,7 +64,7 @@ Swift supports the following types for the value of an enum:
 -   String
 -   Boolean
 
-You can support more types [by implementing a specific protocol](apv::enum-custom-data-types).
+You can support more types [by implementing a specific protocol](lnk::enum-custom-data-types).
 
 If you want to access the values, you can do so with the `rawValue`
 property:
@@ -92,8 +92,8 @@ let rightMovement = Movement(rawValue: 1)
 
 If you use the `rawValue` initializer, keep in mind that it is a
 [failable
-initializer](apv::failable-initializer),
+initializer](lnk::failable-initializer),
 i.e. you get back an
-[Optional](apv::optional),
+[Optional](lnk::optional),
 as the value you\'re using may not map to any case at all, say if you
 were to write `Movement(rawValue: 42)`.

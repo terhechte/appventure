@@ -16,7 +16,7 @@ sequences or collections because they aren\'t. Since every element of a
 tuple can have a different type, there\'s no type-safe way of looping or
 mapping over the contents of a tuple. Well, no beautiful one, that is.
 
-Swift does offer [limited reflection capabilities](apv::reflection), and these allow us to
+Swift does offer [limited reflection capabilities](lnk::reflection), and these allow us to
 inspect the elements of a tuple and loop over them. The downside is that
 the type checker has no way to figure out what the type of each element
 is, and thus everything is typed as `Any`. It is your job then to cast

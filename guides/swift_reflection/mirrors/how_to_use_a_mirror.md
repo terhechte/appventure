@@ -41,7 +41,7 @@ This returns a `AnyCollection<Child>` with all the children that
 the subject contains. Children are not limited to entries in an `Array`
 or `Dictionary`. All properties of a `struct` or `class`, for example,
 are also children returned by this property. The protocol
-`AnyCollection` means that this is a type [erased `Collection`.](apv::type-erase)
+`AnyCollection` means that this is a type [erased `Collection`.](lnk::type-erase)
 
 ``` Swift
 for case let (label?, value) in myMirror.children {

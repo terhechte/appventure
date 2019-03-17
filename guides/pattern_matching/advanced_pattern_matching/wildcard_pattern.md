@@ -16,7 +16,7 @@ case any value is possible. This is the same pattern as `let _ = fn()`
 where the `_` indicates that you don\'t wish to further use this value.
 The interesting part is that this matches all values including `nil`. 
 
-You can also match [optionals](apv::optional) by appending a `?` to make it `_?`:
+You can also match [optionals](lnk::optional) by appending a `?` to make it `_?`:
 
 ``` Swift
 let p: String? = nil

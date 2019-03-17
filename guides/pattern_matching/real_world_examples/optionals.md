@@ -12,7 +12,7 @@ swift_version = "5.1"
 # Optionals
 
 [There\'re many ways to unwrap
-optionals,](apv::optional)
+optionals,](lnk::optional)
 and pattern matching is one of them. You\'ve probably used that quite
 frequently by now, nevertheless, here\'s a short example:
 

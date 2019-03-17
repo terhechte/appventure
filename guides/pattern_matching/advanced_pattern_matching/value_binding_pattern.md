@@ -21,7 +21,7 @@ switch (4, 5) {
 }
 ```
 
-The `let (x, y)` in the example above will take the values of our `(4, 5)` [tuple](apv::tuple) and write them into two new variables named `x` and `y`.
+The `let (x, y)` in the example above will take the values of our `(4, 5)` [tuple](lnk::tuple) and write them into two new variables named `x` and `y`.
 
 We can easily combine this with the other pattern matching operations to develop very powerful patterns. Imagine you have a function that returns an optional tuple `(username: String, password: String)?`. You'd like to match it and make sure if the password is correct:
 

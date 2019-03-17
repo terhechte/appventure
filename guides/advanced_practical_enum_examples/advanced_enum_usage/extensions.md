@@ -52,7 +52,7 @@ extension Entity {
 
 Extensions also allow you to add useful code to existing `enum` types. Either from the Swift standard library, or from third party frameworks, or from yourself if you happen to have a big codebase.
 
-For example, we can extend the standard library `Optional` type in order to add useful extensions. If you'd like to learn more about this, [we have an article that explains this in more detail.](apv::optional)
+For example, we can extend the standard library `Optional` type in order to add useful extensions. If you'd like to learn more about this, [we have an article that explains this in more detail.](lnk::optional)
 
 ``` Swift
 extension Optional {

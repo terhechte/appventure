@@ -13,7 +13,7 @@ When and how to use enums in Swift? This is a detailed practical
 overview of all the possibilities enums can offer you.
 
 Similarly to the [`switch`
-statement](apv::switch),
+statement](lnk::switch),
 `enum`\'s in Swift may at first glance look like a slightly improved
 variant of the well known **C** `enum` statement. I.e. a type that
 allows you to define that something is \"one of something more

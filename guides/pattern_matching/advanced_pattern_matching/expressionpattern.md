@@ -59,7 +59,7 @@ switch soldier {
 ```
 
 What if you'd like to not just compare the `hp` but also the `x` and the `y`? You
-can just implement `pattern` with a [tuple](apv::tuple):
+can just implement `pattern` with a [tuple](lnk::tuple):
 
 ``` Swift
 func ~= (pattern: (hp: Int, x: Int, y: Int), value: Soldier) -> Bool {

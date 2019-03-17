@@ -61,7 +61,7 @@ case right
 
 It is considered proper style in Swift to always use lowercase for the enum `case` name
 
-Swift's [switch](apv::switch) allows you to handle all the states of an `enum`:
+Swift's [switch](lnk::switch) allows you to handle all the states of an `enum`:
 
 ``` Swift
 let myMovement = Movement.left
@@ -87,4 +87,4 @@ It is considered good style to not write out the `enum` name. Theyre may be situ
 
 ## Handling Enums
 
-Besides the `switch` statement above, Swift also offers many more ways of handling `enum` types. Many of which can be found in our [Pattern Matching Guide](apv::switch), some of the will also be handled in this guide on `enum`.
+Besides the `switch` statement above, Swift also offers many more ways of handling `enum` types. Many of which can be found in our [Pattern Matching Guide](lnk::switch), some of the will also be handled in this guide on `enum`.

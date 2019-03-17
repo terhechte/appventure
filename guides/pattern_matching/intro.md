@@ -26,7 +26,7 @@ match of the values to the cases.
 ## Destructure
 
 Destructuring means to take something of a certain structure and destructure it
-into smaller items again. Imagaine you had a `apv::tuple` variable `user` with the following value: `(firstname: "Harry", lastname: "Potter", age: 21, occupation: "Wizard")`
+into smaller items again. Imagaine you had a `lnk::tuple` variable `user` with the following value: `(firstname: "Harry", lastname: "Potter", age: 21, occupation: "Wizard")`
 
 Destructuring means taking this tuple and converting it into individual variables:
 

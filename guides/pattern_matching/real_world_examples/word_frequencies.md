@@ -22,7 +22,7 @@ Here\'re our words:
 let wordFreqs = [("k", 5), ("a", 7), ("b", 3)]
 ```
 
-A simple solution would be to model this with [`map` and `filter`](apv::map-filter-reduce):
+A simple solution would be to model this with [`map` and `filter`](lnk::map-filter-reduce):
 
 ``` Swift
 let res = wordFreqs.filter({ (e) -> Bool in
