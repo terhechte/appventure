@@ -5,6 +5,7 @@ pre > code * {
 
 pre > code .apvcomment {
 	color: #75715E;
+	font-style: italic;
 }
 
 pre > code .apvstring {
@@ -40,7 +41,6 @@ pre > code .apvstorage {
 
 pre > code .apvstorage.apvtype {
 	color: #66D9EF;
-	font-style: italic;
 }
 
 pre > code .apventity.apvname.apvclass {
@@ -58,7 +58,6 @@ pre > code .apventity.apvname.apvfunction {
 
 pre > code .apvvariable.apvparameter {
 	color: #FD971F;
-	font-style: italic;
 }
 
 pre > code .apventity.apvname.apvtag {
@@ -79,12 +78,10 @@ pre > code .apvsupport.apvconstant {
 
 pre > code .apvsupport.apvtype {
 	color: #66D9EF;
-	font-style: italic;
 }
 
 pre > code .apvsupport.apvclass {
 	color: #66D9EF;
-	font-style: italic;
 }
 
 pre > code .apvsupport.apvother.apvvariable {
