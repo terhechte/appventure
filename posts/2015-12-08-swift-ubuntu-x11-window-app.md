@@ -357,19 +357,19 @@ loop: while true {
   XNextEvent(d, e)
 
   switch e.memory.type {
-    // The window has to be drawn
-    case Expose:
-    // draw a small black rectangle
-    XFillRectangle(d, w, s.memory.default_gc, 20, 20, 10, 10) 
-    // draw the text
-    XDrawString(d, w, s.memory.default_gc, 10, 70, msg, Int32(msg.characters.count)) 
+  // The window has to be drawn
+  case Expose:
+  // draw a small black rectangle
+  XFillRectangle(d, w, s.memory.default_gc, 20, 20, 10, 10) 
+  // draw the text
+  XDrawString(d, w, s.memory.default_gc, 10, 70, msg, Int32(msg.characters.count)) 
 
-    // The user did press a key
-    case KeyPress:
-    break loop
+  // The user did press a key
+  case KeyPress:
+  break loop
 
-    // We never signed up for this event
-    default: fatalError("Unknown Event")
+  // We never signed up for this event
+  default: fatalError("Unknown Event")
 
   }
 }

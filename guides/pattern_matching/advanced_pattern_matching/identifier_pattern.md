@@ -19,8 +19,8 @@ Here, we have a special case just for the number 5
 ``` Swift
 let number = 4
 switch number {
-  case 5: print("it is a 5")
-  default: print("it is something else")
+case 5: print("it is a 5")
+default: print("it is something else")
 }
 ```
 
@@ -31,8 +31,8 @@ in their native language.
 ``` Swift
 let language = "Japanese"
 switch name {
-  case "Japanese": print("おはようございます")
-  case "English": print("Hello!")
-  case "German": print("Guten Tag")
+case "Japanese": print("おはようございます")
+case "English": print("Hello!")
+case "German": print("Guten Tag")
 }
 ```

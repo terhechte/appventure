@@ -18,8 +18,8 @@ can do:
 
 ``` Swift
 switch 5 {
- case 0..10: print("In range 0-10")
- default: print("In another range")
+case 0..10: print("In range 0-10")
+default: print("In another range")
 }
 ```
 
@@ -53,8 +53,8 @@ because we're commparing the `value.hp` to the `switch` pattern in our
 ``` Swift
 let soldier = Soldier(hp: 99, x: 10, y: 10)
 switch soldier {
-   case 0: print("dead soldier")
-   default: ()
+case 0: print("dead soldier")
+default: ()
 }
 ```
 
@@ -70,8 +70,8 @@ func ~= (pattern: (hp: Int, x: Int, y: Int), value: Soldier) -> Bool {
 
 let soldier = Soldier(hp: 99, x: 10, y: 10)
 switch soldier {
-  case (50, 10, 10): print("health 50 at pos 10/10")
-  default: ()
+case (50, 10, 10): print("health 50 at pos 10/10")
+default: ()
 }
 ```
 
@@ -97,8 +97,8 @@ func ~= (pattern: Soldier, value: Soldier) -> Bool {
 
 let soldier = Soldier(hp: 50, x: 10, y: 10)
 switch soldier {
-  case Soldier(hp: 50, x: 10, y: 10): print("The same")
-  default: ()
+case Soldier(hp: 50, x: 10, y: 10): print("The same")
+default: ()
 }
 ```
 
@@ -125,8 +125,8 @@ func ~=(pattern: Entity, x: Entity) -> Bool {
 }
 
 switch Tank(42) {
-    case Peasant(42): print("Matched") // Does match
-    default: ()
+case Peasant(42): print("Matched") // Does match
+default: ()
 }
 ```
 

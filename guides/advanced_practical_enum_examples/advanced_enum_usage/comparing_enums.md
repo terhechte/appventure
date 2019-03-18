@@ -68,13 +68,13 @@ enum Trade {
 }
 func ==(lhs: Trade, rhs: Trade) -> Bool {
    switch (lhs, rhs) {
-     case let (.buy(stock1, amount1), .buy(stock2, amount2))
-           where stock1 == stock2 && amount1 == amount2:
-           return true
-     case let (.sell(stock1, amount1), .sell(stock2, amount2))
-           where stock1 == stock2 && amount1 == amount2:
-           return true
-     default: return false
+   case let (.buy(stock1, amount1), .buy(stock2, amount2))
+         where stock1 == stock2 && amount1 == amount2:
+         return true
+   case let (.sell(stock1, amount1), .sell(stock2, amount2))
+         where stock1 == stock2 && amount1 == amount2:
+         return true
+   default: return false
    }
 }
 ```

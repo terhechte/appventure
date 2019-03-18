@@ -33,7 +33,7 @@ data you don\'t need from matching `enums` or `tuples`:
 
 ``` Swift
 switch (15, "example", 3.14) {
-    // We're only interested in the last value
-    case (_, _, let pi): print ("pi: \(pi)")
+// We're only interested in the last value
+case (_, _, let pi): print ("pi: \(pi)")
 }
 ```

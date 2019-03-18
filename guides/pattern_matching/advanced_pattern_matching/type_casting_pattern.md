@@ -28,14 +28,14 @@ Here is an example of the two.
 let a: Any = 5 
 switch a {
 
-  // this fails because a is still Any
-  // error: binary operator '+' cannot be applied to operands of type 'Any' and 'Int'
-  case is Int: print (a + 1)
+// this fails because a is still Any
+// error: binary operator '+' cannot be applied to operands of type 'Any' and 'Int'
+case is Int: print (a + 1)
 
-  // This works and returns '6'
-  case let n as Int: print (n + 1)
+// This works and returns '6'
+case let n as Int: print (n + 1)
 
-  default: ()
+default: ()
 }
 ```
 

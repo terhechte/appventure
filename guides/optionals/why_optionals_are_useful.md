@@ -58,8 +58,8 @@ So what do we do if we call a function that returns an optional? Since optionals
 ``` Swift
 let optionalValue = functionReturningOptional()
 switch optionalValue {
-  case .some(value): print(value)
-  case .none: print("Nothing")
+case .some(value): print(value)
+case .none: print("Nothing")
 }
 ```
 

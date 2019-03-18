@@ -17,7 +17,7 @@ provide a very short example:
 
 ``` Swift
 switch (4, 5) {
-  case let (x, y): print("\(x) \(y)")
+case let (x, y): print("\(x) \(y)")
 }
 ```
 
@@ -36,8 +36,8 @@ Now, the `switch` example:
 
 ``` Swift
 switch usernameAndPassword() {
-  case let (_, password)? where password == "12345": login()
-  default: logout()
+case let (_, password)? where password == "12345": login()
+default: logout()
 }
 ```
 

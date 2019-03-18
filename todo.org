@@ -1,3 +1,7 @@
+* Run replacements for swift version
+sd -i 'from "react"' 'from "preact"' $(fd -e md)
+* run swift format for each code block to fix the formatting
+
 * TODO Add backwards compatible links to the old content:
  take the old generated html, and insert a header at the top "APPVENTURE RELAUNCHED" with a link to the new versions of the article,
   and then re-generate it and just keep the old /2015, /2016 etc folders as "copy folders" in (for search engine links and for posterity)

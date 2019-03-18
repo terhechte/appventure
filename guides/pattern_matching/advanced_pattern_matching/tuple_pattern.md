@@ -19,9 +19,9 @@ let job: String? = "Operator"
 let payload: Any = NSDictionary()
 
 switch (age, job, payload) {
-  case (let age, _?, _ as NSDictionary):
-      print(age)
-  default: ()
+case (let age, _?, _ as NSDictionary):
+    print(age)
+default: ()
 }
 ```
 

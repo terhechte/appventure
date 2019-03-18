@@ -66,8 +66,8 @@ Swift's [switch](lnk::switch) allows you to handle all the states of an `enum`:
 ``` Swift
 let myMovement = Movement.left
 switch myMovement {
-  case Movement.left: player.goLeft()
-  case Movement.right: player.goRight()
+case Movement.left: player.goLeft()
+case Movement.right: player.goRight()
 }
 ```
 
@@ -78,8 +78,8 @@ of type `Movement` you don't have to write that out explicitly. This also works:
 
 ``` Swift
 switch myMovement {
-  case .left: player.goLeft()
-  case .right: player.goRight()
+case .left: player.goLeft()
+case .right: player.goRight()
 }
 ```
 

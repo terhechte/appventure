@@ -31,10 +31,10 @@ We can model this logic very nicely with a `switch` statement such as the follow
 let player1 = true
 let player2 = false
 switch (player1, player2) {
-   case (true, false): print("Player 1 won")
-   case (false, true): print("Player 2 won")
-   case (true, true): print("Draw, both won")
-   case (false, false): print("Draw, both lost")
+case (true, false): print("Player 1 won")
+case (false, true): print("Player 2 won")
+case (true, true): print("Draw, both won")
+case (false, false): print("Draw, both lost")
 }
 ```
 

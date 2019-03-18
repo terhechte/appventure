@@ -28,9 +28,9 @@ You've already seen the first one: Conforming to a `protocol`.
 extension Entity: CustomStringConvertible {
   var description: String {
     switch self {
-       case let .soldier(x, y): return "\(x), \(y)"
-       case let .tank(x, y): return "\(x), \(y)"
-       case let .player(x, y): return "\(x), \(y)"
+    case let .soldier(x, y): return "\(x), \(y)"
+    case let .tank(x, y): return "\(x), \(y)"
+    case let .player(x, y): return "\(x), \(y)"
     }
   }
 }

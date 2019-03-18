@@ -21,8 +21,8 @@ enum Transportation {
 
   func distance() -> String {
     switch self {
-      case .car(let miles): return "\(miles) miles by car"
-      case .train(let miles): return "\(miles) miles by train"
+    case .car(let miles): return "\(miles) miles by car"
+    case .train(let miles): return "\(miles) miles by train"
     }
   }
 }
@@ -45,8 +45,8 @@ enum Wearable {
 
     func attributes() -> (weight: Int, armor: Int) {
        switch self {
-         case .helmet(let w, let a): 
-            return (weight: w.rawValue * 2, armor: a.rawValue * 4)
+       case .helmet(let w, let a): 
+          return (weight: w.rawValue * 2, armor: a.rawValue * 4)
        }
     }
 }
@@ -81,8 +81,8 @@ enum Device {
 
   var introduced: Int {
     switch self {
-        case .iPhone: return 2007
-        case .iPad: return 2010
+    case .iPhone: return 2007
+    case .iPad: return 2010
      }
   }
 }
@@ -105,8 +105,8 @@ Also, you can always still add properties for easy retrieval of the `associated 
 extension Character {
   var level: Int {
     switch self {
-      case .wizard(_, let level): return level
-      case .warior(_, let level): return level
+    case .wizard(_, let level): return level
+    case .warior(_, let level): return level
     }
   }
 }

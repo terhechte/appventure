@@ -98,8 +98,8 @@ We already mentioned this in the [previous](javascript:previous()) chapter, but 
 
 ``` Swift
 switch myOptionalValue {
- case let value?: print(value)
- default: ()
+case let value?: print(value)
+default: ()
 }
 ```
 

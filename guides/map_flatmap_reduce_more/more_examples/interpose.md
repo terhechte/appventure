@@ -20,14 +20,14 @@ func interpose<T>(items: [T], element: T, count: Int = 1) -> [T] {
    typealias Acc = (ac: [T], cur: Int, cnt: Int)
    return items.reduce((ac: [], cur: 0, cnt: 1), { (a: Acc, o: T) -> Acc in 
        switch a {
-          // the last item will not have any interposition
-          case let (ac, cur, _) where (cur+1) == items.count: return (ac + [o], 0, 0)
-          // interpose
-          case let (ac, cur, c) where c == count:
-             return (ac + [o, element], cur + 1, 1)
-          // next
-          case let (ac, cur, c):
-             return (ac + [o], cur + 1, c + 1)
+       // the last item will not have any interposition
+       case let (ac, cur, _) where (cur+1) == items.count: return (ac + [o], 0, 0)
+       // interpose
+       case let (ac, cur, c) where c == count:
+          return (ac + [o, element], cur + 1, 1)
+       // next
+       case let (ac, cur, c):
+          return (ac + [o], cur + 1, c + 1)
        }
    }).ac
 }

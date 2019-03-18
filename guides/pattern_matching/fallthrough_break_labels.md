@@ -21,9 +21,9 @@ here's a short example that would print "1, 2, 3":
 ``` C
 /* This is C Code */
 switch (2) {
-  case 1: printf("1");
-  case 2: printf("2");
-  case 3: printf("3");
+case 1: printf("1");
+case 2: printf("2");
+case 3: printf("3");
 }
 ```
 
@@ -38,11 +38,11 @@ fall through into the other case, you can opt into this behaviour with the
 
 ``` Swift
 switch 5 {
-   case 5:
-    print("Is 5")
-    fallthrough
-   default:
-    print("Is a number")
+case 5:
+ print("Is 5")
+ fallthrough
+default:
+ print("Is a number")
 }
 // Will print: "Is 5" "Is a number"
 ```
@@ -61,12 +61,12 @@ requirement is not met and you can\'t execute the `case` any further:
 let userType = "system"
 let userID = 10
 switch (userType, userID)  {
-   case ("system", _):
-     guard let userData = getSystemUser(userID) 
-        else { break }
-     print("user info: \(userData)")
-     insertIntoRemoteDB(userData)
-   default: ()
+case ("system", _):
+  guard let userData = getSystemUser(userID) 
+     else { break }
+  print("user info: \(userData)")
+  insertIntoRemoteDB(userData)
+default: ()
 }
 ... more code that needs to be executed
 ```
@@ -85,9 +85,9 @@ you to define `labels` to `break` or `continue` to:
 ``` Swift
 gameLoop: while true {
   switch state() {
-     case .waiting: continue gameLoop
-     case .done: calculateNextState()
-     case .gameOver: break gameLoop
+  case .waiting: continue gameLoop
+  case .done: calculateNextState()
+  case .gameOver: break gameLoop
   }
 }
 ```
