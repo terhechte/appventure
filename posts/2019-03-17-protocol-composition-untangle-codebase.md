@@ -7,7 +7,7 @@ keywords = ["ios", "macos", "swift", "protocol", "composition", "struct", "untag
 slug = "2019-03-17-protocol-composition-untangle-codebase.html"
 tags = ["protocol", "composition"]
 [meta]
-static-feature-image = "http://appventure.me/img-content/2019-03-17-protocol-composition-untangle-codebase.jpg"
+feature_image = "http://appventure.me/img-content/2019-03-17-protocol-composition-untangle-codebase.jpg"
 ---
 
 In this article, I\'d like to discuss the benefit of splitting protocols

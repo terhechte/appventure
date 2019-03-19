@@ -11,6 +11,7 @@ category = ["Hands On", "All"]
 [meta]
 swift_version = "2.3"
 thumbnail = "/img-content/thumb-swift-ubuntu-x11.png"
+feature_image = "/img-content/2015-12-08-swift-ubuntu-x11-window-app-feature-image.jpg"
 ---
 
 Now that Swift is open source, many interested users might be installing

@@ -10,6 +10,7 @@ category = ["Swift Tricks", "All"]
 
 [meta]
 swift_version = "5.0"
+feature_image = "/img-content/2016-03-29-three-tips-for-clean-swift-code-feature-image.jpg"
 ---
 
 This will be a shorter post compared to some of my previous ones, but I

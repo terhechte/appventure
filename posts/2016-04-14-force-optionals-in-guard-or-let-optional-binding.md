@@ -10,6 +10,7 @@ category = ["Swift Tricks", "All"]
 
 [meta]
 swift_version = "5.0"
+feature_image = "/img-content/2016-04-14-force-optionals-in-guard-or-let-optional-binding-feature-image.jpg"
 ---
 
 I really love unwrapping optionals in a multi- `guard` or `let`

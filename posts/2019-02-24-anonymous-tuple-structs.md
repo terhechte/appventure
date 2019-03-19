@@ -7,7 +7,7 @@ keywords = ["ios", "macos", "swift", "tuples", "classes", "structs"]
 slug = "2019-02-24-anonymous-tuple-structs.html"
 tags = ["tuple", "struct"]
 [meta]
-static-feature-image = "http://appventure.me/img-content/2019-02-24-anonymous-tuple-structs.jpg"
+feature_image = "http://appventure.me/img-content/2019-02-24-anonymous-tuple-structs.jpg"
 ---
 
 Imagine you\'re working on a social networking app and you have a
