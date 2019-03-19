@@ -1,6 +1,6 @@
 [frontMatter]
 title = "Advanced Optionals"
-tags = ["optionals", "if let", "guard let", "?"]
+tags = ["optionals", "if let", "guard let"]
 created = "2019-03-02 16:04:26"
 description = ""
 published = true

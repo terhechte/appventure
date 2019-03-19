@@ -9,11 +9,10 @@ tags = ["generics", "protocols", "overload"]
 category = ["Language", "All"]
 
 [meta]
-swift_version = "2.3"
+swift_version = "5.0"
 ---
 
-I just stumbled upon a very nice way of abstraction in Swift, which I
-previously did not know was possible. First a bit of background:
+In this article I wanted to delve into a nice generic abstraction in Swift. First a bit of background:
 
 # Method Overloading in Swift
 
@@ -24,8 +23,7 @@ overview](http://sketchytech.blogspot.de/2014/09/swift-overriding-vs-overloading
 One of the possible overloading mechanisms is by type:
 
 ``` Swift
-class Example
-{
+class Example {
     func method(a : String) -> NSString {
         return a;
     }
@@ -34,8 +32,8 @@ class Example
     }
 }
 
-Example().method("Foo") // "Foo"
-Example().method(123) // "{123}"
+Example().method(a: "Foo") // "Foo"
+Example().method(a: 123) // "{123}"
 ```
 
 As you can see, you can call the same method name with different types,
@@ -48,14 +46,11 @@ This is certainly nice, but what if your setup is more complex, and you
 don\'t know which kind of type you\'re getting in a generic function:
 
 ``` Swift
-
-class DBStore<T>
-{
+class DBStore<T> {
     func store(a : T) {
         store T
     }
 }
-
 ```
 
 Now imagine that T can have different invariants. Let\'s say you have a
@@ -69,18 +64,17 @@ You want to call \'store\' on all your objects, without having to
 dynamically check the type to see if the object is Storeable or Interim.
 You can simply do that by adding the protocol:
 
-
-    class DBStore<T>
-    {
-        func store<T: Storeable>(a : T) {
-            store T
-        }
-
-        func store<T: Interim>(a : T) {
-            compress T
-        }
+``` Swift
+class DBStore<T> {
+    func store<T: Storeable>(a : T) {
+        store T
     }
 
+    func store<T: Interim>(a : T) {
+        compress T
+    }
+}
+```
 Now, you can call the same method in your code, and the correct code
 path will be determined at compile time without any overhead.
 
@@ -124,6 +118,7 @@ to that class
 // Objects which are stored in the cloud
 protocol CloudStorable {
 }
+
 extension DBStore {
     func store<T: CloudStorable> {
       // write your custom cloud store code

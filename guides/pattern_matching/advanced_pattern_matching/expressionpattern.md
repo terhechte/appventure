@@ -1,6 +1,6 @@
 [frontMatter]
 title = "Expression Pattern"
-tags = ["pattern matching", "switch", "equatable", "~="]
+tags = ["pattern matching", "switch", "equatable"]
 created = "2019-02-15 20:40:47"
 description = ""
 published = true

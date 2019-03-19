@@ -1,6 +1,6 @@
 [frontMatter]
 title = "Custom Initializers"
-tags = ["enum", "init?"]
+tags = ["enum", "init"]
 created = "2019-03-01 16:29:51"
 description = ""
 published = true

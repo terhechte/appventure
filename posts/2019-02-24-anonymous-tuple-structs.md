@@ -22,7 +22,7 @@ never my strong suit). One possible option of our class could look
 (partially) like this (for demonstration purposes, there\'re obviously a
 lot of things that we can change here):
 
-``` {.swift}
+``` Swift
 final class InteractiveUserImageController: UIView {
     /// Should the Premium Layout be used
     var isPremium: Bool
@@ -59,7 +59,7 @@ Swift\'s `struct` types can actually be really helpful here. What we can
 do is group these properties by their type by moving them into
 **one-time** structs:
 
-``` {.swift}
+``` Swift
 final class InteractiveUserImageController: UIView {
     struct DisplayOptions {
         /// Should the big like button be used
@@ -111,7 +111,7 @@ but in larger classes this might still require an additional lookup to
 figure out the type of `displayOptions`. However, there is no way in
 Swift to create anonymous `struct` types like this [^1]:
 
-``` {.swift}
+``` Swift
 let displayOptions = struct {
     /// Should the big like button be used
     var bigLikeButton: Bool
@@ -127,7 +127,7 @@ let displayOptions = struct {
 Actually, there is such a type in Swift. It is our good old friend, the
 `tuple`. See for yourself:
 
-``` {.swift}
+``` Swift
 var displayOptions: (
   bigLikeButton: Bool,
   alternativeBackgroundColor: Bool,
@@ -139,7 +139,7 @@ This defines a new type `displayOptions` that has three properties
 (`bigLikeButton`, `alternativeBackgroundColor`, `isPremium`) and can be
 accessed just like our `struct` from earlier:
 
-``` {.swift}
+``` Swift
 user.displayOptions.alternativeBackgroundColor = true
 ```
 
@@ -160,7 +160,7 @@ a different (`let`) group than mutable properties.
 As a nice addition, you can also use this feature when you need to
 initialize these properties with values:
 
-``` {.swift}
+``` Swift
 var displayOptions = (
   bigLikeButton: true,
   alternativeBackgroundColor: false,
@@ -177,7 +177,7 @@ also initializes them with the correct values right away.
 Naturally, you can also nest these tuple options easily, which makes it
 even easier compared to our original struct approach:
 
-``` {.swift}
+``` Swift
 class UserFollowComponent {
     var displayOptions = (
         likeButton: (

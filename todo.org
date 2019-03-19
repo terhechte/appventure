@@ -1,11 +1,12 @@
+* Write updated autoclosure article (but keep the old one in, as the first article about swift on appventure)
 * Run replacements for swift version
 sd -i 'from "react"' 'from "preact"' $(fd -e md)
 * run swift format for each code block to fix the formatting
 
-* TODO Add backwards compatible links to the old content:
+* DONE Add backwards compatible links to the old content:
  take the old generated html, and insert a header at the top "APPVENTURE RELAUNCHED" with a link to the new versions of the article,
   and then re-generate it and just keep the old /2015, /2016 etc folders as "copy folders" in (for search engine links and for posterity)
-* Write inout article, then generate the old html a last time for inclusion
+* DONE Write inout article, then generate the old html a last time for inclusion
 * The two new articles have wrong syntax highlighting
 * Make sure have no websocket code in release build
 * RawRepresentable article
@@ -43,3 +44,4 @@ https://www.swiftbysundell.com/posts/string-parsing-in-swift
 ** Have 'released' and 'updated' flag for the posts, articles, etc
 ** TODO Auto-inject keyword links for 'tuple', 'enum', 'optional', etc with the nice macappblog popup    
 ** new chapters in RSSFeed
+** have a list of swift keywords like "?" or "~=" or "@objc" and link to short articles epxlaining their meaning (like a FAQ module)

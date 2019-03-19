@@ -1,6 +1,6 @@
 [frontMatter]
-description = ""
-title = "Creating a Swift syntax extension: the Lisp 'cond' function"
+description = "Swift's @autoclosure allows to extend the Swift syntax in fantastic ways. Observe how we re-implement the `cond` function from Lisp"
+title = "Using @autoclosure to write a Swift syntax extension"
 created = "2014-06-08"
 published = true
 keywords = ["clojure", "lisp", "swift", "cond", "syntax", "macro", "extension", "cocoa", "ios", "feature"]
@@ -9,7 +9,7 @@ tags = ["autoclosure"]
 category = ["Language", "All"]
 
 [meta]
-swift_version = "1.2"
+swift_version = "1.0"
 ---
 
 It has been less than a week since Apple announced Swift, and people are

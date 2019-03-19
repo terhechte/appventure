@@ -38,7 +38,7 @@ favorites, such as the `title`, the `address` of the server,
 `meta tags`, or the name of the `author`. We will store this
 configuration in a Swift `struct`:
 
-``` {.swift}
+``` Swift
 struct Configuration {
   let title = "My Website"
   let address = "https://terhech.de"
@@ -51,7 +51,7 @@ When our app starts up, we create one `Configuration` and
 dependency-inject it into all of our components so that we can access
 the configuration properties:
 
-``` {.swift}
+``` Swift
 struct HTMLRenderer {
   private let config: Configuration
     init(with configuration: Configuration) {
@@ -64,7 +64,7 @@ Here is an example of our `HTMLRenderer` and how it uses the `config`
 property to access the `Configuration` values via the `private`,
 dependency-injected, `config` property:
 
-``` {.swift}
+``` Swift
 // Somewhere in our `HTMLRenderer` code
 template.write(Tag(name: "title", 
                   value: config.title))
@@ -77,7 +77,7 @@ As we continue working on our engine we also add additional
 configuration properties. The RSS Feed, the sitemap generator, the
 assets and so on all require additional configuration properties.
 
-``` {.swift}
+``` Swift
 struct Configuration {
   ...
   // RSS Properties
@@ -107,7 +107,7 @@ configuration.
 In order to solve this, we decide to split the configuration up into
 many smaller configurations, each for their specific use case:
 
-``` {.swift}
+``` Swift
 struct HTMLConfiguration {
   let title = "My Website"
   let address = "https://terhech.de"
@@ -148,7 +148,7 @@ also uses our `RSS.framework` and `SitemapGenerator.framework` to render
 the sitemap and the rss feed. It now requires three different
 configurations for startup:
 
-``` {.swift}
+``` Swift
 struct HTMLRenderer {
   init(htmlConfiguration: HTMLConfiguration, 
       sitemapConfiguration: SitemapConfiguration, 
@@ -169,7 +169,7 @@ So, how do we solve this? As always - with protocols of course.
 Instead of defining `struct` types for our configurations, we can
 obviously also define `protocol` types:
 
-``` {.swift}
+``` Swift
 protocol HTMLConfigurationProtocol {
   var title: String { get }
   var address: String { get }
@@ -195,7 +195,7 @@ protocol FoldersConfigurationProtocol {
 So, how does this exactly solve our problem? Our renderer code still
 looks just as messy, only that now we added one level of indirection:
 
-``` {.swift}
+``` Swift
 struct HTMLRenderer {
   init(htmlConfiguration: HTMLConfigurationProtocol, 
       sitemapConfiguration: SitemapConfigurationProtocol, 
@@ -215,7 +215,7 @@ can use this in our renderer to state that it requires a configuration
 type that conforms to the `HTMLConfigurationProtocol`, the
 `SitemapConfigurationProtocol` and the `RSSConfigurationProtocol`:
 
-``` {.swift}
+``` Swift
 
 struct HTMLRenderer {
   init(configuration: HTMLConfigurationProtocol & 

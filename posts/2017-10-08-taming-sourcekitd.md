@@ -14,8 +14,8 @@ swift_version = "4.0"
 
 # Update \[10/15/2017\]
 
-\<a href=\"<https://t.co/aJc8ZZSm9c>\"\>It seems that Xcode 9.1 beta 2
-fixes this issue.\</a\>
+<a href="<https://t.co/aJc8ZZSm9c>">It seems that Xcode 9.1 beta 2
+fixes this issue.</a>
 
 In my preliminary testing, everything worked fine. This feels really
 good.
