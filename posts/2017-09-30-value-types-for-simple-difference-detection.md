@@ -10,6 +10,7 @@ category = ["Swift Tricks", "All"]
 
 [meta]
 swift_version = "4.0"
+thumbnail = "/img-content/value_types_diff.png"
 ---
 
 Following sage advice I received from [John

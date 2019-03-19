@@ -7,6 +7,8 @@ keywords = ["swift", "linux", "server", "opensource"]
 slug = "2018-05-03-expanding-swifts-reach.html"
 tags = []
 category = ["Blog", "All"]
+[meta]
+thumbnail = "/img-content/swifts_reach.png"
 ---
 
 I guess we can all agree that Swift is a beautiful programming language

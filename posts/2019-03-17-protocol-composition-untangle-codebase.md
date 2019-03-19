@@ -8,6 +8,7 @@ slug = "2019-03-17-protocol-composition-untangle-codebase.html"
 tags = ["protocol", "composition"]
 [meta]
 feature_image = "http://appventure.me/img-content/2019-03-17-protocol-composition-untangle-codebase.jpg"
+thumbnail = "/img-content/protocol_composition.png"
 ---
 
 In this article, I\'d like to discuss the benefit of splitting protocols
