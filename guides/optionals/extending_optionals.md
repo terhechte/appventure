@@ -8,7 +8,7 @@ slug = "2018-01-10-optional-extensions.html"
 tags = ["optionals", "extension"]
 
 [meta]
-swift_version = "5.1"
+swift_version = "5.0"
 ---
 
 `Optionals` are a staple of Swift. I guess everybody will agree that

@@ -6,7 +6,7 @@ description = ""
 published = true
 
 [meta]
-swift_version = "5.1"
+swift_version = "5.0"
 ---
 
 # Nesting Enums

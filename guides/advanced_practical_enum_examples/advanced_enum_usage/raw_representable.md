@@ -6,7 +6,7 @@ description = ""
 published = false
 
 [meta]
-swift_version = "5.1"
+swift_version = "5.0"
 ---
 
 The Swift documentation for the `RawRepresentable` protocol says:
