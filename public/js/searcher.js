@@ -456,6 +456,9 @@ window.search = window.search || {};
         var searchterms  = searchterm.split(' ');
         removeChildren(searchresults);
         for(var i = 0; i < resultcount ; i++){
+            if (typeof results[i].doc.breadcrumbs === 'undefined') {
+                continue;
+            }
             var resultElem = document.createElement('span');
             resultElem.innerHTML = formatSearchResult(results[i], searchterms);
             searchresults.appendChild(resultElem);
