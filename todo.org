@@ -1,6 +1,7 @@
 * Write updated autoclosure article (but keep the old one in, as the first article about swift on appventure)
 * Run replacements for swift version
 sd -i 'from "react"' 'from "preact"' $(fd -e md)
+* Similar articles does not take books into account
 * run swift format for each code block to fix the formatting
 
 * DONE Add backwards compatible links to the old content:

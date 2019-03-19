@@ -9,7 +9,7 @@ tags = ["enum", "init", "associated"]
 category = ["Swift Tricks", "All"]
 
 [meta]
-swift_version = "2.3"
+swift_version = "5.0"
 ---
 
 [Enums](https://appventure.me/2015/10/17/advanced-practical-enum-examples/)
@@ -83,11 +83,11 @@ enum Device {
         }
     }
 }
-let b = Device.fromDefaults("phone", name: "iPhone SE", screenSize: CGSize(width: 640, height: 1136))
+let b = Device.fromDefaults(rawValue: "phone", name: "iPhone SE", screenSize: CGSize(width: 640, height: 1136))
 print(b)
 ```
 
-``` {.example}
+``` Swift
 prints Optional(main.Device.phone("iPhone SE", (640.0, 1136.0)))
 ```
 
@@ -138,11 +138,8 @@ enum Fruit {
 let appleMaker = Fruit.apple
 let firstApple = appleMaker(amount: 10)
 let secondApple = appleMaker(amount: 12)
-print(firstApple, secondApple)
-```
 
-``` {.example}
-apple(10) apple(12)
+print(firstApple, secondApple)
 ```
 
 So, how would that help us simplify the gross code duplication problem
@@ -165,11 +162,11 @@ enum Device {
     }
 }
 
-let iPhone = Device.fromDefaults("phone", name: "iPhone SE", screenSize: CGSize(width: 640, height: 1134))
+let iPhone = Device.fromDefaults(rawValue: "phone", name: "iPhone SE", screenSize: CGSize(width: 640, height: 1134))
 print(iPhone)
 ```
 
-``` {.example}
+``` Swift
 Optional(main.Device.phone("iPhone SE", (640.0, 1134.0)))
 ```
 

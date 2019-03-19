@@ -9,7 +9,7 @@ tags = ["try", "catch"]
 category = ["Language", "All"]
 
 [meta]
-swift_version = "2.3"
+swift_version = "5.0"
 ---
 
 With Swift 2.0, Apple introduced a new error handling model with the
@@ -19,17 +19,17 @@ as follows (simplified example):
 
 ``` Swift
 // We define a struct conforming to the new ErrorType
-enum Error : ErrorType {
-    case DivisionError
+enum OurError : ErrorType {
+    case divisionError
 }
 func divide(a: Int, b: Int) throws -> Int {
     if b == 0 {
-        throw Error.DivisionError
+        throw OurError.divisionError
     }
     return a / b
 }
 do {
-    let result = try divide(50, 10)
+    let result = try divide(a: 50, b: 10)
 } catch let error {
     print("Could not divide")
 }
@@ -49,13 +49,11 @@ this is solved with delegates, blocks or (though rarely) NSInvocation,
 in Swift the typical solution is a closure.
 
 ``` Swift
-
-func asynchronousWork(completion: (r: NSDictionary?) -> Void) -> Void {
+func asynchronousWork(completion: (r: [String: Any]?) -> Void) -> Void {
   // do work
   ...
-  completion(aDictionary)
+  completion(someValue)
 }
-
 ```
 
 How do you handle errors in these situations? We can expect, that within
@@ -64,13 +62,12 @@ try/catch. So one possible solution that comes to mind is handling the
 errors in there, and only forwarding the result, if there is one:
 
 ``` Swift
-func asynchronousWork(completion: (r: NSDictionary?) -> Void) -> Void {
-    NSURLConnection.sendAsynchronousRequest(request, queue: queue) { 
+func asynchronousWork(completion: (result: [String: Any]?) -> Void) -> Void {
+    URLConnection.sendAsynchronousRequest(request, queue: queue) { 
       (response, data, error) -> Void in
         guard let data = data else { return }
         do {
-            let result = try NSJSONSerialization.JSONObjectWithData(data, options: []) 
-                as! NSDictionary
+            let result = try JSONSerialization.JSONObjectWithData(data, options: []) as? [String: Any]
             completion(r: result)
         } catch _ {
             completion(r: nil)
@@ -79,9 +76,9 @@ func asynchronousWork(completion: (r: NSDictionary?) -> Void) -> Void {
 }
 
 // Call
-asynchronousWork { (r) -> Void in
-    guard let r = r else { return}
-    print(r)
+asynchronousWork { (result) -> Void in
+    guard let result = result else { return}
+    print(result)
 }
 ```
 
@@ -90,37 +87,42 @@ asynchronousWork { (r) -> Void in
 However, this is rather fragile, as it will not gives us any information
 about the error in question. In Swift 1.0, when such a structure
 presented itself, people usually implemented a Result type which can be
-either the result of the computation, or the error [^1]:
+either the result of the computation, or the error:
 
 ``` Swift
-enum ResultType {
-    case Success(r: NSDictionary)
-    case Error(e: ErrorType)
+enum Result {
+    case success(r: [String: Any])
+    case failure(e: ErrorType)
 }
 ```
+
+# Swift 5 Result
+
+Swift 5 now contains a `Result` type in the standard library. It is similar to the one we used above. This
+means the names of the two cases are also `success` and `failure`. The name of the type is `Result`.
 
 Given this enum, we can then change the code as follows:
 
 ``` Swift
-func asynchronousWork(completion: (r: ResultType) -> Void) -> Void {
-    NSURLConnection.sendAsynchronousRequest(request, queue: queue) { 
+func asynchronousWork(completion: (result: Result) -> Void) -> Void {
+    URLConnection.sendAsynchronousRequest(request, queue: queue) { 
        (response, data, error) -> Void in
         guard let data = data else { return }
         do {
-            let result = try NSJSONSerialization.JSONObjectWithData(data, options: []) 
-                as! NSDictionary
-            completion(r: ResultType.Success(r: result))
+            let result = try JSONSerialization.JSONObjectWithData(data, options: []) 
+                as? [String: Any]
+            completion(r: Result.success(r: result))
         } catch let error {
-            completion(r: ResultType.Error(e: error))
+            completion(r: Result.failure(e: error))
         }
     }
 }
 
 // Call
-asynchronousWork { (r: ResultType) -> Void in
+asynchronousWork { (result: Result) -> Void in
     switch r {
-    case .Success(let e): print(e)
-    case .Error(let e): print("Error", e)
+    case .success(let successValue): print(successValue)
+    case .failure(let error): print("Error", error)
     }
 }
 ```
@@ -136,7 +138,7 @@ point in the future. I.e:
 
 ``` Swift
 
-func asynchronousWork(completion: (r: ResultType) -> Void) throws -> Void {
+func asynchronousWork(completion: (result: Result) -> Void) throws -> Void {
 }
 ```
 
@@ -150,22 +152,24 @@ throwable closure. See for yourself:
 
 ``` Swift
 
-func asynchronousWork(completion: (inner: () throws -> NSDictionary) -> Void) -> Void {
-    NSURLConnection.sendAsynchronousRequest(request, queue: queue) { 
+func asynchronousWork(completion: (inner: () throws -> [String: Any]) -> Void) -> Void {
+    URLConnection.sendAsynchronousRequest(request, queue: queue) { 
         (response, data, error) -> Void in
         guard let data = data else { return }
         do {
-            let result = try NSJSONSerialization.JSONObjectWithData(data, options: []) 
-                as! NSDictionary
-            completion(inner: {return result})
+            guard let result = try JSONSerialization.JSONObjectWithData(data, options: []) 
+                as? [String: Any] else {
+                completion(inner: { throw OurError.InvalidJSONType })
+            }
+            completion(inner: { return result })
         } catch let error {
-            completion(inner: {throw error})
+            completion(inner: { throw error })
         }
     }
 }
 
 // Call
-asynchronousWork { (inner: () throws -> NSDictionary) -> Void in
+asynchronousWork { (inner: () throws -> [String: Any]) -> Void in
     do {
         let result = try inner()
     } catch let error {
@@ -182,7 +186,7 @@ to resort to enums or switches. How did we do this?
 
 As you can see, the trick is that the asynchronousWork function takes an
 additional closure called \'inner\' of the type
-`() throws -> NSDictionary`. This closure will either provide the result
+`() throws -> [String: Any]`. This closure will either provide the result
 of the computation, or it will throw. The closure itself is being
 constructed during the computation by one of two means:
 
@@ -192,6 +196,9 @@ constructed during the computation by one of two means:
 This is a simple and flexible way of throwing errors up a closure chain
 without any additional means. Much like `rethrow` but for asynchronous
 operations.
+
+We also had to add an additional error for the case where our JSON was
+not of the `[String: Any]` type.
 
 # Addendum
 
@@ -204,6 +211,3 @@ from external libraries, but it is a good approach for your own code,
 frameworks, and libraries, if you like the idea of using the try/catch
 approach natively without having to resort to abstraction containers.
 
-[^1]: And with Swift 2.0, the dreaded multi-value enum error
-    disappeared, and we can finally implement such a type without having
-    to box it.

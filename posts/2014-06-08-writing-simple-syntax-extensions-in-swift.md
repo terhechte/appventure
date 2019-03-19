@@ -12,6 +12,11 @@ category = ["Language", "All"]
 swift_version = "1.0"
 ---
 
+## Note
+This article is severly outdated. I'm keeping it for posterity the way it is because
+it was writting at WWDC 2014 when Swift was released.
+## Endnote
+
 It has been less than a week since Apple announced Swift, and people are
 already writing libraries, snippet collections, or best practice posts.
 I suppose most did not even find the time to thouroughly read the Swift

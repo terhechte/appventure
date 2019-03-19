@@ -9,30 +9,24 @@ tags = ["enum", "guard", "if let"]
 category = ["Swift Tricks", "All"]
 
 [meta]
-swift_version = "2.3"
+swift_version = "5.0"
 ---
 
 This will be a shorter post compared to some of my previous ones, but I
 wanted to share three useful `guard` tips for structuring your functions
 in such a way that you end up with code that is more concise and also
-easier to understand[^1]. This is **not** a post about general coding
+easier to understand. This is **not** a post about general coding
 styles or coding guidelines, but more about how `guard` can help you
 simplify your code.
-
-Some of this might also have appeared in one of my larger posts on
-[enums](https://appventure.me/2015/10/17/advanced-practical-enum-examples/)
-or [pattern
-matching](https://appventure.me/2015/08/20/swift-pattern-matching-in-detail/),
-but for different use cases. Let\'s dive right in:
 
 # Binding and Condition Combination
 
 ## Nesting
 
 The first example concerns the use of pattern matching in order to
-let[^2] bind variables into the current scope. One thing I really like
+let bind variables into the current scope. One thing I really like
 about this syntax (compared to, say `if let`) is that it keeps a golden
-code path, **guarding**[^3] you from the all-too common **skyscraper of
+code path, **guarding** you from the all-too common **skyscraper of
 death**. Compare:
 
 ``` Swift
@@ -79,16 +73,14 @@ protocol NotificationListener {
   func handleNotification(notification: Notification)
 }
 enum Notification {
-  case UserLoggedIn(user: String, date: NSDate, domain: String)
-  case FileUploaded(file: String, location: String, size: Int, user: String)
+  case userLoggedIn(user: String, date: NSDate, domain: String)
+  case fileUploaded(file: String, location: String, size: Int, user: String)
 }
 
 struct FileUploadHandler: NotificationListener {
-  /**
-    Implement the notification handling to move uploaded files to temporary folder
-  */
+  /// Implement the notification handling to move uploaded files to temporary folder
   func handleNotification(notification: Notification) {
-    guard case .FileUploaded(let file, let location, _, let user) = notification
+    guard case .fileUploaded(let file, let location, _, let user) = notification
     else { return }
 
     if user == self.currentUser {
@@ -100,8 +92,8 @@ struct FileUploadHandler: NotificationListener {
 
 The binding in the `guard case` line achieves two things for us:
 
-1.  It makes sure `handleNotifications` only works for `FileUploaded`
-    notifications, and not for `UserLoggedIn` notifications.
+1.  It makes sure `handleNotifications` only works for `fileUploaded`
+    notifications, and not for `userLoggedIn` notifications.
 2.  It binds all the `associated values` of the enum into the current
     scope, making it easy for us to use the data.
 
@@ -113,13 +105,12 @@ and behold:
 ``` Swift
 
 struct FileUploadHandler: NotificationListener {
-  /**
-    Implement the notification handling to move uploaded files to temporary folder
-  */
+  /// Implement the notification handling to move uploaded files to temporary folder
   func handleNotification(notification: Notification) {
-    guard case .FileUploaded(let file, let location, _, let user) = notification, user == self.currentUser
-    else { return }
-    self.moveFile(file, atLocation: location)
+    guard case .fileUploaded(let file, let location, _, let user) = notification, 
+          user == self.currentUser
+          else { return }
+    moveFile(file, atLocation: location)
   }
 }
 
@@ -134,20 +125,18 @@ You can have multiple `where` clauses in your `guard` statement:
 import Foundation
 
 func confirmPath(pathObject: AnyObject) -> Bool {
-  guard let url = pathObject as? NSURL,
-  let components = url.pathComponents
-    , components.count > 0,
-  let first = components.dropFirst().first
-    , first == "Applications",
-  let last = components.last
-    , last == "MyApp.app"
+  guard let url = pathObject as? URL,
+      let components = url.pathComponents, 
+      components.count > 0,
+      let first = components.dropFirst().first, 
+      first == "Applications",
+      let last = components.last, 
+      last == "MyApp.app"
   else { return false }
   print("valid folder", last)
   return true
 }
-print(confirmPath(pathObject: NSURL(fileURLWithPath: "/Applications/MyApp.app")))
-// : valid folder MyApp.app
-// : true
+print(confirmPath(pathObject: URL(fileURLWithPath: "/Applications/MyApp.app")))
 ```
 
 As you can see here, we\'re combining multiple `let` bindings with
@@ -164,25 +153,25 @@ of an Instagram client. Those can be headlines, seperators, or folders:
 
 ``` Swift
 enum SidebarEntry {
-  case Headline(String)
-  case Item(String)
-  case Seperator
+  case headline(String)
+  case item(String)
+  case seperator
 }
 ```
 
 A sidebar could be defined by an array like this:
 
 ``` Swift
-[.Headline("Global"),
- .Item("Dashboard"),
- .Item("Popular"),
- .Seperator,
- .Headline("Me"),
- .Item("Pictures"),
- .Seperator,
- .Headline("Folders"),
- .Item("Best Pics 2013"),
- .Item("Wedding")
+[.headline("Global"),
+ .item("Dashboard"),
+ .item("Popular"),
+ .seperator,
+ .headline("Me"),
+ .item("Pictures"),
+ .seperator,
+ .headline("Folders"),
+ .item("Best Pics 2013"),
+ .item("Wedding")
 ]
 ```
 
@@ -193,22 +182,22 @@ have another, nested, enum within the `Item` enum:
 
 ``` Swift
 enum Action {
-  case .Popular
-  case .Dashboard
-  case .Pictures
-  case .Folder(name: String)
+  case .popular
+  case .dashboard
+  case .pictures
+  case .folder(name: String)
 }
 
 enum SidebarEntry {
-  case Headline(String)
-  case Item(name: String, action: Action)
-  case Seperator
+  case headline(String)
+  case item(name: String, action: Action)
+  case seperator
 }
 
-[.Headline("Global"),
- .Item(name: "Dashboard", action: .Dashboard),
- .Item(name: "Popular", action: .Popular),
- .Item(name: "Wedding", action: .Folder("fo-wedding")]
+[.headline("Global"),
+ .item(name: "Dashboard", action: .Dashboard),
+ .item(name: "Popular", action: .Popular),
+ .item(name: "Wedding", action: .Folder("fo-wedding")]
 ```
 
 Now, if we want publish a folder (to the cloud) we\'d like to really
@@ -217,8 +206,8 @@ Popular item:
 
 ``` Swift
 func publishFolder(entry: SidebarEntry)  {
-  guard case .Item(_, .Folder(let name)) = entry 
-  else { return }
+  guard case .Item(_, .folder(let name)) = entry 
+    else { return }
   Folders.sharedFolders().byName(name).publish()
 }
 ```
@@ -258,7 +247,7 @@ I find this much easier on the eyes and better to read. However, it may
 reduce readability in a complex project when another developer runs into
 this and wonders what kind of type is being returned here.
 
-Alternatively, you can also use the semicolon in these cases[^4]:
+Alternatively, you can also use the semicolon in these cases[^1]:
 
 ``` Swift
 guard let a = b() else {
@@ -268,8 +257,7 @@ guard let a = b() else {
 
 # `try?` in guards
 
-Finally, in cases where you\'d need to perform [a `throwable`
-function](https://appventure.me/2015/08/25/optional-throw-swift/), and
+Finally, in cases where you\'d need to perform a throwable function, and
 you don\'t care about the error result, you can still happily use
 `guard` just by utilizing the `try?` syntax, which converts the result
 of your throwing call into an optional, depending on whether it worked
@@ -292,23 +280,15 @@ combine `case` and `let` in one `guard`.
 
 ``` Swift
 guard let messageids = overview.headers["message-id"],
-    messageid = messageids.first,
+    let messageid = messageids.first,
     case .MessageId(_, let msgid) = messageid
     where msgid == self.originalMessageID
     else { return print("Unknown Message-ID:", overview) }
 ```
 
 That\'s it. For more detailed information, I recommend reading my much
-larger articles on [pattern
-matching](https://appventure.me/2015/08/20/swift-pattern-matching-in-detail/)
-and
-[enums](https://appventure.me/2015/10/17/advanced-practical-enum-examples/).
+larger articles on [pattern matching](lnk::switch) and [enum](lnk::enum).
 
-[^1]: In my humble opinion, that is
 
-[^2]: Or `var` bind
-
-[^3]: Hint Hint
-
-[^4]: After leaving Objective-C behind, you\'ll probably have to search
+[^1]: After leaving Objective-C behind, you\'ll probably have to search
     your keyboard to find the key for it again ;)

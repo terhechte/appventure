@@ -12,7 +12,8 @@ category = ["Language", "All"]
 swift_version = "5.0"
 ---
 
-In this article I wanted to delve into a nice generic abstraction in Swift. First a bit of background:
+In this article I wanted to delve into a nice generic abstraction in Swift. It resolves around method overloading, so
+we will start with a small introduction into general method overloading in Swift.
 
 # Method Overloading in Swift
 

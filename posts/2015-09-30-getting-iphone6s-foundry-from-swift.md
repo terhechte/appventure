@@ -9,7 +9,7 @@ tags = []
 category = ["Hands On", "All"]
 
 [meta]
-swift_version = "2.3"
+swift_version = "5.0"
 ---
 
 [Here\'s a small Github project by
@@ -61,8 +61,10 @@ realm.](http://www.russbishop.net/swift-don-t-do-this)
 Using the `@asmname` keyword, the code looks like this (and you can
 remove the bridging header):
 
+With Swift 3, `@asmname` has been renamed to `@_silgen_name`.
+
 ``` Swift
-@asmname("MGCopyAnswer")
+@_silgen_name("MGCopyAnswer")
 func MGCopyAnswer(_: CFStringRef) -> Optional<Unmanaged<CFPropertyListRef>>;
 ```
 
@@ -131,7 +133,7 @@ when possible we should strive to do everything the safe way. So instead
 we\'ll do an optional cast to String and if that works out, we can get
 the actual String value out of the `Optional`.
 
-If we do it this way, it will not blow up whtn the contents of the
+If we do it this way, it will not blow up when the contents of the
 reference are, say, a `CFDate` or a `CFBoolean`. This is particularly
 easy with [Swift\'s Pattern Matching
 syntax](lnk::switch):

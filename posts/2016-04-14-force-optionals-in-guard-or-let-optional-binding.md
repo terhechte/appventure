@@ -9,13 +9,14 @@ tags = ["optional"]
 category = ["Swift Tricks", "All"]
 
 [meta]
-swift_version = "2.3"
+swift_version = "5.0"
 ---
 
 I really love unwrapping optionals in a multi- `guard` or `let`
 statement with additional `where` clauses added. [See my previous post
 on this
-here](https://appventure.me/2016/03/29/three-tips-for-clean-swift-code/).
+here](https://appventure.me/posts/2016-03-29-three-tips-for-clean-swift-code.html).
+
 However, sometimes I run into a situation where I have one function call
 (or a array subscript) in between my others that does not return an
 optional:
@@ -28,8 +29,8 @@ func someArray() -> [Int]? {
 
 func example() {
     guard let array = someArray(),
-        numberThree = array[2]
-        where numberThree == 3
+        let numberThree = array[2],
+        numberThree == 3
         else { return }
     print(numberThree)
 }
@@ -64,7 +65,7 @@ an optional, we can just as well create one and unpack it again:
 ``` Swift
 func example() {
     guard let array = someArray(),
-        numberThree = Optional.Some(array[2])
+        numberThree = Optional.some(array[2])
         where numberThree == 3
         else { return }
     print(numberThree)
@@ -72,9 +73,9 @@ func example() {
 ```
 
 As you may remember, Swift\'s optionals are internally more or less
-`enums` with a `.Some` and a `.None` case. So what we\'re doing here is
-creating a new `.Some` case only to unwrap it again in the very same
-line: The `array[2]` expression will be wrapped with `Optional.Some` and
+`enums` with a `.some` and a `.none` case. So what we\'re doing here is
+creating a new `.some` case only to unwrap it again in the very same
+line: The `array[2]` expression will be wrapped with `Optional.some` and
 then unwrapped again into `numberThree`.
 
 There is a wee bit of overhead here, but on the other hand it does allow
@@ -85,10 +86,10 @@ but also with any non-optional function, i.e.:
 
 ``` Swift
 guard let aString = optionalString(),
-    elements = Optional.Some(aString.characters.split("/")),
-    last = elements.last,
-    count = Optional.Some(last.characters.count),
-    where count == 5 else { fatalError("Wrong Path") }
+    let elements = Optional.Some(aString.characters.split("/")),
+    let last = elements.last,
+    let count = Optional.Some(last.characters.count),
+    count == 5 else { fatalError("Wrong Path") }
 print("We have \(count) items in \(last)")
 ```
 
