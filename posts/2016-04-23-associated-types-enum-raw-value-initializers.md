@@ -10,9 +10,10 @@ category = ["Swift Tricks", "All"]
 
 [meta]
 swift_version = "5.0"
+feature_image = "/img-content/2016-04-23-associated-types-enum-raw-value-initializers-feature-image.jpg"
 ---
 
-[Enums](https://appventure.me/2015/10/17/advanced-practical-enum-examples/)
+[Enums](lnk::enum)
 are a beautiful way of structuring information in Swift. Sometimes you
 find yourself initializing enums from raw values, maybe because the
 values were intermittendly stored somewhere else, say in the
