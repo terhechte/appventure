@@ -1,9 +1,3 @@
-* Make sure have no websocket code in release build
-* About page
-* Add Feature-images everywhere and Support the old static-feature-image
-* Clicking a guide image doesn't work. only headline works
-
-
 * After tokyo-launch
 ** RawRepresentable article
 ** Similar articles does not take books into account
