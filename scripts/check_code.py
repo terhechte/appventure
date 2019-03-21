@@ -1,5 +1,9 @@
 import subprocess
 
+# Terrible hack for migrating code
+# Will extract fenced code (```) and try to compile it. 
+# Will print the output if compilation fails
+
 def run_swift(code):
     filename = "/tmp/tmpswift.swift"
     tempfile = open(filename, "w")
