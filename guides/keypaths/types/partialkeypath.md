@@ -28,7 +28,7 @@ let c: PartialKeyPath<User> = \User.address
 
 See how these totally different types (`KeyPath<User, String>, KeyPath<User, Int>, ...`) are actually stored with the same type, just `PartialKeyPath<User>`. We type-erase the `Value` parameter.
 
-This is very handy to, for example, hand differently typed keypaths to the same function (upcoming nonsensical code):
+This is useful because it allows you to call the same function with different types of keypaths:
 
 ``` Swift
 func acceptKeyPath(_ keyPath: PartialKeyPath<User>) {
@@ -38,18 +38,18 @@ acceptKeyPath(\User.age)
 acceptKeyPath(\User.username)
 ```
 
-More importantly, it allows us to solve the issue we had with the `DebugPrinter` in the previous example. We can now implement is as follows:
+More importantly, it allows us to solve the issue we had with the `DebugPrinter` in the [previous code](javascript:prev()). We can now implement is as follows:
 
 ``` Swift
 /// Dynamically define a debug description for an object
 class DebugPrinter<T> where T: AnyObject {
     var keyPaths: [(String?, PartialKeyPath<T>)] = []
     let reference: T
-    let start: String
+    let prefix: String
 
-    init(_ start: String, for instance: T) {
-        self.reference = instance
-        self.start = start
+    init(_ prefixString: String, for instance: T) {
+        reference = instance
+        prefix = prefixString
     }
 
     func addLog(_ path: PartialKeyPath<T>, prefix: String? = nil) {
@@ -57,7 +57,7 @@ class DebugPrinter<T> where T: AnyObject {
     }
 
     func log() {
-        print(start, terminator: ": ")
+        print(prefix, terminator: ": ")
         for entry in keyPaths {
           if let prefix = entry.0 { print(prefix, terminator: "") }
           print(reference[keyPath: entry.1], terminator: ", ")

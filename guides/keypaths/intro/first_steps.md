@@ -11,7 +11,9 @@ swift_version = "5.0"
 
 # KeyPaths 101
 
-We will start with a very, very simple example. Below, we create a `User` type that has just one property, the username. Then, we initialize the user as `firstUser` and want to print out `firstUser`s `username`. Normally, we would do `print(firstUser.username)` but instead we're doing something else. Have a look:
+We will start with a very, very simple example. Below, we create a `User` type that has just one property, the username. Then, we initialize the user as `firstUser` and want to print out `firstUser`s `username`. 
+
+Normally, we would do `print(firstUser.username)` but instead we're doing something else. Have a look:
 
 ``` Swift
 struct User {
@@ -29,7 +31,9 @@ You'll easily see the difference. Instead of using `firstUser.username` we're us
 firstUser[keyPath: \User.username]
 ```
 
-This tells Swift that we want to access the contents of the property `username` of the type `User` on the instance `firstUser`. It is a bit like dictionary access `dict["Hello"]`, only that you don't use `String` types but something else. The type of `\User.username` is `KeyPath` because `\User.username` is a Swift KeyPath.
+This tells Swift that we want to access the contents of the property `username` of the type `User` on the instance `firstUser`. 
+
+It is comparable to dictionary access (`dict["Hello"]`), only that you don't use `String` keys ("Hello") but something type-safe. Namely, a Swift keypath.
 
 At first glance, this looks like an overly verbose version of direct access, so what else can it do? For one, we can abstract the access away. We can store the `KeyPath` in a variable:
 
@@ -39,7 +43,7 @@ let userKeyPath = \User.username
 print(firstUser[keyPath: \User.username])
 ```
 
-Here, we suddenly introduced a generic abstraction between the property and the type. Before we see how this can be used, it is necessary to understand the type of this KeyPath. This is how the full type signature for this particular KeyPath looks:
+By doing so, we implement generic abstraction between the property and the type. But, what is the type of this `userKeyPath` variable? The full type signature looks like this:
 
 ``` Swift
 let keyPath: KeyPath<User, String> = \User.username

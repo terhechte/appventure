@@ -11,7 +11,7 @@ swift_version = "5.0"
 
 # ReferenceWritableKeyPath
 
-In our earlier examples, we always defined `User` `struct` instances. Which meant that the actual instance we instantiated also had to be mutable (`var`):
+In the previous example code, we always defined `User` `struct` instances. Which meant that the actual instance we instantiated also had to be mutable (`var`):
 
 ``` Swift
 var firstUser = User(username: String)
@@ -33,4 +33,4 @@ in The example above, the `username` property can still be modified because `Use
 
 It is important to note that `ReferenceWritableKeyPath`s are subclasses of `WritableKeyPath`, so any function that accepts a `WritableKeyPath` can also accept a `ReferenceWritableKeyPath`.
 
-The next `KeyPath` we want to look at is the `PartialKeyPath`, however, before we do so, we'll briefly look at a simple class to better understand the need for it and to see some of what we've seen so far in action.
+The next `KeyPath` we want to look at is the `PartialKeyPath`, however, before we do so, we'll have a detour and look at a short example to better understand the need for it and to see some of what we've seen so far in action.

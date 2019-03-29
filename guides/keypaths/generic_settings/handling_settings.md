@@ -145,9 +145,9 @@ if let joined = keyPath.appending(path: item.keyPath) {
 }
 ```
 
-We take the original `keyPath` that was given to the `updateSettings` function first (i.e. `\Setting.profileSettings`) and we take the `item.keyPath`, which is the keypath of the current item (i.e. `\ProfileSettings.displayName`) and join them to `\Setting.profileSettings.displayName`. Now we can use this `joined` keypath to retrieve the value of the `idisplayName` property of the `provider` instance and perform another iteration. By implementing it this way, we can easily supported more nesting hierachies.
+We take the original `keyPath` that was given to the `updateSettings` function first (i.e. `\Setting.profileSettings`) and we take the `item.keyPath`, which is the keypath of the current item (i.e. `\ProfileSettings.displayName`) and join them to `\Setting.profileSettings.displayName`. Now we can use this `joined` keypath to retrieve the value of the `displayName` property of the `provider` instance and perform another iteration. By implementing it this way, we can easily support more nesting hierachies.
 
-So what's left is the code to use when our `value` is not another nested `SettingsProvider` but an actual value such as `String` or `Bool` (`displayName` or `shareUpdates`). Since we want to be able to change the value that is stored here (say from `true` to `false`) we do a run-time cast from this `keyPath` to a `WritableKeyPath` to figure out if we have an editable value.
+So what happens when our `value` isn't another nested `SettingsProvider` but an actual value such as `String` or `Bool` (`displayName` or `shareUpdates`). Since we want to be able to change the value that is stored here (from `false` to `true`) we do a run-time cast from this `keyPath` to a `WritableKeyPath` to figure out if we have an editable value.
 
 ``` Swift
 if let writableKeypath = keyPath as? WritableKeyPath<???, ???> {
@@ -175,6 +175,7 @@ func editSettings<Provider: SettingsProvider>(provider: Provider) {
         }
       }
     } else if let writable = keyPath as? WritableKeyPath<Provider, Bool> {
+      print(title)
       provider[keyPath: writable] = true
     }
   }
@@ -190,6 +191,7 @@ That's it! We cast the keypath to a writable variant, and then we can modify the
 
 ``` Swift
 if let writable = keyPath as? WritableKeyPath<Provider, Bool> {
+      print(title)
       provider[keyPath: writable] = true
     }
 }

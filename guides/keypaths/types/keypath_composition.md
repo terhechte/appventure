@@ -41,10 +41,5 @@ Given these two variables, we can now compose them to manifest a new keypath at 
 let newKeyPath = addressKeyPath.appending(path: streetKeyPath)
 ```
 
-Here, we created a new `KeyPath<User, String>` at runtime by joining a `KeyPath<User, Address>` and a `KeyPath<Address, String>`. However, what should Swift do if you try to merge a `KeyPath<User, String>` and a `KeyPath<House, Int>`. Obviously, there's no relationship between these types. Swift solves this by making the result of keypath composition always optional. So the code above should actually be written like this:
+Here, we created a new `KeyPath<User, String>` at runtime by joining a `KeyPath<User, Address>` and a `KeyPath<Address, String>`. However, what should Swift do if you try to merge a `KeyPath<User, String>` and a `KeyPath<House, Int>`. Obviously, there's no relationship between these types. Swift solves this by introducing laws of keypath composition. Lets have a look at them.
 
-``` Swift
-if let newKeyPath = addressKeyPath.appending(path: streetKeyPath) {
-  ...
-}
-```

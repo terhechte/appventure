@@ -11,7 +11,7 @@ swift_version = "5.0"
 
 # 3. KeyPaths conform to `Hashable`
 
-We did not see an example of this  yet, but it is one of my all-time favorite keypaths functions. Every `KeyPath` type is `Hashable` which means that it can be used as a key in a dictionary. One use case for this is storing meta information about properties in a dictionary. Here, we have a dictionary that maps from partial key paths to `String`. It stores to different keypaths (`username`, `age`) and their titles:
+We did not see an example of this  yet, but it is one of my all-time favorite keypaths functions. Every `KeyPath` type is `Hashable` which means that it can be used as a key in a dictionary. One use case for this is storing meta information about properties in a dictionary. Here, we have a dictionary that maps from partial key paths to `String`. It stores two different keypaths (`username`, `age`) and their titles:
 
 ``` Swift
 let meta: [PartialKeyPath<User>: String] = [

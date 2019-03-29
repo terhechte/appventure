@@ -11,7 +11,7 @@ swift_version = "5.0"
 
 # WritableKeyPath<Root, Value>
 
-In the example above, our type was a `WritableKeyPath`. WritableKeyPaths are, as the name implies, keypaths that allow you to write information. They're formed for `var` properties on `var` instances.
+In [the earlier example](javascript:prev()), our type was a `WritableKeyPath`. WritableKeyPaths are, as the name implies, keypaths that allow you to write information. They're formed for `var` properties on `var` instances.
 
 ``` Swift
 struct MutableUser {

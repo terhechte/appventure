@@ -11,7 +11,7 @@ swift_version = "5.0"
 
 # DebugPrinter Intermezzo
 
-Now that we have our writable `KeyPath` types, we'd like to introduce a type that allows us to define the logging behaviour of an object. We'd like to define which properties should be printed when our debug print function is called. We will start with a very simple example. This code will later be expanded upon in this guide. For now, it is very simple.
+Now that we have our writable `KeyPath` types, we'd like to introduce a type that allows us to define the logging behaviour of an object. We'd like to define which properties should be printed when our debug print function is called. It will be a very simple example.
 
 We will actually start by looking at how we would invoke the code before we write it. This will make it easier to understand what is going on here. The class we will define is called `DebugPrinter` and it is used to dynamically change how to debug print and object at runtime.
 
@@ -37,7 +37,7 @@ class Presentation {
 }
 ```
 
-Now, you'd like to define at runtime which of the properties of this type to print. For example depending on whether a user is currently presenting or editing slides. with our `DebugPrinter` we can easily do this dynamically:
+Now, you'd like to define at runtime which of the properties of this type to print. For example depending on whether a user is currently presenting or editing slides. This is, how we would do that:
 
 ``` Swift
 let state = Presentation(...) // we need a presentation instance
@@ -60,12 +60,12 @@ class DebugPrinter<T> where T: AnyObject {
     /// 1
     var keyPaths: [(String?, KeyPath<T, String>)] = []
     let reference: T
-    let start: String
+    let prefix: String
 
     /// 2
-    init(_ start: String, for instance: T) {
-        self.reference = instance
-        self.start = start
+    init(_ prefixString: String, for instance: T) {
+        reference = instance
+        start = prefixString
     }
 
     /// 3
@@ -75,7 +75,7 @@ class DebugPrinter<T> where T: AnyObject {
 
     /// 4
     func log() {
-        print(start, terminator: ": ")
+        print(prefix, terminator: ": ")
         for entry in keyPaths {
           if let prefix = entry.0 { print(prefix, terminator: "") }
           print(reference[keyPath: entry.1], terminator: ", ")
@@ -86,11 +86,11 @@ class DebugPrinter<T> where T: AnyObject {
 
 So lets go through step by step. First, we're creating a new `class` that is generic over the type `T` so that we can store keypaths of type `KeyPath<T, String>` in our `keyPaths` array [1]. Each keypath is stored in a [tuple](lnk::tuple) with an optional prefix.
 
-Then, we can initialize a `DebugPrinter` with a `start` `String` - which will be printed at the beginning of each future print invocation - and a reference to the actual instance we want to debug `T` [2].
+Then, we can initialize a `DebugPrinter` with a `prefix` `String` - which will be printed at the beginning of each future print invocation - and a reference to the actual instance we want to debug `T` [2].
 
 The `addLog` function, then, inserts a new `KeyPath` into our `keyPaths` array (again, including the optional `prefix`) [3].
 
-Finally, the `log` function, when called, iterates over all the `keyPaths` and, for each of them, prints the contents of the `KeyPath` in our `reference` (including the prefix).
+Finally, the `log` function, when called, iterates over all the keypaths and, for each of them, prints the contents of the `KeyPath` in our `reference` (including the prefix).
 
 Before you move on, have a brief look at the implementation of the `DebugPrinter` and at the usage example. Would this actually work? 
 

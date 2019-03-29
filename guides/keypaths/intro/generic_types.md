@@ -13,7 +13,7 @@ swift_version = "5.0"
 
 We don't always have to spell out the two generic types `Root` and `Value`. We can, for example, write a generic function that works for any object with any property:
 
-```
+``` Swift
 func accept<MyRoot, MyValue>(_ object: MyRoot, keyPath: KeyPath<MyRoot, MyValue>) {
   print(object[keyPath: keyPath])
 }
