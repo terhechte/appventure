@@ -1,0 +1,37 @@
+[frontMatter]
+title = "Introduction to Swift Keypaths"
+keywords = ["feature", "keypath", "anykeypath", "writablekeypath", "partialkeypath", "referencewritablekeypath", "root", "value"]
+tags = []
+created = "2019-03-29"
+description = "Keypaths allow type-safe abstractions over properties that go beyond what can be done with protocols alone. This guide introduces by solving practical problems"
+published = true
+
+[meta]
+featured = "true"
+swift_version = "5.0"
+short_title = "🗝 KeyPaths"
+short_code = "<pre class='Swift'><code><span class='apvsource swift'>\\User<span class='apvkeyword apvoperator apvcustom apvpostfix apvunary swift'>.</span>username</span></code></pre>"
+---
+- [Introduction](intro.md)
+  - [First Steps](intro/first_steps.md)
+  - [Nesting](intro/nesting.md)
+  - [Generic Types](intro/generic_types.md)
+- [Types of KeyPath](types/types_of_keypath.md)
+  - [KeyPath](types/keypath.md)
+  - [WritableKeyPath](types/writablekeypath.md)
+  - [ReferenceWritableKeyPath](types/referencewritablekeypath.md)
+  - [A DebugPrinter](types/debugprinter_intermezzo.md)
+  - [PartialKeyPath](types/partialkeypath.md)
+  - [AnyKeyPath](types/anykeypath.md)
+  - [Type-Casting KeyPaths](types/type_casting.md)
+  - [KeyPath Composition](types/keypath_composition.md)
+  - [Laws of composition](types/laws_of_composition.md)
+- [Example: Generic Settings](generic_settings/intro.md)
+  - [Settings Entries](generic_settings/settings_entries.md)
+  - [Settings Provider](generic_settings/settings_provider.md)
+  - [Handling Settings](generic_settings/handling_settings.md)
+- [Tips for using KeyPaths](tips/intro.md)
+  - [Erase Types](tips/erase_types.md)
+  - [Cast Types](tips/cast_types.md)
+  - [Dictionary Keys](tips/dictionary_keys.md)
+- [Conclusion](conclusion.md)
