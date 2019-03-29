@@ -10,7 +10,7 @@
 <h2 class="section-header title is-4">Guides</h2>
 
 <div class="tile is-ancestor guides">
-	  {% for books in context.books | split() %}
+	  {% for books in context.books | filter(attribute="info.meta.featured", value="true") | split() %}
 	  <div class="tile is-6 is-vertical is-parent">
 		    {% for book in books %}
 		    <div class="tile is-child article-box" >
@@ -26,6 +26,10 @@
             </p>
 		    </div>
 		    {% endfor %}
+
+        {% if loop.last %}
+        <a href="/pages/guides.html" class="button">More Guides</a>
+        {% endif %}
 	  </div>
 	  {% endfor %}
 </div>

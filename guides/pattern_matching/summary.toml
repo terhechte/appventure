@@ -7,6 +7,7 @@ description = "In this post, we'll have a look at Pattern Matching in Swift in t
 published = true
 
 [meta]
+featured = "true"
 swift_version = "5.1"
 short_title = "🧩 Pattern Matching"
 short_code = "<pre class='Swift'><code><span class='apvsource swift'><span class='apvkeyword apvcontrol apvswitch swift'>case</span> (<span class='apvkeyword apvoperator apvtype-casting swift'>is</span> <span class='apvsupport apvtype swift'>Bool</span>, <span class='apvstorage apvtype swift'>let</span> x <span class='apvkeyword apvoperator apvtype-casting swift'>as</span> <span class='apvsupport apvtype swift'>Int</span>)<br/>&nbsp;&nbsp;&nbsp;&nbsp; <span class='apvkeyword apvcontrol apvswitch swift'>where</span> x <span class='apvkeyword apvoperator apvcomparative swift'>&gt;</span> <span class='apvconstant apvnumeric apvinteger apvdecimal swift'>10</span> </span></code></pre></code></pre>"
