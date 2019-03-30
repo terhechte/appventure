@@ -10,7 +10,7 @@ category = ["Language", "All"]
 
 [meta]
 swift_version = "2.3"
-feature_image = "/img-content/2015-08-25-optional-throw-swift-feature-image.jpg"
+feature_image = "https://appventure.me/img-content/2015-08-25-optional-throw-swift-feature-image.jpg"
 ---
 
 Swift 2.0 includes a new way of handling exceptions via the `try?`

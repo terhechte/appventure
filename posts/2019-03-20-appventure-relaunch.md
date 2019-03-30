@@ -7,7 +7,7 @@ keywords = ["appventure", "relaunch"]
 tags = []
 
 [meta]
-feature_image = "http://appventure.me/img-content/appventure-relaunch.png"
+feature_image = "https://appventure.me/img-content/appventure-relaunch.png"
 thumbnail = "/img-content/appventure_relaunch.png"
 ---
 

@@ -10,7 +10,7 @@ category = ["Swift Tricks", "All"]
 
 [meta]
 swift_version = "5.0"
-feature_image = "/img-content/2016-04-23-associated-types-enum-raw-value-initializers-feature-image.jpg"
+feature_image = "https://appventure.me/img-content/2016-04-23-associated-types-enum-raw-value-initializers-feature-image.jpg"
 ---
 
 [Enums](lnk::enum)

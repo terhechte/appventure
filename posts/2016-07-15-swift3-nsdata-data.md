@@ -12,7 +12,7 @@ category = ["Hands On", "All"]
 swift_version = "3.0"
 thumbnail = "/img-content/thumb-doom.png"
 toc = "true"
-feature_image = "/img-content/doom@2x.png"
+feature_image = "https://appventure.me/img-content/doom@2x.png"
 ---
 
 # From NSData to Data in Swift 3

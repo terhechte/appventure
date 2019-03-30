@@ -10,7 +10,7 @@ category = ["Hands On", "All"]
 
 [meta]
 swift_version = "5.0"
-feature_image = "/img-content/2015-09-30-getting-iphone6s-foundry-from-swift-feature-image.jpg"
+feature_image = "https://appventure.me/img-content/2015-09-30-getting-iphone6s-foundry-from-swift-feature-image.jpg"
 ---
 
 [Here\'s a small Github project by
