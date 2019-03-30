@@ -1,6 +1,3 @@
-- google analytics
-- screenshots
-
 * After tokyo-launch
 ** RawRepresentable article
 ** Similar articles does not take books into account
