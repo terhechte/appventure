@@ -7,6 +7,7 @@ published = true
 
 [meta]
 swift_version = "5.0"
+feature_image = "https://appventure.me/img-content/keypath_feature_image.gif"
 ---
 
 # KeyPaths in Swift

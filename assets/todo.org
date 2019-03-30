@@ -1,7 +1,5 @@
-- next doesn't work at the end of a nested guide chapter
 - google analytics
 - screenshots
-- tables don't work yet
 
 * After tokyo-launch
 ** RawRepresentable article

@@ -1,5 +1,5 @@
 [frontMatter]
-title = "Laws of composition"
+title = "Laws of Composition"
 tags = ["keypath", "composition"]
 created = "2019-03-29 12:26:11"
 description = ""
@@ -18,6 +18,7 @@ There're some additional constraints that need to hold in order to allow joining
 ### Impossible keypaths combinations
 
 | **First**                | **Second**     |
+|--------------------------|----------------|
 | KeyPath                  | AnyKeyPath     |
 | KeyPath                  | PartialKeyPath |
 | WritableKeyPath          | AnyKeyPath     |
@@ -36,6 +37,7 @@ The second rule is that appending anything to a type-erased keypath will return 
 ### Keypaths combinations returning Optional
 
 | **First**                | **Second**     |
+|--------------------------|----------------|
 | AnyKeyPath               | Anything       |
 | PartialKeyPath           | Anything       |
 
