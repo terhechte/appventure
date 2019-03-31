@@ -11,7 +11,7 @@ published = true
 featured = "true"
 swift_version = "5.1"
 short_title = "🧙🏻 Associated Types"
-short_code = "<pre class='Swift'><code><span class='source swift'><span class='apvstorage apvtype swift'>protocol</span> Host {<br/> associatedType Client<br/> } </span></code></pre></code></pre>"
+short_code = "<pre class='Swift'><code><span class='source swift'><span class='apvstorage apvtype swift'>protocol</span> Host {<br/> associatedType Client<br/>} </span></code></pre></code></pre>"
 ---
 - [Associated Types](associated_types.md)
 - [Associated Types Trouble](associated_types_trouble.md)
