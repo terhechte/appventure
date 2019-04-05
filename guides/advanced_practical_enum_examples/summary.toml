@@ -27,7 +27,6 @@ short_code = "<pre class='Swift'><code><span class='source swift'><span class='a
   - [Recursive / Indirect Types](advanced_enum_usage/recursive_or_indirect_types.md)
   - [Custom Data Types](advanced_enum_usage/custom_data_types.md)
   - [Comparing Enums](advanced_enum_usage/comparing_enums.md)
-  - [FIXMERaw Representations](advanced_enum_usage/raw_representable.md)
   - [Custom Initializers](advanced_enum_usage/custom_initializers.md)
   - [Iterating over Enum Cases](advanced_enum_usage/iterating_over_enum_cases.md)
   - [Objective-C Support](advanced_enum_usage/objective_c_support.md)

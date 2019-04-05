@@ -40,7 +40,7 @@ At first glance, this looks like an overly verbose version of direct access, so 
 ``` Swift
 let userKeyPath = \User.username
 
-print(firstUser[keyPath: \User.username])
+print(firstUser[keyPath: userKeyPath])
 ```
 
 By doing so, we implement generic abstraction between the property and the type. But, what is the type of this `userKeyPath` variable? The full type signature looks like this:

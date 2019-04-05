@@ -42,7 +42,7 @@ Now, you'd like to define at runtime which of the properties of this type to pri
 ``` Swift
 let state = Presentation(...) // we need a presentation instance
 let printer = DebugPrinter("State", for: state)
-printer.addLog(\Presentation.currentSlideIndex, prefix = "Current")
+printer.addLog(\Presentation.currentSlideIndex, prefix: "Current")
 printer.addLog(\Presentation.isAnimating)
 printer.addLog(\Presentation.currentSlide.name)
 printer.addLog(\Presentation.currentSlide.leftImage)
@@ -65,7 +65,7 @@ class DebugPrinter<T> where T: AnyObject {
     /// 2
     init(_ prefixString: String, for instance: T) {
         reference = instance
-        start = prefixString
+        prefix = prefixString
     }
 
     /// 3
