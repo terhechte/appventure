@@ -5,6 +5,7 @@
 body, html {
     background-color: #f9f9f9;
     line-height: 2.0;
+    color: #191919 !important;
 }
 
 .image-is-150 {
@@ -260,7 +261,10 @@ article > .content > pre * {
     background-color: white;
     border-radius: 6px;
     font-weight: bold;
-    border: 1px solid #eee;
+    border: 1px solid #ccc;
+    margin-left: 6px;
+    margin-right: 6px;
+    box-shadow: 2px 2px 0px gray;
 }
 
 pre {
