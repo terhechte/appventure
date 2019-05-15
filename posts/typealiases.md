@@ -7,7 +7,7 @@ keywords = ["typealias", "generics", "struct"]
 tags = []
 
 [meta]
-feature_image = "https://appventure.me/img-content/typealias-code.jpg"
+feature_image = "/img-content/typealias-code.jpg"
 thumbnail = "/img-content/typealias.png"
 ---
 # What is a `typealias`?
