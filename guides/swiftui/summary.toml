@@ -1,0 +1,16 @@
+[frontMatter]
+title = "SwiftUI Introduction"
+keywords = ["swift", "swiftui"]
+tags = []
+created = "2019-06-12"
+description = "SwiftUI is a generational milestone for the Apple development ecosystem. This is a in-development introduction into the topic."
+published = true
+
+[meta]
+featured = "true"
+swift_version = "5.1"
+short_title = "🚀 SwiftUI [Beta]"
+short_code = "<pre class='Swift'><code><span class='apvsource swift'>var <span class='apvkeyword apvoperator apvcustom apvpostfix apvunary swift'>body</span> :</span> <span class='apvsource swift'>some <span class='apvkeyword apvoperator apvcustom apvpostfix apvunary swift'>View</span></span></code></pre>"
+---
+- [Preface](preface.md)
+- [Overview](overview.md)

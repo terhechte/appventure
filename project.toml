@@ -21,6 +21,7 @@ books = [
   "tuples/summary.toml",
   "optionals/summary.toml", 
   "swift_reflection/summary.toml",
+  "swiftui/summary.toml",
 ]
 
 [Shortlinks]
