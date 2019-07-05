@@ -30,7 +30,7 @@ short_title = "Catalyz"
   - [Design](firststeps/best_practices_design.md)
   - [Issues](firststeps/issues.md)
 - [How Do I...](how/intro.md)
-  - [Add a `New Window` entry](how/custom_new_window_entry.md)
+  - [Add a New Window entry](how/custom_new_window_entry.md)
   - [Add a Segmented Control to the ToolBar?](how/segmented_control_toolbar.md)
   - [Hide the iOS TabBar?](how/hide_tabbar_with_toolbar.md)
   - [Modify the Window?](how/modify_window.md)

@@ -79,7 +79,6 @@ function prev() {
 
 	<div class="content">
 		{{ content.chapter.document.content }}
-
 	</div>
 
 
@@ -106,31 +105,12 @@ function prev() {
   </article>
 
 
-  <!-- 
-	<article class="media box" id="followme">
-		<figure class="media-left">
-			<p class="image is-64x64">
-			<img src="/img/ez.png">
-			</p>
-		</figure>
-		<div class="media-content">
-			<div class="content">
-				<p>
-				<strong>Benedikt Terhechte</strong> <small>@terhechte</small> 
-				<br>
-				If you read this far, you should <a href="https://twitter.com/terhechte">follow Benedikt on Twitter</a>.<br/>
-				Benedikt writes about Swift, macOS, iOS &amp; Linux development, and sometimes about other modern programming languages.
-				</p>
-			</div>
-		</div>
-		<div class="media-right">
-			<a class="button is-info is-rounded">
-				<i class="fab fa-twitter"></i>
-				Follow Me</a>
-		</div>
-	</article>
-  -->
-
-
 </article>
+
+<style type="text/css">
+article.article-post > div.content > p > img {
+	box-shadow: 0px 0px 16px rgba(0, 0, 0, 0.1);
+	border-radius: 16px;
+}
+</style>
 {% endblock content %}

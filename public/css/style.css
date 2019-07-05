@@ -265,6 +265,7 @@ article > .content > pre * {
     margin-left: 6px;
     margin-right: 6px;
     box-shadow: 2px 2px 0px gray;
+    white-space: nowrap;
 }
 
 pre {
@@ -332,4 +333,8 @@ pre {
 
 .profile-image {
     border-radius: 32px;
+}
+
+aside.book-sidebar ul.menu-list > li {
+	width: 180px;
 }
