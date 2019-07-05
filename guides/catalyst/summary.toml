@@ -1,0 +1,53 @@
+
+[frontMatter]                                                                 
+description = "Catalyst..."
+title = "Catalyst.."   
+created = "2019-07-06" 
+published = true                                                                                               
+keywords = ["catalyst", "macos", "uikitformac"]
+tags = ["catalyst", "macos", "uikitformac"]
+  
+[meta]          
+swift_version = "5.1"
+short_title = "Catalyz"
+---
+- [Intro](intro.md)
+  - [App Lifecycle](how/app_lifecycle.md)
+- [First Steps](firststeps/intro.md)
+  - [Signing](firststeps/signing.md)
+  - [A SceneDelegate](firststeps/scene_delegate.md)
+  - [Multiple Windows](firststeps/multiple_windows.md)
+  - [A Bridging Header](firststeps/bridgingheader.md)
+  - [The Toolbar](firststeps/toolbar.md)
+  - [The Sidebar](firststeps/sidebar.md)
+  - [The Menubar](firststeps/modify_menubar.md)
+  - [The Touchbar](firststeps/touchbar.md)
+  - [Context Menus](firststeps/context_menus.md)
+  - [Keyboard Shortcuts](firststeps/keyboard_shortcuts.md)
+  - [Preferences](firststeps/preferences.md)
+- [Best Practices](firststeps/best_practices.md)
+  - [Coding](firststeps/best_practices_code.md)
+  - [Design](firststeps/best_practices_design.md)
+  - [Issues](firststeps/issues.md)
+- [How Do I...](how/intro.md)
+  - [Add a `New Window` entry](how/custom_new_window_entry.md)
+  - [Add a Segmented Control to the ToolBar?](how/segmented_control_toolbar.md)
+  - [Hide the iOS TabBar?](how/hide_tabbar_with_toolbar.md)
+  - [Modify the Window?](how/modify_window.md)
+  - [Use HIG TouchBar images?](how/touchbar_images.md)
+  - [Dynamically update the TouchBar?](how/dynamically_update_touchbar.md)
+  - [Nest multiple TouchBars?](how/nest_touchbars.md)
+  - [Implement Drag and Drop?](how/drag_and_drop.md)
+  - [Create Export / Import file Dialogs?](how/open_save_export_import.md)
+  - [Configure the macOS Sandbox?](how/sandbox.md)
+  - [Support Dark Mode?](how/darkmode.md)
+  - [Support multiple Different Windows?](how/multiple_different_windows.md)
+  - [Support Mouse Hovering?](how/mouse_hovering.md)
+  - [Write code that only runs on macOS?](how/conditional_code.md)
+  - [Implement Complex Preferences?](how/logic_preferences.md)
+  - [Support macOS Icons?](how/dark_mode_icons.md)
+  - [Conditionally Enable MenuBar items?](how/enable_disable_menubar_items.md)
+  - [Conditionally Enable ToolBar items?](how/enable_disable_toolbar_items.md)
+  - [Conditionally Enable TouchBar?](how/enable_disable_touchbar_items.md)
+  - [Use the Responder Chain?](how/responder_chain.md)
+- [Known Issues?](issues/issues.md)
