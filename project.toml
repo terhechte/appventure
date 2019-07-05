@@ -13,15 +13,15 @@ booksFolder = "guides"
 booksFolderName = "guides"
 categoryFolderName = "topics"
 books = [
-#  "keypaths/summary.toml", 
-#  "pattern_matching/summary.toml", 
-#  "advanced_practical_enum_examples/summary.toml", 
-#  "map_flatmap_reduce_more/summary.toml", 
-#  "associated_types/summary.toml", 
-#  "tuples/summary.toml",
-#  "optionals/summary.toml", 
-#  "swift_reflection/summary.toml",
-#  "swiftui/summary.toml",
+  "keypaths/summary.toml", 
+  "pattern_matching/summary.toml", 
+  "advanced_practical_enum_examples/summary.toml", 
+  "map_flatmap_reduce_more/summary.toml", 
+  "associated_types/summary.toml", 
+  "tuples/summary.toml",
+  "optionals/summary.toml", 
+  "swift_reflection/summary.toml",
+  "swiftui/summary.toml",
    "catalyst/summary.toml",
 ]
 

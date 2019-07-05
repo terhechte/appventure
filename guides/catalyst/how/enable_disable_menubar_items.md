@@ -1,5 +1,5 @@
 [frontMatter]
-title = "enable / disable menubar items based on whats visible on screen?"
+title = "How do I enable / disable menubar items based on whats visible on screen?"
 tags = ["catalyst", "macos", "uikitformac"]
 created = "2019-07-05"
 description = ""
@@ -10,7 +10,6 @@ swift_version = "5.1"
 ---
 
 
-# How do I enable / disable menubar items based on whats visible on screen?
 
 Catalyst, just like Cocoa, uses the [responder chain](how/responder_chain.md) to figure out whether an action in a menu can be performed. [Remember, that a menu bar on iOS is composed out of `UIAction`, `UICommand`, and `UIMenu` objects.](firststeps/modify_menubar.md)
 

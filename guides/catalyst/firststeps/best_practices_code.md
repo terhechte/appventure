@@ -10,7 +10,6 @@ swift_version = "5.1"
 ---
 
 
-# What are some coding best practices for macOS support
 
 Catalyst is still a fresh technology. So far, based on our current knowledge, the following best practices have emerged:
 

@@ -1,5 +1,5 @@
 [frontMatter]
-title = "use the responder chain?"
+title = "How do I use the responder chain?"
 tags = ["catalyst", "macos", "uikitformac"]
 created = "2019-07-05"
 description = ""
@@ -10,7 +10,6 @@ swift_version = "5.1"
 ---
 
 
-# How do I use the responder chain how/responder_chain.md
 
 The responder chain is a event handling system at the heart of macOS and iOS.
 Every touch event coming in, for example, uses this responder chain to reach the currently active `UIControl`. The main building block of the responder chain is the `UIResponder` class which is a superclass of `UIViewController` or `UIView`.

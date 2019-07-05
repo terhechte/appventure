@@ -1,5 +1,5 @@
 [frontMatter]
-title = "add TouchBar support?"
+title = "How do I add TouchBar support?"
 tags = ["catalyst", "macos", "uikitformac"]
 created = "2019-07-05"
 description = ""
@@ -10,7 +10,6 @@ swift_version = "5.1"
 ---
 
 
-# How do I add TouchBar support?
 
 ## Preparations
 

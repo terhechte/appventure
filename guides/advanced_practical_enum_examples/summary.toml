@@ -8,7 +8,6 @@ slug = "2015-10-17-advanced-practical-enum-examples.html"
 tags = []
 
 [meta]
-featured = "true"
 swift_version = "5.1"
 short_title = "🚦 Enums"
 short_code = "<pre class='Swift'><code><span class='source swift'><span class='apvstorage apvtype swift'>enum</span> Either<span class='apvkeyword apvoperator apvcomparative swift'>&lt;</span>A, B<span class='apvkeyword apvoperator apvcomparative swift'>&gt;</span> {<br/> &nbsp;<span class='apvkeyword apvcontrol apvswitch swift'>case</span> <span class='apvkeyword apvother swift'>left</span>(A), <span class='apvkeyword apvother swift'>right</span>(B)<br/>} </span></code></pre></code></pre>"

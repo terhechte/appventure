@@ -1,5 +1,5 @@
 [frontMatter]
-title = "support multiple *different* windows?"
+title = "How do I support multiple *different* windows?"
 tags = ["catalyst", "macos", "uikitformac"]
 created = "2019-07-05"
 description = ""
@@ -10,7 +10,6 @@ swift_version = "5.1"
 ---
 
 
-# How do I support multiple *different* windows how/multiple_different_windows.md
 
 ## How do I setup the a new scene?
 

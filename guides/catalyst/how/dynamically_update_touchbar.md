@@ -1,5 +1,5 @@
 [frontMatter]
-title = "dynamically update the touchbar?"
+title = "How do I dynamically update the touchbar?"
 tags = ["catalyst", "macos", "uikitformac"]
 created = "2019-07-05"
 description = ""
@@ -10,7 +10,6 @@ swift_version = "5.1"
 ---
 
 
-# How do I dynamically update the touchbar? how/dynamically_update_touchbar.md
 
 The documentation states that you just need to call `setNeedsTouchBarUpdate()` in order for the touch bar to be updated. However, as of beta 2, this does not work yet. A reliable way of achieving this is to just reset the `touchBar` property on `UIResponder` subclasses (like `UIViewController`) with the updated touchbar:
 

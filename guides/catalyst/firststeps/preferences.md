@@ -1,5 +1,5 @@
 [frontMatter]
-title = "implement preferences on macOS?"
+title = "How do I implement preferences on macOS?"
 tags = ["catalyst", "macos", "uikitformac"]
 created = "2019-07-05"
 description = ""
@@ -10,7 +10,6 @@ swift_version = "5.1"
 ---
 
 
-# How do I implement preferences on macOS
 
 In order to implement the preferences or your app, [Apple supports the *Settings.bundle* technology that has been there since iOS 2.0 (or rather, iPhoneOS 2.0)](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/UserDefaults/Preferences/Preferences.html). The documentation is actually so old, that it is archived and the documentation screenshots look like this:
 

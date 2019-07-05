@@ -1,5 +1,5 @@
 [frontMatter]
-title = "support macOS icons?"
+title = "How do I support macOS icons?"
 tags = ["catalyst", "macos", "uikitformac"]
 created = "2019-07-05"
 description = ""
@@ -10,7 +10,6 @@ swift_version = "5.1"
 ---
 
 
-# How do I support macOS icons
 
 Fortunately, each icon in the assets catalog (you're using assets catalogs, are you?) supports different varieties, including macOS. If you enable the "Mac" setting for any icon, additional slots will appear where you can add macOS specific icons to your asset. Catalyst will then automatically choose the right icons. This is what that looks like:
 

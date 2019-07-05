@@ -1,5 +1,5 @@
 [frontMatter]
-title = "create context menus?"
+title = "How do I create context menus?"
 tags = ["catalyst", "macos", "uikitformac"]
 created = "2019-07-05"
 description = ""
@@ -10,7 +10,6 @@ swift_version = "5.1"
 ---
 
 
-# How do I create context menus
 
 Context Menus in Catalyst are implemented via the new [`UIContextMenuInteraction` API that Apple shipped on iOS as part of iOS 13.](https://developer.apple.com/documentation/uikit/uicontextmenuinteraction). [They work hand in hand with menu and shortcut system that is documented here](https://developer.apple.com/documentation/uikit/menus_and_shortcuts).
 

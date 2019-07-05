@@ -1,5 +1,5 @@
 [frontMatter]
-title = "How do I write code that only runs on macOS?"
+title = "Conditional Compilation"
 tags = ["catalyst", "macos", "uikitformac"]
 created = "2019-07-05"
 description = ""
@@ -9,11 +9,7 @@ published = true
 swift_version = "5.1"
 ---
 
-
-
-You can implement conditional code via the new `targetEnvironment(UIKitForMac` directive:
-
-## Compile code only on the macOS target
+If you want to compile code that runs only on macOS, you can do that by using the following, new compile time attribute:
 
 ``` swift
 #if targetEnvironment(UIKitForMac)
@@ -21,7 +17,7 @@ You can implement conditional code via the new `targetEnvironment(UIKitForMac` d
 #endif
 ```
 
-## Compile code only on the iOS target
+Obviously, to do it the other way around, you just inverse it:
 
 ``` swift
 #if !targetEnvironment(UIKitForMac)

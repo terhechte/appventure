@@ -1,5 +1,5 @@
 [frontMatter]
-title = "enable / disable toolbar items based on whats visible on screen?"
+title = "How do I enable / disable toolbar items based on whats visible on screen?"
 tags = ["catalyst", "macos", "uikitformac"]
 created = "2019-07-05"
 description = ""
@@ -10,7 +10,6 @@ swift_version = "5.1"
 ---
 
 
-# How do I enable / disable toolbar items based on whats visible on screen?
 
 Currently, there doesn't seem to be a way to do this. I've tracked this as issue *FB6360289* in Apple's Feedback tool.
 

@@ -1,5 +1,5 @@
 [frontMatter]
-title = "create a toolbar?"
+title = "How do I create a toolbar?"
 tags = ["catalyst", "macos", "uikitformac"]
 created = "2019-07-05"
 description = ""
@@ -10,7 +10,6 @@ swift_version = "5.1"
 ---
 
 
-# How do I create a toolbar firststeps/toolbar.md
 
 ## Preparations
 

@@ -1,5 +1,5 @@
 [frontMatter]
-title = "modify the window?"
+title = "How do I modify the window?"
 tags = ["catalyst", "macos", "uikitformac"]
 created = "2019-07-05"
 description = ""
@@ -10,7 +10,6 @@ swift_version = "5.1"
 ---
 
 
-# How do I modify the window
 
 ## Preparations
 

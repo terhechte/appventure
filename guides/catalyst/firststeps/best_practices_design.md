@@ -10,7 +10,6 @@ swift_version = "5.1"
 ---
 
 
-# What are some design best practices for macOS support
 
 These guidelines are based on information that Apple shared in different WWDC keynotes
 

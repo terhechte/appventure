@@ -1,5 +1,5 @@
 [frontMatter]
-title = "create a scene delegate?"
+title = "How do I create a scene delegate?"
 tags = ["catalyst", "macos", "uikitformac"]
 created = "2019-07-05"
 description = ""
@@ -10,7 +10,6 @@ swift_version = "5.1"
 ---
 
 
-# How do I create a scene delegate firststeps/scene_delegate.md
 
 Many of the macOS specific UIKit extensions require you to use a scene delegate. If your project was created before iOS 13 and you also don't intend to use multiple windows, you can follow these steps to add a scene delegate to your project and keep the app limited to one window:
 

@@ -1,5 +1,5 @@
 [frontMatter]
-title = "create file open / save / export / import dialogs?"
+title = "How do I create file open / save / export / import dialogs?"
 tags = ["catalyst", "macos", "uikitformac"]
 created = "2019-07-05"
 description = ""
@@ -10,7 +10,6 @@ swift_version = "5.1"
 ---
 
 
-# How do I create file open / save / export / import dialogs
 
 For these actions, you can use the `UIDocumentPickerViewController` or `UIDocumentBrowserViewController` controllers. Here is a quick example of using a `UIDocumentPickerViewController` to allow the user to export JSON data to disk.
 

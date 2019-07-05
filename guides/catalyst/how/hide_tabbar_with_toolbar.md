@@ -1,5 +1,5 @@
 [frontMatter]
-title = "hide my iOS tabbar when I display a macOS toolbar?"
+title = "How do I hide my iOS tabbar when I display a macOS toolbar?"
 tags = ["catalyst", "macos", "uikitformac"]
 created = "2019-07-05"
 description = ""
@@ -10,7 +10,6 @@ swift_version = "5.1"
 ---
 
 
-# How do I hide my iOS tabbar when I display a macOS toolbar how/hide_tabbar_with_toolbar.md
 
 If you want to hide your iOS tabbar, just as you're displaying your macOS toolbar, this is what you can do in your `SceneDelegate`:
 

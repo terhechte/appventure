@@ -1,5 +1,5 @@
 [frontMatter]
-title = "nest touchbars?"
+title = "How do I nest touchbars?"
 tags = ["catalyst", "macos", "uikitformac"]
 created = "2019-07-05"
 description = ""
@@ -10,7 +10,6 @@ swift_version = "5.1"
 ---
 
 
-# How do I nest touchbars?
 
 If you have multiple view controllers in your [responder chain](how/responder_chain.md) that each want to insert something in your `NSTouchBar` you can simply define the outermost (highest priority) touchbar to host other touchbars alongside. You do that by adding the system default `NSTouchBarItem.Identifier.otherItemsProxy` to your list of `defaultItemIdentifiers`:
 

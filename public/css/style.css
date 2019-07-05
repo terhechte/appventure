@@ -204,9 +204,9 @@ article > .content > pre * {
 }
 
 .book-sidebar {
-    position: -webkit-sticky;
+/*    position: -webkit-sticky;
     position: sticky;
-    top: 0;
+    top: 0;*/
 }
 
 /* Temporarily, until I've added a footnote-collector/parser */

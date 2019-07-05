@@ -1,5 +1,5 @@
 [frontMatter]
-title = "configure the macOS sandbox?"
+title = "How do I configure the macOS sandbox?"
 tags = ["catalyst", "macos", "uikitformac"]
 created = "2019-07-05"
 description = ""
@@ -10,7 +10,6 @@ swift_version = "5.1"
 ---
 
 
-# How do I configure the macOS sandbox how/sandbox.md
 
 The macOS sandbox is a system that allows you to define which operating system services your app target is allowed to use. Here's a list of the available options:
 

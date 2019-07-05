@@ -10,7 +10,6 @@ swift_version = "5.1"
 ---
 
 
-# How does the iOS app lifecycle work on macOS?
 
 The ["Taking iPad apps for Mac to the Next Level" talk at WWDC 2019](https://developer.apple.com/videos/play/wwdc2019/235/) has a fantastic overview of all the changes. Here is a brief overview:
 
@@ -22,3 +21,5 @@ The ["Taking iPad apps for Mac to the Next Level" talk at WWDC 2019](https://dev
 - Background modes are allowed to finish when an app closes. The background tasks continue even though the app is already not visible anymore to the user
 - Apps are not killed when they consume too much memory
 - Background audio is not supported because users expect audio to stop when they quit an app
+
+So, in short, your app is always in `Foreground + Active` except when it is (mostly) launching or terminating.

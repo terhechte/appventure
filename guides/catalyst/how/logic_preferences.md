@@ -1,5 +1,5 @@
 [frontMatter]
-title = "implement preferences with additional logic?"
+title = "How do I implement preferences with additional logic?"
 tags = ["catalyst", "macos", "uikitformac"]
 created = "2019-07-05"
 description = ""
@@ -10,7 +10,6 @@ swift_version = "5.1"
 ---
 
 
-# How do I implement preferences with additional logic? how/logic_preferences.md
 
 Now, if you have more involved logic in your settings, special view controllers, web views, and other things, then this doesn't work well for you. In that case, you basically have three options.
 

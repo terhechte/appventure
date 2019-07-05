@@ -1,5 +1,5 @@
 [frontMatter]
-title = "use the touchbar or toolbar classes?"
+title = "How do I use the touchbar or toolbar classes?"
 tags = ["catalyst", "macos", "uikitformac"]
 created = "2019-07-05"
 description = ""
@@ -10,7 +10,6 @@ swift_version = "5.1"
 ---
 
 
-# How do I use the touchbar or toolbar classes firststeps/bridgingheader.md
 
 There is one issue on beta 2 which means that you need to add a *bridging header* to your project and import a header file in there if you want to use the `NSTouchbar` or `NSToolbar` APIs.
 

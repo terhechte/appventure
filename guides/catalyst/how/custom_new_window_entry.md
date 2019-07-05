@@ -1,5 +1,5 @@
 [frontMatter]
-title = "add a `New Window` entry to a custom MainMenu?"
+title = "How do I add a `New Window` entry to a custom MainMenu?"
 tags = ["catalyst", "macos", "uikitformac"]
 created = "2019-07-05"
 description = ""
@@ -10,7 +10,6 @@ swift_version = "5.1"
 ---
 
 
-# How do I add a `New Window` entry to a custom MainMenu? how/custom_new_window_entry.md
 
 Once you modify your Main Menu, you will find that the entry to create a new window has suddenly disappeared. That happens because the `New Window` entry is dynamicaly inserted by UIKit depending on whether your app supports multiple windows (or not).
 

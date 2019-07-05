@@ -1,20 +1,24 @@
 
 [frontMatter]                                                                 
-description = "Catalyst..."
-title = "Catalyst.."   
+description = "Catalyst ports your iPad apps over to macOS. This guide contains a ton of tips and tricks to help you succeed in adding Catalyst support to your app"
+title = "Ultimate Catalyst Guide"   
 created = "2019-07-06" 
 published = true                                                                                               
 keywords = ["catalyst", "macos", "uikitformac"]
 tags = ["catalyst", "macos", "uikitformac"]
   
 [meta]          
+featured = "true"
 swift_version = "5.1"
-short_title = "Catalyz"
+short_title = "🖥 Ultimate Catalyst Guide"
+short_code = "<pre class='Swift'><code><span class='apvsource swift'>#if<span class='apvkeyword apvoperator apvcustom apvpostfix apvunary swift'> targetEnvironment(</span>UIKitForMac</span><span class='apvkeyword apvoperator apvcustom apvpostfix apvunary swift'>)</span></code></pre>"
 ---
 - [Intro](intro.md)
+  - [Features](features.md)
   - [App Lifecycle](how/app_lifecycle.md)
 - [First Steps](firststeps/intro.md)
   - [Signing](firststeps/signing.md)
+  - [Conditional Compilation](firststeps/conditional_compilation.md)
   - [A SceneDelegate](firststeps/scene_delegate.md)
   - [Multiple Windows](firststeps/multiple_windows.md)
   - [A Bridging Header](firststeps/bridgingheader.md)
@@ -25,10 +29,10 @@ short_title = "Catalyz"
   - [Context Menus](firststeps/context_menus.md)
   - [Keyboard Shortcuts](firststeps/keyboard_shortcuts.md)
   - [Preferences](firststeps/preferences.md)
-- [Best Practices](firststeps/best_practices.md)
-  - [Coding](firststeps/best_practices_code.md)
-  - [Design](firststeps/best_practices_design.md)
-  - [Issues](firststeps/issues.md)
+  - [Third Party SDKs](firststeps/sdks.md)
+  - [Notable Differences](firststeps/issues.md)
+  - [Coding Best Practices](firststeps/best_practices_code.md)
+  - [Design Best Practices](firststeps/best_practices_design.md)
 - [How Do I...](how/intro.md)
   - [Add a New Window entry](how/custom_new_window_entry.md)
   - [Add a Segmented Control to the ToolBar?](how/segmented_control_toolbar.md)
@@ -46,8 +50,10 @@ short_title = "Catalyz"
   - [Write code that only runs on macOS?](how/conditional_code.md)
   - [Implement Complex Preferences?](how/logic_preferences.md)
   - [Support macOS Icons?](how/dark_mode_icons.md)
+  - [Use Share Extensions](how/share_extensions.md)
   - [Conditionally Enable MenuBar items?](how/enable_disable_menubar_items.md)
   - [Conditionally Enable ToolBar items?](how/enable_disable_toolbar_items.md)
   - [Conditionally Enable TouchBar?](how/enable_disable_touchbar_items.md)
   - [Use the Responder Chain?](how/responder_chain.md)
+  - [Prevent Piracy](piracy.md)
 - [Known Issues?](issues/issues.md)

@@ -1,5 +1,5 @@
 [frontMatter]
-title = "display a segmented control in the toolbar?"
+title = "How do I display a segmented control in the toolbar?"
 tags = ["catalyst", "macos", "uikitformac"]
 created = "2019-07-05"
 description = ""
@@ -10,7 +10,6 @@ swift_version = "5.1"
 ---
 
 
-# How do I display a segmented control in the toolbar how/segmented_control_toolbar.md
 
 A segmented control is a convenient replacement for the iOS tabbar, as it also groups related segments and only allows one of them to be active.
 It is basically just another type of `NSToolbarItem`. Thus, the process is very similar to [how you set up a toolbar with elements before](firststeps/toolbar.md).

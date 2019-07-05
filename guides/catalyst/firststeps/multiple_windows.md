@@ -1,5 +1,5 @@
 [frontMatter]
-title = "support multiple windows?"
+title = "How do I support multiple windows?"
 tags = ["catalyst", "macos", "uikitformac"]
 created = "2019-07-05"
 description = ""
@@ -10,7 +10,6 @@ swift_version = "5.1"
 ---
 
 
-# How do I support multiple windows firststeps/multiple_windows.md
 
 Initially, this is rather simple. You just need to enable the *Supports multiple windows* setting for your target:
 

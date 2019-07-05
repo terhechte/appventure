@@ -1,5 +1,5 @@
 [frontMatter]
-title = "sign the app?"
+title = "How do I sign the app?"
 tags = ["catalyst", "macos", "uikitformac"]
 created = "2019-07-05"
 description = ""
@@ -9,7 +9,6 @@ published = true
 swift_version = "5.1"
 ---
 
-# How do I sign the app
 
 Catalyst apps, just like simulator apps, do not require signing. However, since Catalyst apps run on the real hardware, right away, they are set up for signing by default.
 

@@ -1,5 +1,5 @@
 [frontMatter]
-title = "implement drag and drop?"
+title = "How do I implement drag and drop?"
 tags = ["catalyst", "macos", "uikitformac"]
 created = "2019-07-05"
 description = ""
@@ -10,7 +10,6 @@ swift_version = "5.1"
 ---
 
 
-# How do I implement drag and drop
 
 Drag and drop is implemented via the same mechanisms that also support drag and drop on iOS. Below, you can see an example of a simple `UIViewContoller` that allows droping JSON files onto the application in order to import them.
 

@@ -1,5 +1,5 @@
 [frontMatter]
-title = "support mouse hovering?"
+title = "How do I support mouse hovering?"
 tags = ["catalyst", "macos", "uikitformac"]
 created = "2019-07-05"
 description = ""
@@ -9,8 +9,8 @@ published = true
 swift_version = "5.1"
 ---
 
+![](/img-content/catalyst/hover.png)
 
-# How do I support mouse hovering
 
 Apple supports hovering in Catalyst via a new gesture recognizer, the so-called `UIHoverGestureRecognizer`. It works in a very simple manner.
 

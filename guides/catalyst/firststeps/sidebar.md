@@ -1,5 +1,5 @@
 [frontMatter]
-title = "create a sidebar?"
+title = "How do I create a sidebar?"
 tags = ["catalyst", "macos", "uikitformac"]
 created = "2019-07-05"
 description = ""
@@ -10,7 +10,6 @@ swift_version = "5.1"
 ---
 
 
-# How do I create a sidebar
 
 Sidebars are a staple of macOS. Many apps on macOS have sidebars and use them to support a huge variety of usage scenarios. Apple added sidebar support right into Catalyst. By default, any Master-Detail view implemented using the `UISplitViewController` will inhibit macOS sidebar behaviour. However, if you just do that, the sidebar contents (that is, the Master part of the Master Detail View) will look strangely out of place. The rows still look like normal UIKit Rows:
 
