@@ -3,6 +3,13 @@
 - {{ content.chapter.name }}
 {% endblock title %}
 
+{% block metatags %}
+{% if content.book.info.meta.feature_image %}
+<meta content="http://appventure.me{{ content.book.info.meta.feature_image }}" name="twitter:image">
+<meta content="http://appventure.me{{ content.book.info.meta.feature_image }}" name="og:image">
+{% endif %}
+{% endblock metatags %}
+
 {% block javascript %}
 <script>
 function prev() {

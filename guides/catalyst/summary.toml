@@ -12,6 +12,7 @@ featured = "true"
 swift_version = "5.1"
 short_title = "🖥 Ultimate Catalyst Guide"
 short_code = "<pre class='Swift'><code><span class='apvsource swift'>#if<span class='apvkeyword apvoperator apvcustom apvpostfix apvunary swift'> targetEnvironment(</span>UIKitForMac</span><span class='apvkeyword apvoperator apvcustom apvpostfix apvunary swift'>)</span></code></pre>"
+feature_image = "/img-content/catalyst/feature_image.jpg"
 ---
 - [Intro](intro.md)
   - [Features](features.md)
