@@ -25,3 +25,7 @@ If your app supports settings bundles, then your Catalyst app will automatically
 For details on how to achieve this, [refer to Apples documentation.](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/UserDefaults/Preferences/Preferences.html)
 
 Now, if you have more involved logic in your settings, special view controllers, web views, and other things, then this doesn't work well for you. [In that case, you can read here how to implement more complex preferences on macOS.](how/logic_preferences.md)
+
+# Preferences with a Toolbar
+
+Now, one thing you might wonder is how to get this wonderful Preferences Toolbar, that Apple has in their Podcast app (see the last screenshot). [As it turns out, this is currently completely undocumented, and we're explaining the details of how to achieve this here.](rel::how/preferences_toolbar.md)

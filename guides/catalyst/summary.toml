@@ -51,6 +51,7 @@ feature_image = "/img-content/catalyst/feature_image.jpg"
   - [Write code that only runs on macOS?](how/conditional_code.md)
   - [Implement Complex Preferences?](how/logic_preferences.md)
   - [Support macOS Icons?](how/dark_mode_icons.md)
+  - [Support the Preferences toolbar?](how/preferences_toolbar.md)
   - [Use Share Extensions](how/share_extensions.md)
   - [Conditionally Enable MenuBar items?](how/enable_disable_menubar_items.md)
   - [Conditionally Enable ToolBar items?](how/enable_disable_toolbar_items.md)
