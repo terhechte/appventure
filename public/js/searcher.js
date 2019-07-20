@@ -145,7 +145,12 @@ window.search = window.search || {};
             url.push("");
         }
 
-        return '<a class="panel-block" href="/' + url[0] + '?' + URL_MARK_PARAM + '=' + searchterms + '#' + url[1]
+	var url_string = url[0];
+	if(url_string[0] == '/') {
+		url_string = url_string.substr(1);
+	}
+
+        return '<a class="panel-block" href="/' + url_string + '?' + URL_MARK_PARAM + '=' + searchterms + '#' + url[1]
             + '" aria-details="teaser_' + teaser_count + '">'
             + '<span class="teaser" id="teaser_' + teaser_count + '" aria-label="Search Result Teaser">' 
             + '<strong>' + result.doc.breadcrumbs + ':</strong><br/>'
