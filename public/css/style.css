@@ -190,16 +190,16 @@ h2.title.is-2 > span.syntax {
 .article-tile-meta-box span {
     color: #999;
 }
-article > .content > pre  {
+article .content pre  {
 	border-radius: 16px;
   background-color: rgb(9, 36, 78);
 }
 
-article > .content > pre:hover  {
+article .content pre:hover  {
     box-shadow: 2px 2px 24px 0px rgba(0, 0, 0, 0.6);
 }
 
-article > .content > pre * {
+article .content pre * {
     font-family: Menlo !important;
 }
 

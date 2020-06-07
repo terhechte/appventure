@@ -2,9 +2,11 @@
 
 {% block metatags %}
 {% if content.info.meta.feature_image %}
-<meta content="http://appventure.me{{ content.info.meta.feature_image }}" name="twitter:image">
-<meta content="http://appventure.me{{ content.info.meta.feature_image }}" name="og:image">
+<meta content="{{ content.info.meta.feature_image }}" name="twitter:image">
+<meta content="{{ content.info.meta.feature_image }}" name="og:image">
 {% endif %}
+<meta name="twitter:description" content="{{ content.info.description }}" />
+<meta name="twitter:title" content="{{ content.info.title }}" />
 {% endblock metatags %}
 
 {% block title %}- {% if content.info.meta.short_title %}

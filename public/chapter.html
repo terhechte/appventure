@@ -5,9 +5,11 @@
 
 {% block metatags %}
 {% if content.book.info.meta.feature_image %}
-<meta content="http://appventure.me{{ content.book.info.meta.feature_image }}" name="twitter:image">
-<meta content="http://appventure.me{{ content.book.info.meta.feature_image }}" name="og:image">
+<meta content="{{ content.book.info.meta.feature_image }}" name="twitter:image">
+<meta content="{{ content.book.info.meta.feature_image }}" name="og:image">
 {% endif %}
+<meta name="twitter:description" content="{{ content.book.info.description }}" />
+<meta name="twitter:title" content="{{content.book.info.title}}: {{ content.chapter.document.info.title }}" />
 {% endblock metatags %}
 
 {% block javascript %}
@@ -83,6 +85,23 @@ function prev() {
 <article class="article-post">
 
 	<p>{{ content.chapter.document.info.description_html }}</p>
+
+	<div class="field is-grouped is-grouped-multiline" id="article-meta">
+		<div class="control">
+			<div class="tags has-addons">
+				<span class="tag is-dark">released</span>
+				<span class="tag is-info">{{ content.chapter.document.info.date | date(format="%a, %d %b %Y")  }}</span>
+			</div>
+		</div>
+
+    {% if content.chapter.document.info.meta.swift_version %}
+		<div class="control">
+			  <div class="tags has-addons">
+				    <span class="tag is-dark">Swift Version</span>
+				    <span class="tag is-info">{{ content.chapter.document.info.meta.swift_version }}</span>
+			  </div>
+		</div>
+    {% endif %}
 
 	<div class="content">
 		{{ content.chapter.document.content }}

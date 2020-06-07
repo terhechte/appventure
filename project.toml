@@ -1,14 +1,13 @@
 [Project]
 baseURL = "https://appventure.me"
-keywords = ["swift", "objective-c", "ios", "macos", "tvos", "watch", "xcode", "iphone", "linux", "open source"]
+keywords = ["swift", "objective-c", "ios", "macos", "tvos", "watch", "xcode", "iphone", "linux", "open source", "swiftui", "combine"]
 postsPerIndex = 20
 renderOnePageBooks = true
-codeClassPrefix = "apv"
 
 [Folders]
 # The file and folders that should be copied over from within the public folder
 # Also add folders with the old content for search engine links
-publicCopyFolders = ["keybase.txt", "css", "img", "js", "img-content", "2011", "2013", "2014", "2015", "2016", "2017", "2019"]
+publicCopyFolders = ["keybase.txt", "css", "img", "js", "img-content", "2011", "2013", "2014", "2015", "2016", "2017", "2019", "safari-pinned-tab.svg", "robots.txt", "site.webmanifest", "mstile-150x150.png", "favicon.ico", "favicon-32x32.png", "favicon-16x16.png", "browserconfig.xml", "apple-touch-icon.png", "android-chrome-512x512.png", "android-chrome-192x192.png"]
 booksFolder = "guides"
 booksFolderName = "guides"
 categoryFolderName = "topics"
@@ -22,7 +21,7 @@ books = [
   "optionals/summary.toml", 
   "swift_reflection/summary.toml",
   "swiftui/summary.toml",
-   "catalyst/summary.toml",
+  "catalyst/summary.toml",
 ]
 
 [Shortlinks]
@@ -43,3 +42,8 @@ feedAddress = "feed.rss"
 authorEmail = "benedikt.terhechte@appventure.me"
 authorName = "Benedikt Terhechte"
 description = "AppVenture provides simple swift guides to help you along your Swift journey."
+
+[Render]
+syntaxHighlightCodeClassPrefix = "apv"
+highlightSyntax = true
+markdownFootnotes = true
