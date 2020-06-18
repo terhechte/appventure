@@ -7,7 +7,7 @@ renderOnePageBooks = true
 [Folders]
 # The file and folders that should be copied over from within the public folder
 # Also add folders with the old content for search engine links
-publicCopyFolders = ["keybase.txt", "css", "img", "js", "img-content", "2011", "2013", "2014", "2015", "2016", "2017", "2019", "safari-pinned-tab.svg", "robots.txt", "site.webmanifest", "mstile-150x150.png", "favicon.ico", "favicon-32x32.png", "favicon-16x16.png", "browserconfig.xml", "apple-touch-icon.png", "android-chrome-512x512.png", "android-chrome-192x192.png"]
+publicCopyFolders = ["keybase.txt", "css", "img", "js", "img-content", "2011", "2013", "2014", "2015", "2016", "2017", "2019", "safari-pinned-tab.svg", "robots.txt", "site.webmanifest", "mstile-150x150.png", "favicon.ico", "favicon-32x32.png", "favicon-16x16.png", "browserconfig.xml", "apple-touch-icon.png", "android-chrome-512x512.png", "android-chrome-192x192.png", "twitter_card.png"]
 booksFolder = "guides"
 booksFolderName = "guides"
 categoryFolderName = "topics"
