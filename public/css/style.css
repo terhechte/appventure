@@ -72,7 +72,7 @@ body, html {
 }
 
 .article-box pre {
-    background-color: rgb(9, 36, 78);
+    background-color: rgb(32, 32, 39);
 }
 
 .article-box pre * {
@@ -192,7 +192,7 @@ h2.title.is-2 > span.syntax {
 }
 article .content pre  {
 	border-radius: 16px;
-  background-color: rgb(9, 36, 78);
+  background-color: rgb(32, 32, 39);
 }
 
 article .content pre:hover  {

@@ -3,6 +3,7 @@ baseURL = "https://appventure.me"
 keywords = ["swift", "objective-c", "ios", "macos", "tvos", "watch", "xcode", "iphone", "linux", "open source", "swiftui", "combine"]
 postsPerIndex = 20
 renderOnePageBooks = true
+debugInstrumentation = true
 
 [Folders]
 # The file and folders that should be copied over from within the public folder
@@ -44,6 +45,7 @@ authorName = "Benedikt Terhechte"
 description = "AppVenture provides simple swift guides to help you along your Swift journey."
 
 [Render]
-syntaxHighlightCodeClassPrefix = "apv"
+syntaxHighlightCodeClassPrefix = "techou"
 highlightSyntax = true
 markdownFootnotes = true
+storeBuildCache = true

@@ -1,0 +1,57 @@
+/**
+ *  Example CSS file that can be used to style Splash HTML output
+ *  Copyright (c) John Sundell 2018
+ *  MIT license - see LICENSE.md
+ */
+
+pre {
+    margin-bottom: 1.5em;
+    background-color: rgb(32, 32, 39);
+    padding: 16px 0;
+    border-radius: 16px;
+}
+
+pre code {
+    font-family: monospace;
+    display: block;
+    padding: 0 20px;
+    color: #a9bcbc;
+    line-height: 1.4em;
+    font-size: 0.95em;
+}
+
+pre code .swift-keyword {
+    color: #e73289;
+}
+
+pre code .swift-type {
+    color: #8281ca;
+}
+
+pre code .swift-call {
+    color: #348fe5;
+}
+
+pre code .swift-property {
+    color: #21ab9d;
+}
+
+pre code .swift-number {
+    color: #db6f57;
+}
+
+pre code .swift-string {
+    color: #fa641e;
+}
+
+pre code .swift-comment {
+    color: #6b8a94;
+}
+
+pre code .swift-dotAccess {
+    color: #92b300;
+}
+
+pre code .swift-preprocessing {
+    color: #b68a00;
+}
