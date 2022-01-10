@@ -1,3 +1,5 @@
+# Techou Version: 0.5.0
+
 [Project]
 baseURL = "https://appventure.me"
 keywords = ["swift", "objective-c", "ios", "macos", "tvos", "watch", "xcode", "iphone", "linux", "open source", "swiftui", "combine"]
@@ -45,7 +47,7 @@ authorName = "Benedikt Terhechte"
 description = "AppVenture provides simple swift guides to help you along your Swift journey."
 
 [Render]
-syntaxHighlightCodeClassPrefix = "techou"
 highlightSyntax = true
 markdownFootnotes = true
-storeBuildCache = true
+storeBuildCache = false
+swiftUseSplash = true
